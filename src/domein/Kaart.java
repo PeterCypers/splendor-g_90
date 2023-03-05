@@ -13,7 +13,7 @@ public abstract class Kaart {
 		return this.prestigePunten;
 	}
 
-	public void setPrestigePunten(int prestigePunten) {
+	private void setPrestigePunten(int prestigePunten) {
 		this.prestigePunten = prestigePunten;
 	}
 
@@ -21,7 +21,7 @@ public abstract class Kaart {
 		return this.witteKost;
 	}
 
-	public void setWitteKost(int witteKost) {
+	private void setWitteKost(int witteKost) {
 		this.witteKost = witteKost;
 	}
 
@@ -29,7 +29,7 @@ public abstract class Kaart {
 		return this.rodeKost;
 	}
 
-	public void setRodeKost(int rodeKost) {
+	private void setRodeKost(int rodeKost) {
 		this.rodeKost = rodeKost;
 	}
 
@@ -37,7 +37,7 @@ public abstract class Kaart {
 		return this.blauweKost;
 	}
 
-	public void setBlauweKost(int blauweKost) {
+	private void setBlauweKost(int blauweKost) {
 		this.blauweKost = blauweKost;
 	}
 
@@ -45,7 +45,7 @@ public abstract class Kaart {
 		return this.groeneKost;
 	}
 
-	public void setGroeneKost(int groeneKost) {
+	private void setGroeneKost(int groeneKost) {
 		this.groeneKost = groeneKost;
 	}
 
@@ -53,7 +53,7 @@ public abstract class Kaart {
 		return this.zwarteKost;
 	}
 
-	public void setZwarteKost(int zwarteKost) {
+	private void setZwarteKost(int zwarteKost) {
 		this.zwarteKost = zwarteKost;
 	}
 

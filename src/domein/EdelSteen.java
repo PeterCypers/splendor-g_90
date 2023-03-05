@@ -17,7 +17,7 @@ public class EdelSteen {
 		return this.soort;
 	}
 
-	public void setSoort(String soort) {
+	private void setSoort(String soort) {
 		this.soort = soort;
 	}
 
@@ -25,7 +25,7 @@ public class EdelSteen {
 		return this.kleur;
 	}
 
-	public void setKleur(String kleur) {
+	private void setKleur(String kleur) {
 		this.kleur = kleur;
 	}
 

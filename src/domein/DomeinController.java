@@ -5,12 +5,25 @@ import java.util.*;
 public class DomeinController {
 
 	private Spel spel;
-	private Collection<Speler> spelers;
+	private List<Speler> spelers;
+	private Speler spelerAanBeurt; //nieuw attribuut toegevoegd
 	private SpelerRepository spelerRepo;
+	
+	public DomeinController() {
+		this.spelers = new ArrayList<>();
+	}
 
 	public void startNieuwSpel() {
-		// TODO - implement DomeinController.startNieuwSpel
-		throw new UnsupportedOperationException();
+		this.spel = new Spel(spelers.size());
+		int jongste = Integer.MAX_VALUE;
+		Speler jongsteSpeler = null;
+		for (Speler speler : spelers) {
+			if(speler.getGeboorteJaar() < jongste) {
+				jongsteSpeler = speler;
+				jongste = speler.getGeboorteJaar();
+			}
+		}
+		spelerAanBeurt = jongsteSpeler;
 	}
 
 	/**
@@ -22,16 +35,21 @@ public class DomeinController {
 	 * @param geboorteJaar
 	 */
 	public void registreerSpeler(String gebruikersNaam, int geboorteJaar) {
-		// TODO - implement DomeinController.registreerSpeler
-		throw new UnsupportedOperationException();
+		controleerAantalSpelers();
+		spelers.add(new Speler(gebruikersNaam, geboorteJaar));
 	}
 
 	/**
 	 * word gebruikt door registreer
 	 */
 	private void controleerAantalSpelers() {
-		// TODO - implement DomeinController.controleerAantalSpelers
-		throw new UnsupportedOperationException();
+		if(spelers.size() == Spel.MAX_AANTAL_SPELERS)
+			throw new IllegalArgumentException("Maximum aantal spelers bereikt.");
+	}
+	
+	//nieuwe methode toegevoegd voor controle input/spelertoevoegen in applicatie laag
+	public int geefAantalSpelers() {
+		return spelers.size();
 	}
 
 }

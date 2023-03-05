@@ -8,7 +8,7 @@ public class Edele extends Kaart {
 		return this.edeleFoto;
 	}
 
-	public void setEdeleFoto(String edeleFoto) {
+	private void setEdeleFoto(String edeleFoto) {
 		this.edeleFoto = edeleFoto;
 	}
 

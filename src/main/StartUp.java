@@ -1,5 +1,8 @@
 package main;
 
+import domein.DomeinController;
+import ui.SplendorApplicatie;
+
 public class StartUp {
 
 	/**
@@ -7,8 +10,7 @@ public class StartUp {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO - implement StartUp.main
-		throw new UnsupportedOperationException();
+		new SplendorApplicatie(new DomeinController()).startSpel();
 	}
 
 }

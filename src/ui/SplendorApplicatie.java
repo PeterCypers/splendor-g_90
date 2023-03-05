@@ -1,5 +1,7 @@
 package ui;
 
+import java.time.LocalDate;
+
 import domein.*;
 
 public class SplendorApplicatie {
@@ -7,8 +9,16 @@ public class SplendorApplicatie {
 	private DomeinController dc;
 
 	public void startSpel() {
-		// TODO - implement SplendorApplicatie.startSpel
-		throw new UnsupportedOperationException();
+		//test spelers toevoegen:
+		String spelerNaamOk1 = "Speler1";
+		String spelerNaamOk2 = "Speler 01";
+		String spelerNaamOk3 = "Speler_naam 03";
+		String empty = "";
+		String startNietMetLetter = "8Speler 4";
+		int leeftijdOk = LocalDate.now().getYear() - 8;
+		int leeftijdNietOk = LocalDate.now().getYear() - 3;
+		dc.registreerSpeler(startNietMetLetter, leeftijdOk);
+
 	}
 
 	/**
@@ -16,8 +26,7 @@ public class SplendorApplicatie {
 	 * @param dc
 	 */
 	public SplendorApplicatie(DomeinController dc) {
-		// TODO - implement SplendorApplicatie.SplendorApplicatie
-		throw new UnsupportedOperationException();
+		this.dc = dc;
 	}
 
 }

@@ -9,7 +9,7 @@ public class Ontwikkelingskaart extends Kaart {
 		return this.kleurBonus;
 	}
 
-	public void setKleurBonus(String kleurBonus) {
+	private void setKleurBonus(String kleurBonus) {
 		this.kleurBonus = kleurBonus;
 	}
 
@@ -17,7 +17,7 @@ public class Ontwikkelingskaart extends Kaart {
 		return this.fotoOntwikkelingskaart;
 	}
 
-	public void setFotoOntwikkelingskaart(String fotoOntwikkelingskaart) {
+	private void setFotoOntwikkelingskaart(String fotoOntwikkelingskaart) {
 		this.fotoOntwikkelingskaart = fotoOntwikkelingskaart;
 	}
 

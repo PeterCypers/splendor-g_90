@@ -1,4 +1,4 @@
-package domein;
+package domein; //setters verwijdert voor aantalEdelen/aantalSteentjes -> berekend adhv aantalSpelers -> instellein binnen constructor
 
 /**
  * om een spel aan te maken moet je enkel weten hoeveel spelers er zullen deelnemen, je kan in de constructor dan het aantal steentjes en edelen instellen
@@ -16,7 +16,9 @@ public class Spel {
 		return this.aantalSpelers;
 	}
 
-	public void setAantalSpelers(int aantalSpelers) {
+	private void setAantalSpelers(int aantalSpelers) {
+		if(aantalSpelers < MIN_AANTAL_SPELERS || aantalSpelers > MAX_AANTAL_SPELERS)
+			throw new IllegalArgumentException("Het aantal spelers die deelnemen aan het spel ligt niet tussen [2-4]");
 		this.aantalSpelers = aantalSpelers;
 	}
 
@@ -24,16 +26,8 @@ public class Spel {
 		return this.aantalSteentjes;
 	}
 
-	public void setAantalSteentjes(int aantalSteentjes) {
-		this.aantalSteentjes = aantalSteentjes;
-	}
-
 	public int getAantalEdelen() {
 		return this.aantalEdelen;
-	}
-
-	public void setAantalEdelen(int aantalEdelen) {
-		this.aantalEdelen = aantalEdelen;
 	}
 
 	/**
@@ -41,8 +35,9 @@ public class Spel {
 	 * @param aantalSpelers
 	 */
 	public Spel(int aantalSpelers) {
-		// TODO - implement Spel.Spel
-		throw new UnsupportedOperationException();
+		setAantalSpelers(aantalSpelers);
+
+		//TODO bereken aantal edelstenen/edelen adhv aantalSpelers
 	}
 
 }
