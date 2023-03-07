@@ -11,6 +11,16 @@ public class Spel {
 	private int aantalSpelers;
 	private int aantalSteentjes;
 	private int aantalEdelen;
+	
+	/**
+	 * 
+	 * @param aantalSpelers
+	 */
+	public Spel(int aantalSpelers) {
+		setAantalSpelers(aantalSpelers);
+
+		//TODO bereken aantal edelstenen/edelen adhv aantalSpelers
+	}
 
 	public int getAantalSpelers() {
 		return this.aantalSpelers;
@@ -30,14 +40,6 @@ public class Spel {
 		return this.aantalEdelen;
 	}
 
-	/**
-	 * 
-	 * @param aantalSpelers
-	 */
-	public Spel(int aantalSpelers) {
-		setAantalSpelers(aantalSpelers);
 
-		//TODO bereken aantal edelstenen/edelen adhv aantalSpelers
-	}
 
 }
