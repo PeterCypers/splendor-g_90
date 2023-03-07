@@ -44,12 +44,16 @@ public class DomeinController {
 	 */
 	private void controleerAantalSpelers() {
 		if(spelers.size() == Spel.MAX_AANTAL_SPELERS)
-			throw new IllegalArgumentException("Maximum aantal spelers bereikt.");
+			throw new IllegalArgumentException("Maximum aantal spelers bereikt. Kies om een spel te starten.");
 	}
 	
 	//nieuwe methode toegevoegd voor controle input/spelertoevoegen in applicatie laag
 	public int geefAantalSpelers() {
 		return spelers.size();
+	}
+	
+	public String geefSpelerAanBeurt() {
+		return String.format("%s", spelerAanBeurt.toString());
 	}
 
 }

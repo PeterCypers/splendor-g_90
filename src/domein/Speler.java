@@ -51,6 +51,14 @@ public class Speler {
 			throw new IllegalArgumentException("Je moet minstens 6 jaar oud zijn om dit spel te spelen.");
 		this.geboorteJaar = geboorteJaar;
 	}
+	
+	//toString toegevoegd
+	@Override
+	public String toString() {
+		int leeftijd = LocalDate.now().getYear() - geboorteJaar;
+		
+		return String.format("%s: %s - leeftijd: %d", getClass().getSimpleName(), gebruikersNaam, leeftijd);
+	}
 
 
 
