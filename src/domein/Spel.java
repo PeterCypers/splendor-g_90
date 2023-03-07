@@ -18,8 +18,19 @@ public class Spel {
 	 */
 	public Spel(int aantalSpelers) {
 		setAantalSpelers(aantalSpelers);
-
-		//TODO bereken aantal edelstenen/edelen adhv aantalSpelers
+		//steentjes|edelen afh. van aantalSpelers:
+		switch (aantalSpelers) {
+		case 2 -> {
+			this.aantalSteentjes = 4;
+			this.aantalEdelen = 3;
+		}case 3 -> {
+			this.aantalSteentjes = 5;
+			this.aantalEdelen = 4;
+			
+		}case 4 -> {
+			this.aantalSteentjes = 7;
+			this.aantalEdelen = 5;
+		}}
 	}
 
 	public int getAantalSpelers() {

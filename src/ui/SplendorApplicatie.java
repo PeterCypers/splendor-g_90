@@ -41,7 +41,6 @@ public class SplendorApplicatie {
 	}
 	
 	private String voegSpelerToe() {
-		// TODO try catch block
 		if (this.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS)
 			return "Maximum aantal spelers bereikt";
 		else {
@@ -53,16 +52,17 @@ public class SplendorApplicatie {
 					System.out.print("Kies een naam: ");
 					naam = input.next();
 					input.nextLine(); // buffer leegmaken
-					System.out.print("Kies een geboortejaar(je moet minstens 6jr oud zijn om Splendor te spelen): ");
+					System.out.print("Geef geboortejaar in: ");
 					geboorteJaar = input.nextInt();
 
 					dc.registreerSpeler(naam, geboorteJaar);
 					loop = false;
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
-					System.out.println("De ingevoerde geboorte jaar moet een geheel getal zijn");
+					System.out.println("De ingevoerde geboortejaar moet een geheel getal zijn\n");
 				} catch (IllegalArgumentException e) {
 					System.out.println(e.getMessage());
+					System.out.println();
 				}
 
 			} while (loop);
@@ -93,7 +93,7 @@ public class SplendorApplicatie {
 			}
 			catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn");
+				System.out.println("Je keuze moet een geheel getal zijn\n");
 			}
 		}while(loop);
 

@@ -1,5 +1,6 @@
 package domein;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class DomeinController {
@@ -13,14 +14,16 @@ public class DomeinController {
 		this.spelers = new ArrayList<>();
 	}
 
+	//aangepast jongstespeler nu op leeftijd niet geboortejaar bepaald
 	public void startNieuwSpel() {
 		this.spel = new Spel(spelers.size());
+		int huidigJaar = LocalDate.now().getYear();
 		int jongste = Integer.MAX_VALUE;
 		Speler jongsteSpeler = null;
 		for (Speler speler : spelers) {
-			if(speler.getGeboorteJaar() < jongste) {
+			if((huidigJaar - speler.getGeboorteJaar()) < jongste) {
 				jongsteSpeler = speler;
-				jongste = speler.getGeboorteJaar();
+				jongste = huidigJaar - speler.getGeboorteJaar();
 			}
 		}
 		spelerAanBeurt = jongsteSpeler;
