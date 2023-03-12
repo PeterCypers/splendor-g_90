@@ -12,6 +12,7 @@ public class DomeinController {
 	
 	public DomeinController() {
 		this.spelers = new ArrayList<>();
+		this.spelerRepo = new SpelerRepository();
 	}
 
 	//aangepast jongstespeler nu op leeftijd niet geboortejaar bepaald
@@ -37,9 +38,23 @@ public class DomeinController {
 	 * @param gebruikersNaam
 	 * @param geboorteJaar
 	 */
+	
+	//moet nog van naam veranderen: voegSpelerToe
 	public void registreerSpeler(String gebruikersNaam, int geboorteJaar) {
 		controleerAantalSpelers();
-		spelers.add(new Speler(gebruikersNaam, geboorteJaar));
+		boolean inDatabase = false;
+		Speler geselecteerdeSpeler = null;
+		List<Speler> databaseSpelers = spelerRepo.geefSpelers();
+		for (Speler speler : databaseSpelers) {
+			if(speler.getGebruikersNaam().equals(gebruikersNaam) && speler.getGeboorteJaar() == geboorteJaar) {
+				inDatabase = true;
+				geselecteerdeSpeler = speler;
+			}
+		}
+		
+		if(!inDatabase)
+			throw new IllegalArgumentException("Speler bestaat niet.");
+		spelers.add(geselecteerdeSpeler);
 	}
 
 	/**

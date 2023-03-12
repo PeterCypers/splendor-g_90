@@ -2,17 +2,19 @@ package domein;
 
 import java.util.*;
 
+import persistentie.SpelerMapper;
+
 public class SpelerRepository {
 
-	private Collection<Speler> spelers;
+    private final SpelerMapper mapper;
+//	private List<Speler> spelers; wordt direct ge-returned in geefspelers
+	
+	public SpelerRepository() {
+		mapper = new SpelerMapper();
+	}
 
-	/**
-	 * 
-	 * @param speler
-	 */
-	public void voegSpelerToe(Speler speler) {
-		// TODO - implement SpelerRepository.voegSpelerToe
-		throw new UnsupportedOperationException();
+	public List<Speler> geefSpelers(){
+		return mapper.geefSpelers();
 	}
 
 }
