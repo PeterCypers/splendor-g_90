@@ -21,6 +21,8 @@ public class SplendorApplicatie {
 	public void startSpel() {
 		int keuze = -1;
 		
+		System.out.printf(dc.toonAlleSpelers());
+		
 		while(geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS || keuze != 2) {
 			if(geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && keuze == 2) {
 				System.out.println("Je hebt nog niet genoeg spelers gekozen om een spel te starten.\n");
@@ -38,6 +40,8 @@ public class SplendorApplicatie {
 		}
 		dc.startNieuwSpel(); //volgorde belangrijk
 		System.out.print(spelGestartFeedback()); //volgorde belangrijk
+		
+		
 	}
 	
 	private String voegSpelerToe() {
