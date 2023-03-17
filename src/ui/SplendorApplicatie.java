@@ -17,11 +17,11 @@ public class SplendorApplicatie {
 		this.dc = dc;
 	}
 	
-	//is het beter om een nieuw methode een nieuwe methode te maken om het spel effectief te starten?
+	//zet testen in komentaar voor het eigenlijke normaal verloop
 	public void startSpel() {
 		int keuze = -1;
-		
-		System.out.printf(dc.toonAlleSpelers());
+		//[TEST] connectie db:
+		System.out.printf("%s",dc.toonAlleSpelers());
 		
 		while(geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS || keuze != 2) {
 			if(geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && keuze == 2) {
@@ -38,6 +38,9 @@ public class SplendorApplicatie {
 		}
 		
 		}
+		//[TEST] lijst van actieve spelers:
+		System.out.printf("aantal deelnemers: %d%n%s",geefAantalSpelers(), dc.toonAlleDeelnemers());
+		
 		dc.startNieuwSpel(); //volgorde belangrijk
 		System.out.print(spelGestartFeedback()); //volgorde belangrijk
 		
@@ -59,7 +62,7 @@ public class SplendorApplicatie {
 					System.out.print("Geef geboortejaar in: ");
 					geboorteJaar = input.nextInt();
 
-					dc.registreerSpeler(naam, geboorteJaar);
+					dc.voegSpelerToe(naam, geboorteJaar);
 					loop = false;
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
@@ -89,7 +92,7 @@ public class SplendorApplicatie {
 		do {
 			try {
 			System.out.println("Maak een keuze: \n"
-					+ "1. Nieuwe speler registreren \n"
+					+ "1. Speler Toevoegen \n"
 					+ "2. Spel starten");
 			System.out.print("keuze: ");
 			keuze = input.nextInt();

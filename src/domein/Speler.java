@@ -2,12 +2,13 @@ package domein;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Objects;
 
 public class Speler {
 
 	private String gebruikersNaam;
-	private LocalDate geboorteDatum; //van int naar datum verandert
-	private int geboorteJaar;
+	private LocalDate geboorteDatum; //voor geboortejaar kan je geboorteDatum.getYear() doen
+	private int leeftijd; //geboortejaar naar leeftijd verandert
 	
 	/**
 	 * 
@@ -48,12 +49,12 @@ public class Speler {
 		return this.geboorteDatum;
 	}
 	
-	private void setGeboorteJaar(int geboorteJaar) {
-		this.geboorteJaar = geboorteJaar;
+	private void setLeeftijd(int leeftijdInJaar) {
+		this.leeftijd = leeftijdInJaar;
 	}
 	
-	public int getGeboorteJaar() {
-		return this.geboorteJaar;
+	public int getLeeftijd() {
+		return this.leeftijd;
 	}
 
 	private void setGeboorteDatumEnJaar(LocalDate geboorteDatum) {
@@ -65,15 +66,16 @@ public class Speler {
 			throw new IllegalArgumentException("Je moet minstens 6 jaar oud zijn om dit spel te spelen.");
 		int leeftijdInJaar = period.getYears();
 		this.geboorteDatum = geboorteDatum;
-		setGeboorteJaar(leeftijdInJaar);
+		setLeeftijd(leeftijdInJaar);
 	}
 	
+
 	//toString toegevoegd
 	@Override
 	public String toString() {
-		int leeftijd = LocalDate.now().getYear() - geboorteJaar;
+		int leeftijdinJaar = LocalDate.now().getYear() - leeftijd;
 		
-		return String.format("%s: %s - leeftijd: %d", getClass().getSimpleName(), gebruikersNaam, leeftijd);
+		return String.format("%s: %s ---- leeftijd: %d", getClass().getSimpleName(), gebruikersNaam, leeftijd);
 	}
 
 
