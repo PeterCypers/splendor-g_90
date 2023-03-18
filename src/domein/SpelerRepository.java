@@ -11,13 +11,14 @@ public class SpelerRepository {
 
 	public SpelerRepository() {
 		mapper = new SpelerMapper();
-		voegSpelersToe();
+		slaSpelersOp();
 	}
 
 	public List<Speler> getSpelers() {
 		return this.spelers;
 	}
-	private void voegSpelersToe() {
+	//naam verandert naar slaSpelersOp
+	private void slaSpelersOp() {
 		this.spelers = mapper.geefSpelers();
 	}
 }
