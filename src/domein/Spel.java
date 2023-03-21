@@ -2,9 +2,6 @@ package domein; //setters verwijdert voor aantalEdelen/aantalSteentjes -> bereke
 
 import java.util.List;
 
-/**
- * om een spel aan te maken moet je enkel weten hoeveel spelers er zullen deelnemen, je kan in de constructor dan het aantal steentjes en edelen instellen
- */
 public class Spel {
 
 	//private SpeelBord tafel;
@@ -20,10 +17,10 @@ public class Spel {
 	public Spel(List<Speler> aangemeldeSpelers) {
 		controleerAantalSpelers(aangemeldeSpelers);
 		this.aangemeldeSpelers = aangemeldeSpelers;
-		this.bepaalJonsteSpeler(aangemeldeSpelers);
+		this.bepaalJongsteSpeler(aangemeldeSpelers);
 	}
 
-	private void bepaalJonsteSpeler(List<Speler> aangemeldeSpelers) {
+	private void bepaalJongsteSpeler(List<Speler> aangemeldeSpelers) {
 		int jongste = Integer.MAX_VALUE;
 		Speler jongsteSpeler = null;
 		for (Speler speler : aangemeldeSpelers) {
