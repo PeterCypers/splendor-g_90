@@ -38,7 +38,7 @@ public class SplendorApplicatie {
 		}
 		
 		}
-		//[TEST] lijst van actieve spelers:
+		//[TEST] lijst van actieve spelers: 
 		System.out.printf("aantal deelnemers: %d%n%s",geefAantalSpelers(), dc.toonAangemeldeSpelers());
 		
 		dc.startNieuwSpel(); //volgorde belangrijk

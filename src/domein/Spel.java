@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Spel {
 
-	//private SpeelBord tafel;
+	//private SpeelBord tafel; 
 	public static final int MIN_AANTAL_SPELERS = 2;
 	public static final int MAX_AANTAL_SPELERS = 4;
 	private final List<Speler> aangemeldeSpelers;

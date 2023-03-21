@@ -5,7 +5,7 @@ import java.util.*;
 
 public class DomeinController {
 	
-	private Spel spel;
+	private Spel spel; 
 	private final List<Speler> aangemeldeSpelers;
 	//private Speler spelerAanBeurt; // spel moet speler aan beurt bijhouden en er moet een getter voor zijn
 	private SpelerRepository spelerRepo;
