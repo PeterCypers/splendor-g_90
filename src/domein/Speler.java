@@ -14,8 +14,8 @@ public class Speler {
 		return this.gebruikersnaam;
 	}
 
-	private void setGebruikersnaam(String gebruikersNaam) {
-		if (gebruikersNaam == null || gebruikersNaam.isBlank()) {
+	private void setGebruikersnaam(String gebruikersnaam) {
+		if (gebruikersnaam == null || gebruikersnaam.isBlank()) {
 			throw new IllegalArgumentException("Gebruikersnaam moet ingevuld zijn.");
 		}
 
