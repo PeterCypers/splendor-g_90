@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class DomeinController {
-
+	
 	private Spel spel;
 	private final List<Speler> aangemeldeSpelers;
 	// private Speler spelerAanBeurt; // spel moet speler aan beurt bijhouden en er

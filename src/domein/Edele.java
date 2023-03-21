@@ -1,7 +1,7 @@
 package domein;
 
-public class Edele extends Kaart {
-
+public class Edele {
+	private int prestigepunten;
 	private String edeleFoto;
 
 	public String getEdeleFoto() {
@@ -10,6 +10,14 @@ public class Edele extends Kaart {
 
 	private void setEdeleFoto(String edeleFoto) {
 		this.edeleFoto = edeleFoto;
+	}
+
+	public int getPrestigepunten() {
+		return prestigepunten;
+	}
+
+	private void setPrestigepunten(int prestigepunten) {
+		this.prestigepunten = prestigepunten;
 	}
 
 }

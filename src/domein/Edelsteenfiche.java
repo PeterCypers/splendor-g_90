@@ -1,6 +1,6 @@
 package domein;
 
-public class EdelSteen {
+public class Edelsteenfiche {
 
 	/**
 	 * afhankelijk van de kleur:
@@ -10,9 +10,16 @@ public class EdelSteen {
 	 * Onyxen (zwart)
 	 * Robijnen (rood)
 	 */
+	
 	private String soort;
 	private String kleur;
 
+	public Edelsteenfiche(String soort, String kleur) {
+		setSoort(soort);
+		setKleur(kleur);
+	}
+	
+	/* ---- Setters & Getters ---- */
 	public String getSoort() {
 		return this.soort;
 	}
@@ -28,5 +35,7 @@ public class EdelSteen {
 	private void setKleur(String kleur) {
 		this.kleur = kleur;
 	}
+
+	
 
 }

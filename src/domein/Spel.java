@@ -3,20 +3,19 @@ package domein; //setters verwijdert voor aantalEdelen/aantalSteentjes -> bereke
 import java.util.List;
 
 public class Spel {
-
-	// private SpeelBord tafel;
 	public static final int MIN_AANTAL_SPELERS = 2;
 	public static final int MAX_AANTAL_SPELERS = 4;
 	private final List<Speler> aangemeldeSpelers;
 	private Speler spelerAanBeurt;
 
-	
+	private KaartRepository kaartrepo;
+
 	public Spel(List<Speler> aangemeldeSpelers) {
 		controleerAantalSpelers(aangemeldeSpelers);
 		this.aangemeldeSpelers = aangemeldeSpelers;
 		this.bepaalJongsteSpeler(aangemeldeSpelers);
 	}
-
+	
 	private void bepaalJongsteSpeler(List<Speler> aangemeldeSpelers) {
 		int jongste = Integer.MIN_VALUE;
 		Speler jongsteSpeler = null;
