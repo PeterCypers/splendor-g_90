@@ -7,7 +7,7 @@ import persistentie.SpelerMapper;
 public class SpelerRepository {
 
 	private final SpelerMapper mapper;
-	private List<Speler> spelers; // wordt direct ge-returned in geefspelers
+	private List<Speler> spelers; 
 
 	public SpelerRepository() {
 		mapper = new SpelerMapper();

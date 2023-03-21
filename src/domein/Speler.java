@@ -7,15 +7,14 @@ import java.util.Objects;
 public class Speler {
 
 	private String gebruikersNaam;
-	private LocalDate geboorteDatum; //voor geboortejaar kan je geboorteDatum.getYear() doen
-	private int leeftijd; //geboortejaar naar leeftijd verandert
+	private LocalDate geboortejaar;
 	
 	/**
 	 * 
 	 * @param gebruikersNaam
 	 * @param geboorteJaar
 	 */
-	public Speler(String gebruikersNaam, LocalDate geboorteDatum) {
+	public Speler(String gebruikersNaam, int geboortejaar) {
 		setGebruikersNaam(gebruikersNaam);
 		setGeboorteDatumEnJaar(geboorteDatum);
 	}

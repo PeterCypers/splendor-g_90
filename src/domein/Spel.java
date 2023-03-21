@@ -1,54 +1,52 @@
 package domein; //setters verwijdert voor aantalEdelen/aantalSteentjes -> berekend adhv aantalSpelers -> instellein binnen constructor
 
+import java.util.List;
+
 /**
  * om een spel aan te maken moet je enkel weten hoeveel spelers er zullen deelnemen, je kan in de constructor dan het aantal steentjes en edelen instellen
  */
 public class Spel {
 
-	private SpeelBord tafel;
+	//private SpeelBord tafel;
 	public static final int MIN_AANTAL_SPELERS = 2;
 	public static final int MAX_AANTAL_SPELERS = 4;
-	private int aantalSpelers;
-	private int aantalSteentjes;
-	private int aantalEdelen;
+	private final List<Speler> aangemeldeSpelers;
+	private Speler spelerAanBeurt;
 	
 	/**
 	 * 
-	 * @param aantalSpelers
+	 * @param List<Speler>
 	 */
-	public Spel(int aantalSpelers) {
-		setAantalSpelers(aantalSpelers);
-		//steentjes|edelen afh. van aantalSpelers:
-		switch (aantalSpelers) {
-		case 2 -> {
-			this.aantalSteentjes = 4;
-			this.aantalEdelen = 3;
-		}case 3 -> {
-			this.aantalSteentjes = 5;
-			this.aantalEdelen = 4;
-			
-		}case 4 -> {
-			this.aantalSteentjes = 7;
-			this.aantalEdelen = 5;
-		}}
+	public Spel(List<Speler> aangemeldeSpelers) {
+		controleerAantalSpelers(aangemeldeSpelers);
+		this.aangemeldeSpelers = aangemeldeSpelers;
+		this.bepaalJonsteSpeler(aangemeldeSpelers);
 	}
 
-	public int getAantalSpelers() {
-		return this.aantalSpelers;
+	private void bepaalJonsteSpeler(List<Speler> aangemeldeSpelers) {
+		int jongste = Integer.MAX_VALUE;
+		Speler jongsteSpeler = null;
+		for (Speler speler : aangemeldeSpelers) {
+			if (speler.getLeeftijd() < jongste) {
+				jongsteSpeler = speler;
+				jongste = speler.getLeeftijd();
+			}
+		}
+		spelerAanBeurt = jongsteSpeler;
 	}
 
-	private void setAantalSpelers(int aantalSpelers) {
-		if(aantalSpelers < MIN_AANTAL_SPELERS || aantalSpelers > MAX_AANTAL_SPELERS)
-			throw new IllegalArgumentException("Het aantal spelers die deelnemen aan het spel ligt niet tussen [2-4]");
-		this.aantalSpelers = aantalSpelers;
+	private void controleerAantalSpelers(List<Speler> aangemeldeSpelers) {
+		if(aangemeldeSpelers.size() < MIN_AANTAL_SPELERS || aangemeldeSpelers.size() > MAX_AANTAL_SPELERS)
+			throw new IllegalArgumentException(String.format("Een spel moet Min [2], Max [4] spelers bevatten " 
+					+ "aantal spelers in de lijst: %d", aangemeldeSpelers.size()));
 	}
 
-	public int getAantalSteentjes() {
-		return this.aantalSteentjes;
+	public Speler getSpelerAanBeurt() {
+		return spelerAanBeurt;
 	}
-
-	public int getAantalEdelen() {
-		return this.aantalEdelen;
+	
+	public void volgendeSpeler() {
+		//TODO
 	}
 
 

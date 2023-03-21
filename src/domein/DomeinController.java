@@ -4,14 +4,14 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class DomeinController {
-
+	
 	private Spel spel;
-	private List<Speler> spelers;
+	private final List<Speler> aangemeldeSpelers;
 	private Speler spelerAanBeurt; // spel moet speler aan beurt bijhouden en er moet een getter voor zijn
 	private SpelerRepository spelerRepo;
 
 	public DomeinController() {
-		this.spelers = new ArrayList<>();
+		this.aangemeldeSpelers = new ArrayList<>();
 		this.spelerRepo = new SpelerRepository();
 	}
 
@@ -19,17 +19,7 @@ public class DomeinController {
 	public void startNieuwSpel() {
 		//TODO spel moet speler aanbeurt initializeren op jongstespeler uit de meegekregen lijst spelers (1 parameter in spelconstructor: de lijst van spelers meegeven)
 		//spel moet een methode krijgen bepaal speler aan beurt?
-		this.spel = new Spel(spelers.size());
-		int huidigJaar = LocalDate.now().getYear();
-		int jongste = Integer.MAX_VALUE;
-		Speler jongsteSpeler = null;
-		for (Speler speler : spelers) {
-			if (speler.getLeeftijd() < jongste) {
-				jongsteSpeler = speler;
-				jongste = speler.getLeeftijd();
-			}
-		}
-		spelerAanBeurt = jongsteSpeler;
+		this.spel = new Spel(aangemeldeSpelers);
 	}
 
 	/**
@@ -40,13 +30,14 @@ public class DomeinController {
 	 * @param geboorteJaar
 	 */
 
-	// moet nog van naam veranderen: voegSpelerToe User1 + 2000(moet 2001 zijn)
+	
 	public void voegSpelerToe(String gebruikersNaam, int geboorteJaar) {
+		//TODO zie TODO2
 		//controle max aantal spelers bereikt?:
 		controleerAantalSpelers();
 		//controle speler is al toegevoegd?:
-		if(spelers.size() > 0) {
-			for (Speler speler : spelers) {
+		if(aangemeldeSpelers.size() > 0) {
+			for (Speler speler : aangemeldeSpelers) {
 				if(speler.getGebruikersNaam().equals(gebruikersNaam))throw new IllegalArgumentException(String.format("Speler met de naam %s is al aan het spel toegevoegd.", gebruikersNaam));
 			}
 		}
@@ -55,31 +46,30 @@ public class DomeinController {
 		boolean spelerBestaat = false;
 		Speler geselecteerdeSpeler = null;
 		for (Speler speler : spelersInRepository) {
+			//TODO 2
 			if (speler.getGebruikersNaam().equals(gebruikersNaam) && speler.getGeboorteDatum().getYear() == geboorteJaar) {
 				spelerBestaat = true;
 				geselecteerdeSpeler = speler;
 			}
 		}
-
 		if (!spelerBestaat)
 			throw new IllegalArgumentException("Speler bestaat niet.");
-		spelers.add(geselecteerdeSpeler);
+		aangemeldeSpelers.add(geselecteerdeSpeler);
 	}
 
-	/**
-	 * word gebruikt door registreer
-	 */
+	//overbodige methode?
 	private void controleerAantalSpelers() {
-		if (spelers.size() == Spel.MAX_AANTAL_SPELERS)
+		if (aangemeldeSpelers.size() == Spel.MAX_AANTAL_SPELERS)
 			throw new IllegalArgumentException("Maximum aantal spelers bereikt. Kies om een spel te starten.");
 	}
 
 	// nieuwe methode toegevoegd voor controle input/spelertoevoegen in applicatie
 	// laag
 	public int geefAantalSpelers() {
-		return spelers.size();
+		return aangemeldeSpelers.size();
 	}
 	
+	//TODO komt uit spel.getSpeler...
 	public String geefSpelerAanBeurt() {
 		//TODO zal moeten veranderen, speler aan beurt zal in spel bijgehouden worden
 		return String.format("%s", spelerAanBeurt.toString());
@@ -99,8 +89,8 @@ public class DomeinController {
 	//[testmethode] om de lijst van deelnemende spelers aan het spel te controleren
 	public String toonAlleDeelnemers() {
 		String returnStr = "";
-		if(spelers.size() > 0) {
-			for (Speler speler : spelers) {
+		if(aangemeldeSpelers.size() > 0) {
+			for (Speler speler : aangemeldeSpelers) {
 				returnStr += speler.toString() + "\n"; //als dit niet werkt -> string.format
 			}
 		}

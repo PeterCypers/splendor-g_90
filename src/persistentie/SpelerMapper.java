@@ -22,9 +22,9 @@ public class SpelerMapper {
 
             while (rs.next()) {
             	String gebruikersnaam = rs.getString("gebruikersnaam");
-                LocalDate geboortedatum = rs.getDate("geboortedatum").toLocalDate();
+                int geboortejaar = rs.getInt("geboortejaar");
 
-                spelers.add(new Speler(gebruikersnaam, geboortedatum));
+                spelers.add(new Speler(gebruikersnaam, geboortejaar));
             }
         } catch (SQLException ex) {
             throw new RuntimeException(ex);

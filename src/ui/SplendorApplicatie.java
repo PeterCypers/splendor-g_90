@@ -111,6 +111,7 @@ public class SplendorApplicatie {
 		//TODO ? (zie this.startSpel())
 	}
 	
+	//TODO verplaats verantwoordelijkheid voor feedback geven naar spel app -> dc -> spel
 	private String spelGestartFeedback () {
 		return String.format("\n*****Een nieuw spel is gestart*****\nDe jongste speler mag beginnen%n"
 				+ "Speler aan beurt: %s", geefSpelerAanBeurt());
