@@ -8,7 +8,7 @@ public class Spel {
 	private final List<Speler> aangemeldeSpelers;
 	private Speler spelerAanBeurt;
 
-	private KaartRepository kaartrepo;
+//	private KaartRepository kaartrepo;
 
 	public Spel(List<Speler> aangemeldeSpelers) {
 		controleerAantalSpelers(aangemeldeSpelers);
