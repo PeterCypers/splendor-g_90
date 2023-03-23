@@ -59,5 +59,12 @@ class SpelerTest {
 		int geboortejaarTeJongeSpeler = now.getYear() - 5;
 		assertThrows(IllegalArgumentException.class, () -> new Speler(GELDIGE_NAAM, geboortejaarTeJongeSpeler));
 	}
+	
+	@Test
+	void maakSpeler_spelerNetOudGenoeg_maaktDeSpelerAan() {
+		LocalDate now = LocalDate.now();
+		int geboortejaarZesJarige = now.getYear() - 6;
+		assertThrows(IllegalArgumentException.class, () -> new Speler(GELDIGE_NAAM, geboortejaarZesJarige));
+	}
 
 }
