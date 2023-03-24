@@ -17,8 +17,8 @@ class SpelerTest {
 
 	static final String GELDIGE_NAAM = "speler1";
 	static final String GELDIGE_NAAM_2 = "Speler_Naam 2";
-	static final int GELDIGE_LEEFTIJD = 2000;
-	static final int ONGELDIGE_LEEFTIJD = 2022;
+	static final int GELDIGE_LEEFTIJD = LocalDate.now().getYear() - 10;
+	static final int ONGELDIGE_LEEFTIJD = LocalDate.now().getYear() - 1;
 
 	@Test
 	void maakSpeler_geldigeParam_MaaktSpeler() {
@@ -32,7 +32,9 @@ class SpelerTest {
 	@ParameterizedTest
 	@ValueSource(strings = { "speler3", "S123456", "S 1234_", "s___ 123" })
 	void maakSpeler_geldigeGebruikersnamen_maaktDeSpelersAan(String geldigeNaam) {
-		assertThrows(IllegalArgumentException.class, () -> new Speler(geldigeNaam, GELDIGE_LEEFTIJD));
+		Speler s = new Speler(geldigeNaam, GELDIGE_LEEFTIJD);
+		
+		assertEquals(geldigeNaam, s.getGebruikersnaam());
 	}
 
 	@ParameterizedTest

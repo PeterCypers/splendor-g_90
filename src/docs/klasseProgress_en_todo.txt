@@ -1,6 +1,8 @@
 TODon'ts:
 domein.SpelerRepository/main.StartUp/persistentie.Connectie klassen voorlopig afgewerkt
 
+DC/repos/mappers moeten niet getestworden -> geen testklassen
+
 TODO's:
 persistentie.spelerMapper moet nu spelers omzetten met int ipv dates, maar op hetzelfde moment moet de DB.Spelers."geboortedatum" = "geboortejaar"
 en die moeten ints worden met minstens 1 speler die jongstespeler is
@@ -17,3 +19,7 @@ lijst te klein -> assert throws il.arg.ex, lijst ok
 optie 01 -> maak object juist aantal edele/ontwikkelingsk./edelstenen? of
 optie 02 -> wacht op antw. opvolging vraag: spelopbouw: een spel bestaat uit het max mogelijke edele/O.kaarten/stenen of
             een spel bestaat uit het aantal obj dat gebruikt zal worden om het spel te spelen(optie 01)???
+            
+ontwikkelingskaart zal nu een Kleur enum object opslaan IPV een string voor kleurbonus
+
+ontw.kaart + edelen + edelsteenfiches -> testklassen schrijven

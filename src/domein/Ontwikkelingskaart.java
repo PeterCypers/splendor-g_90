@@ -3,22 +3,22 @@ package domein;
 public class Ontwikkelingskaart {
 
 	private int prestigepunten;
-	private String kleurBonus;
+	private Kleur kleurBonus; //verandert naar Kleur enum type
 	private String fotoOntwikkelingskaart;
 	private int[] kosten = new int[5];
 
-	public Ontwikkelingskaart(int prestigepunten, String kleurBonus, String fotoOntwikkelingskaart, int[] kosten) {
+	public Ontwikkelingskaart(int prestigepunten, Kleur kleurBonus, String fotoOntwikkelingskaart, int[] kosten) {
 		setPrestigepunten(prestigepunten);
 		setKleurBonus(kleurBonus);
 		setFotoOntwikkelingskaart(fotoOntwikkelingskaart);
 		setKosten(kosten);
 	}
 
-	public String getKleurBonus() {
+	public Kleur getKleurBonus() {
 		return this.kleurBonus;
 	}
 
-	private void setKleurBonus(String kleurBonus) {
+	private void setKleurBonus(Kleur kleurBonus) {
 		this.kleurBonus = kleurBonus;
 	}
 
