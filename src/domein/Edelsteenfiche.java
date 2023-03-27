@@ -12,9 +12,9 @@ public class Edelsteenfiche {
 	 */
 	
 	private String soort;
-	private String kleur;
+	private Kleur kleur;
 
-	public Edelsteenfiche(String soort, String kleur) {
+	public Edelsteenfiche(String soort, Kleur kleur) {
 		setSoort(soort);
 		setKleur(kleur);
 	}
@@ -32,7 +32,7 @@ public class Edelsteenfiche {
 		return this.kleur;
 	}
 
-	private void setKleur(String kleur) {
+	private void setKleur(Kleur kleur) {
 		this.kleur = kleur;
 	}
 
