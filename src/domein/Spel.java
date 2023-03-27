@@ -15,7 +15,7 @@ public class Spel {
 		this.aangemeldeSpelers = aangemeldeSpelers;
 		this.bepaalJongsteSpeler(aangemeldeSpelers);
 	}
-	
+
 	private void bepaalJongsteSpeler(List<Speler> aangemeldeSpelers) {
 		int jongste = Integer.MIN_VALUE;
 		Speler jongsteSpeler = null;
@@ -41,6 +41,10 @@ public class Spel {
 
 	public void volgendeSpeler() {
 		// TODO
+	}
+
+	public Integer getAantalSpelers() {
+		return aangemeldeSpelers.size();
 	}
 
 }
