@@ -80,7 +80,8 @@ public class KaartMapper {
 	public List<Ontwikkelingskaart> geefN2Kaarten() {
 		Kleur kleur;
 		List<Ontwikkelingskaart> niveau2 = new ArrayList<>();
-
+		
+		// niveau2
 		/* WIT,ROOD,BLAUW,GROEN,ZWART; */
 		int[] prestigeLijst = {1, 1, 2, 2, 2, 3};
 		String[] fotoLijst = {"1", "1", "2", "1", "2", "2"};
@@ -142,7 +143,7 @@ public class KaartMapper {
 	public List<Ontwikkelingskaart> geefN3Kaarten() {
 		Kleur kleur;
 		List<Ontwikkelingskaart> niveau3 = new ArrayList<>();
-	
+		// niveau3
 		/*WIT,ROOD,BLAUW,GROEN,ZWART;*/
 		int[] prestigeLijst = {3, 4, 4, 5};
 		String[] fotoLijstPatroonA = {"1", "1", "2", "2"};
