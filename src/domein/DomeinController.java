@@ -7,18 +7,24 @@ public class DomeinController {
 	
 	private Spel spel;
 	private final List<Speler> aangemeldeSpelers;
-	// private Speler spelerAanBeurt; // spel moet speler aan beurt bijhouden en er
+	
 	// moet een getter voor zijn
-	private SpelerRepository spelerRepo;
-
+	private final SpelerRepository spelerRepo;
+	private final KaartRepository kaartRepo; //nieuw
+	//TODO
+	//private final EdelsteenficheRepository edelsteenRepo;
+	//private final EdeleRepository edeleRepo;
+	
 	public DomeinController() {
 		this.aangemeldeSpelers = new ArrayList<>();
 		this.spelerRepo = new SpelerRepository();
+		this.kaartRepo = new KaartRepository();
 	}
 
 	// aangepast jongstespeler nu op leeftijd niet geboortejaar bepaald
 	public void startNieuwSpel() {
-		this.spel = new Spel(aangemeldeSpelers);
+		List<List<Ontwikkelingskaart>> alleNiveausOntwikkelingsKaartLijst = haalOntwikkelingskaartenUitRepo();
+		this.spel = new Spel(aangemeldeSpelers, alleNiveausOntwikkelingsKaartLijst);
 	}
 
 	/**
@@ -71,6 +77,17 @@ public class DomeinController {
 	public String geefSpelerAanBeurt() {
 		return String.format("%s", spel.getSpelerAanBeurt().toString());
 	}
+	
+	private List<List<Ontwikkelingskaart>> haalOntwikkelingskaartenUitRepo() {
+		List<List<Ontwikkelingskaart>> alleKaartenPerNiveau = new ArrayList<>();
+		alleKaartenPerNiveau.add(kaartRepo.geefN1Kaarten());
+		alleKaartenPerNiveau.add(kaartRepo.geefN2Kaarten());
+		alleKaartenPerNiveau.add(kaartRepo.geefN3Kaarten());
+		
+		//test:
+		testPrintLijstMetO_Kaarten(alleKaartenPerNiveau);
+		return alleKaartenPerNiveau;
+	}
 
 	// repository [testmethode] , toont alle opgeslagen spelers in de spelerRepo ==
 	// alle spelers uit de database opgehaald
@@ -94,8 +111,17 @@ public class DomeinController {
 				returnStr += speler.toString() + "\n"; // als dit niet werkt -> string.format
 			}
 		}
-
 		return returnStr.isBlank() ? "Er zijn nog geen deelnemers" : returnStr;
+	}
+	
+	// [testmethode] om te zien of de n1/n2/n3 lijst-lijst goed opgevuld is
+	private void testPrintLijstMetO_Kaarten (List<List<Ontwikkelingskaart>> listlist) {
+		System.out.println();
+		System.out.println("*****DC test alle kaartstapels goed opgevuld met ontwikkelings kaarten*****");
+		for (List<Ontwikkelingskaart> list : listlist) {
+			System.out.println(list);
+		}
+		System.out.println("***************************************************************************");
 	}
 
 }

@@ -1,5 +1,6 @@
 package domein;
 
+import java.util.Collections;
 import java.util.List;
 
 import persistentie.KaartMapper;
@@ -16,13 +17,14 @@ public class KaartRepository {
 		haalN1KaartenOp();
 		haalN2KaartenOp();
 		haalN3KaartenOp();
+		shuffleKaarten();
 	}
 	//N1
-	public List<Ontwikkelingskaart> geefN1Kaarten(){
-		return this.niveau1;
-	}
 	private void haalN1KaartenOp() {
 		this.niveau1 = mapper.geefN1Kaarten();
+	}
+	public List<Ontwikkelingskaart> geefN1Kaarten(){
+		return this.niveau1;
 	}
 	//N2
 	private void haalN2KaartenOp() {
@@ -37,5 +39,11 @@ public class KaartRepository {
 	}
 	public List<Ontwikkelingskaart> geefN3Kaarten(){
 		return this.niveau3;
+	}
+	//de edele kaarten zullen hier straks ook mee geshuffled worden
+	private void shuffleKaarten() {
+		Collections.shuffle(niveau1);
+		Collections.shuffle(niveau2);
+		Collections.shuffle(niveau3);
 	}
 }
