@@ -7,9 +7,9 @@ public class Spel {
 	public static final int MAX_AANTAL_SPELERS = 4;
 	private final List<Speler> aangemeldeSpelers;
 	private Speler spelerAanBeurt;
-	private List<Ontwikkelingskaart> n1;
-	private List<Ontwikkelingskaart> n2;
-	private List<Ontwikkelingskaart> n3;
+	private final List<Ontwikkelingskaart> n1;
+	private final List<Ontwikkelingskaart> n2;
+	private final List<Ontwikkelingskaart> n3;
 
 	public Spel(List<Speler> aangemeldeSpelers, List<List<Ontwikkelingskaart>> ontwikkelingsKaarten) {
 		controleerAantalSpelers(aangemeldeSpelers);
@@ -17,7 +17,7 @@ public class Spel {
 		this.bepaalJongsteSpeler(aangemeldeSpelers);
 		
 		controleerOntwikkelingsKaartLijsten(ontwikkelingsKaarten);
-		//setters?
+		
 		this.n1 = ontwikkelingsKaarten.get(0);
 		this.n2 = ontwikkelingsKaarten.get(1);
 		this.n3 = ontwikkelingsKaarten.get(2);
