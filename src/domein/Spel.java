@@ -1,4 +1,4 @@
-package domein; //setters verwijdert voor aantalEdelen/aantalSteentjes -> berekend adhv aantalSpelers -> instellein binnen constructor
+package domein;
 
 import java.util.List;
 

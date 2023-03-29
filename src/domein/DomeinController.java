@@ -21,7 +21,7 @@ public class DomeinController {
 		this.kaartRepo = new KaartRepository();
 	}
 
-	// aangepast jongstespeler nu op leeftijd niet geboortejaar bepaald
+
 	public void startNieuwSpel() {
 		List<List<Ontwikkelingskaart>> alleNiveausOntwikkelingsKaartLijst = haalOntwikkelingskaartenUitRepo();
 		this.spel = new Spel(aangemeldeSpelers, alleNiveausOntwikkelingsKaartLijst);
@@ -34,10 +34,9 @@ public class DomeinController {
 	 * @param geboorteJaar
 	 */
 	public void voegSpelerToe(String gebruikersNaam, int geboorteJaar) {
-		// TODO zie TODO2
-		// controle max aantal spelers bereikt?:
+		// controle max aantal spelers bereikt:
 		controleerAantalSpelers();
-		// controle speler is al toegevoegd?:
+		// controle of speler al is toegevoegd:
 		if (aangemeldeSpelers.size() > 0) {
 			for (Speler speler : aangemeldeSpelers) {
 				if (speler.getGebruikersnaam().equals(gebruikersNaam))
@@ -45,12 +44,12 @@ public class DomeinController {
 							String.format("Speler met de naam %s is al aan het spel toegevoegd.", gebruikersNaam));
 			}
 		}
-		// controle speler die gebruiker wil toevoegen zit in de database/repository?:
+		// controle gebruiker wil dezelfde speler opnieuw toevoegen uit database/repository:
 		List<Speler> spelersInRepository = spelerRepo.getSpelers();
 		boolean spelerBestaat = false;
 		Speler geselecteerdeSpeler = null;
 		for (Speler speler : spelersInRepository) {
-			// TODO controleer Speler klasse
+
 			if (speler.getGebruikersnaam().equals(gebruikersNaam) && speler.getGeboortejaar() == geboorteJaar) {
 				spelerBestaat = true;
 				geselecteerdeSpeler = speler;
@@ -61,19 +60,15 @@ public class DomeinController {
 		aangemeldeSpelers.add(geselecteerdeSpeler);
 	}
 
-	// overbodige methode?
 	private void controleerAantalSpelers() {
 		if (aangemeldeSpelers.size() == Spel.MAX_AANTAL_SPELERS)
 			throw new IllegalArgumentException("Maximum aantal spelers bereikt. Kies om een spel te starten.");
 	}
 
-	// nieuwe methode toegevoegd voor controle input/spelertoevoegen in applicatie
-	// laag
 	public int geefAantalSpelers() {
 		return aangemeldeSpelers.size();
 	}
 
-	// verandert, gebruikt nu de getter in Spel om de speler-aan-beurt op te halen
 	public String geefSpelerAanBeurt() {
 		return String.format("%s", spel.getSpelerAanBeurt().toString());
 	}
@@ -91,7 +86,6 @@ public class DomeinController {
 
 	// repository [testmethode] , toont alle opgeslagen spelers in de spelerRepo ==
 	// alle spelers uit de database opgehaald
-	// TODO controleer Speler klasse
 	public String toonAlleSpelers() {
 		List<Speler> spelers = spelerRepo.getSpelers();
 		String alleSpelers = String.format("***DB-Spelers***%n");

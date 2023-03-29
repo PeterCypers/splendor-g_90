@@ -27,13 +27,13 @@ public class Speler {
 			if (geldigeTekens.indexOf(gebruikersnaam.charAt(i)) == -1)
 				bevatOngeldigeTeken = true;
 		}
-		// naam mag geen ongeldige tekens bevatten
+		// naam mag geen ongeldige tekens bevatten:
 		if (bevatOngeldigeTeken) {
 			throw new IllegalArgumentException(
 					"Gebruikersnaam mag enkel letters en cijfers en spaties en underscores('_') bevatten.");
 		}
 
-		// naam moet starten met een letter
+		// naam moet starten met een letter:
 		if (alphabet.indexOf(gebruikersnaam.charAt(0)) == -1) {
 			throw new IllegalArgumentException("GebruikersNaam moet starten met een letter.");
 		}

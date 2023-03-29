@@ -3,7 +3,7 @@ package domein;
 public class Ontwikkelingskaart {
 
 	private int prestigepunten;
-	private Kleur kleurBonus; //verandert naar Kleur enum type
+	private Kleur kleurBonus;
 	private String fotoOntwikkelingskaart;
 	private int[] kosten = new int[5];
 
