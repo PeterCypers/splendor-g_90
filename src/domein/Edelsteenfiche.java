@@ -28,7 +28,7 @@ public class Edelsteenfiche {
 		this.soort = soort;
 	}
 
-	public String getKleur() {
+	public Kleur getKleur() {
 		return this.kleur;
 	}
 
