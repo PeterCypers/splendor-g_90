@@ -11,19 +11,24 @@ public class DomeinController {
 	// moet een getter voor zijn
 	private final SpelerRepository spelerRepo;
 	private final KaartRepository kaartRepo; //nieuw
-	//TODO
-	//private final EdelsteenficheRepository edelsteenRepo;
-	//private final EdeleRepository edeleRepo;
+	private EdelsteenficheRepository edelsteenRepo;
+	private final EdeleRepository edeleRepo;
 	
 	public DomeinController() {
 		this.aangemeldeSpelers = new ArrayList<>();
 		this.spelerRepo = new SpelerRepository();
 		this.kaartRepo = new KaartRepository();
+		this.edeleRepo = new EdeleRepository();
 	}
 
 
 	public void startNieuwSpel() {
+		//mag dit: object initiatie in methode start, om de mapper-lijst consctructie te vergemakkelijken?
+		this.edelsteenRepo = new EdelsteenficheRepository(aangemeldeSpelers.size());
 		List<List<Ontwikkelingskaart>> alleNiveausOntwikkelingsKaartLijst = haalOntwikkelingskaartenUitRepo();
+		//TODO constructor spel moet edelen en edelstenen ontvangen en bijhouden
+		List<Edele> edelen = this.haalEdelenUitRepo(geefAantalSpelers());
+		List<Edelsteenfiche> fiches = this.haalEdelsteenfichesUitRepo();
 		this.spel = new Spel(aangemeldeSpelers, alleNiveausOntwikkelingsKaartLijst);
 	}
 
@@ -83,6 +88,22 @@ public class DomeinController {
 		testPrintLijstMetO_Kaarten(alleKaartenPerNiveau);
 		return alleKaartenPerNiveau;
 	}
+	
+	//nieuwe methode 6-4-2023
+	private List<Edele> haalEdelenUitRepo(int aantalSpelers) {
+		//test:
+		testPrintLijstMetEdelen(edeleRepo.geefEdelen(aantalSpelers));
+		//einde test
+		return edeleRepo.geefEdelen(aantalSpelers);
+	}
+	
+	//nieuwe methode 6-4-2023
+	private List<Edelsteenfiche> haalEdelsteenfichesUitRepo() {
+		//test:
+		testPrintLijstMetEdelsteenFiches(edelsteenRepo.geefEdelsteenfiches());
+		//einde test
+		return edelsteenRepo.geefEdelsteenfiches();
+	}
 
 	// repository [testmethode] , toont alle opgeslagen spelers in de spelerRepo ==
 	// alle spelers uit de database opgehaald
@@ -117,5 +138,49 @@ public class DomeinController {
 		}
 		System.out.println("***************************************************************************");
 	}
+	//nieuwe methode 6-4-2023
+	// [testmethode] om te zien of de edelen-lijst goed opgevuld is
+	private void testPrintLijstMetEdelen(List<Edele> edelen) {
+		System.out.println();
+		System.out.println("*****DC test LijstMetEdelen goed opgevuld met EdelenKaarten****************");
+		System.out.printf("Aantal Spelers: %d%nGrootte vd lijst: %d%n", this.geefAantalSpelers(), edelen.size());
+		System.out.println(edelen);
+		for (Edele e : edelen) {
+			System.out.printf("prestige: %d%nfoto: %s%nkosten: %s%n", e.getPrestigePunten(), e.getEdeleFoto(), Arrays.toString(e.getKosten()));
+		}
+		System.out.println("***************************************************************************");
+	}
+	
+	//nieuwe methode 6-4-2023
+	// [testmethode] om te zien of de edelsteenfiches-lijst goed opgevuld is
+	private void testPrintLijstMetEdelsteenFiches(List<Edelsteenfiche> fiches) {
+		/*WIT,ROOD,BLAUW,GROEN,ZWART;*/
+		int wit=0, rood=0, blauw=0, groen=0, zwart=0;
+		//waarom werkt deze lus niet?
+//		fiches.forEach(fiche -> {
+//			switch (fiche.getKleur().name()) {
+//			case "WIT" -> wit++;
+//			}
+//		});
+		for (Edelsteenfiche f : fiches) {
+			switch (f.getKleur().name()) {
+			case "WIT" -> wit++;
+			case "ROOD" -> rood++;
+			case "BLAUW" -> blauw++;
+			case "GROEN" -> groen++;
+			case "ZWART" -> zwart++;
+			}
+		}
+		System.out.println();
+		System.out.println("*****DC test LijstMetFiches goed opgevuld met Fiches***********************");
+		System.out.printf("Aantal Spelers: %d%nGrootte vd lijst: %d%n", this.geefAantalSpelers(), fiches.size());
+		System.out.println(fiches);
+		System.out.println("Aantal fiches per kleur:");
+		System.out.printf("Witte fiches: %d%nRode fiches: %d%nBlauwe fiches: %d%nGroene fiches: %d%nZwarte fiches: %d%n",
+				wit,rood,blauw,groen,zwart);
+		System.out.println("***************************************************************************");
+	}
+	
+
 
 }
