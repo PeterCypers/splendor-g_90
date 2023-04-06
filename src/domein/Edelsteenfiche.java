@@ -13,10 +13,12 @@ public class Edelsteenfiche {
 	
 	private String soort;
 	private Kleur kleur;
+	private String foto;
 
-	public Edelsteenfiche(String soort, Kleur kleur) {
+	public Edelsteenfiche(String soort, Kleur kleur, String foto) {
 		setSoort(soort);
 		setKleur(kleur);
+		setFoto(foto);
 	}
 	
 	/* ---- Setters & Getters ---- */
@@ -34,6 +36,14 @@ public class Edelsteenfiche {
 
 	private void setKleur(Kleur kleur) {
 		this.kleur = kleur;
+	}
+	
+	public String getFoto() {
+		return this.foto;
+	}
+	
+	private void setFoto(String foto) {
+		this.foto = foto;
 	}
 
 	

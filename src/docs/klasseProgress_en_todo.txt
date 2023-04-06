@@ -26,3 +26,6 @@ ontw.kaart + edelen + edelsteenfiches -> testklassen schrijven
 
 goed nadenken over hoe edelsteenfiches in elkaar zullen zitten
 edelerepo + edelsteenrepo maken, in DC bijhouden en in spel constructor lijsten meegeven, en ook als objecten in spel bijhouden
+
+paasvakantie:
+edelsteen repo+mapper / edele repo+mapper maken, doorsturen in spel constructor
