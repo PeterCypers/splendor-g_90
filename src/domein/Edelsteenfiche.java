@@ -1,6 +1,6 @@
 package domein;
 
-public class Edelsteenfiche {
+public class Edelsteenfiche implements SpelVoorwerp{
 
 	/**
 	 * afhankelijk van de kleur:

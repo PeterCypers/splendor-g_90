@@ -1,6 +1,6 @@
 package domein;
 
-public class Edele {
+public class Edele implements SpelVoorwerp{
 	private int prestigePunten;
 	private String edeleFoto;
 	private int[] kosten;

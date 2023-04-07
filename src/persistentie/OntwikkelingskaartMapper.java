@@ -62,15 +62,15 @@ public class OntwikkelingskaartMapper {
 	for (int i = 0; i < witteKaartKosten.length; i++) {
 		int prestigepunten = i==0? 1 : 0;
 		kleur = Kleur.WIT;
-		niveau1.add(new Ontwikkelingskaart(prestigepunten, kleur, null, witteKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, witteKaartKosten[i]));
 		kleur = Kleur.ROOD;
-		niveau1.add(new Ontwikkelingskaart(prestigepunten, kleur, null, rodeKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, rodeKaartKosten[i]));
 		kleur = Kleur.BLAUW;
-		niveau1.add(new Ontwikkelingskaart(prestigepunten, kleur, null, blauweKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, blauweKaartKosten[i]));
 		kleur = Kleur.GROEN;
-		niveau1.add(new Ontwikkelingskaart(prestigepunten, kleur, null, groeneKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, groeneKaartKosten[i]));
 		kleur = Kleur.ZWART;
-		niveau1.add(new Ontwikkelingskaart(prestigepunten, kleur, null, zwarteKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, zwarteKaartKosten[i]));
 	}
 	
 	
@@ -124,17 +124,17 @@ public class OntwikkelingskaartMapper {
 			String foto = fotoLijst[i];
 			String exceptionFoto = fotoBuitenPatroon[i];
 			kleur = Kleur.WIT;
-			niveau2.add(new Ontwikkelingskaart(prestigePunten, kleur, foto, witteKaartKosten[i]));
+			niveau2.add(new Ontwikkelingskaart(2, prestigePunten, kleur, foto, witteKaartKosten[i]));
 			kleur = Kleur.ROOD;
-			niveau2.add(new Ontwikkelingskaart(prestigePunten, kleur, foto, rodeKaartKosten[i]));
+			niveau2.add(new Ontwikkelingskaart(2, prestigePunten, kleur, foto, rodeKaartKosten[i]));
 			//extra conditie voor blauw: foto buiten patroon
 			kleur = Kleur.BLAUW;
 			boolean exception = (i==3 || i==4);
-			niveau2.add(new Ontwikkelingskaart(prestigePunten, kleur, exception? exceptionFoto : foto, blauweKaartKosten[i]));
+			niveau2.add(new Ontwikkelingskaart(2, prestigePunten, kleur, exception? exceptionFoto : foto, blauweKaartKosten[i]));
 			kleur = Kleur.GROEN;
-			niveau2.add(new Ontwikkelingskaart(prestigePunten, kleur, foto, groeneKaartKosten[i]));
+			niveau2.add(new Ontwikkelingskaart(2, prestigePunten, kleur, foto, groeneKaartKosten[i]));
 			kleur = Kleur.ZWART;
-			niveau2.add(new Ontwikkelingskaart(prestigePunten, kleur, foto, zwarteKaartKosten[i]));
+			niveau2.add(new Ontwikkelingskaart(2, prestigePunten, kleur, foto, zwarteKaartKosten[i]));
 			
 		}
 		return niveau2;
@@ -180,9 +180,9 @@ public class OntwikkelingskaartMapper {
 			String foto = fotoLijstPatroonA[i];
 			int prestigePunten = prestigeLijst[i];
 			kleur = Kleur.ROOD;
-			niveau3.add(new Ontwikkelingskaart(prestigePunten, kleur, foto, rodeKaartKosten[i]));
+			niveau3.add(new Ontwikkelingskaart(3, prestigePunten, kleur, foto, rodeKaartKosten[i]));
 			kleur = Kleur.BLAUW;
-			niveau3.add(new Ontwikkelingskaart(prestigePunten, kleur, foto, blauweKaartKosten[i]));
+			niveau3.add(new Ontwikkelingskaart(3, prestigePunten, kleur, foto, blauweKaartKosten[i]));
 			
 		}
 		//patroon B (WIT, GROEN, ZWART):
@@ -190,11 +190,11 @@ public class OntwikkelingskaartMapper {
 			String foto = fotoLijstPatroonB[i];
 			int prestigePunten = prestigeLijst[i];
 			kleur = Kleur.WIT;
-			niveau3.add(new Ontwikkelingskaart(prestigePunten, kleur, foto, witteKaartKosten[i]));
+			niveau3.add(new Ontwikkelingskaart(3, prestigePunten, kleur, foto, witteKaartKosten[i]));
 			kleur = Kleur.GROEN;
-			niveau3.add(new Ontwikkelingskaart(prestigePunten, kleur, foto, groeneKaartKosten[i]));
+			niveau3.add(new Ontwikkelingskaart(3, prestigePunten, kleur, foto, groeneKaartKosten[i]));
 			kleur = Kleur.ZWART;
-			niveau3.add(new Ontwikkelingskaart(prestigePunten, kleur, foto, zwarteKaartKosten[i]));
+			niveau3.add(new Ontwikkelingskaart(3, prestigePunten, kleur, foto, zwarteKaartKosten[i]));
 		}
 		return niveau3;
 	}

@@ -46,7 +46,7 @@ public class EdelsteenficheMapper {
 			for (int i = 0; i < aantalFiches; i++) {
 				fiches.add(new Edelsteenfiche(soort[k.ordinal()], k, soort[k.ordinal()]));
 			}//aantal, Kleur, fichelijst
-			ficheStapels[k.ordinal()] = new FicheStapel(aantalFiches, k, soort[k.ordinal()], fiches);
+			ficheStapels[k.ordinal()] = new FicheStapel(soort[k.ordinal()], aantalFiches, k, soort[k.ordinal()], fiches);
 		}
 		return ficheStapels;
 	}

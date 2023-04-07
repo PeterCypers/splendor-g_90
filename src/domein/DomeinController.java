@@ -3,6 +3,8 @@ package domein;
 import java.time.LocalDate;
 import java.util.*;
 
+import dto.SpelVoorwerpDTO;
+
 public class DomeinController {
 	
 	private Spel spel;
@@ -20,16 +22,18 @@ public class DomeinController {
 		this.kaartRepo = new OntwikkelingskaartRepository();
 		this.edeleRepo = new EdeleRepository();
 	}
-
+	/**
+	 * initializatie edelsteenRepo nadat aantalspelers gekend is om aanmaken Fiches te vergemakkelijken
+	 * repo+mapper krijgen in de constructor aantal spelers mee
+	 */
 
 	public void startNieuwSpel() {
-		//mag dit: object initiatie in methode start, om de mapper-lijst consctructie te vergemakkelijken?
 		this.edelsteenRepo = new EdelsteenficheRepository(aangemeldeSpelers.size());
 		List<List<Ontwikkelingskaart>> alleNiveausOntwikkelingsKaartLijst = haalOntwikkelingskaartenUitRepo();
-		//TODO constructor spel moet edelen en edelstenen ontvangen en bijhouden
+		//TODO constructor spel moet edelen en FicheStapels en Spelers en ontw-kaarten ontvangen en bijhouden
 		List<Edele> edelen = this.haalEdelenUitRepo(geefAantalSpelers());
 		FicheStapel[] ficheStapels = this.haalEdelsteenficheStapelsUitRepo();
-		this.spel = new Spel(aangemeldeSpelers, alleNiveausOntwikkelingsKaartLijst);
+		this.spel = new Spel(aangemeldeSpelers, alleNiveausOntwikkelingsKaartLijst, edelen, ficheStapels);
 	}
 
 	/**
@@ -104,6 +108,29 @@ public class DomeinController {
 		testPrintStapelsEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
 		//einde test
 		return edelsteenRepo.geefEdelsteenficheStapels();
+	}
+	
+	//nieuwe methode 7-4-2023 maakt gebruik van Spel.geefSpelVoorwerpen()
+	public List<SpelVoorwerpDTO> toonSpelSituatie() {
+		//TODO doorgegeven dtos in de CUI als spelbord weergeven
+		List<SpelVoorwerp> spelvoorwerpen = spel.geefSpelVoorwerpen();
+		List<SpelVoorwerpDTO> lijstDTOs = new ArrayList<>();
+		SpelVoorwerpDTO dto = null;
+		
+		for (SpelVoorwerp vw : spelvoorwerpen) {
+			if(vw instanceof FicheStapel fs) {
+				dto = new SpelVoorwerpDTO(fs.getAantalFiches(), fs.getKleur(), fs.getFicheStapelFoto(), fs.getSoort());
+			}else if(vw instanceof Edelsteenfiche esf) {
+				dto = new SpelVoorwerpDTO(esf.getSoort(), esf.getKleur(), esf.getFicheFoto());
+			}else if(vw instanceof Ontwikkelingskaart ok) {
+				dto = new SpelVoorwerpDTO(ok.getNiveau(), ok.getPrestigepunten(), ok.getKleurBonus(),
+						ok.getFotoOntwikkelingskaart(), ok.getKosten());
+			}else if(vw instanceof Edele e) {
+				dto = new SpelVoorwerpDTO(e.getPrestigePunten(), e.getEdeleFoto(), e.getKosten());
+			}
+			lijstDTOs.add(dto);
+		}
+		return lijstDTOs;
 	}
 
 	// repository [testmethode] , toont alle opgeslagen spelers in de spelerRepo ==

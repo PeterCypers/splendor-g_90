@@ -2,14 +2,16 @@ package domein;
 
 import java.util.List;
 
-public class FicheStapel {
+public class FicheStapel implements SpelVoorwerp{
 	
 	private int aantalFiches = 0;
+	private String soort;
 	private Kleur kleur;
 	private String ficheStapelFoto;
 	private List<Edelsteenfiche> fiches;
 	
-	public FicheStapel(int aantalFiches, Kleur kleur, String foto,  List<Edelsteenfiche> fiches) {
+	public FicheStapel(String soort, int aantalFiches, Kleur kleur, String foto,  List<Edelsteenfiche> fiches) {
+		this.soort = soort;
 		setAantalFiches(aantalFiches);
 		if(fiches == null)
 			throw new IllegalArgumentException(String.format("Fout in %s: null obj meegegeven als lijst fiches", this.getClass().getSimpleName()));
@@ -40,6 +42,9 @@ public class FicheStapel {
 		return null;
 	}
 	
+	public String getSoort() {
+		return soort;
+	}
 	
 	public int getAantalFiches() {
 		return aantalFiches;
