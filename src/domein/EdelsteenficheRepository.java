@@ -7,7 +7,7 @@ import persistentie.EdelsteenficheMapper;
 public class EdelsteenficheRepository {
 	
 	private EdelsteenficheMapper mapper;
-	private List<Edelsteenfiche> edelsteenficheStapel;
+	private FicheStapel[] ficheStapels;
 	
 	//aantalFiches afhankelijk van aantalSpelers
 	public EdelsteenficheRepository(int aantalSpelers) {
@@ -16,12 +16,12 @@ public class EdelsteenficheRepository {
 	}
 
 	private void haalFichesOp() {
-		edelsteenficheStapel = mapper.geefAlleEdelsteenfiches();
+		ficheStapels = mapper.geefAlleEdelsteenficheStapels();
 	}
 	
 	//lijst wordt perfect ingesteld in mapper klasse, voor zover dit op deze manier mag (zie dc.startNieuwSpel())
-	public List<Edelsteenfiche> geefEdelsteenfiches() {
-		return this.edelsteenficheStapel;
+	public FicheStapel[] geefEdelsteenficheStapels() {
+		return this.ficheStapels;
 	}
 
 }

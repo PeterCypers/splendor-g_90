@@ -3,17 +3,17 @@ package domein;
 import java.util.Collections;
 import java.util.List;
 
-import persistentie.KaartMapper;
+import persistentie.OntwikkelingskaartMapper;
 
-public class KaartRepository {
+public class OntwikkelingskaartRepository {
 	
-	private KaartMapper mapper;
+	private OntwikkelingskaartMapper mapper;
 	private List<Ontwikkelingskaart> niveau1;
 	private List<Ontwikkelingskaart> niveau2;
 	private List<Ontwikkelingskaart> niveau3;
 	
-	public KaartRepository() {
-		this.mapper = new KaartMapper();
+	public OntwikkelingskaartRepository() {
+		this.mapper = new OntwikkelingskaartMapper();
 		haalN1KaartenOp();
 		haalN2KaartenOp();
 		haalN3KaartenOp();

@@ -6,7 +6,7 @@ import java.util.List;
 import domein.Kleur;
 import domein.Ontwikkelingskaart;
 
-public class KaartMapper {
+public class OntwikkelingskaartMapper {
 	
 	//fotoOntwikkelingskaart (foto's hebben we nog niet, voorlopig null meegeven in constructor O-Kaart)
 

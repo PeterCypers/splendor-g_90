@@ -10,14 +10,14 @@ public class DomeinController {
 	
 	// moet een getter voor zijn
 	private final SpelerRepository spelerRepo;
-	private final KaartRepository kaartRepo; //nieuw
+	private final OntwikkelingskaartRepository kaartRepo; //nieuw
 	private EdelsteenficheRepository edelsteenRepo;
 	private final EdeleRepository edeleRepo;
 	
 	public DomeinController() {
 		this.aangemeldeSpelers = new ArrayList<>();
 		this.spelerRepo = new SpelerRepository();
-		this.kaartRepo = new KaartRepository();
+		this.kaartRepo = new OntwikkelingskaartRepository();
 		this.edeleRepo = new EdeleRepository();
 	}
 
@@ -28,7 +28,7 @@ public class DomeinController {
 		List<List<Ontwikkelingskaart>> alleNiveausOntwikkelingsKaartLijst = haalOntwikkelingskaartenUitRepo();
 		//TODO constructor spel moet edelen en edelstenen ontvangen en bijhouden
 		List<Edele> edelen = this.haalEdelenUitRepo(geefAantalSpelers());
-		List<Edelsteenfiche> fiches = this.haalEdelsteenfichesUitRepo();
+		FicheStapel[] ficheStapels = this.haalEdelsteenficheStapelsUitRepo();
 		this.spel = new Spel(aangemeldeSpelers, alleNiveausOntwikkelingsKaartLijst);
 	}
 
@@ -98,11 +98,12 @@ public class DomeinController {
 	}
 	
 	//nieuwe methode 6-4-2023
-	private List<Edelsteenfiche> haalEdelsteenfichesUitRepo() {
+	private FicheStapel[] haalEdelsteenficheStapelsUitRepo() {
 		//test:
-		testPrintLijstMetEdelsteenFiches(edelsteenRepo.geefEdelsteenfiches());
+		testPrintLijstMetEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
+		testPrintStapelsEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
 		//einde test
-		return edelsteenRepo.geefEdelsteenfiches();
+		return edelsteenRepo.geefEdelsteenficheStapels();
 	}
 
 	// repository [testmethode] , toont alle opgeslagen spelers in de spelerRepo ==
@@ -151,9 +152,25 @@ public class DomeinController {
 		System.out.println("***************************************************************************");
 	}
 	
+	//nieuwe methode 7-4-2023
+	private void testPrintStapelsEdelsteenFiches(FicheStapel[] alleFicheStapels) {
+		//adres, kleur, aantalfiches op attribuut + op lengte van lijst, naam van foto (%d(i), %s,%s,%d,%d,%s)
+		System.out.println(); 
+		System.out.println("*****DC test op de 5 FicheStapels******************************************");
+		for(int i = 0; i < alleFicheStapels.length; i++) {
+		System.out.printf("-------------%n%s %d: %s%nKleur: %s%n"
+				+ "AantalFiches: %d, lijst-lengte: %d%n"
+				+ "Foto: %s%n", alleFicheStapels[i].getClass().getSimpleName(), i+1,  alleFicheStapels[i],
+				alleFicheStapels[i].getKleur().name(),
+				alleFicheStapels[i].getAantalFiches(), alleFicheStapels[i].getFiches().size(),
+				alleFicheStapels[i].getFicheStapelFoto());
+		}
+		System.out.println("***************************************************************************");
+	}
+	
 	//nieuwe methode 6-4-2023
 	// [testmethode] om te zien of de edelsteenfiches-lijst goed opgevuld is
-	private void testPrintLijstMetEdelsteenFiches(List<Edelsteenfiche> fiches) {
+	private void testPrintLijstMetEdelsteenFiches(FicheStapel[] ficheStapels) {
 		/*WIT,ROOD,BLAUW,GROEN,ZWART;*/
 		int wit=0, rood=0, blauw=0, groen=0, zwart=0;
 		//waarom werkt deze lus niet?
@@ -162,19 +179,25 @@ public class DomeinController {
 //			case "WIT" -> wit++;
 //			}
 //		});
-		for (Edelsteenfiche f : fiches) {
-			switch (f.getKleur().name()) {
-			case "WIT" -> wit++;
-			case "ROOD" -> rood++;
-			case "BLAUW" -> blauw++;
-			case "GROEN" -> groen++;
-			case "ZWART" -> zwart++;
+		for (int i = 0; i < ficheStapels.length; i++) {
+			List<Edelsteenfiche> fiches =  ficheStapels[i].getFiches();
+			for (Edelsteenfiche f : fiches) {
+				switch (f.getKleur().name()) {
+				case "WIT" -> wit++;
+				case "ROOD" -> rood++;
+				case "BLAUW" -> blauw++;
+				case "GROEN" -> groen++;
+				case "ZWART" -> zwart++;
+				}
 			}
 		}
+
 		System.out.println();
 		System.out.println("*****DC test LijstMetFiches goed opgevuld met Fiches***********************");
-		System.out.printf("Aantal Spelers: %d%nGrootte vd lijst: %d%n", this.geefAantalSpelers(), fiches.size());
-		System.out.println(fiches);
+		System.out.printf("Aantal Spelers: %d%nGrootte vd 1ste lijst: %d%n", this.geefAantalSpelers(), ficheStapels[0].getFiches().size());
+		for (int i = 0; i < ficheStapels.length; i++) {
+			System.out.println(ficheStapels[i].getFiches());
+		}
 		System.out.println("Aantal fiches per kleur:");
 		System.out.printf("Witte fiches: %d%nRode fiches: %d%nBlauwe fiches: %d%nGroene fiches: %d%nZwarte fiches: %d%n",
 				wit,rood,blauw,groen,zwart);

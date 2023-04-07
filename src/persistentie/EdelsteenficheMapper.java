@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domein.Edelsteenfiche;
+import domein.FicheStapel;
 import domein.Kleur;
 
 public class EdelsteenficheMapper {
@@ -31,20 +32,23 @@ public class EdelsteenficheMapper {
 	}
 	
 	/**
-	 * @return een lijst van grootte this.aantalFiches van elke kleur
+	 * @return 5 fichestapels van grootte this.aantalFiches van elke kleur
 	 */
-	public List<Edelsteenfiche> geefAlleEdelsteenfiches() {
-
-		List<Edelsteenfiche> fiches = new ArrayList<>();
+	public FicheStapel[] geefAlleEdelsteenficheStapels() {
+		
 		 /* WIT(diamant),ROOD(robijn),BLAUW(saffier),GROEN(smaragd),ZWART(onyx);*/
 		String[] soort = {"diamant", "robijn", "saffier", "smaragd", "onyx"};
+		FicheStapel[] ficheStapels = new FicheStapel[5];
+		List<Edelsteenfiche> fiches = null;
 		
 		for (Kleur k : Kleur.values()) {
+			fiches = new ArrayList<>();
 			for (int i = 0; i < aantalFiches; i++) {
 				fiches.add(new Edelsteenfiche(soort[k.ordinal()], k, soort[k.ordinal()]));
-			}
+			}//aantal, Kleur, fichelijst
+			ficheStapels[k.ordinal()] = new FicheStapel(aantalFiches, k, soort[k.ordinal()], fiches);
 		}
-		return fiches;
+		return ficheStapels;
 	}
 
 }
