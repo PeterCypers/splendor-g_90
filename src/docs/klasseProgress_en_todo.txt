@@ -1,5 +1,5 @@
 TODon'ts:
-domein.SpelerRepository/main.StartUp/persistentie.Connectie klassen voorlopig afgewerkt
+domein.SpelerRepository/main.StartUpCui/persistentie.Connectie klassen voorlopig afgewerkt
 
 DC/repos/mappers moeten niet getest worden -> geen testklassen
 

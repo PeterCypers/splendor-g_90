@@ -1,4 +1,4 @@
-package ui;
+package cui;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

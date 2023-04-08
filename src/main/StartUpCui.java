@@ -1,9 +1,9 @@
 package main;
 
+import cui.SplendorApplicatie;
 import domein.DomeinController;
-import ui.SplendorApplicatie;
 
-public class StartUp {
+public class StartUpCui {
 
 	/**
 	 * 
