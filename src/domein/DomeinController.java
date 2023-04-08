@@ -35,6 +35,10 @@ public class DomeinController {
 		FicheStapel[] ficheStapels = this.haalEdelsteenficheStapelsUitRepo();
 		this.spel = new Spel(aangemeldeSpelers, alleNiveausOntwikkelingsKaartLijst, edelen, ficheStapels);
 	}
+	
+	public boolean isEindeSpel() {
+		return this.spel.isEindeSpel();
+	}
 
 	/**
 	 * gebruik hulpmethode controleerAantalSpelers
@@ -78,8 +82,13 @@ public class DomeinController {
 		return aangemeldeSpelers.size();
 	}
 
+	public String geefSpelerAanBeurtVerkort() {
+		int leeftijdInJaar = LocalDate.now().getYear() - spel.getSpelerAanBeurt().getGeboortejaar();
+		return String.format("%s ---- leeftijd: %d", spel.getSpelerAanBeurt().getGebruikersnaam(), leeftijdInJaar);
+	}
+	
 	public String geefSpelerAanBeurt() {
-		return String.format("%s", spel.getSpelerAanBeurt().toString());
+		return this.spel.getSpelerAanBeurt().toString();
 	}
 	
 	private List<List<Ontwikkelingskaart>> haalOntwikkelingskaartenUitRepo() {
@@ -89,7 +98,7 @@ public class DomeinController {
 		alleKaartenPerNiveau.add(kaartRepo.geefN3Kaarten());
 		
 		//test:
-		testPrintLijstMetO_Kaarten(alleKaartenPerNiveau);
+		//testPrintLijstMetO_Kaarten(alleKaartenPerNiveau);
 		return alleKaartenPerNiveau;
 	}
 	
@@ -131,6 +140,16 @@ public class DomeinController {
 			lijstDTOs.add(dto);
 		}
 		return lijstDTOs;
+	}
+	
+	//nieuwe methode 8-4-2023
+	public String toonSpelerSituatie() {
+		String spelerSituatie = "";
+		List<Speler> spelerInSpel = this.spel.getAangemeldeSpelers();
+		for (Speler s : spelerInSpel) {
+			spelerSituatie += String.format("%s%n", s.toString());
+		}
+		return spelerSituatie;
 	}
 
 	// repository [testmethode] , toont alle opgeslagen spelers in de spelerRepo ==

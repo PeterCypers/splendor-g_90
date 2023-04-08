@@ -46,6 +46,4 @@ public class Edelsteenfiche implements SpelVoorwerp{
 		this.ficheFoto = foto;
 	}
 
-	
-
 }

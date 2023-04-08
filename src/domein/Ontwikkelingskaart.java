@@ -1,5 +1,7 @@
 package domein;
 
+import java.util.Arrays;
+
 public class Ontwikkelingskaart implements SpelVoorwerp{
 
 	private int niveau;
@@ -54,6 +56,18 @@ public class Ontwikkelingskaart implements SpelVoorwerp{
 
 	private void setKosten(int[] kosten) {
 		this.kosten = kosten;
+	}
+	
+	@Override
+	public String toString() {
+		String kostenString = "";
+		for (int i = 0; i < Kleur.values().length; i++) {
+			kostenString += String.format("%s: %d%n", Kleur.values()[i].toString(), kosten[i]);
+		}
+		String ontwikkelingsKaartAlsString = String.format("%s niveau %s, kleur %s en prestige %d%nKost:%n%s", getClass().getSimpleName(), getNiveau(),
+				getKleurBonus().toString(), this.getPrestigepunten(), kostenString);
+		
+		return ontwikkelingsKaartAlsString;
 	}
 
 }

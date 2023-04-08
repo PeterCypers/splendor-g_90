@@ -12,6 +12,8 @@ public class Spel {
 	private final List<Ontwikkelingskaart> n2;
 	private final List<Ontwikkelingskaart> n3;
 	//nieuw 7-4-2023
+	private Speler winnaar;
+	private boolean eindeSpel = false;
 	private final List<Edele> edelen;
 	private FicheStapel[] ficheStapels; //final mogelijk?
 	private Ontwikkelingskaart[] niveau1Zichtbaar = {null, null, null, null};
@@ -22,7 +24,10 @@ public class Spel {
 			List<Edele> edelen, FicheStapel[] ficheStapels) {
 		controleerAantalSpelers(aangemeldeSpelers);
 		this.aangemeldeSpelers = aangemeldeSpelers;
+		//jongste speler wordt 1ste speler aanbeurt, jongste speler is startspeler en is aan de beurt
 		this.bepaalJongsteSpeler(aangemeldeSpelers);
+		this.spelerAanBeurt.setStartSpeler();
+		this.spelerAanBeurt.setAanDeBeurt(true);
 		
 		controleerOntwikkelingsKaartLijsten(ontwikkelingsKaarten);
 		
@@ -39,7 +44,7 @@ public class Spel {
 		vulKaartenBij();
 		
 		//[test]
-		testOntwikkelingsKaartStapels();
+		//testOntwikkelingsKaartStapels();
 	}
 
 	private void bepaalJongsteSpeler(List<Speler> aangemeldeSpelers) {
@@ -110,9 +115,19 @@ public class Spel {
 	public Speler getSpelerAanBeurt() {
 		return spelerAanBeurt;
 	}
+	
+	public boolean isEindeSpel() {
+		return this.eindeSpel;
+	}
 
 	public void volgendeSpeler() {
-		// TODO
+		int indexHuidigeSpeler = aangemeldeSpelers.indexOf(spelerAanBeurt);
+		//index laatste speler in lijst
+		int maxIndex = aangemeldeSpelers.size() - 1;
+		//als speler == laatste in de lijst -> volgende speler = 1ste in de lijst
+		int indexVolgendeSpeler = indexHuidigeSpeler == maxIndex ? 0 : indexHuidigeSpeler + 1;
+		
+		this.spelerAanBeurt = aangemeldeSpelers.get(indexVolgendeSpeler);
 	}
 	
 	public void vulKaartenBij() {
@@ -127,6 +142,10 @@ public class Spel {
 
 	public Integer getAantalSpelers() {
 		return aangemeldeSpelers.size();
+	}
+	
+	public List<Speler> getAangemeldeSpelers() {
+		return aangemeldeSpelers;
 	}
 	
 	//nieuwe methode 7-4-2023

@@ -6,4 +6,9 @@ public enum Kleur {
 	BLAUW,
 	GROEN,
 	ZWART;
+	
+	@Override
+	public String toString() {
+		return this.name().toLowerCase();
+	}
 }
