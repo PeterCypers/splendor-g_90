@@ -52,6 +52,7 @@ public class SplendorApplicatie {
 		while(!dc.isEindeSpel()) {
 			toonSpelSituatie();
 			speelBeurt();
+			dc.volgendeSpeler();
 		}
 		
 		
@@ -91,10 +92,6 @@ public class SplendorApplicatie {
 		return dc.geefAantalSpelers();
 	}
 	
-	//deze methode is waarschijnlijk overbodig want je kan de dc aanspreken om exact dit te doen
-	private String geefSpelerAanBeurt() {
-		return dc.geefSpelerAanBeurt();
-	}
 	
 	private int keuzeMenu() {
 		int keuze = -1;
@@ -121,7 +118,6 @@ public class SplendorApplicatie {
 		//TODO ? (zie this.startSpel())
 	}
 	
-	//TODO verplaats verantwoordelijkheid voor feedback geven naar spel app -> dc -> spel
 	private String spelGestartFeedback () {
 		return String.format("\n*****Een nieuw spel is gestart*****\nDe jongste speler mag beginnen%n");
 	}
@@ -143,23 +139,13 @@ public class SplendorApplicatie {
 			}
 		}
 		System.out.println("\nBeschikbare Ontwikkelings kaarten:"); //foto, niveau, kleur, prestige, \n kosten
-		for (int i = 0; i < 3; i++) {
+		for (int i = 1; i < 4; i++) {
+			int niveau = (i == 1) ? 1 : (i == 2) ? 2 : 3;
 			for (SpelVoorwerpDTO dto : dtos) {
-				if(dto.type() == 'O' && i == 0) {
-					if(dto.niveau() == 3) {
-						System.out.printf("Ontwikkelingskaart Niv.%d, Foto#%s, Kleur: %s, prestige: %d%nKosten: %s%n",
-								dto.niveau(), dto.foto(), dto.kleur().toString(), dto.prestigepunten(), Arrays.toString(dto.kosten()));
-					}
-				} else if(dto.type() == 'O' && i == 1) {
-					if(dto.niveau() == 2) {
-						System.out.printf("Ontwikkelingskaart Niv.%d, Foto#%s, Kleur: %s, prestige: %d%nKosten: %s%n",
-								dto.niveau(), dto.foto(), dto.kleur().toString(), dto.prestigepunten(), Arrays.toString(dto.kosten()));
-					}
-				} else if(dto.type() == 'O' && i == 2) {
-					if(dto.niveau() == 3) {
-						System.out.printf("Ontwikkelingskaart Niv.%d, Foto#%s, Kleur: %s, prestige: %d%nKosten: %s%n",
-								dto.niveau(), dto.foto(), dto.kleur().toString(), dto.prestigepunten(), Arrays.toString(dto.kosten()));
-					}
+				
+				if(dto.type() == 'O' && dto.niveau() == niveau) {
+					System.out.printf("Ontwikkelingskaart Niv.%d, Foto#%s, Kleur: %s, prestige: %d%nKosten: %s%n",
+							dto.niveau(), dto.foto(), dto.kleur().toString(), dto.prestigepunten(), Arrays.toString(dto.kosten()));
 				}
 			}
 		}
@@ -171,13 +157,35 @@ public class SplendorApplicatie {
 		}
 		System.out.println();
 	}
-	
+	//afgewerkt 11-4-2023
 	private void speelBeurt() {
-		//TODO moet verder afgewerkt worden
-		int keuze = 0;
+		int keuze;
 		System.out.printf("Speler aan beurt is: %s%n%n", dc.geefSpelerAanBeurtVerkort());
 		
-		System.out.print("Maak een keuze:\n1. Bekijk je status\n2. Neem Fiches\n3. Koop een Ontwikkelings kaart\nKeuze: ");
+		while(dc.spelerIsAanBeurt()) {
+			keuze = 0;
+			System.out.print("Maak een keuze:\n1. Neem Fiches\n2. Koop een Ontwikkelings kaart\n3. Pass Beurt\nKeuze: ");
+			do {
+				try {
+					keuze = input.nextInt();
+				} catch (InputMismatchException e) {
+					input.nextLine(); // buffer leegmaken
+					System.out.println("Je keuze moet een geheel getal zijn\n");
+				}
+				if(keuze < 1 || keuze > 4) System.out.println("Gelieve een geldige waarde in te voeren:");
+			}while(keuze < 1 || keuze > 4);
+			
+			switch (keuze) {
+			case 1 -> neemFiches();
+			case 2 -> koopOntwikkelingsKaart();
+			case 3 -> dc.pasBeurt();
+			}
+		}
+		keuze = 0;
+		System.out.print("Wil je nog je speler status bekijken?\n"
+				+ "1. Bekijk status en beëindig beurt\n"
+				+ "2. Beëindig beurt\n"
+				+ "keuze: ");
 		do {
 			try {
 				keuze = input.nextInt();
@@ -185,8 +193,149 @@ public class SplendorApplicatie {
 				input.nextLine(); // buffer leegmaken
 				System.out.println("Je keuze moet een geheel getal zijn\n");
 			}
-			if(keuze < 1 || keuze > 3) System.out.println("Gelieve een geldige waarde in te voeren:");
-		}while(keuze < 1 || keuze > 3);
-	}
+			if(keuze <1 || keuze > 2) System.out.println("Gelieve optie 1 of 2 te kiezen");
+		}while(keuze <1 || keuze > 2);
+		
+		if(keuze == 1) System.out.print(dc.toonSpelerAanBeurtSituatie());
 
+	}
+	
+	//TODO methode geeft de kaart op deze moment, moet nog code schrijven om te controlleren of je die kaart wel kan kopen of niet
+	//nieuw 11-4-2023
+	private void koopOntwikkelingsKaart() {
+		int niveau = 0;
+		do {
+			System.out.print("Kies niveau van kaart [1-3]: ");
+			try {
+				niveau = input.nextInt();
+			} catch (InputMismatchException e) {
+				input.nextLine(); // buffer leegmaken
+				System.out.println("Je keuze moet een geheel getal zijn\n");
+			}
+			if(niveau <1 || niveau > 3) System.out.println("Gelieve een niveau van [1-3] te kiezen");
+		}while(niveau <1 || niveau > 3);
+		int positie = 0;
+		do {
+			System.out.print("Kies de positie van je kaart [1-4]: ");
+			try {
+				positie = input.nextInt();
+			} catch (InputMismatchException e) {
+				input.nextLine(); // buffer leegmaken
+				System.out.println("Je keuze moet een geheel getal zijn\n");
+			}
+			if(positie <1 || positie > 4) System.out.println("Gelieve een positie van [1-4] te kiezen");
+		}while(positie <1 || positie > 4);
+		
+		dc.kiesOntwikkelingskaart(niveau, positie);
+	}
+	//nieuw 11-4-2023
+	private void neemFiches() {
+		int keuze = 0;
+		System.out.print("Kies de fiches die je wilt nemen, 3 verschillende, of 2 dezelfde\n"
+				+ "1. Drie verschillende fiches\n"
+				+ "2. Twee dezelfde fiches\n");
+		do {
+			System.out.print("Keuze: ");
+			try {
+				keuze = input.nextInt();
+			} catch (InputMismatchException e) {
+				input.nextLine(); // buffer leegmaken
+				System.out.println("Je keuze moet een geheel getal zijn\n");
+			}
+			if(keuze < 1 || keuze > 2) System.out.println("Gelieve optie 1 of 2 te kiezen");
+		}while(keuze < 1 || keuze > 2);
+		if(keuze == 1) drieVerschillendeFiches();
+		else if(keuze == 2) tweeZelfdeFiches();
+	}
+	
+	/*WIT,ROOD,BLAUW,GROEN,ZWART;*/
+	//nieuw 11-4-2023
+	private void tweeZelfdeFiches() {
+		//fout opvangen te weinig fiches in stapel (methode volledig opnieuw opstarten)
+		boolean errorExists = true;
+		do {
+			try {
+				int keuze = 0;
+				System.out.printf("Kies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
+						+ "Wit: 1%n"
+						+ "Rood: 2%n"
+						+ "Blauw: 3%n"
+						+ "Groen: 4%n"
+						+ "Zwart: 5%n");
+				do {
+					System.out.print("Keuze: ");
+					try {
+						keuze = input.nextInt();
+					} catch (InputMismatchException e) {
+						input.nextLine(); // buffer leegmaken
+						System.out.println("Je keuze moet een geheel getal zijn\n");
+					}
+					if(keuze < 1 || keuze > 5) System.out.println("Kies een stapel van [1-5]");
+				}while(keuze < 1 || keuze > 5);
+				
+				int index = keuze -1;
+				dc.neemTweeFiches(index);
+				errorExists = false;
+			}catch(IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+			}
+		}while(errorExists);
+	}
+	//nieuw 11-4-2023
+	private void drieVerschillendeFiches() {
+		boolean errorExists = true;
+		//fout opvangen te weinig fiches in stapel (methode volledig opnieuw opstarten)
+		do {
+			try {
+				int keuze1=0, keuze2=0, keuze3=0;
+				System.out.printf("Kies drie stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
+						+ "Wit: 1%n"
+						+ "Rood: 2%n"
+						+ "Blauw: 3%n"
+						+ "Groen: 4%n"
+						+ "Zwart: 5%n");
+				//eerste fiche keuze:
+				do {
+					System.out.print("Eerste Fiche: ");
+					try {
+						keuze1 = input.nextInt();
+					} catch (InputMismatchException e) {
+						input.nextLine(); // buffer leegmaken
+						System.out.println("Je keuze moet een geheel getal zijn\n");
+					}
+					if(keuze1 < 1 || keuze1 > 5) System.out.println("Kies een stapel van [1-5]");
+				}while(keuze1 < 1 || keuze1 > 5);
+				//tweede fiche keuze:
+				do {
+					System.out.print("Tweede Fiche: ");
+					try {
+						keuze2 = input.nextInt();
+					} catch (InputMismatchException e) {
+						input.nextLine(); // buffer leegmaken
+						System.out.println("Je keuze moet een geheel getal zijn\n");
+					}
+					if(keuze2 < 1 || keuze2 > 5) System.out.println("Kies een stapel van [1-5]");
+				}while(keuze2 < 1 || keuze2 > 5);
+				//derde fiche keuze:
+				do {
+					System.out.print("Derde Fiche: ");
+					try {
+						keuze3 = input.nextInt();
+					} catch (InputMismatchException e) {
+						input.nextLine(); // buffer leegmaken
+						System.out.println("Je keuze moet een geheel getal zijn\n");
+					}
+					if(keuze3 < 1 || keuze3 > 5) System.out.println("Kies een stapel van [1-5]");
+				}while(keuze3 < 1 || keuze3 > 5);
+		int[] gekozenFiches = {keuze1-1, keuze2-1, keuze3-1}; //telkens -1: lijstkeuze omzetten naar indexen
+		dc.neemDrieFiches(gekozenFiches);
+		errorExists = false;
+		
+			}catch(IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+			}
+
+		}while(errorExists); //methode-wide error lus
+
+	}
 }

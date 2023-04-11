@@ -46,7 +46,24 @@ public class Speler {
 	public final void setStartSpeler() {
 		startSpeler = true;
 	}
-
+	
+	//voeg toe aan hand methodes(nieuw 11-4-2023):
+	public void voegOntwikkelingsKaartToeAanHand(Ontwikkelingskaart ok) {
+		if(ok == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Ontwikkelingskaart is null", this.getClass()));
+		ontwikkelingsKaartenInHand.add(ok);
+	}
+	public void voegEdelsteenFicheToeAanHand(Edelsteenfiche ef) {
+		if(ef == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
+		this.edelSteenFichesInHand.add(ef);
+	}
+	public void voegEdeleToeAanHand(Edele e) {
+		if(e == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Edele is null", this.getClass()));
+		this.edelenInHand.add(e);
+	}
+	
 	private void setGebruikersnaam(String gebruikersnaam) {
 		if (gebruikersnaam == null || gebruikersnaam.isBlank()) {
 			throw new IllegalArgumentException("Gebruikersnaam moet ingevuld zijn.");

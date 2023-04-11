@@ -15,7 +15,7 @@ public class Spel {
 	private Speler winnaar;
 	private boolean eindeSpel = false;
 	private final List<Edele> edelen;
-	private FicheStapel[] ficheStapels; //final mogelijk?
+	private FicheStapel[] ficheStapels; //final mogelijk? /*volgorde per index: WIT,ROOD,BLAUW,GROEN,ZWART;*/
 	private Ontwikkelingskaart[] niveau1Zichtbaar = {null, null, null, null};
 	private Ontwikkelingskaart[] niveau2Zichtbaar = {null, null, null, null};
 	private Ontwikkelingskaart[] niveau3Zichtbaar = {null, null, null, null};
@@ -121,6 +121,9 @@ public class Spel {
 	}
 
 	public void volgendeSpeler() {
+		//potentieel om huidigespeler == aan de beurt te vervangen door nieuwe speler die ook == aan de beurt
+		if(spelerAanBeurt.isAanDeBeurt()) spelerAanBeurt.setAanDeBeurt(false);
+		
 		int indexHuidigeSpeler = aangemeldeSpelers.indexOf(spelerAanBeurt);
 		//index laatste speler in lijst
 		int maxIndex = aangemeldeSpelers.size() - 1;
@@ -128,16 +131,98 @@ public class Spel {
 		int indexVolgendeSpeler = indexHuidigeSpeler == maxIndex ? 0 : indexHuidigeSpeler + 1;
 		
 		this.spelerAanBeurt = aangemeldeSpelers.get(indexVolgendeSpeler);
+		//volgende speler is aandebeurt, wordt ook in die speler bijgehouden, 
+		//een speler aandebeurt wordt false, na successvolle afronden van spelmethodes(fiches/o-kaarten nemen)
+		spelerAanBeurt.setAanDeBeurt(true);
+	}
+	/**
+	 * @param niveau : 1-3
+	 * @param positie: 1-4 (-1 voor index)
+	 */
+	//nieuw 11-4-2023
+	public void kiesOntwikkelingskaart(int niveau, int positie) {
+		if(positie < 1 || positie > 4)
+			throw new IllegalArgumentException(foutBoodschap("Positie moet in range: [1-4] zijn"));
+		if(niveau < 1 || niveau > 3)
+			throw new IllegalArgumentException(foutBoodschap("Niveau moet in range: [2-3] zijn"));
+		Ontwikkelingskaart ok = null;
+		switch (niveau) {
+		case 1 -> {
+			ok = niveau1Zichtbaar[positie-1];
+			if(ok == null)
+				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
+			niveau1Zichtbaar[positie-1] = null;
+		}
+		case 2 -> {
+			ok = niveau2Zichtbaar[positie-1];
+			if(ok == null)
+				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
+			niveau2Zichtbaar[positie-1] = null;
+		}
+		case 3 -> {
+			ok = niveau3Zichtbaar[positie-1];
+			if(ok == null)
+				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
+			niveau3Zichtbaar[positie-1] = null;
+		}
+		}
+		this.spelerAanBeurt.voegOntwikkelingsKaartToeAanHand(ok);
+		vulKaartenBij(); //kaarten telkens bijvullen nadat 1 wordt genomen
+		
+		//nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
+		spelerAanBeurt.setAanDeBeurt(false);
 	}
 	
 	public void vulKaartenBij() {
 		//1x itereren over 1 van de lijsten, ze zijn allemaal even lang
 		for (int i = 0; i < niveau1Zichtbaar.length; i++) {
 			//n1.size() - 1 is de laatste kaart, verwijder ze uit trekstapel en zet ze op het bord:
-			if(niveau1Zichtbaar[i] == null) niveau1Zichtbaar[i] = n1.remove(n1.size()-1);
-			if(niveau2Zichtbaar[i] == null) niveau2Zichtbaar[i] = n2.remove(n2.size()-1);
-			if(niveau3Zichtbaar[i] == null) niveau3Zichtbaar[i] = n3.remove(n3.size()-1);
+			if(niveau1Zichtbaar[i] == null && n1.size() > 0) niveau1Zichtbaar[i] = n1.remove(n1.size()-1);
+			if(niveau2Zichtbaar[i] == null && n2.size() > 0) niveau2Zichtbaar[i] = n2.remove(n2.size()-1);
+			if(niveau3Zichtbaar[i] == null && n3.size() > 0) niveau3Zichtbaar[i] = n3.remove(n3.size()-1);
 		}
+	}
+	/**
+	 * 
+	 * @param indexen [0-4, 0-4, 0-4]
+	 */
+	//nieuw 11-4-2023
+	public void neemDrieFiches(int[] indexen) {
+		if(indexen == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: nullobject passed in neemDrieFiches", this.getClass()));
+		for (int i : indexen) {
+			if(i < 0 || i > 4) throw new IllegalArgumentException(String.format("Fout in %s: bounds error neemDrieFiches", this.getClass()));
+		};
+		if(indexen.length != 3)
+			throw new IllegalArgumentException(String.format("Fout in %s: lengte indexen param neemDrieFiches", this.getClass()));
+		if(indexen[0] == indexen[1] || indexen[0] == indexen[2] || indexen[1] == indexen[2])
+			throw new IllegalArgumentException(String.format("Fout in %s: Probeert 2x dezelfde kleur fiche te nemen in neemDrieFiches", this.getClass()));
+		
+		int index1 = indexen[0];
+		int index2 = indexen[1];
+		int index3 = indexen[2];
+		
+		spelerAanBeurt.voegEdelsteenFicheToeAanHand(ficheStapels[index1].neemFiche());
+		spelerAanBeurt.voegEdelsteenFicheToeAanHand(ficheStapels[index2].neemFiche());
+		spelerAanBeurt.voegEdelsteenFicheToeAanHand(ficheStapels[index3].neemFiche());
+		
+		//nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
+		spelerAanBeurt.setAanDeBeurt(false);
+	}
+	/**
+	 * 
+	 * @param index 0-4
+	 */
+	//nieuw 11-4-2023
+	public void neemTweeFiches(int index) {
+		if(index < 0 || index > 4)
+			throw new IllegalArgumentException(String.format("Fout in %s: nullobject passed in neemTweeFiches", this.getClass()));
+		List<Edelsteenfiche> tweeFiches = ficheStapels[index].neemTweeFiches();
+		for(Edelsteenfiche ef : tweeFiches) {
+			spelerAanBeurt.voegEdelsteenFicheToeAanHand(ef);
+		}
+		//nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
+		spelerAanBeurt.setAanDeBeurt(false);
 	}
 
 	public Integer getAantalSpelers() {

@@ -28,4 +28,12 @@ goed nadenken over hoe edelsteenfiches in elkaar zullen zitten
 edelerepo + edelsteenrepo maken, in DC bijhouden en in spel constructor lijsten meegeven, en ook als objecten in spel bijhouden
 
 paasvakantie:
-edelsteen repo+mapper / edele repo+mapper maken, doorsturen in spel constructor
+edelsteen repo+mapper / edele repo+mapper maken, doorsturen in spel constructor ✓
+
+na elke actie die een beurt beschrijft, als de actie successvol afloopt -> in spel, zet bij speleraandebeurt in
+de methode van die actie die speler aandebeurt attribuut op false;
+
+wanneer wordt op winnaar gecontroleerd? hoe eindigt het spel? wanneer worden de prestigepunten van de speler geupdate?
+na elke beurt?
+
+nog een grote TODO: methode om een edele te kopen en toe te voegen aan speler hand

@@ -1,5 +1,6 @@
 package domein;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FicheStapel implements SpelVoorwerp{
@@ -33,13 +34,21 @@ public class FicheStapel implements SpelVoorwerp{
 		fiches.add(fiche);
 		aantalFiches++;
 	}
-	
+	//afgewerkt 11-4-2023
 	public Edelsteenfiche neemFiche() {
 		if(aantalFiches == 0)
 			throw new IllegalArgumentException(String.format("Fout in %s: probeert fiche te nemen, maar stapel is leeg", this.getClass().getSimpleName()));
 		aantalFiches--;
-		//TODO: fiche uit de lijst halen en teruggeven
-		return null;
+		return fiches.remove(fiches.size()-1); //bovenste fiche
+	}
+	//nieuw 11-4-2023
+	public List<Edelsteenfiche> neemTweeFiches(){
+		if(aantalFiches < 4)
+			throw new IllegalArgumentException(String.format("Fout in %s: probeert 2 fiches te nemen, maar stapel is kleiner dan 4", this.getClass().getSimpleName()));
+		List<Edelsteenfiche> efReturn = new ArrayList<>();
+		efReturn.add(neemFiche());
+		efReturn.add(neemFiche());
+		return efReturn;
 	}
 	
 	public String getSoort() {

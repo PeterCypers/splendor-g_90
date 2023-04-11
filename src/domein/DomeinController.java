@@ -30,7 +30,6 @@ public class DomeinController {
 	public void startNieuwSpel() {
 		this.edelsteenRepo = new EdelsteenficheRepository(aangemeldeSpelers.size());
 		List<List<Ontwikkelingskaart>> alleNiveausOntwikkelingsKaartLijst = haalOntwikkelingskaartenUitRepo();
-		//TODO constructor spel moet edelen en FicheStapels en Spelers en ontw-kaarten ontvangen en bijhouden
 		List<Edele> edelen = this.haalEdelenUitRepo(geefAantalSpelers());
 		FicheStapel[] ficheStapels = this.haalEdelsteenficheStapelsUitRepo();
 		this.spel = new Spel(aangemeldeSpelers, alleNiveausOntwikkelingsKaartLijst, edelen, ficheStapels);
@@ -81,13 +80,18 @@ public class DomeinController {
 	public int geefAantalSpelers() {
 		return aangemeldeSpelers.size();
 	}
+	
+	//nieuw 10-4-2023
+	public boolean spelerIsAanBeurt() {
+		return this.spel.getSpelerAanBeurt().isAanDeBeurt();
+	}
 
 	public String geefSpelerAanBeurtVerkort() {
 		int leeftijdInJaar = LocalDate.now().getYear() - spel.getSpelerAanBeurt().getGeboortejaar();
 		return String.format("%s ---- leeftijd: %d", spel.getSpelerAanBeurt().getGebruikersnaam(), leeftijdInJaar);
 	}
-	
-	public String geefSpelerAanBeurt() {
+
+	public String toonSpelerAanBeurtSituatie() {
 		return this.spel.getSpelerAanBeurt().toString();
 	}
 	
@@ -121,7 +125,6 @@ public class DomeinController {
 	
 	//nieuwe methode 7-4-2023 maakt gebruik van Spel.geefSpelVoorwerpen()
 	public List<SpelVoorwerpDTO> toonSpelSituatie() {
-		//TODO doorgegeven dtos in de CUI als spelbord weergeven
 		List<SpelVoorwerp> spelvoorwerpen = spel.geefSpelVoorwerpen();
 		List<SpelVoorwerpDTO> lijstDTOs = new ArrayList<>();
 		SpelVoorwerpDTO dto = null;
@@ -164,6 +167,28 @@ public class DomeinController {
 		alleSpelers += String.format("****************%n");
 		return alleSpelers;
 	}
+	/**
+	 * @param niveau : 1-3
+	 * @param positie: 1-4
+	 */
+	//nieuw 11-4-2023
+	public void kiesOntwikkelingskaart(int niveau, int positie) {
+		spel.kiesOntwikkelingskaart(niveau, positie);
+	}
+	//nieuw 11-4-2023
+	public void neemDrieFiches(int[] indexen) {
+		spel.neemDrieFiches(indexen);
+	}
+	//nieuw 11-4-2023
+	public void neemTweeFiches(int index) {
+		spel.neemTweeFiches(index);
+	}
+	
+	//nieuw 11-4-2023
+	public void pasBeurt() {
+		//TODO controleer of methode kan leiden tot verkeerde object status
+		spel.getSpelerAanBeurt().setAanDeBeurt(false);
+	}
 
 	// [testmethode] om de lijst van deelnemende spelers aan het spel te controleren
 	public String toonAangemeldeSpelers() {
@@ -174,6 +199,10 @@ public class DomeinController {
 			}
 		}
 		return returnStr.isBlank() ? "Er zijn nog geen deelnemers" : returnStr;
+	}
+	
+	public void volgendeSpeler() {
+		this.spel.volgendeSpeler();
 	}
 	
 	// [testmethode] om te zien of de n1/n2/n3 lijst-lijst goed opgevuld is
@@ -199,6 +228,7 @@ public class DomeinController {
 	}
 	
 	//nieuwe methode 7-4-2023
+	// [testmethode]
 	private void testPrintStapelsEdelsteenFiches(FicheStapel[] alleFicheStapels) {
 		//adres, kleur, aantalfiches op attribuut + op lengte van lijst, naam van foto (%d(i), %s,%s,%d,%d,%s)
 		System.out.println(); 
