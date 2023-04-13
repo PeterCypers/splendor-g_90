@@ -166,7 +166,7 @@ public class DomeinController {
 			alleSpelers += String.format("Naam: %6s  | leeftijd: %3d jaar | geboortejaar: %d%n", s.getGebruikersnaam(),
 					LocalDate.now().getYear() - s.getGeboortejaar(), s.getGeboortejaar());
 		}
-		alleSpelers += String.format("****************%n");
+		alleSpelers += String.format("*******************************************************%n");
 		return alleSpelers;
 	}
 

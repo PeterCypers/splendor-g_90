@@ -118,7 +118,7 @@ public class SplendorApplicatie {
 				+ "  ___) | |_) | |  __/ | | | (_| | (_) | |   \r\n"
 				+ " |____/| .__/|_|\\___|_| |_|\\__,_|\\___/|_|   \r\n"
 				+ "       |_|                                  \r\n"
-				+ "\n*****Een nieuw spel is gestart*****\nDe jongste speler mag beginnen%n");
+				+ "\n*****Een nieuw spel is gestart*****\n\nDe jongste speler mag beginnen\n\n");
 	}
 
 	// nieuw 8-4-2023
