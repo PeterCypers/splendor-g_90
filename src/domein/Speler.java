@@ -8,7 +8,7 @@ public class Speler {
 
 	private String gebruikersnaam;
 	private int geboortejaar;
-	//nieuw 8-4-2023
+	// nieuw 8-4-2023
 	private int aantalPrestigePunten;
 	private boolean aanDeBeurt;
 	private boolean startSpeler;
@@ -19,7 +19,7 @@ public class Speler {
 	public Speler(String gebruikersnaam, int geboortejaar) {
 		setGebruikersnaam(gebruikersnaam);
 		setGeboortejaar(geboortejaar);
-		//defaultwaarden initializeren + lege lijsten aanmaken
+		// defaultwaarden initializeren + lege lijsten aanmaken
 		aantalPrestigePunten = 0;
 		aanDeBeurt = false;
 		startSpeler = false;
@@ -31,39 +31,46 @@ public class Speler {
 	public String getGebruikersnaam() {
 		return this.gebruikersnaam;
 	}
-	
-	//nieuw 8-4-2023
+
+	// nieuw 8-4-2023
 	public boolean isAanDeBeurt() {
 		return aanDeBeurt;
 	}
+
 	public final void setAanDeBeurt(boolean nieuweWaarde) {
 		aanDeBeurt = nieuweWaarde;
 	}
+
 	public boolean isStartSpeler() {
 		return startSpeler;
 	}
-	//zal 1x gebruikt worden door Spel om de jongstespeler als startspeler in te stellen
+
+	// zal 1x gebruikt worden door Spel om de jongstespeler als startspeler in te
+	// stellen
 	public final void setStartSpeler() {
 		startSpeler = true;
 	}
-	
-	//voeg toe aan hand methodes(nieuw 11-4-2023):
+
+	// voeg toe aan hand methodes(nieuw 11-4-2023):
 	public void voegOntwikkelingsKaartToeAanHand(Ontwikkelingskaart ok) {
-		if(ok == null)
-			throw new IllegalArgumentException(String.format("Fout in %s: Ontwikkelingskaart is null", this.getClass()));
+		if (ok == null)
+			throw new IllegalArgumentException(
+					String.format("Fout in %s: Ontwikkelingskaart is null", this.getClass()));
 		ontwikkelingsKaartenInHand.add(ok);
 	}
+
 	public void voegEdelsteenFicheToeAanHand(Edelsteenfiche ef) {
-		if(ef == null)
+		if (ef == null)
 			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
 		this.edelSteenFichesInHand.add(ef);
 	}
+
 	public void voegEdeleToeAanHand(Edele e) {
-		if(e == null)
+		if (e == null)
 			throw new IllegalArgumentException(String.format("Fout in %s: Edele is null", this.getClass()));
 		this.edelenInHand.add(e);
 	}
-	
+
 	private void setGebruikersnaam(String gebruikersnaam) {
 		if (gebruikersnaam == null || gebruikersnaam.isBlank()) {
 			throw new IllegalArgumentException("Gebruikersnaam moet ingevuld zijn.");
@@ -100,31 +107,31 @@ public class Speler {
 		}
 		this.geboortejaar = geboortejaar;
 	}
-	
+
 	public int getPrestigePunten() {
 		return aantalPrestigePunten;
 	}
-	
+
 	public void updatePrestigePunten() {
-		
+
 	}
 
 	@Override
 	public String toString() {
 		int leeftijdInJaar = LocalDate.now().getYear() - this.geboortejaar;
-		//O-kaarten
+		// O-kaarten
 		String ontwikkelingskaartenInBezit = "";
-		if(ontwikkelingsKaartenInHand.size() > 0) {
+		if (ontwikkelingsKaartenInHand.size() > 0) {
 			for (Ontwikkelingskaart ok : ontwikkelingsKaartenInHand) {
 				ontwikkelingskaartenInBezit += String.format("%s%n", ok.toString());
 			}
-		}else {
+		} else {
 			ontwikkelingskaartenInBezit = "Je hebt momenteel geen ontwikkelingskaarten in je bezit\n";
 		}
-		//Fiches /*WIT,ROOD,BLAUW,GROEN,ZWART;*/
-		int wit=0, rood=0, blauw=0, groen=0, zwart=0;
+		// Fiches /*WIT,ROOD,BLAUW,GROEN,ZWART;*/
+		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
 		String edelSteenFichesInBezit = "";
-		if(edelSteenFichesInHand.size() > 0) {
+		if (edelSteenFichesInHand.size() > 0) {
 			for (Edelsteenfiche ef : edelSteenFichesInHand) {
 				String kleur = ef.getKleur().toString();
 				switch (kleur) {
@@ -136,33 +143,28 @@ public class Speler {
 				}
 			}
 		}
-		edelSteenFichesInBezit += String.format("Witte: %d%n"
-				+ "Rode: %d%n"
-				+ "Blauwe: %d%n"
-				+ "Groene: %d%n"
-				+ "Zwarte: %d%n", wit, rood, blauw, groen, zwart);
-		
-		//Edelen
+		edelSteenFichesInBezit += String.format(
+				"Witte: %d%n" + "Rode: %d%n" + "Blauwe: %d%n" + "Groene: %d%n" + "Zwarte: %d%n", wit, rood, blauw,
+				groen, zwart);
+
+		// Edelen
 		String edelenInBezit = "";
 		int edelPrestigeTotaal = 0;
-		if(edelenInHand.size() > 0) {
-			for(Edele e : edelenInHand) {
+		if (edelenInHand.size() > 0) {
+			for (Edele e : edelenInHand) {
 				edelPrestigeTotaal += e.getPrestigePunten();
 			}
 		}
-		edelenInBezit += String.format("Je hebt %d edelen in bezit met een totale prestigewaarde van %d%n", edelenInHand.size(), edelPrestigeTotaal);
+		edelenInBezit += String.format("Je hebt %d edelen in bezit met een totale prestigewaarde van %d%n",
+				edelenInHand.size(), edelPrestigeTotaal);
 
-		return String.format("%s: %s --- leeftijd: %d%n"
-				+ "Prestigepunten: %d is %saan de beurt%n"
-				+ "%s de start speler%n"
-				+ "Ontwikkelingskaarten in bezit:%n"
-				+ "%s"
-				+ "Edelsteenfiches in bezit:%n"
-				+ "%s"
-				+ "Edelen in bezit:%n"
-				+ "%s",
-				getClass().getSimpleName(), gebruikersnaam, leeftijdInJaar, aantalPrestigePunten, isAanDeBeurt()? "": "niet ",
-						isStartSpeler()? "Is":"Is niet", ontwikkelingskaartenInBezit, edelSteenFichesInBezit, edelenInBezit);
+		return String.format(
+				"%s: %s --- leeftijd: %d%n" + "Prestigepunten: %d %n%s aan de beurt%n" + "%s de start speler%n"
+						+ "Ontwikkelingskaarten in bezit:%n" + "%s" + "Edelsteenfiches in bezit:%n" + "%s"
+						+ "Edelen in bezit:%n" + "%s",
+				getClass().getSimpleName(), gebruikersnaam, leeftijdInJaar, aantalPrestigePunten,
+				isAanDeBeurt() ? "Is" : "Is niet", isStartSpeler() ? "Is" : "Is niet", ontwikkelingskaartenInBezit,
+				edelSteenFichesInBezit, edelenInBezit);
 	}
 
 }
