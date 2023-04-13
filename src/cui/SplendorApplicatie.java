@@ -131,14 +131,14 @@ public class SplendorApplicatie {
 		List<SpelVoorwerpDTO> dtos = dc.toonSpelSituatie();
 
 		System.out.println("*****Spel Situatie:*****\n");
-		System.out.println("Beschikbare Edelen:");
+		System.out.println("Beschikbare edelen:");
 		for (SpelVoorwerpDTO dto : dtos) {
 			if (dto.type() == 'E') {
 				System.out.printf("Edele: %s, prestige: %d%nKost: %s%n", dto.foto(), dto.prestigepunten(),
 						Arrays.toString(dto.kosten()));
 			}
 		}
-		System.out.println("\nBeschikbare Ontwikkelings kaarten:"); // foto, niveau, kleur, prestige, \n kosten
+		System.out.println("\nBeschikbare ontwikkelingskaarten:"); // foto, niveau, kleur, prestige, \n kosten
 		for (int i = 1; i < 4; i++) {
 			int niveau = (i == 1) ? 1 : (i == 2) ? 2 : 3;
 			for (SpelVoorwerpDTO dto : dtos) {
@@ -168,7 +168,7 @@ public class SplendorApplicatie {
 		while (dc.spelerIsAanBeurt()) {
 			keuze = 0;
 			System.out
-					.print("Maak een keuze:\n1. Neem Fiches\n2. Koop een Ontwikkelings kaart\n3. Pass Beurt\nKeuze: ");
+					.print("Maak een keuze:\n1. Neem fiches\n2. Koop een ontwikkelingskaart\n3. Pas u beurt\nKeuze: ");
 			do {
 				try {
 					keuze = input.nextInt();
@@ -243,7 +243,7 @@ public class SplendorApplicatie {
 		System.out.print("Kies de fiches die je wilt nemen, 3 verschillende, of 2 dezelfde\n"
 				+ "1. Drie verschillende fiches\n" + "2. Twee dezelfde fiches\n");
 		do {
-			System.out.print("Keuze: ");
+			System.out.print("keuze: ");
 			try {
 				keuze = input.nextInt();
 			} catch (InputMismatchException e) {
@@ -271,7 +271,7 @@ public class SplendorApplicatie {
 						"Kies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
 								+ "Wit: 1%n" + "Rood: 2%n" + "Blauw: 3%n" + "Groen: 4%n" + "Zwart: 5%n");
 				do {
-					System.out.print("Keuze: ");
+					System.out.print("keuze: ");
 					try {
 						keuze = input.nextInt();
 					} catch (InputMismatchException e) {
