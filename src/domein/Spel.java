@@ -214,25 +214,18 @@ public class Spel {
 //			int requiredGems = cardCost.get(kleur);
 //			spelerAanBeurt.verwijderEdelsteenfiche(kleur, requiredGems);
 //		}
-
-		// Remove cards used to buy the card
-//	    List<GemColor> cardColors = card.getColors();
-//	    for (GemColor cardColor : cardColors) {
-//	        spelerAanBeurt.removeCard(cardColor);
-//	    }
+		// TODO
+		// Verwijder kaart van de zichtbare kaarten
 		niveauZichtbaar[niveau - 1][positie - 1] = null;
-
-		// Add the card to the player's cards
+		// Voeg de kaart toe aan de voorraad van de speler
 		spelerAanBeurt.voegOntwikkelingskaartToeAanHand(gekozenOntwikkelingskaart);
-
-		// Add the card's points to the player's score
+		// Voeg de prestigepunten van de ontwikkelingskaart toe aan de speler zijn
+		// punten
 		spelerAanBeurt.voegPuntenToe(gekozenOntwikkelingskaart.getPrestigepunten());
-
-		// als alles oke is wordt nu de kaart verwijderd uit de zichtbare stapel en
-		// toegevoegd aan de speler zijn voorraad
+		// zichtbare kaarten stapel worden bijgevuld
 		vulKaartenBij();
+		// speler zijn beurt wordt stopgezet
 		spelerAanBeurt.setAanDeBeurt(false);
-
 	}
 
 	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
