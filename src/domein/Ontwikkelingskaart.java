@@ -61,16 +61,6 @@ public class Ontwikkelingskaart implements SpelVoorwerp {
 		this.kosten = kosten;
 	}
 
-	public Map<Kleur, Integer> getKostenMap() {
-		// TODO
-		return null;
-	}
-
-	public List<Kleur> getKleuren() {
-		// TODO 
-		return null;
-	}
-
 	@Override
 	public String toString() {
 		String kostenString = "";

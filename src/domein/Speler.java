@@ -28,10 +28,6 @@ public class Speler {
 		edelsteenfichesInHand = new ArrayList<>();
 	}
 
-	public String getGebruikersnaam() {
-		return this.gebruikersnaam;
-	}
-
 	// nieuw 8-4-2023
 	public boolean isAanDeBeurt() {
 		return aanDeBeurt;
@@ -75,9 +71,13 @@ public class Speler {
 		this.aantalPrestigepunten += prestigepunten;
 	}
 
-	public void verwijderEdelsteenfiche(Kleur kleur, int requiredGems) {
-		// TODO Auto-generated method stub
+	public void verwijderEdelsteenfiche(Edelsteenfiche ef) {
+		edelsteenfichesInHand.remove(ef);
 		
+	}
+
+	public String getGebruikersnaam() {
+		return this.gebruikersnaam;
 	}
 
 	private void setGebruikersnaam(String gebruikersnaam) {
@@ -119,10 +119,6 @@ public class Speler {
 
 	public int getPrestigePunten() {
 		return aantalPrestigepunten;
-	}
-
-	public void updatePrestigePunten() {
-
 	}
 
 	public List<Ontwikkelingskaart> getOntwikkelingskaartenInHand() {

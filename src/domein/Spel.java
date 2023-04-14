@@ -16,7 +16,8 @@ public class Spel {
 	private Speler winnaar;
 	private boolean eindeSpel = false;
 	private final List<Edele> edelen;
-	private FicheStapel[] ficheStapels; // final mogelijk? /*volgorde per index: WIT,ROOD,BLAUW,GROEN,ZWART;*/
+	private FicheStapel[] ficheStapels; // final mogelijk? waarschijnlijk niet /* volgorde per index:
+										// WIT,ROOD,BLAUW,GROEN,ZWART;*/
 	private Ontwikkelingskaart[] niveau1Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau2Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau3Zichtbaar = { null, null, null, null };
@@ -206,15 +207,10 @@ public class Spel {
 			throw new RuntimeException("Speler mag deze kaart niet kopen");
 		}
 
-		// Verwijderen van fiches uit de speler en terug toevoegen aan de juist
-		// fichestapel
-		// Remove gems used to buy the card
-//		Map<Kleur, Integer> cardCost = gekozenOntwikkelingskaart.getKosten();
-//		for (Kleur kleur : cardCost.keySet()) {
-//			int requiredGems = cardCost.get(kleur);
-//			spelerAanBeurt.verwijderEdelsteenfiche(kleur, requiredGems);
-//		}
-		// TODO
+		// Verwijder fiches uit voorraad speler
+		// Terug toevoegen aan fichestapel
+		verwijderFichesUitVoorraadVanSpelerAanBeurtEnVoegTerugAanStapelToe();
+
 		// Verwijder kaart van de zichtbare kaarten
 		niveauZichtbaar[niveau - 1][positie - 1] = null;
 		// Voeg de kaart toe aan de voorraad van de speler
@@ -229,6 +225,25 @@ public class Spel {
 	}
 
 	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
+		int[] somAantalPerKleurInBezit = somAantalPerKleurInBezit();
+
+		int[] kosten = gekozenOntwikkelingskaart.getKosten();
+
+		boolean kaartKoopbaar = false;
+
+		for (int i = 0; i < kosten.length; i++) {
+			if (somAantalPerKleurInBezit[i] >= kosten[i]) {
+				kaartKoopbaar = true;
+			} else {
+				kaartKoopbaar = false;
+				break;
+			}
+		}
+
+		return kaartKoopbaar;
+	}
+
+	public int[] somAantalPerKleurInBezit() {
 		int[] somAantalPerKleurInBezit = new int[5];
 		List<Ontwikkelingskaart> ontwikkelingsKaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
 		for (Ontwikkelingskaart ontwk : ontwikkelingsKaartenInHand) {
@@ -251,21 +266,44 @@ public class Spel {
 			case ZWART -> somAantalPerKleurInBezit[4]++;
 			}
 		}
+		return somAantalPerKleurInBezit;
+	}
 
-		int[] kosten = gekozenOntwikkelingskaart.getKosten();
+	private void verwijderFichesUitVoorraadVanSpelerAanBeurtEnVoegTerugAanStapelToe() {
+		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
+		int[] wegTeNemenEdelsteenfichesUitVoorraad = somAantalPerKleurInBezit();
 
-		boolean kaartKoopbaar = false;
+		for (int i = 0; i < wegTeNemenEdelsteenfichesUitVoorraad.length; i++) {
+			for (Ontwikkelingskaart ontwk : ontwikkelingskaartenInHand) {
+				switch (ontwk.getKleurBonus()) {
+				case WIT -> wegTeNemenEdelsteenfichesUitVoorraad[0]--;
+				case ROOD -> wegTeNemenEdelsteenfichesUitVoorraad[1]--;
+				case BLAUW -> wegTeNemenEdelsteenfichesUitVoorraad[2]--;
+				case GROEN -> wegTeNemenEdelsteenfichesUitVoorraad[3]--;
+				case ZWART -> wegTeNemenEdelsteenfichesUitVoorraad[4]--;
+				}
+			}
 
-		for (int i = 0; i < kosten.length; i++) {
-			if (somAantalPerKleurInBezit[i] >= kosten[i]) {
-				kaartKoopbaar = true;
-			} else {
-				kaartKoopbaar = false;
-				break;
+		}
+		for (int i = 0; i < wegTeNemenEdelsteenfichesUitVoorraad.length; i++) {
+			String[] soort = { "diamant", "robijn", "saffier", "smaragd", "onyx" };
+			Kleur kleur = switch (i) {
+			case 0 -> Kleur.WIT;
+			case 1 -> Kleur.ROOD;
+			case 2 -> Kleur.BLAUW;
+			case 3 -> Kleur.GROEN;
+			case 4 -> Kleur.ZWART;
+			default -> throw new IllegalArgumentException("Unexpected value: " + i);
+			};
+			// Kleur kleur = Kleur.values(i);
+			for (int j = 0; j < wegTeNemenEdelsteenfichesUitVoorraad[i]; i++) {
+				Edelsteenfiche ef = new Edelsteenfiche(soort[i], kleur, null);
+				// Terug toevoegen van de fiche aan de stapel
+				// TODO terug toevoegen aan de stapel werkt nog niet
+				// ficheStapels.voegFicheToe(ef);
+				spelerAanBeurt.verwijderEdelsteenfiche(ef);
 			}
 		}
-
-		return kaartKoopbaar;
 	}
 
 	/*---------------------------------------------------------------------------------------------------------------------------*/
