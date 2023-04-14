@@ -2,6 +2,7 @@ package domein;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Spel {
 	public static final int MIN_AANTAL_SPELERS = 2;
@@ -147,42 +148,44 @@ public class Spel {
 	 * @param positie: 1-4 (-1 voor index)
 	 */
 	// nieuw 11-4-2023
+//	public void kiesOntwikkelingskaart(int niveau, int positie) {
+//		if (positie < 1 || positie > 4)
+//			throw new IllegalArgumentException(foutBoodschap("Positie moet in range: [1-4] zijn"));
+//		if (niveau < 1 || niveau > 3)
+//			throw new IllegalArgumentException(foutBoodschap("Niveau moet in range: [2-3] zijn"));
+//		Ontwikkelingskaart ok = null;
+//
+//		switch (niveau) {
+//		case 1 -> {
+//			ok = niveau1Zichtbaar[positie - 1];
+//			if (ok == null)
+//				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
+//			niveau1Zichtbaar[positie - 1] = null;
+//		}
+//		case 2 -> {
+//			ok = niveau2Zichtbaar[positie - 1];
+//			if (ok == null)
+//				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
+//			niveau2Zichtbaar[positie - 1] = null;
+//		}
+//		case 3 -> {
+//			ok = niveau3Zichtbaar[positie - 1];
+//			if (ok == null)
+//				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
+//			niveau3Zichtbaar[positie - 1] = null;
+//		}
+//		}
+//		this.spelerAanBeurt.voegOntwikkelingskaartToeAanHand(ok);
+//		vulKaartenBij(); // kaarten telkens bijvullen nadat 1 wordt genomen
+//
+//		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
+//		spelerAanBeurt.setAanDeBeurt(false);
+//
+//	}
+
+	// WORK IN PROGRESS
+	/*---------------------------------------------------------------------------------------------------------------------------*/
 	public void kiesOntwikkelingskaart(int niveau, int positie) {
-		if (positie < 1 || positie > 4)
-			throw new IllegalArgumentException(foutBoodschap("Positie moet in range: [1-4] zijn"));
-		if (niveau < 1 || niveau > 3)
-			throw new IllegalArgumentException(foutBoodschap("Niveau moet in range: [2-3] zijn"));
-		Ontwikkelingskaart ok = null;
-
-		switch (niveau) {
-		case 1 -> {
-			ok = niveau1Zichtbaar[positie - 1];
-			if (ok == null)
-				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
-			niveau1Zichtbaar[positie - 1] = null;
-		}
-		case 2 -> {
-			ok = niveau2Zichtbaar[positie - 1];
-			if (ok == null)
-				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
-			niveau2Zichtbaar[positie - 1] = null;
-		}
-		case 3 -> {
-			ok = niveau3Zichtbaar[positie - 1];
-			if (ok == null)
-				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
-			niveau3Zichtbaar[positie - 1] = null;
-		}
-		}
-		this.spelerAanBeurt.voegOntwikkelingsKaartToeAanHand(ok);
-		vulKaartenBij(); // kaarten telkens bijvullen nadat 1 wordt genomen
-
-		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
-		spelerAanBeurt.setAanDeBeurt(false);
-
-	}
-
-	public void kiesOntwikkelingskaart2(int niveau, int positie) {
 		if (positie < 1 || positie > 4)
 			throw new IllegalArgumentException(foutBoodschap("Positie moet in range: [1-4] zijn"));
 		if (niveau < 1 || niveau > 3)
@@ -197,58 +200,82 @@ public class Spel {
 
 		// Kijken of de speler genoeg fiches en/of ontwikkelingskaarten reeds in hand
 		// heeft om deze kaart te kopen
-		int[] fichesEnOntwikkelingskaartenInBezit = new int[5];
-		List<Ontwikkelingskaart> ontwikkelingsKaartenInHand = spelerAanBeurt.getOntwikkelingsKaartenInHand();
-		for (Ontwikkelingskaart ontwk : ontwikkelingsKaartenInHand) {
-			switch (ontwk.getKleurBonus()) {
-			case WIT -> fichesEnOntwikkelingskaartenInBezit[0]++;
-			case ROOD -> fichesEnOntwikkelingskaartenInBezit[1]++;
-			case BLAUW -> fichesEnOntwikkelingskaartenInBezit[2]++;
-			case GROEN -> fichesEnOntwikkelingskaartenInBezit[3]++;
-			case ZWART -> fichesEnOntwikkelingskaartenInBezit[4]++;
-			}
-		}
-
-		List<Edelsteenfiche> edelSteenFichesInHand = spelerAanBeurt.getEdelSteenFichesInHand();
-		for (Edelsteenfiche e : edelSteenFichesInHand) {
-			switch (e.getKleur()) {
-			case WIT -> fichesEnOntwikkelingskaartenInBezit[0]++;
-			case ROOD -> fichesEnOntwikkelingskaartenInBezit[1]++;
-			case BLAUW -> fichesEnOntwikkelingskaartenInBezit[2]++;
-			case GROEN -> fichesEnOntwikkelingskaartenInBezit[3]++;
-			case ZWART -> fichesEnOntwikkelingskaartenInBezit[4]++;
-			}
-		}
-		int[] kosten = gekozenOntwikkelingskaart.getKosten();
-		boolean kanGekochtWorden = true;
-		for (int i = 0; i < kosten.length; i++) {
-			// kanGekochtWorden = fichesEnOntwikkelingskaartenInBezit[i] >= kosten[i] ? true
-			// : false;
-			if (fichesEnOntwikkelingskaartenInBezit[i] >= kosten[i]) {
-				kanGekochtWorden = true;
-			} else {
-				kanGekochtWorden = false;
-				break;
-			}
-		}
-		if (kanGekochtWorden) {
-
+		if (!kanKaartKopen(gekozenOntwikkelingskaart)) {
+			// TODO mag de applicatie niet stoppen maar moet de Speler terugsturen naar het
+			// voorgaande menu
+			throw new RuntimeException("Speler mag deze kaart niet kopen");
 		}
 
 		// Verwijderen van fiches uit de speler en terug toevoegen aan de juist
 		// fichestapel
-		// TODO
+		// Remove gems used to buy the card
+//		Map<Kleur, Integer> cardCost = gekozenOntwikkelingskaart.getKosten();
+//		for (Kleur kleur : cardCost.keySet()) {
+//			int requiredGems = cardCost.get(kleur);
+//			spelerAanBeurt.verwijderEdelsteenfiche(kleur, requiredGems);
+//		}
+		
+		// Remove cards used to buy the card
+//	    List<GemColor> cardColors = card.getColors();
+//	    for (GemColor cardColor : cardColors) {
+//	        spelerAanBeurt.removeCard(cardColor);
+//	    }
+		niveauZichtbaar[niveau - 1][positie - 1] = null;
+
+		// Add the card to the player's cards
+		spelerAanBeurt.voegOntwikkelingskaartToeAanHand(gekozenOntwikkelingskaart);
+
+		// Add the card's points to the player's score
+		spelerAanBeurt.voegPuntenToe(gekozenOntwikkelingskaart.getPrestigepunten());
 
 		// als alles oke is wordt nu de kaart verwijderd uit de zichtbare stapel en
 		// toegevoegd aan de speler zijn voorraad
-		niveauZichtbaar[niveau - 1][positie - 1] = null;
-		this.spelerAanBeurt.voegOntwikkelingsKaartToeAanHand(gekozenOntwikkelingskaart);
-
 		vulKaartenBij();
 		spelerAanBeurt.setAanDeBeurt(false);
 
 	}
 
+	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
+		int[] somAantalPerKleurInBezit = new int[5];
+		List<Ontwikkelingskaart> ontwikkelingsKaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
+		for (Ontwikkelingskaart ontwk : ontwikkelingsKaartenInHand) {
+			switch (ontwk.getKleurBonus()) {
+			case WIT -> somAantalPerKleurInBezit[0]++;
+			case ROOD -> somAantalPerKleurInBezit[1]++;
+			case BLAUW -> somAantalPerKleurInBezit[2]++;
+			case GROEN -> somAantalPerKleurInBezit[3]++;
+			case ZWART -> somAantalPerKleurInBezit[4]++;
+			}
+		}
+
+		List<Edelsteenfiche> edelSteenFichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
+		for (Edelsteenfiche e : edelSteenFichesInHand) {
+			switch (e.getKleur()) {
+			case WIT -> somAantalPerKleurInBezit[0]++;
+			case ROOD -> somAantalPerKleurInBezit[1]++;
+			case BLAUW -> somAantalPerKleurInBezit[2]++;
+			case GROEN -> somAantalPerKleurInBezit[3]++;
+			case ZWART -> somAantalPerKleurInBezit[4]++;
+			}
+		}
+
+		int[] kosten = gekozenOntwikkelingskaart.getKosten();
+
+		boolean kaartKoopbaar = false;
+
+		for (int i = 0; i < kosten.length; i++) {
+			if (somAantalPerKleurInBezit[i] >= kosten[i]) {
+				kaartKoopbaar = true;
+			} else {
+				kaartKoopbaar = false;
+				break;
+			}
+		}
+
+		return kaartKoopbaar;
+	}
+
+	/*---------------------------------------------------------------------------------------------------------------------------*/
 	public void vulKaartenBij() {
 		// 1x itereren over 1 van de lijsten, ze zijn allemaal even lang
 		for (int i = 0; i < niveau1Zichtbaar.length; i++) {
@@ -289,9 +316,9 @@ public class Spel {
 		int index2 = indexen[1];
 		int index3 = indexen[2];
 
-		spelerAanBeurt.voegEdelsteenFicheToeAanHand(ficheStapels[index1].neemFiche());
-		spelerAanBeurt.voegEdelsteenFicheToeAanHand(ficheStapels[index2].neemFiche());
-		spelerAanBeurt.voegEdelsteenFicheToeAanHand(ficheStapels[index3].neemFiche());
+		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index1].neemFiche());
+		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index2].neemFiche());
+		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index3].neemFiche());
 
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
 		spelerAanBeurt.setAanDeBeurt(false);
@@ -308,7 +335,7 @@ public class Spel {
 					String.format("Fout in %s: nullobject passed in neemTweeFiches", this.getClass()));
 		List<Edelsteenfiche> tweeFiches = ficheStapels[index].neemTweeFiches();
 		for (Edelsteenfiche ef : tweeFiches) {
-			spelerAanBeurt.voegEdelsteenFicheToeAanHand(ef);
+			spelerAanBeurt.voegEdelsteenficheToeAanHand(ef);
 		}
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
 		spelerAanBeurt.setAanDeBeurt(false);
