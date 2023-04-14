@@ -182,7 +182,7 @@ public class SplendorApplicatie {
 
 			switch (keuze) {
 			case 1 -> neemFiches();
-			case 2 -> koopOntwikkelingsKaart();
+			case 2 -> koopOntwikkelingskaart();
 			case 3 -> dc.pasBeurt();
 			}
 		}
@@ -208,7 +208,7 @@ public class SplendorApplicatie {
 	// TODO methode geeft de kaart op deze moment, moet nog code schrijven om te
 	// controlleren of je die kaart wel kan kopen of niet
 	// nieuw 11-4-2023
-	private void koopOntwikkelingsKaart() {
+	private void koopOntwikkelingskaart() {
 		int niveau = 0;
 		do {
 			System.out.print("Kies niveau van kaart [1-3]: ");

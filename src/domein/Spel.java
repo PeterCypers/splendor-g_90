@@ -153,6 +153,7 @@ public class Spel {
 		if (niveau < 1 || niveau > 3)
 			throw new IllegalArgumentException(foutBoodschap("Niveau moet in range: [2-3] zijn"));
 		Ontwikkelingskaart ok = null;
+
 		switch (niveau) {
 		case 1 -> {
 			ok = niveau1Zichtbaar[positie - 1];
@@ -178,6 +179,74 @@ public class Spel {
 
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
 		spelerAanBeurt.setAanDeBeurt(false);
+
+	}
+
+	public void kiesOntwikkelingskaart2(int niveau, int positie) {
+		if (positie < 1 || positie > 4)
+			throw new IllegalArgumentException(foutBoodschap("Positie moet in range: [1-4] zijn"));
+		if (niveau < 1 || niveau > 3)
+			throw new IllegalArgumentException(foutBoodschap("Niveau moet in range: [2-3] zijn"));
+		Ontwikkelingskaart gekozenOntwikkelingskaart = null;
+
+		Ontwikkelingskaart[][] niveauZichtbaar = { niveau1Zichtbaar, niveau2Zichtbaar, niveau3Zichtbaar };
+		gekozenOntwikkelingskaart = niveauZichtbaar[niveau - 1][positie - 1];
+		if (gekozenOntwikkelingskaart == null) {
+			throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
+		}
+
+		// Kijken of de speler genoeg fiches en/of ontwikkelingskaarten reeds in hand
+		// heeft om deze kaart te kopen
+		int[] fichesEnOntwikkelingskaartenInBezit = new int[5];
+		List<Ontwikkelingskaart> ontwikkelingsKaartenInHand = spelerAanBeurt.getOntwikkelingsKaartenInHand();
+		for (Ontwikkelingskaart ontwk : ontwikkelingsKaartenInHand) {
+			switch (ontwk.getKleurBonus()) {
+			case WIT -> fichesEnOntwikkelingskaartenInBezit[0]++;
+			case ROOD -> fichesEnOntwikkelingskaartenInBezit[1]++;
+			case BLAUW -> fichesEnOntwikkelingskaartenInBezit[2]++;
+			case GROEN -> fichesEnOntwikkelingskaartenInBezit[3]++;
+			case ZWART -> fichesEnOntwikkelingskaartenInBezit[4]++;
+			}
+		}
+
+		List<Edelsteenfiche> edelSteenFichesInHand = spelerAanBeurt.getEdelSteenFichesInHand();
+		for (Edelsteenfiche e : edelSteenFichesInHand) {
+			switch (e.getKleur()) {
+			case WIT -> fichesEnOntwikkelingskaartenInBezit[0]++;
+			case ROOD -> fichesEnOntwikkelingskaartenInBezit[1]++;
+			case BLAUW -> fichesEnOntwikkelingskaartenInBezit[2]++;
+			case GROEN -> fichesEnOntwikkelingskaartenInBezit[3]++;
+			case ZWART -> fichesEnOntwikkelingskaartenInBezit[4]++;
+			}
+		}
+		int[] kosten = gekozenOntwikkelingskaart.getKosten();
+		boolean kanGekochtWorden = true;
+		for (int i = 0; i < kosten.length; i++) {
+			// kanGekochtWorden = fichesEnOntwikkelingskaartenInBezit[i] >= kosten[i] ? true
+			// : false;
+			if (fichesEnOntwikkelingskaartenInBezit[i] >= kosten[i]) {
+				kanGekochtWorden = true;
+			} else {
+				kanGekochtWorden = false;
+				break;
+			}
+		}
+		if (kanGekochtWorden) {
+
+		}
+
+		// Verwijderen van fiches uit de speler en terug toevoegen aan de juist
+		// fichestapel
+		// TODO
+
+		// als alles oke is wordt nu de kaart verwijderd uit de zichtbare stapel en
+		// toegevoegd aan de speler zijn voorraad
+		niveauZichtbaar[niveau - 1][positie - 1] = null;
+		this.spelerAanBeurt.voegOntwikkelingsKaartToeAanHand(gekozenOntwikkelingskaart);
+
+		vulKaartenBij();
+		spelerAanBeurt.setAanDeBeurt(false);
+
 	}
 
 	public void vulKaartenBij() {
@@ -208,7 +277,7 @@ public class Spel {
 				throw new IllegalArgumentException(
 						String.format("Fout in %s: bounds error neemDrieFiches", this.getClass()));
 		}
-		;
+
 		if (indexen.length != 3)
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: lengte indexen param neemDrieFiches", this.getClass()));
@@ -282,7 +351,7 @@ public class Spel {
 	}
 
 	// [testmethode] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
-	private void testOntwikkelingsKaartStapels() {
+	private void testOntwikkelingskaartStapels() {
 		System.out.println("*****Spel test n1/n2/n3 Ontwikkelingskaart stapels zijn goed aangemaakt****");
 		System.out.println(n1);
 		System.out.println(n2);

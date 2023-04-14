@@ -167,4 +167,13 @@ public class Speler {
 				edelSteenFichesInBezit, edelenInBezit);
 	}
 
+	public List<Ontwikkelingskaart> getOntwikkelingsKaartenInHand() {
+		return ontwikkelingsKaartenInHand;
+	}
+
+	public List<Edelsteenfiche> getEdelSteenFichesInHand() {
+		return edelSteenFichesInHand;
+	}
+	
+
 }
