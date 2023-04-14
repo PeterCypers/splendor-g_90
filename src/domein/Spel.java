@@ -214,7 +214,7 @@ public class Spel {
 //			int requiredGems = cardCost.get(kleur);
 //			spelerAanBeurt.verwijderEdelsteenfiche(kleur, requiredGems);
 //		}
-		
+
 		// Remove cards used to buy the card
 //	    List<GemColor> cardColors = card.getColors();
 //	    for (GemColor cardColor : cardColors) {
