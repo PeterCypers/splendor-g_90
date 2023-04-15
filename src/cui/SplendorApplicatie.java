@@ -268,6 +268,7 @@ public class SplendorApplicatie {
 	/* WIT,ROOD,BLAUW,GROEN,ZWART; */
 	// nieuw 11-4-2023
 	private void tweeZelfdeFiches() {
+
 		try {
 			int keuze = 0;
 
@@ -295,47 +296,36 @@ public class SplendorApplicatie {
 
 	// nieuw 11-4-2023
 	private void drieVerschillendeFiches() {
+
 		int AANTAL_FICHES_NEMEN = 3;
-		boolean errorExists = true;
-		// fout opvangen te weinig fiches in stapel (methode volledig opnieuw opstarten)
-		do {
-			try {
-				int[] ficheKeuze = new int[AANTAL_FICHES_NEMEN];
+		int[] ficheKeuze = new int[AANTAL_FICHES_NEMEN];
 
-				System.out.printf(
-						"Kies drie stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
-								+ "Wit: 1%n" + "Rood: 2%n" + "Blauw: 3%n" + "Groen: 4%n" + "Zwart: 5%n");
+		System.out
+				.printf("Kies drie stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
+						+ "Wit: 1%n" + "Rood: 2%n" + "Blauw: 3%n" + "Groen: 4%n" + "Zwart: 5%n");
 
-				for (int i = 0; i < ficheKeuze.length; i++) {
-					do {
-						System.out.printf("Fiche %d: ", i);
+		for (int i = 0; i < AANTAL_FICHES_NEMEN; i++) {
+			do {
+				System.out.printf("Fiche %d: ", i);
 
-						try {
-							ficheKeuze[i] = input.nextInt();
-						} catch (InputMismatchException e) {
-							input.nextLine(); // buffer leegmaken
-							System.out.println("Je keuze moet een geheel getal zijn\n");
-						}
-
-						if (ficheKeuze[i] < 1 || ficheKeuze[i] > 5) {
-							System.out.println("Kies een stapel van [1-5]");
-						}
-					} while (ficheKeuze[i] < 1 || ficheKeuze[i] > 5);
+				try {
+					ficheKeuze[i] = input.nextInt();
+				} catch (InputMismatchException e) {
+					input.nextLine(); // buffer leegmaken
+					System.out.println("Je keuze moet een geheel getal zijn\n");
 				}
 
-				// reduce each choice by 1
-				for (int i = 0; i < ficheKeuze.length; i++) {
-					ficheKeuze[i]--;
+				if (ficheKeuze[i] < 1 || ficheKeuze[i] > 5) {
+					System.out.println("Kies een stapel van [1-5]");
 				}
+			} while (ficheKeuze[i] < 1 || ficheKeuze[i] > 5);
+		}
 
-				dc.neemDrieFiches(ficheKeuze);
-				errorExists = false;
+		// reduce each choice by 1
+		for (int i = 0; i < AANTAL_FICHES_NEMEN; i++) {
+			ficheKeuze[i]--;
+		}
 
-			} catch (IllegalArgumentException e) {
-				System.out.println(e.getMessage());
-			}
-
-		} while (errorExists); // methode-wide error lus
-
+		dc.neemDrieFiches(ficheKeuze);
 	}
 }
