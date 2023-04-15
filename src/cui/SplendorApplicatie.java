@@ -23,8 +23,8 @@ public class SplendorApplicatie {
 		// [TEST] connectie db:
 		System.out.printf("%s", dc.toonAlleSpelers());
 
-		while (geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS || keuze != 2) {
-			if (geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && keuze == 2) {
+		while (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS || keuze != 2) {
+			if (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && keuze == 2) {
 				System.out.println("Je hebt nog niet genoeg spelers gekozen om een spel te starten.\n");
 			}
 			do {
@@ -36,10 +36,9 @@ public class SplendorApplicatie {
 			if (keuze == 1) {
 				System.out.println(voegSpelerToe());
 			}
-
 		}
 		// [TEST] lijst van actieve spelers:
-		// System.out.printf("aantal deelnemers: %d%n%s",geefAantalSpelers(),
+		// System.out.printf("aantal deelnemers: %d%n%s",dc.geefAantalSpelers(),
 		// dc.toonAangemeldeSpelers());
 
 		dc.startNieuwSpel(); // volgorde belangrijk
@@ -56,7 +55,7 @@ public class SplendorApplicatie {
 	}
 
 	private String voegSpelerToe() {
-		if (this.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS)
+		if (dc.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS)
 			return "Maximum aantal spelers bereikt";
 		else {
 			String naam = null;
@@ -83,10 +82,6 @@ public class SplendorApplicatie {
 			} while (loop);
 		}
 		return "Je hebt een speler toegevoegd!\n";
-	}
-
-	private int geefAantalSpelers() {
-		return dc.geefAantalSpelers();
 	}
 
 	private int keuzeMenu() {
@@ -205,7 +200,6 @@ public class SplendorApplicatie {
 
 	}
 
-	
 	// nieuw 11-4-2023
 	private void koopOntwikkelingskaart() {
 		int niveau = 0;

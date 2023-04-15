@@ -6,44 +6,38 @@ import java.util.List;
 import persistentie.OntwikkelingskaartMapper;
 
 public class OntwikkelingskaartRepository {
-	
+
 	private OntwikkelingskaartMapper mapper;
 	private List<Ontwikkelingskaart> niveau1;
 	private List<Ontwikkelingskaart> niveau2;
 	private List<Ontwikkelingskaart> niveau3;
-	
+
 	public OntwikkelingskaartRepository() {
 		this.mapper = new OntwikkelingskaartMapper();
-		haalN1KaartenOp();
-		haalN2KaartenOp();
-		haalN3KaartenOp();
-		shuffleKaarten();
-	}
-	//N1
-	private void haalN1KaartenOp() {
+
+		// haal ontwikkelingskaarten op per niveau
 		this.niveau1 = mapper.geefN1Kaarten();
-	}
-	public List<Ontwikkelingskaart> geefN1Kaarten(){
-		return this.niveau1;
-	}
-	//N2
-	private void haalN2KaartenOp() {
 		this.niveau2 = mapper.geefN2Kaarten();
-	}
-	public List<Ontwikkelingskaart> geefN2Kaarten(){
-		return this.niveau2;
-	}
-	//N3
-	private void haalN3KaartenOp() {
 		this.niveau3 = mapper.geefN3Kaarten();
-	}
-	public List<Ontwikkelingskaart> geefN3Kaarten(){
-		return this.niveau3;
-	}
-	//de edele kaarten zullen hier straks ook mee geshuffled worden
-	private void shuffleKaarten() {
+
+		// shuffelt de verschillende niveaus van ontwikkelingskaarten
 		Collections.shuffle(niveau1);
 		Collections.shuffle(niveau2);
 		Collections.shuffle(niveau3);
+	}
+
+	// N1
+	public List<Ontwikkelingskaart> geefN1Kaarten() {
+		return this.niveau1;
+	}
+
+	// N2
+	public List<Ontwikkelingskaart> geefN2Kaarten() {
+		return this.niveau2;
+	}
+
+	// N3
+	public List<Ontwikkelingskaart> geefN3Kaarten() {
+		return this.niveau3;
 	}
 }

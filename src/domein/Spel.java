@@ -46,7 +46,7 @@ public class Spel {
 
 		vulKaartenBij();
 
-		// [test]
+		// [TEST]
 		// testOntwikkelingsKaartStapels();
 	}
 
@@ -368,7 +368,7 @@ public class Spel {
 		return String.format("Fout in %s: %s", this.getClass(), specifiekBericht);
 	}
 
-	// [testmethode] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
+	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
 	private void testOntwikkelingskaartStapels() {
 		System.out.println("*****Spel test n1/n2/n3 Ontwikkelingskaart stapels zijn goed aangemaakt****");
 		System.out.println(n1);
