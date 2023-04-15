@@ -73,7 +73,7 @@ public class SplendorApplicatie {
 					loop = false;
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
-					System.out.println("De ingevoerde geboortejaar moet een geheel getal zijn\n");
+					System.out.println("Het ingevoerde geboortejaar moet een geheel getal zijn\n");
 				} catch (IllegalArgumentException e) {
 					System.out.println(e.getMessage());
 					System.out.println();
@@ -100,10 +100,6 @@ public class SplendorApplicatie {
 		} while (loop);
 
 		return keuze;
-	}
-
-	private void spelOpstarten() {
-		// TODO ? (zie this.startSpel())
 	}
 
 	private String spelGestartFeedback() {
@@ -158,6 +154,7 @@ public class SplendorApplicatie {
 	// afgewerkt 11-4-2023
 	private void speelBeurt() {
 		int keuze;
+
 		System.out.printf("Speler aan beurt is: %s%n%n", dc.geefSpelerAanBeurtVerkort());
 
 		while (dc.spelerIsAanBeurt()) {
@@ -171,6 +168,7 @@ public class SplendorApplicatie {
 					input.nextLine(); // buffer leegmaken
 					System.out.println("Je keuze moet een geheel getal zijn\n");
 				}
+
 				if (keuze < 1 || keuze > 4)
 					System.out.println("Gelieve een geldige waarde in te voeren:");
 			} while (keuze < 1 || keuze > 4);
@@ -203,29 +201,40 @@ public class SplendorApplicatie {
 	// nieuw 11-4-2023
 	private void koopOntwikkelingskaart() {
 		int niveau = 0;
+		int positie = 0;
+
 		do {
 			System.out.print("Kies niveau van kaart [1-3]: ");
+
 			try {
 				niveau = input.nextInt();
+				if (niveau < 1 || niveau > 3)
+					throw new IllegalArgumentException("Gelieve een niveau van [1-3] te kiezen");
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn\n");
+				System.out.println("Je keuze moet een geheel getal zijn tussen [1-3]\n");
+			} catch (IllegalArgumentException e) {
+				input.nextLine(); // buffer leegmaken
+				System.out.println(e.getMessage());
 			}
-			if (niveau < 1 || niveau > 3)
-				System.out.println("Gelieve een niveau van [1-3] te kiezen");
 		} while (niveau < 1 || niveau > 3);
-		int positie = 0;
+
 		do {
 			System.out.print("Kies de positie van je kaart [1-4]: ");
+
 			try {
 				positie = input.nextInt();
+				if (positie < 1 || positie > 4)
+					throw new IllegalArgumentException("Gelieve een positie van [1-4] te kiezen");
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn\n");
+				System.out.println("Je keuze moet een geheel getal zijn tussen [1-4]\n");
+			} catch (IllegalArgumentException e) {
+				input.nextLine(); // buffer leegmaken
+				System.out.println(e.getMessage());
 			}
-			if (positie < 1 || positie > 4)
-				System.out.println("Gelieve een positie van [1-4] te kiezen");
 		} while (positie < 1 || positie > 4);
+
 		try {
 			dc.kiesOntwikkelingskaart(niveau, positie);
 		} catch (RuntimeException e) {
