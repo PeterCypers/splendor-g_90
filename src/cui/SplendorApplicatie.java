@@ -258,6 +258,7 @@ public class SplendorApplicatie {
 			if (keuze < 1 || keuze > 2)
 				System.out.println("Gelieve optie 1 of 2 te kiezen");
 		} while (keuze < 1 || keuze > 2);
+
 		if (keuze == 1)
 			drieVerschillendeFiches();
 		else if (keuze == 2)
@@ -267,33 +268,29 @@ public class SplendorApplicatie {
 	/* WIT,ROOD,BLAUW,GROEN,ZWART; */
 	// nieuw 11-4-2023
 	private void tweeZelfdeFiches() {
-		// fout opvangen te weinig fiches in stapel (methode volledig opnieuw opstarten)
-		boolean errorExists = true;
-		do {
-			try {
-				int keuze = 0;
-				System.out.printf(
-						"Kies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
-								+ "Wit: 1%n" + "Rood: 2%n" + "Blauw: 3%n" + "Groen: 4%n" + "Zwart: 5%n");
-				do {
-					System.out.print("keuze: ");
-					try {
-						keuze = input.nextInt();
-					} catch (InputMismatchException e) {
-						input.nextLine(); // buffer leegmaken
-						System.out.println("Je keuze moet een geheel getal zijn\n");
-					}
-					if (keuze < 1 || keuze > 5)
-						System.out.println("Kies een stapel van [1-5]");
-				} while (keuze < 1 || keuze > 5);
+		try {
+			int keuze = 0;
 
-				int index = keuze - 1;
-				dc.neemTweeFiches(index);
-				errorExists = false;
-			} catch (IllegalArgumentException e) {
-				System.out.println(e.getMessage());
-			}
-		} while (errorExists);
+			System.out.printf(
+					"Kies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
+							+ "Wit: 1%n" + "Rood: 2%n" + "Blauw: 3%n" + "Groen: 4%n" + "Zwart: 5%n");
+			do {
+				System.out.print("keuze: ");
+				try {
+					keuze = input.nextInt();
+				} catch (InputMismatchException e) {
+					input.nextLine(); // buffer leegmaken
+					System.out.println("Je keuze moet een geheel getal zijn\n");
+				}
+				if (keuze < 1 || keuze > 5)
+					System.out.println("Kies een stapel van [1-5]");
+			} while (keuze < 1 || keuze > 5);
+
+			int index = keuze - 1;
+			dc.neemTweeFiches(index);
+		} catch (IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	// nieuw 11-4-2023
