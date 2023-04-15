@@ -178,18 +178,10 @@ public class SplendorApplicatie {
 			}
 
 			switch (keuze) {
-			case NEEM_TWEE:
-				neemTweeDezelfdeFiches();
-				break;
-			case NEEM_DRIE:
-				neemDrieVerschillendeFiches();
-				break;
-			case KOOP_KAART:
-				koopOntwikkelingskaart();
-				break;
-			case PAS_BEURT:
-				dc.pasBeurt();
-				break;
+			case NEEM_DRIE -> neemDrieVerschillendeFiches();
+			case NEEM_TWEE -> neemTweeDezelfdeFiches();
+			case KOOP_KAART -> koopOntwikkelingskaart();
+			case PAS_BEURT -> dc.pasBeurt();
 			}
 		}
 
