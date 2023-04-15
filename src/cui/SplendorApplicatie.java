@@ -222,37 +222,37 @@ public class SplendorApplicatie {
 		int niveau = 0;
 		int positie = 0;
 
-		do {
-			System.out.print("Kies niveau van kaart [1-3]: ");
+//		do {
+		System.out.print("Kies niveau van kaart [1-3]: ");
 
-			try {
-				niveau = input.nextInt();
-				if (niveau < 1 || niveau > 3)
-					throw new IllegalArgumentException("Gelieve een niveau van [1-3] te kiezen");
-			} catch (InputMismatchException e) {
-				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn tussen [1-3]\n");
-			} catch (IllegalArgumentException e) {
-				input.nextLine(); // buffer leegmaken
-				System.out.println(e.getMessage());
-			}
-		} while (niveau < 1 || niveau > 3);
+		try {
+			niveau = input.nextInt();
+			if (niveau < 1 || niveau > 3)
+				throw new IllegalArgumentException("Gelieve een niveau van [1-3] te kiezen");
+		} catch (InputMismatchException e) {
+			input.nextLine(); // buffer leegmaken
+			System.out.println("Je keuze moet een geheel getal zijn tussen [1-3]\n");
+		} catch (IllegalArgumentException e) {
+			input.nextLine(); // buffer leegmaken
+			System.out.println(e.getMessage());
+		}
+//		} while (niveau < 1 || niveau > 3);
 
-		do {
-			System.out.print("Kies de positie van je kaart [1-4]: ");
+//		do {
+		System.out.print("Kies de positie van je kaart [1-4]: ");
 
-			try {
-				positie = input.nextInt();
-				if (positie < 1 || positie > 4)
-					throw new IllegalArgumentException("Gelieve een positie van [1-4] te kiezen");
-			} catch (InputMismatchException e) {
-				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn tussen [1-4]\n");
-			} catch (IllegalArgumentException e) {
-				input.nextLine(); // buffer leegmaken
-				System.out.println(e.getMessage());
-			}
-		} while (positie < 1 || positie > 4);
+		try {
+			positie = input.nextInt();
+			if (positie < 1 || positie > 4)
+				throw new IllegalArgumentException("Gelieve een positie van [1-4] te kiezen");
+		} catch (InputMismatchException e) {
+			input.nextLine(); // buffer leegmaken
+			System.out.println("Je keuze moet een geheel getal zijn tussen [1-4]\n");
+		} catch (IllegalArgumentException e) {
+			input.nextLine(); // buffer leegmaken
+			System.out.println(e.getMessage());
+		}
+//		} while (positie < 1 || positie > 4);
 
 		try {
 			dc.kiesOntwikkelingskaart(niveau, positie);
@@ -299,7 +299,7 @@ public class SplendorApplicatie {
 
 		for (int i = 0; i < AANTAL_FICHES_NEMEN; i++) {
 			do {
-				System.out.printf("Fiche %d: ", i);
+				System.out.printf("Fiche %d: ", i + 1);
 
 				try {
 					ficheKeuze[i] = input.nextInt();
