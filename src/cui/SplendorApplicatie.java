@@ -37,6 +37,7 @@ public class SplendorApplicatie {
 				System.out.println(voegSpelerToe());
 			}
 		}
+
 		// [TEST] lijst van actieve spelers:
 		// System.out.printf("aantal deelnemers: %d%n%s",dc.geefAantalSpelers(),
 		// dc.toonAangemeldeSpelers());
@@ -61,6 +62,7 @@ public class SplendorApplicatie {
 			String naam = null;
 			int geboorteJaar;
 			boolean loop = true;
+
 			do {
 				try {
 					System.out.print("Kies een naam: ");
@@ -81,12 +83,14 @@ public class SplendorApplicatie {
 
 			} while (loop);
 		}
+
 		return "Je hebt een speler toegevoegd!\n";
 	}
 
 	private int keuzeMenu() {
 		int keuze = -1;
 		boolean loop = true;
+
 		do {
 			try {
 				System.out.println("Maak een keuze: \n" + "1. Speler toevoegen \n" + "2. Spel starten");
@@ -123,13 +127,16 @@ public class SplendorApplicatie {
 
 		System.out.println("*****Spel Situatie:*****\n");
 		System.out.println("Beschikbare edelen:");
+
 		for (SpelVoorwerpDTO dto : dtos) {
 			if (dto.type() == 'E') {
 				System.out.printf("Edele: %s, prestige: %d%nKost: %s%n", dto.foto(), dto.prestigepunten(),
 						Arrays.toString(dto.kosten()));
 			}
 		}
+
 		System.out.println("\nBeschikbare ontwikkelingskaarten:"); // foto, niveau, kleur, prestige, \n kosten
+
 		for (int i = 1; i < 4; i++) {
 			int niveau = (i == 1) ? 1 : (i == 2) ? 2 : 3;
 			for (SpelVoorwerpDTO dto : dtos) {
@@ -141,13 +148,16 @@ public class SplendorApplicatie {
 				}
 			}
 		}
+
 		System.out.println("\nBeschikbare fiches per stapel:"); // foto\n, kleur\n, resterende fiches
+
 		for (SpelVoorwerpDTO dto : dtos) {
 			if (dto.type() == 'S') {
 				System.out.printf("FicheStapel: %s%nKleur: %s%nResterende Fiches: %d%n", dto.foto(),
 						dto.kleur().toString(), dto.aantalFiches());
 			}
 		}
+
 		System.out.println();
 	}
 
