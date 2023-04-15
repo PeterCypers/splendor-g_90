@@ -269,14 +269,17 @@ public class SplendorApplicatie {
 			System.out.printf(
 					"Kies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
 							+ "Wit: 1%n" + "Rood: 2%n" + "Blauw: 3%n" + "Groen: 4%n" + "Zwart: 5%n");
+
 			do {
 				System.out.print("keuze: ");
+
 				try {
 					keuze = input.nextInt();
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
 					System.out.println("Je keuze moet een geheel getal zijn\n");
 				}
+
 				if (keuze < 1 || keuze > 5)
 					System.out.println("Kies een stapel van [1-5]");
 			} while (keuze < 1 || keuze > 5);
