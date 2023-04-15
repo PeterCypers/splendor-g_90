@@ -153,47 +153,64 @@ public class SplendorApplicatie {
 
 	// afgewerkt 11-4-2023
 	private void speelBeurt() {
-		int keuze;
+		SoortKeuze keuze = null;
 
 		System.out.printf("Speler aan beurt is: %s%n%n", dc.geefSpelerAanBeurtVerkort());
 
+		/*
+		 * zolang speler aan de beurt is => toon de verschillende opties => en laat hem
+		 * een optie kiezen
+		 */
 		while (dc.spelerIsAanBeurt()) {
-			keuze = 0;
-			System.out
-					.print("Maak een keuze:\n1. Neem fiches\n2. Koop een ontwikkelingskaart\n3. Pas u beurt\nKeuze: ");
-			do {
+			System.out.print("Maak een keuze:\n" + "1. Neem 3 verschillende fiches\n" + "2. Neem 2 dezelfde fiches\n"
+					+ "3. Koop een ontwikkelingskaart\n" + "4. Pas u beurt\nKeuze: ");
+
+			while (keuze == null) {
 				try {
-					keuze = input.nextInt();
+					int keuzeGetal = input.nextInt();
+					keuze = SoortKeuze.valueOf(keuzeGetal);
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
 					System.out.println("Je keuze moet een geheel getal zijn\n");
+				} catch (IllegalArgumentException e) {
+					System.out.println(e.getMessage());
 				}
-
-				if (keuze < 1 || keuze > 4)
-					System.out.println("Gelieve een geldige waarde in te voeren:");
-			} while (keuze < 1 || keuze > 4);
+			}
 
 			switch (keuze) {
-			case 1 -> neemFiches();
-			case 2 -> koopOntwikkelingskaart();
-			case 3 -> dc.pasBeurt();
+			case NEEM_TWEE:
+				neemTweeDezelfdeFiches();
+				break;
+			case NEEM_DRIE:
+				neemDrieVerschillendeFiches();
+				break;
+			case KOOP_KAART:
+				koopOntwikkelingskaart();
+				break;
+			case PAS_BEURT:
+				dc.pasBeurt();
+				break;
 			}
 		}
-		keuze = 0;
+
+		/*
+		 * TODO: add context
+		 */
+		int keuze2 = 0;
 		System.out.print("Wil je nog je speler status bekijken?\n" + "1. Bekijk status en beëindig beurt\n"
 				+ "2. Beëindig beurt\n" + "keuze: ");
 		do {
 			try {
-				keuze = input.nextInt();
+				keuze2 = input.nextInt();
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
 				System.out.println("Je keuze moet een geheel getal zijn\n");
 			}
-			if (keuze < 1 || keuze > 2)
+			if (keuze2 < 1 || keuze2 > 2)
 				System.out.println("Gelieve optie 1 of 2 te kiezen");
-		} while (keuze < 1 || keuze > 2);
+		} while (keuze2 < 1 || keuze2 > 2);
 
-		if (keuze == 1)
+		if (keuze2 == 1)
 			System.out.print(dc.toonSpelerAanBeurtSituatie());
 
 	}
@@ -242,32 +259,7 @@ public class SplendorApplicatie {
 		}
 	}
 
-	// nieuw 11-4-2023
-	private void neemFiches() {
-		int keuze = 0;
-		System.out.print("Kies de fiches die je wilt nemen, 3 verschillende, of 2 dezelfde\n"
-				+ "1. Drie verschillende fiches\n" + "2. Twee dezelfde fiches\n");
-		do {
-			System.out.print("keuze: ");
-			try {
-				keuze = input.nextInt();
-			} catch (InputMismatchException e) {
-				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn\n");
-			}
-			if (keuze < 1 || keuze > 2)
-				System.out.println("Gelieve optie 1 of 2 te kiezen");
-		} while (keuze < 1 || keuze > 2);
-
-		if (keuze == 1)
-			drieVerschillendeFiches();
-		else if (keuze == 2)
-			tweeZelfdeFiches();
-	}
-
-	/* WIT,ROOD,BLAUW,GROEN,ZWART; */
-	// nieuw 11-4-2023
-	private void tweeZelfdeFiches() {
+	private void neemTweeDezelfdeFiches() {
 
 		try {
 			int keuze = 0;
@@ -294,8 +286,7 @@ public class SplendorApplicatie {
 		}
 	}
 
-	// nieuw 11-4-2023
-	private void drieVerschillendeFiches() {
+	private void neemDrieVerschillendeFiches() {
 
 		int AANTAL_FICHES_NEMEN = 3;
 		int[] ficheKeuze = new int[AANTAL_FICHES_NEMEN];
@@ -321,7 +312,7 @@ public class SplendorApplicatie {
 			} while (ficheKeuze[i] < 1 || ficheKeuze[i] > 5);
 		}
 
-		// reduce each choice by 1
+		// reduce each choice by 1 because of user input
 		for (int i = 0; i < AANTAL_FICHES_NEMEN; i++) {
 			ficheKeuze[i]--;
 		}

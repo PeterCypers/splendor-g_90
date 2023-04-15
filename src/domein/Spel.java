@@ -2,7 +2,6 @@ package domein;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Spel {
 	public static final int MIN_AANTAL_SPELERS = 2;
