@@ -205,8 +205,7 @@ public class SplendorApplicatie {
 
 	}
 
-	// TODO methode geeft de kaart op deze moment, moet nog code schrijven om te
-	// controlleren of je die kaart wel kan kopen of niet
+	
 	// nieuw 11-4-2023
 	private void koopOntwikkelingskaart() {
 		int niveau = 0;
@@ -233,8 +232,11 @@ public class SplendorApplicatie {
 			if (positie < 1 || positie > 4)
 				System.out.println("Gelieve een positie van [1-4] te kiezen");
 		} while (positie < 1 || positie > 4);
-
-		dc.kiesOntwikkelingskaart(niveau, positie);
+		try {
+			dc.kiesOntwikkelingskaart(niveau, positie);
+		} catch (RuntimeException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	// nieuw 11-4-2023

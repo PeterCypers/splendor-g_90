@@ -148,44 +148,6 @@ public class Spel {
 	 * @param niveau   : 1-3
 	 * @param positie: 1-4 (-1 voor index)
 	 */
-	// nieuw 11-4-2023
-//	public void kiesOntwikkelingskaart(int niveau, int positie) {
-//		if (positie < 1 || positie > 4)
-//			throw new IllegalArgumentException(foutBoodschap("Positie moet in range: [1-4] zijn"));
-//		if (niveau < 1 || niveau > 3)
-//			throw new IllegalArgumentException(foutBoodschap("Niveau moet in range: [2-3] zijn"));
-//		Ontwikkelingskaart ok = null;
-//
-//		switch (niveau) {
-//		case 1 -> {
-//			ok = niveau1Zichtbaar[positie - 1];
-//			if (ok == null)
-//				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
-//			niveau1Zichtbaar[positie - 1] = null;
-//		}
-//		case 2 -> {
-//			ok = niveau2Zichtbaar[positie - 1];
-//			if (ok == null)
-//				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
-//			niveau2Zichtbaar[positie - 1] = null;
-//		}
-//		case 3 -> {
-//			ok = niveau3Zichtbaar[positie - 1];
-//			if (ok == null)
-//				throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
-//			niveau3Zichtbaar[positie - 1] = null;
-//		}
-//		}
-//		this.spelerAanBeurt.voegOntwikkelingskaartToeAanHand(ok);
-//		vulKaartenBij(); // kaarten telkens bijvullen nadat 1 wordt genomen
-//
-//		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
-//		spelerAanBeurt.setAanDeBeurt(false);
-//
-//	}
-
-	// WORK IN PROGRESS
-	/*---------------------------------------------------------------------------------------------------------------------------*/
 	public void kiesOntwikkelingskaart(int niveau, int positie) {
 		if (positie < 1 || positie > 4)
 			throw new IllegalArgumentException(foutBoodschap("Positie moet in range: [1-4] zijn"));
@@ -202,9 +164,8 @@ public class Spel {
 		// Kijken of de speler genoeg fiches en/of ontwikkelingskaarten reeds in hand
 		// heeft om deze kaart te kopen
 		if (!kanKaartKopen(gekozenOntwikkelingskaart)) {
-			// TODO mag de applicatie niet stoppen maar moet de Speler terugsturen naar het
-			// voorgaande menu
-			throw new RuntimeException("Speler mag deze kaart niet kopen");
+			throw new RuntimeException(
+					"Speler mag deze kaart niet kopen.\nU heeft niet genoeg edelsteenfiches om deze ontwikkelingskaart te kopen.");
 		}
 
 		// Verwijder fiches uit voorraad speler
@@ -296,17 +257,16 @@ public class Spel {
 			default -> throw new IllegalArgumentException("Unexpected value: " + i);
 			};
 			// Kleur kleur = Kleur.values(i);
-			for (int j = 0; j < wegTeNemenEdelsteenfichesUitVoorraad[i]; i++) {
+			for (int j = 0; j < wegTeNemenEdelsteenfichesUitVoorraad[i]; j++) {
 				Edelsteenfiche ef = new Edelsteenfiche(soort[i], kleur, null);
 				// Terug toevoegen van de fiche aan de stapel
-				// TODO terug toevoegen aan de stapel werkt nog niet
-				// ficheStapels.voegFicheToe(ef);
+				ficheStapels[i].voegFicheToe(ef);
+				// verwijderen van fiches uit de speler zjin voorraad
 				spelerAanBeurt.verwijderEdelsteenfiche(ef);
 			}
 		}
 	}
 
-	/*---------------------------------------------------------------------------------------------------------------------------*/
 	public void vulKaartenBij() {
 		// 1x itereren over 1 van de lijsten, ze zijn allemaal even lang
 		for (int i = 0; i < niveau1Zichtbaar.length; i++) {
