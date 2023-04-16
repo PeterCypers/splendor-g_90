@@ -85,7 +85,6 @@ public class DomeinController {
 		return aangemeldeSpelers.size();
 	}
 
-	// nieuw 10-4-2023
 	public boolean spelerIsAanBeurt() {
 		return this.spel.getSpelerAanBeurt().isAanDeBeurt();
 	}
@@ -110,7 +109,6 @@ public class DomeinController {
 		return alleKaartenPerNiveau;
 	}
 
-	// nieuwe methode 6-4-2023
 	private List<Edele> haalEdelenUitRepo(int aantalSpelers) {
 		// test:
 		testPrintLijstMetEdelen(edeleRepo.geefEdelen(aantalSpelers));
@@ -118,7 +116,6 @@ public class DomeinController {
 		return edeleRepo.geefEdelen(aantalSpelers);
 	}
 
-	// nieuwe methode 6-4-2023
 	private FicheStapel[] haalEdelsteenficheStapelsUitRepo() {
 		// test:
 		testPrintLijstMetEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
@@ -127,7 +124,7 @@ public class DomeinController {
 		return edelsteenRepo.geefEdelsteenficheStapels();
 	}
 
-	// nieuwe methode 7-4-2023 maakt gebruik van Spel.geefSpelVoorwerpen()
+	// maakt gebruik van Spel.geefSpelVoorwerpen()
 	public List<SpelVoorwerpDTO> toonSpelSituatie() {
 		List<SpelVoorwerp> spelvoorwerpen = spel.geefSpelVoorwerpen();
 		List<SpelVoorwerpDTO> lijstDTOs = new ArrayList<>();
@@ -149,7 +146,6 @@ public class DomeinController {
 		return lijstDTOs;
 	}
 
-	// nieuwe methode 8-4-2023
 	public String toonSpelerSituatie() {
 		String spelerSituatie = "";
 		List<Speler> spelerInSpel = this.spel.getAangemeldeSpelers();
@@ -176,22 +172,18 @@ public class DomeinController {
 	 * @param niveau   : 1-3
 	 * @param positie: 1-4
 	 */
-	// nieuw 11-4-2023
 	public void kiesOntwikkelingskaart(int niveau, int positie) {
 		spel.kiesOntwikkelingskaart(niveau, positie);
 	}
 
-	// nieuw 11-4-2023
 	public void neemDrieFiches(int[] indexen) {
 		spel.neemDrieFiches(indexen);
 	}
 
-	// nieuw 11-4-2023
 	public void neemTweeFiches(int index) {
 		spel.neemTweeFiches(index);
 	}
 
-	// nieuw 11-4-2023
 	public void pasBeurt() {
 		// TODO controleer of methode kan leiden tot verkeerde object status
 		spel.getSpelerAanBeurt().setAanDeBeurt(false);
@@ -222,7 +214,6 @@ public class DomeinController {
 		System.out.println("***************************************************************************");
 	}
 
-	// nieuwe methode 6-4-2023
 	// [testmethode] om te zien of de edelen-lijst goed opgevuld is
 	private void testPrintLijstMetEdelen(List<Edele> edelen) {
 		System.out.println();
@@ -236,7 +227,6 @@ public class DomeinController {
 		System.out.println("***************************************************************************");
 	}
 
-	// nieuwe methode 7-4-2023
 	// [testmethode]
 	private void testPrintStapelsEdelsteenFiches(FicheStapel[] alleFicheStapels) {
 		// adres, kleur, aantalfiches op attribuut + op lengte van lijst, naam van foto
@@ -294,6 +284,10 @@ public class DomeinController {
 		return spel.aantalStapelsMeerDanNul();
 	}
 
+	public boolean bestaatStapelMeerDan4() {
+		return spel.bestaatStapelMeerDan4();
+	}
+
 	public boolean buitenVoorraad() {
 		return spel.getSpelerAanBeurt().buitenVoorraad();
 	}
@@ -302,8 +296,8 @@ public class DomeinController {
 		return spel.getSpelerAanBeurt().getEdelsteenfichesInHand();
 	}
 
-	public boolean bestaatStapelMeerDan4() {
-		return spel.bestaatStapelMeerDan4();
+	public void plaatsTerugInStapel(int stapelKeuze) {
+		spel.plaatsTerugInStapel(stapelKeuze);
 	}
 
 }

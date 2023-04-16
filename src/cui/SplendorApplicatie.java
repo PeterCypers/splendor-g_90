@@ -287,7 +287,7 @@ public class SplendorApplicatie {
 				"Kies %d stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n",
 				aantalFichesDieGenomenMogenWorden);
 		for (Kleur k : Kleur.values()) {
-			System.out.printf("%s %d%n", k, k.getKleur());
+			System.out.printf("%s %d%n", k, k.getKleur() + 1);
 		}
 
 		do {
@@ -324,11 +324,11 @@ public class SplendorApplicatie {
 		dc.neemDrieFiches(ficheKeuze);
 
 		if (dc.buitenVoorraad()) {
-			geefFicheTerug();
+			geefFichesTerug();
 		}
 	}
 
-	private void geefFicheTerug() {
+	private void geefFichesTerug() {
 		// toon overzicht van edelsteenfiches in speler zijn voorraad
 		ArrayList<Edelsteenfiche> edelsteenfichesInHand = dc.geefSpelerAanBeurtZijnFiches();
 
@@ -349,20 +349,26 @@ public class SplendorApplicatie {
 				blauw, groen, zwart);
 
 		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
-		int aantalTerugTePlaatsen = 0;
-		System.out.printf(
-				"Kies %d stapels om een fiches terug te plaatsen naar de spel stapel, kies een getal die hoort bij je gekozen stapel.%n",
+		int aantalTerugTePlaatsen = dc.geefSpelerAanBeurtZijnFiches().size() - 10;
+		System.out.printf("Geef %d fiches terug aan de spel stapels, kies een getal die hoort bij je gekozen stapel.%n",
 				aantalTerugTePlaatsen);
 		for (Kleur k : Kleur.values()) {
-			System.out.printf("%s %d%n", k, k.getKleur());
+			System.out.printf("%s %d%n", k, k.getKleur() + 1);
+		}
+		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
+			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer):");
+			int stapelKeuze = input.nextInt();
+
+			dc.plaatsTerugInStapel(stapelKeuze);
 		}
 
 	}
 
 	private void neemTweeDezelfdeFiches() {
 
-		if (dc.bestaatStapelMeerDan4()) {
-			throw new RuntimeException("Deze actie kan niet gedaan worden omdat alle stapels leeg zijn");
+		if (!dc.bestaatStapelMeerDan4()) {
+			throw new RuntimeException(
+					"Deze actie kan niet gedaan worden omdat er geen stapels zijn die 4 of meer fiches hebben");
 		}
 
 		try {
@@ -371,7 +377,7 @@ public class SplendorApplicatie {
 			System.out.printf(
 					"Kies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n");
 			for (Kleur k : Kleur.values()) {
-				System.out.printf("%s %d%n", k, k.getKleur());
+				System.out.printf("%s %d%n", k, k.getKleur() + 1);
 			}
 
 			do {
@@ -395,7 +401,7 @@ public class SplendorApplicatie {
 		}
 
 		if (dc.buitenVoorraad()) {
-			geefFicheTerug();
+			geefFichesTerug();
 		}
 	}
 }

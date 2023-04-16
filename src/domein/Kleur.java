@@ -1,7 +1,7 @@
 package domein;
 
 public enum Kleur {
-	WIT(1), ROOD(2), BLAUW(3), GROEN(4), ZWART(5);
+	WIT(0), ROOD(1), BLAUW(2), GROEN(3), ZWART(4);
 
 	private final int KLEUR;
 
@@ -20,6 +20,12 @@ public enum Kleur {
 			}
 		}
 		throw new IllegalArgumentException("Invalid keuze: " + kleur);
+	}
+
+	public String soort() {
+		String[] soort = { "diamant", "robijn", "saffier", "smaragd", "onyx" };
+
+		return soort[this.getKleur()];
 	}
 
 	@Override

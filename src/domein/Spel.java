@@ -253,21 +253,8 @@ public class Spel {
 		}
 
 		for (int i = 0; i < wegTeNemenEdelsteenfichesUitVoorraad.length; i++) {
-			String[] soort = { "diamant", "robijn", "saffier", "smaragd", "onyx" };
-
-			// Kleur kleur2 = Kleur.values(i);
-			// Kleur kleur3 = Kleur.valueOf(i);
-			Kleur kleur = switch (i) {
-			case 0 -> Kleur.WIT;
-			case 1 -> Kleur.ROOD;
-			case 2 -> Kleur.BLAUW;
-			case 3 -> Kleur.GROEN;
-			case 4 -> Kleur.ZWART;
-			default -> throw new IllegalArgumentException("Unexpected value: " + i);
-			};
-
 			for (int j = 0; j < wegTeNemenEdelsteenfichesUitVoorraad[i]; j++) {
-				Edelsteenfiche ef = new Edelsteenfiche(soort[i], kleur, null);
+				Edelsteenfiche ef = new Edelsteenfiche(Kleur.valueOf(i));
 				// Terug toevoegen van de fiche aan de stapel
 				ficheStapels[i].voegFicheToe(ef);
 				// verwijderen van fiches uit de speler zjin voorraad
@@ -301,6 +288,10 @@ public class Spel {
 			if (i < 0 || i > 4)
 				throw new IllegalArgumentException(
 						String.format("Fout in %s: bounds error neemDrieFiches", this.getClass()));
+
+			if (ficheStapels[i].getAantalFiches() == 0) {
+				throw new RuntimeException("U probeert fiches te nemen van een lege stapel.");
+			}
 		}
 
 		// verplaats de edelsteenfiches van spel voorraad naar speler voorraad
@@ -396,6 +387,12 @@ public class Spel {
 		System.out.println(n2);
 		System.out.println(n3);
 		System.out.println("***************************************************************************");
+	}
+
+	public void plaatsTerugInStapel(int stapelKeuze) {
+		Edelsteenfiche ef = new Edelsteenfiche(Kleur.valueOf(stapelKeuze - 1));
+		spelerAanBeurt.verwijderEdelsteenfiche(ef);
+		ficheStapels[stapelKeuze].voegFicheToe(ef);
 	}
 
 }

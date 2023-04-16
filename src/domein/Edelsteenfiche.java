@@ -1,26 +1,23 @@
 package domein;
 
-public class Edelsteenfiche implements SpelVoorwerp{
+public class Edelsteenfiche implements SpelVoorwerp {
 
 	/**
-	 * afhankelijk van de kleur:
-	 * Smaragden (groen)
-	 * Diamanten (wit)
-	 * Saffieren (blauw)
-	 * Onyxen (zwart)
-	 * Robijnen (rood)
+	 * afhankelijk van de kleur: Smaragden (groen) Diamanten (wit) Saffieren (blauw)
+	 * Onyxen (zwart) Robijnen (rood)
 	 */
-	
+
 	private String soort;
 	private Kleur kleur;
 	private String ficheFoto;
 
-	public Edelsteenfiche(String soort, Kleur kleur, String foto) {
-		setSoort(soort);
+	public Edelsteenfiche(Kleur kleur) {
+		String[] soort = { "diamant", "robijn", "saffier", "smaragd", "onyx" };
+		setSoort(soort[kleur.getKleur()]);
 		setKleur(kleur);
-		setFicheFoto(foto);
+		setFicheFoto(soort[kleur.getKleur()] + ".png");
 	}
-	
+
 	/* ---- Setters & Getters ---- */
 	public String getSoort() {
 		return this.soort;
@@ -37,11 +34,11 @@ public class Edelsteenfiche implements SpelVoorwerp{
 	private void setKleur(Kleur kleur) {
 		this.kleur = kleur;
 	}
-	
+
 	public String getFicheFoto() {
 		return this.ficheFoto;
 	}
-	
+
 	private void setFicheFoto(String foto) {
 		this.ficheFoto = foto;
 	}
