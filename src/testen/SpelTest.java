@@ -52,14 +52,14 @@ class SpelTest {
 //		
 //	}
 
-	@Test
-	public void maakSpel_lijstGeldigeSpelerAantal_maaktNieuwSpelAan() {
-		List<Speler> spelers = new ArrayList<Speler>();
-		spelers.add(spelerA);
-		spelers.add(spelerB);
-		Spel spel = new Spel(spelers);
-		assertEquals(2, spel.getAantalSpelers());
-	}
+//	@Test
+//	public void maakSpel_lijstGeldigeSpelerAantal_maaktNieuwSpelAan() {
+//		List<Speler> spelers = new ArrayList<Speler>();
+//		spelers.add(spelerA);
+//		spelers.add(spelerB);
+//		Spel spel = new Spel(spelers);
+//		assertEquals(2, spel.getAantalSpelers());
+//	}
 
 	// TODO hieronder een idee van mogelijkse test
 

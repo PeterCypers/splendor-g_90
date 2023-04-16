@@ -14,7 +14,7 @@ public class Speler {
 	private boolean startSpeler;
 	private List<Ontwikkelingskaart> ontwikkelingskaartenInHand;
 	private List<Edele> edelenInHand;
-	private List<Edelsteenfiche> edelsteenfichesInHand;
+	private ArrayList<Edelsteenfiche> edelsteenfichesInHand;
 
 	public Speler(String gebruikersnaam, int geboortejaar) {
 		setGebruikersnaam(gebruikersnaam);
@@ -73,7 +73,7 @@ public class Speler {
 
 	public void verwijderEdelsteenfiche(Edelsteenfiche ef) {
 		edelsteenfichesInHand.remove(ef);
-		
+
 	}
 
 	public String getGebruikersnaam() {
@@ -117,7 +117,7 @@ public class Speler {
 		this.geboortejaar = geboortejaar;
 	}
 
-	public int getPrestigePunten() {
+	public int getPrestigepunten() {
 		return aantalPrestigepunten;
 	}
 
@@ -125,15 +125,17 @@ public class Speler {
 		return ontwikkelingskaartenInHand;
 	}
 
-	public List<Edelsteenfiche> getEdelsteenfichesInHand() {
+	public ArrayList<Edelsteenfiche> getEdelsteenfichesInHand() {
 		return edelsteenfichesInHand;
 	}
 
 	@Override
 	public String toString() {
 		int leeftijdInJaar = LocalDate.now().getYear() - this.geboortejaar;
+
 		// O-kaarten
 		String ontwikkelingskaartenInBezit = "";
+
 		if (ontwikkelingskaartenInHand.size() > 0) {
 			for (Ontwikkelingskaart ok : ontwikkelingskaartenInHand) {
 				ontwikkelingskaartenInBezit += String.format("%s%n", ok.toString());
@@ -141,9 +143,11 @@ public class Speler {
 		} else {
 			ontwikkelingskaartenInBezit = "Je hebt momenteel geen ontwikkelingskaarten in je bezit\n";
 		}
+
 		// Fiches /*WIT,ROOD,BLAUW,GROEN,ZWART;*/
 		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
 		String edelSteenFichesInBezit = "";
+
 		if (edelsteenfichesInHand.size() > 0) {
 			for (Edelsteenfiche ef : edelsteenfichesInHand) {
 				String kleur = ef.getKleur().toString();
@@ -156,6 +160,7 @@ public class Speler {
 				}
 			}
 		}
+
 		edelSteenFichesInBezit += String.format(
 				"Witte: %d%n" + "Rode: %d%n" + "Blauwe: %d%n" + "Groene: %d%n" + "Zwarte: %d%n", wit, rood, blauw,
 				groen, zwart);
@@ -163,21 +168,24 @@ public class Speler {
 		// Edelen
 		String edelenInBezit = "";
 		int edelPrestigeTotaal = 0;
+
 		if (edelenInHand.size() > 0) {
 			for (Edele e : edelenInHand) {
 				edelPrestigeTotaal += e.getPrestigePunten();
 			}
 		}
+
 		edelenInBezit += String.format("Je hebt %d edelen in bezit met een totale prestigewaarde van %d%n",
 				edelenInHand.size(), edelPrestigeTotaal);
 
 		return String.format(
 				"%s: %s --- leeftijd: %d%n" + "Prestigepunten: %d %n%s aan de beurt%n" + "%s de start speler%n"
 						+ "Ontwikkelingskaarten in bezit:%n" + "%s" + "Edelsteenfiches in bezit:%n" + "%s"
-						+ "Edelen in bezit:%n" + "%s",
+						+ "Edelen in bezit:%n" + "%s" + "%n",
 				getClass().getSimpleName(), gebruikersnaam, leeftijdInJaar, aantalPrestigepunten,
 				isAanDeBeurt() ? "Is" : "Is niet", isStartSpeler() ? "Is" : "Is niet", ontwikkelingskaartenInBezit,
 				edelSteenFichesInBezit, edelenInBezit);
+
 	}
 
 }

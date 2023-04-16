@@ -94,7 +94,7 @@ public class DomeinController {
 	}
 
 	public String toonSpelerAanBeurtSituatie() {
-		return this.spel.getSpelerAanBeurt().toString();
+		return "*** Speler status na beurt ***%n" + this.spel.getSpelerAanBeurt().toString();
 	}
 
 	private List<List<Ontwikkelingskaart>> haalOntwikkelingskaartenUitRepo() {

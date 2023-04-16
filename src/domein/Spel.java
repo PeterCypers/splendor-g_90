@@ -1,11 +1,13 @@
 package domein;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Spel {
 	public static final int MIN_AANTAL_SPELERS = 2;
 	public static final int MAX_AANTAL_SPELERS = 4;
+	private final int MAX_EDELSTEENFICHES_IN_VOORRAAD = 10;
 	private final List<Speler> aangemeldeSpelers;
 	private Speler spelerAanBeurt;
 	private final List<Ontwikkelingskaart> n1;
@@ -173,13 +175,17 @@ public class Spel {
 
 		// Verwijder kaart van de zichtbare kaarten
 		niveauZichtbaar[niveau - 1][positie - 1] = null;
+
 		// Voeg de kaart toe aan de voorraad van de speler
 		spelerAanBeurt.voegOntwikkelingskaartToeAanHand(gekozenOntwikkelingskaart);
+
 		// Voeg de prestigepunten van de ontwikkelingskaart toe aan de speler zijn
 		// punten
 		spelerAanBeurt.voegPuntenToe(gekozenOntwikkelingskaart.getPrestigepunten());
+
 		// zichtbare kaarten stapel worden bijgevuld
 		vulKaartenBij();
+
 		// speler zijn beurt wordt stopgezet
 		spelerAanBeurt.setAanDeBeurt(false);
 	}
@@ -206,6 +212,8 @@ public class Spel {
 	public int[] somAantalPerKleurInBezit() {
 		int[] somAantalPerKleurInBezit = new int[5];
 		List<Ontwikkelingskaart> ontwikkelingsKaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
+		List<Edelsteenfiche> edelSteenFichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
+
 		for (Ontwikkelingskaart ontwk : ontwikkelingsKaartenInHand) {
 			switch (ontwk.getKleurBonus()) {
 			case WIT -> somAantalPerKleurInBezit[0]++;
@@ -216,7 +224,6 @@ public class Spel {
 			}
 		}
 
-		List<Edelsteenfiche> edelSteenFichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
 		for (Edelsteenfiche e : edelSteenFichesInHand) {
 			switch (e.getKleur()) {
 			case WIT -> somAantalPerKleurInBezit[0]++;
@@ -226,6 +233,7 @@ public class Spel {
 			case ZWART -> somAantalPerKleurInBezit[4]++;
 			}
 		}
+
 		return somAantalPerKleurInBezit;
 	}
 
@@ -245,8 +253,12 @@ public class Spel {
 			}
 
 		}
+
 		for (int i = 0; i < wegTeNemenEdelsteenfichesUitVoorraad.length; i++) {
 			String[] soort = { "diamant", "robijn", "saffier", "smaragd", "onyx" };
+
+			// Kleur kleur2 = Kleur.values(i);
+			// Kleur kleur3 = Kleur.valueOf(i);
 			Kleur kleur = switch (i) {
 			case 0 -> Kleur.WIT;
 			case 1 -> Kleur.ROOD;
@@ -255,7 +267,7 @@ public class Spel {
 			case 4 -> Kleur.ZWART;
 			default -> throw new IllegalArgumentException("Unexpected value: " + i);
 			};
-			// Kleur kleur = Kleur.values(i);
+
 			for (int j = 0; j < wegTeNemenEdelsteenfichesUitVoorraad[i]; j++) {
 				Edelsteenfiche ef = new Edelsteenfiche(soort[i], kleur, null);
 				// Terug toevoegen van de fiche aan de stapel
@@ -284,8 +296,35 @@ public class Spel {
 	 * 
 	 * @param indexen [0-4, 0-4, 0-4]
 	 */
-	// nieuw 11-4-2023
 	public void neemDrieFiches(int[] indexen) {
+		// controleer of speler meer dan MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
+		// heeft
+
+		// toon overzicht van edelsteenfiches in speler zijn voorraad
+		ArrayList<Edelsteenfiche> edelsteenfichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
+
+		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
+
+		for (Edelsteenfiche ef : edelsteenfichesInHand) {
+			Kleur kleur = ef.getKleur();
+			switch (kleur) {
+			case WIT -> wit++;
+			case ROOD -> rood++;
+			case BLAUW -> blauw++;
+			case GROEN -> groen++;
+			case ZWART -> zwart++;
+			}
+		}
+
+		System.out.printf("Witte: %d%n" + "Rode: %d%n" + "Blauwe: %d%n" + "Groene: %d%n" + "Zwarte: %d%n", wit, rood,
+				blauw, groen, zwart);
+
+		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
+
+		// controleer of speler nu minder of even veel heeft dan
+		// MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
+		controleerOpMaxVoorraad();
+		// verplaats de edelsteenfiches van spel voorraad naar speler voorraad
 		if (indexen == null)
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: nullobject passed in neemDrieFiches", this.getClass()));
@@ -318,7 +357,6 @@ public class Spel {
 	 * 
 	 * @param index 0-4
 	 */
-	// nieuw 11-4-2023
 	public void neemTweeFiches(int index) {
 		if (index < 0 || index > 4)
 			throw new IllegalArgumentException(
@@ -331,6 +369,24 @@ public class Spel {
 		spelerAanBeurt.setAanDeBeurt(false);
 	}
 
+	private void controleerOpMaxVoorraad() {
+		// Arrays.stream().sum()
+		int totaalAantalEdelsteenfiches = spelerAanBeurt.getEdelsteenfichesInHand().size();
+		if (totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD) {
+			throw new RuntimeException(
+					String.format("Speler heeft een voorraad groter dan %d.", MAX_EDELSTEENFICHES_IN_VOORRAAD));
+		}
+	}
+
+	private boolean meerDanMaxEdelsteenfichesInVoorraad() {
+		// Arrays.stream().sum()
+		int totaalAantalEdelsteenfiches = spelerAanBeurt.getEdelsteenfichesInHand().size();
+		if (totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD) {
+			return true;
+		}
+		return false;
+	}
+
 	public Integer getAantalSpelers() {
 		return aangemeldeSpelers.size();
 	}
@@ -339,7 +395,6 @@ public class Spel {
 		return aangemeldeSpelers;
 	}
 
-	// nieuwe methode 7-4-2023
 	public List<SpelVoorwerp> geefSpelVoorwerpen() {
 		List<SpelVoorwerp> speelbord = new ArrayList<>();
 		for (int i = 0; i < ficheStapels.length; i++) {
