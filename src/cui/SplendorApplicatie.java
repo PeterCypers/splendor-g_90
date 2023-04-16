@@ -1,6 +1,5 @@
 package cui;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.InputMismatchException;
@@ -9,7 +8,6 @@ import java.util.Scanner;
 import java.util.Set;
 
 import domein.DomeinController;
-import domein.Edelsteenfiche;
 import domein.Kleur;
 import domein.SoortKeuze;
 import domein.Spel;
@@ -316,9 +314,21 @@ public class SplendorApplicatie {
 		 * maakt een array die de unieke keuzes ontvangt van keuzeSet (speler gekozen
 		 * stapels) vermindert elke keuze met 1 door user input
 		 */
-		int[] ficheKeuze = keuzeSet.stream().mapToInt(i -> i - 1).toArray();
 
-		dc.neemDrieFiches(ficheKeuze);
+		/*
+		 * Set<Integer> keuzeSet = new HashSet<>(Arrays.asList(1, 2, 3)); Kleur[]
+		 * kleurKeuze = keuzeSet.stream().map(i -> Kleur.valueOf("KLEUR_" +
+		 * i)).toArray(Kleur[]::new);
+		 * 
+		 */
+		Kleur[] kleurKeuze = new Kleur[keuzeSet.size()];
+		int index = 0;
+		for (Integer keuze : keuzeSet) {
+			kleurKeuze[index] = Kleur.valueOf(keuze - 1);
+			index++;
+		}
+
+		dc.neemDrieFiches(kleurKeuze);
 
 		if (dc.buitenVoorraad()) {
 			geefFichesTerug();
@@ -327,26 +337,10 @@ public class SplendorApplicatie {
 
 	private void geefFichesTerug() {
 		// toon overzicht van edelsteenfiches in speler zijn voorraad
-		ArrayList<Edelsteenfiche> edelsteenfichesInHand = dc.geefSpelerAanBeurtZijnFiches();
-
-		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
-
-		for (Edelsteenfiche ef : edelsteenfichesInHand) {
-			Kleur kleur = ef.getKleur();
-			switch (kleur) {
-			case WIT -> wit++;
-			case ROOD -> rood++;
-			case BLAUW -> blauw++;
-			case GROEN -> groen++;
-			case ZWART -> zwart++;
-			}
-		}
-
-		System.out.printf("Witte: %d%n" + "Rode: %d%n" + "Blauwe: %d%n" + "Groene: %d%n" + "Zwarte: %d%n", wit, rood,
-				blauw, groen, zwart);
+		System.out.println(dc.toonAantalFiches());
 
 		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
-		int aantalTerugTePlaatsen = dc.geefSpelerAanBeurtZijnFiches().size() - 10;
+		int aantalTerugTePlaatsen = dc.totaalAantalfiches() - 10;
 
 		System.out.printf(
 				"U heeft volgende edelsteenfiches in bezit (maar dit zijn er meer dan %d toegestane voorraad)%n",
@@ -382,6 +376,7 @@ public class SplendorApplicatie {
 
 			System.out.printf(
 					"Kies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n");
+
 			for (Kleur k : Kleur.values()) {
 				System.out.printf("%s %d%n", k, k.getKleur() + 1);
 			}
@@ -400,8 +395,10 @@ public class SplendorApplicatie {
 					System.out.println("Kies een stapel van [1-5]");
 			} while (keuze < 1 || keuze > 5);
 
-			int index = keuze - 1;
-			dc.neemTweeFiches(index);
+			Kleur kleur = Kleur.valueOf(keuze - 1);
+
+			dc.neemTweeFiches(kleur);
+
 		} catch (IllegalArgumentException e) {
 			System.out.println(e.getMessage());
 		}

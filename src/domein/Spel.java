@@ -1,6 +1,7 @@
 package domein;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Spel {
@@ -15,14 +16,13 @@ public class Spel {
 	private Speler winnaar;
 	private boolean eindeSpel = false;
 	private final List<Edele> edelen;
-	private FicheStapel[] ficheStapels; // final mogelijk? waarschijnlijk niet /* volgorde per index:
-										// WIT,ROOD,BLAUW,GROEN,ZWART;*/
+	private HashMap<Kleur, Integer> ficheStapels;
 	private Ontwikkelingskaart[] niveau1Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau2Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau3Zichtbaar = { null, null, null, null };
 
 	public Spel(List<Speler> aangemeldeSpelers, List<List<Ontwikkelingskaart>> ontwikkelingsKaarten, List<Edele> edelen,
-			FicheStapel[] ficheStapels) {
+			HashMap<Kleur, Integer> ficheStapels) {
 		controleerAantalSpelers(aangemeldeSpelers);
 		this.aangemeldeSpelers = aangemeldeSpelers;
 		// jongste speler wordt 1ste speler aanbeurt, jongste speler is startspeler en
@@ -89,12 +89,15 @@ public class Spel {
 			throw new IllegalArgumentException(foutBoodschap("Verkeerd aantal edelen in de lijst edelen"));
 	}
 
-	private void controleerFicheStapels(FicheStapel[] ficheStapels) {
+	private void controleerFicheStapels(HashMap<Kleur, Integer> ficheStapels) {
+		int aantalFichesPerStapel;
+
 		if (ficheStapels == null)
 			throw new IllegalArgumentException(foutBoodschap("Fichestapel is null"));
-		if (ficheStapels.length != 5)
+
+		if (ficheStapels.size() != 5)
 			throw new IllegalArgumentException(foutBoodschap("Aantal fichestapels is niet exact 5"));
-		int aantalFichesPerStapel;
+
 		switch (aangemeldeSpelers.size()) {
 		case 2 -> aantalFichesPerStapel = 4;
 		case 3 -> aantalFichesPerStapel = 5;
@@ -103,17 +106,15 @@ public class Spel {
 				String.format("Fout in %s, Unexpected value: ", this.getClass()) + aangemeldeSpelers.size());
 		}
 
-		for (int i = 0; i < ficheStapels.length; i++) {
-			if (ficheStapels[i].getFiches() == null || ficheStapels[i].getFiches().size() == 0) {
+		ficheStapels.forEach((kleur, aantalFiches) -> {
+			if (aantalFiches == null || aantalFiches == 0) {
 				throw new IllegalArgumentException(foutBoodschap("Een of meerdere fichestapels zijn leeg"));
 			}
-			if (ficheStapels[i].getFiches().size() != aantalFichesPerStapel)
+
+			if (aantalFiches != aantalFichesPerStapel) {
 				throw new IllegalArgumentException(foutBoodschap("Aantal fiches per stapel is niet juist"));
-			ficheStapels[i].getFiches().forEach((fiche) -> {
-				if (fiche == null)
-					throw new IllegalArgumentException(foutBoodschap("Een of meerdere fiches is null"));
-			});
-		}
+			}
+		});
 	}
 
 	public Speler getSpelerAanBeurt() {
@@ -210,7 +211,7 @@ public class Spel {
 	public int[] somAantalPerKleurInBezit() {
 		int[] somAantalPerKleurInBezit = new int[5];
 		List<Ontwikkelingskaart> ontwikkelingsKaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
-		List<Edelsteenfiche> edelSteenFichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
+		HashMap<Kleur, Integer> edelSteenFichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
 
 		for (Ontwikkelingskaart ontwk : ontwikkelingsKaartenInHand) {
 			switch (ontwk.getKleurBonus()) {
@@ -222,13 +223,16 @@ public class Spel {
 			}
 		}
 
-		for (Edelsteenfiche e : edelSteenFichesInHand) {
-			switch (e.getKleur()) {
-			case WIT -> somAantalPerKleurInBezit[0]++;
-			case ROOD -> somAantalPerKleurInBezit[1]++;
-			case BLAUW -> somAantalPerKleurInBezit[2]++;
-			case GROEN -> somAantalPerKleurInBezit[3]++;
-			case ZWART -> somAantalPerKleurInBezit[4]++;
+		for (Kleur kleur : Kleur.values()) {
+			// haal aantal fiches op uit de hashmap
+			Integer aantalFiches = edelSteenFichesInHand.get(kleur);
+
+			/*
+			 * als er voor die kleur geen fiches zijn krijg je null terug => voeg enkel de
+			 * hoeveelheid toe wanneer het verschillend is van null en er dus fiches zijn
+			 */
+			if (aantalFiches != null) {
+				somAantalPerKleurInBezit[kleur.getKleur()] += aantalFiches;
 			}
 		}
 
@@ -254,13 +258,32 @@ public class Spel {
 
 		for (int i = 0; i < wegTeNemenEdelsteenfichesUitVoorraad.length; i++) {
 			for (int j = 0; j < wegTeNemenEdelsteenfichesUitVoorraad[i]; j++) {
-				Edelsteenfiche ef = new Edelsteenfiche(Kleur.valueOf(i));
 				// Terug toevoegen van de fiche aan de stapel
-				ficheStapels[i].voegFicheToe(ef);
+				voegFicheToe(Kleur.valueOf(i));
 				// verwijderen van fiches uit de speler zjin voorraad
-				spelerAanBeurt.verwijderEdelsteenfiche(ef);
+				spelerAanBeurt.verwijderEdelsteenfiche(Kleur.valueOf(i));
 			}
 		}
+	}
+
+	private void voegFicheToe(Kleur kleur) {
+		if (kleur == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
+
+		Integer currentValue = ficheStapels.get(kleur);
+		if (currentValue != null) {
+			ficheStapels.put(kleur, currentValue + 1);
+		} else {
+			ficheStapels.put(kleur, 1);
+		}
+	}
+
+	public int totaalAantalfiches() {
+		int sum = 0;
+		for (int value : ficheStapels.values()) {
+			sum += value;
+		}
+		return sum;
 	}
 
 	public void vulKaartenBij() {
@@ -278,44 +301,67 @@ public class Spel {
 	}
 
 	/**
-	 * @param indexen [0-4, 0-4, 0-4]
+	 * @param kleuren [0-4, 0-4, 0-4]
 	 */
-	public void neemDrieFiches(int[] indexen) {
-		if (indexen == null)
+	public void neemDrieFiches(Kleur[] kleuren) {
+		if (kleuren == null)
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: nullobject passed in neemDrieFiches", this.getClass()));
-		for (int i : indexen) {
-			if (i < 0 || i > 4)
+		for (Kleur kleur : kleuren) {
+			if (kleur == null)
 				throw new IllegalArgumentException(
-						String.format("Fout in %s: bounds error neemDrieFiches", this.getClass()));
+						String.format("U probeert fiches te nemen van een lege stapel. (null)"));
 
-			if (ficheStapels[i].getAantalFiches() == 0) {
-				throw new RuntimeException("U probeert fiches te nemen van een lege stapel.");
+			if (ficheStapels.get(kleur) == 0) {
+				throw new RuntimeException("U probeert fiches te nemen van een lege stapel. (0)");
 			}
 		}
 
 		// verplaats de edelsteenfiches van spel voorraad naar speler voorraad
-		for (int i = 0; i < indexen.length; i++) {
-			Edelsteenfiche gekozenEdelsteenfiche = ficheStapels[indexen[i]].neemFiche();
-			spelerAanBeurt.voegEdelsteenficheToeAanHand(gekozenEdelsteenfiche);
+		for (Kleur kleur : kleuren) {
+			verwijderFiche(kleur);
+			spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
 		}
 
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
 		spelerAanBeurt.setAanDeBeurt(false);
 	}
 
+	private void verwijderFiche(Kleur kleur) {
+		if (kleur == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Kleur is null", this.getClass()));
+
+		int currentValue = ficheStapels.get(kleur);
+		if (currentValue - 1 > 0) {
+			ficheStapels.put(kleur, currentValue - 1);
+		} else {
+			ficheStapels.remove(kleur);
+		}
+	}
+
 	/**
 	 * 
 	 * @param index 0-4
 	 */
-	public void neemTweeFiches(int index) {
-		if (index < 0 || index > 4)
+	public void neemTweeFiches(Kleur kleur) {
+		if (kleur == null)
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: nullobject passed in neemTweeFiches", this.getClass()));
-		List<Edelsteenfiche> tweeFiches = ficheStapels[index].neemTweeFiches();
-		for (Edelsteenfiche ef : tweeFiches) {
-			spelerAanBeurt.voegEdelsteenficheToeAanHand(ef);
+
+		// controleren of het mogelijk is om 2 te verwijderen uit gekozen kleur stapel
+		if (ficheStapels.get(kleur) < 4) {
+			throw new IllegalArgumentException(
+					"U mag geen 2 dezelfde fiches nemen uit 1 stapel als deze minder heeft dan 4");
 		}
+
+		// 2 verwijderen uit stapel van spel
+		verwijderFiche(kleur);
+		verwijderFiche(kleur);
+
+		// 2 toevoegen aan speler zijn stapel
+		spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+		spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
 		spelerAanBeurt.setAanDeBeurt(false);
 	}
@@ -323,8 +369,8 @@ public class Spel {
 	public int aantalStapelsMeerDanNul() {
 		int aantalStapelsMeerDanNul = 0;
 
-		for (FicheStapel stapel : ficheStapels) {
-			if (stapel.getAantalFiches() > 0)
+		for (Integer aantalFiches : ficheStapels.values()) {
+			if (aantalFiches > 0)
 				aantalStapelsMeerDanNul++;
 		}
 
@@ -337,8 +383,8 @@ public class Spel {
 	 * @return boolean
 	 */
 	public boolean bestaatStapelMeerDan4() {
-		for (FicheStapel stapel : ficheStapels) {
-			if (stapel.getAantalFiches() >= 4)
+		for (Integer aantalFiches : ficheStapels.values()) {
+			if (aantalFiches >= 4)
 				return true;
 		}
 
@@ -355,16 +401,20 @@ public class Spel {
 
 	public List<SpelVoorwerp> geefSpelVoorwerpen() {
 		List<SpelVoorwerp> speelbord = new ArrayList<>();
-		for (int i = 0; i < ficheStapels.length; i++) {
-			speelbord.add(ficheStapels[i]);
-		}
+
+//		for (int i = 0; i < ficheStapels.size(); i++) {
+//			speelbord.add(ficheStapels[i]);
+//		}
+
 		for (Edele edele : this.edelen)
 			speelbord.add(edele);
+
 		for (int i = 0; i < niveau1Zichtbaar.length; i++) {
 			speelbord.add(niveau1Zichtbaar[i]);
 			speelbord.add(niveau2Zichtbaar[i]);
 			speelbord.add(niveau3Zichtbaar[i]);
 		}
+
 		return speelbord;
 	}
 
@@ -381,24 +431,11 @@ public class Spel {
 	}
 
 	public void plaatsTerugInStapel(int stapelKeuze) {
-		// TODO: remove this print testing purposes only
-		System.out.println("\n\n\nOriginele toestand\n");
-		System.out.println(spelerAanBeurt.toString());
-		System.out.println(this.toString());
-
+		// verwijder fiche bij speler
 		spelerAanBeurt.verwijderEdelsteenfiche(Kleur.valueOf(stapelKeuze));
 
-		// TODO: remove this print testing purposes only
-		System.out.println("\n\n\nSpeler edelsteen verwijderd\n");
-		System.out.println(spelerAanBeurt.toString());
-		System.out.println(this.toString());
-
-		ficheStapels[stapelKeuze].voegFicheToe(Kleur.valueOf(stapelKeuze));
-
-		// TODO: remove this print testing purposes only
-		System.out.println("\n\n\nSpel terug aan stapel toegevoegd\n");
-		System.out.println(spelerAanBeurt.toString());
-		System.out.println(this.toString());
+		// voeg fiche toe aan bord
+		voegFicheToe(Kleur.valueOf(stapelKeuze));
 	}
 
 	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?

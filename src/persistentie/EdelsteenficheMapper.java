@@ -1,10 +1,7 @@
 package persistentie;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
-import domein.Edelsteenfiche;
-import domein.FicheStapel;
 import domein.Kleur;
 
 public class EdelsteenficheMapper {
@@ -35,19 +32,14 @@ public class EdelsteenficheMapper {
 	/**
 	 * @return 5 fichestapels van grootte this.aantalFiches van elke kleur
 	 */
-	public FicheStapel[] geefAlleEdelsteenficheStapels() {
-
+	public HashMap<Kleur, Integer> geefAlleEdelsteenficheStapels() {
 		/* WIT(diamant),ROOD(robijn),BLAUW(saffier),GROEN(smaragd),ZWART(onyx); */
-		FicheStapel[] ficheStapels = new FicheStapel[5];
-		List<Edelsteenfiche> fiches = null;
+		HashMap<Kleur, Integer> ficheStapels = new HashMap<>();
 
 		for (Kleur k : Kleur.values()) {
-			fiches = new ArrayList<>();
-			for (int i = 0; i < aantalFiches; i++) {
-				fiches.add(new Edelsteenfiche(k));
-			} // aantal, Kleur, fichelijst
-			ficheStapels[k.ordinal()] = new FicheStapel(aantalFiches, k, fiches);
+			ficheStapels.put(k, aantalFiches);
 		}
+
 		return ficheStapels;
 	}
 

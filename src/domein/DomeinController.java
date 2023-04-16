@@ -3,11 +3,12 @@ package domein;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import dto.SpelVoorwerpDTO;
 
-public class DomeinController {
+public class DomeinController implements SpelVoorwerp {
 
 	private Spel spel;
 	private final List<Speler> aangemeldeSpelers;
@@ -34,7 +35,7 @@ public class DomeinController {
 		this.edelsteenRepo = new EdelsteenficheRepository(aangemeldeSpelers.size());
 		List<List<Ontwikkelingskaart>> alleNiveausOntwikkelingsKaartLijst = haalOntwikkelingskaartenUitRepo();
 		List<Edele> edelen = this.haalEdelenUitRepo(geefAantalSpelers());
-		FicheStapel[] ficheStapels = this.haalEdelsteenficheStapelsUitRepo();
+		HashMap<Kleur, Integer> ficheStapels = this.haalEdelsteenficheStapelsUitRepo();
 		this.spel = new Spel(aangemeldeSpelers, alleNiveausOntwikkelingsKaartLijst, edelen, ficheStapels);
 	}
 
@@ -103,9 +104,9 @@ public class DomeinController {
 		return edeleRepo.geefEdelen(aantalSpelers);
 	}
 
-	private FicheStapel[] haalEdelsteenficheStapelsUitRepo() {
+	private HashMap<Kleur, Integer> haalEdelsteenficheStapelsUitRepo() {
 		// test:
-		testPrintLijstMetEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
+		// testPrintLijstMetEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
 		testPrintStapelsEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
 		// einde test
 		return edelsteenRepo.geefEdelsteenficheStapels();
@@ -127,9 +128,10 @@ public class DomeinController {
 		SpelVoorwerpDTO dto = null;
 
 		for (SpelVoorwerp vw : spelvoorwerpen) {
-			if (vw instanceof FicheStapel fs) {
-				dto = new SpelVoorwerpDTO(fs.getAantalFiches(), fs.getKleur(), fs.getFicheStapelFoto(), fs.getSoort());
-			} else if (vw instanceof Edelsteenfiche esf) {
+//			if (vw instanceof HashMap<Kleur, Integer> fs) {
+//				dto = new SpelVoorwerpDTO(fs.getAantalFiches(), fs.getKleur(), fs.getFicheStapelFoto(), fs.getSoort());
+//			} 
+			if (vw instanceof Edelsteenfiche esf) {
 				dto = new SpelVoorwerpDTO(esf.getSoort(), esf.getKleur(), esf.getFicheFoto());
 			} else if (vw instanceof Ontwikkelingskaart ok) {
 				dto = new SpelVoorwerpDTO(ok.getNiveau(), ok.getPrestigepunten(), ok.getKleurBonus(),
@@ -183,12 +185,12 @@ public class DomeinController {
 		spel.kiesOntwikkelingskaart(niveau, positie);
 	}
 
-	public void neemDrieFiches(int[] indexen) {
-		spel.neemDrieFiches(indexen);
+	public void neemDrieFiches(Kleur[] kleuren) {
+		spel.neemDrieFiches(kleuren);
 	}
 
-	public void neemTweeFiches(int index) {
-		spel.neemTweeFiches(index);
+	public void neemTweeFiches(Kleur kleur) {
+		spel.neemTweeFiches(kleur);
 	}
 
 	public void pasBeurt() {
@@ -220,8 +222,8 @@ public class DomeinController {
 		return spel.aantalStapelsMeerDanNul();
 	}
 
-	public ArrayList<Edelsteenfiche> geefSpelerAanBeurtZijnFiches() {
-		return spel.getSpelerAanBeurt().getEdelsteenfichesInHand();
+	public String toonSpelerAanBeurtZijnFiches() {
+		return spel.getSpelerAanBeurt().toonAantalFiches();
 	}
 
 	// [testmethode] om te zien of de n1/n2/n3 lijst-lijst goed opgevuld is
@@ -248,56 +250,65 @@ public class DomeinController {
 	}
 
 	// [testmethode]
-	private void testPrintStapelsEdelsteenFiches(FicheStapel[] alleFicheStapels) {
+	private void testPrintStapelsEdelsteenFiches(HashMap<Kleur, Integer> alleFicheStapels) {
 		// adres, kleur, aantalfiches op attribuut + op lengte van lijst, naam van foto
 		// (%d(i), %s,%s,%d,%d,%s)
 		System.out.println();
 		System.out.println("*****DC test op de 5 FicheStapels******************************************");
-		for (int i = 0; i < alleFicheStapels.length; i++) {
-			System.out.printf(
-					"-------------%n%s %d: %s%nKleur: %s%n" + "AantalFiches: %d, lijst-lengte: %d%n" + "Foto: %s%n",
-					alleFicheStapels[i].getClass().getSimpleName(), i + 1, alleFicheStapels[i],
-					alleFicheStapels[i].getKleur().name(), alleFicheStapels[i].getAantalFiches(),
-					alleFicheStapels[i].getFiches().size(), alleFicheStapels[i].getFicheStapelFoto());
+		for (Kleur kleur : Kleur.values()) {
+//			System.out.printf(
+//					"-------------%n%s %d: %s%nKleur: %s%n" + "AantalFiches: %d, lijst-lengte: %d%n" + "Foto: %s%n",
+//					alleFicheStapels[i].getClass().getSimpleName(), i + 1, alleFicheStapels[i],
+//					alleFicheStapels[i].getKleur().name(), alleFicheStapels[i].getAantalFiches(),
+//					alleFicheStapels[i].getFiches().size(), alleFicheStapels[i].getFicheStapelFoto());
+			System.out.printf("Kleur %s: aantal %d%n", kleur, alleFicheStapels.get(kleur));
 		}
 		System.out.println("***************************************************************************");
 	}
 
 	// [testmethode] om te zien of de edelsteenfiches-lijst goed opgevuld is
-	private void testPrintLijstMetEdelsteenFiches(FicheStapel[] ficheStapels) {
-		/* WIT,ROOD,BLAUW,GROEN,ZWART; */
-		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
-		// waarom werkt deze lus niet?
-		// fiches.forEach(fiche -> {
-		// switch (fiche.getKleur().name()) {
-		// case "WIT" -> wit++;
-		// }
-		// });
-		for (int i = 0; i < ficheStapels.length; i++) {
-			List<Edelsteenfiche> fiches = ficheStapels[i].getFiches();
-			for (Edelsteenfiche f : fiches) {
-				switch (f.getKleur().name()) {
-				case "WIT" -> wit++;
-				case "ROOD" -> rood++;
-				case "BLAUW" -> blauw++;
-				case "GROEN" -> groen++;
-				case "ZWART" -> zwart++;
-				}
-			}
-		}
+//	private void testPrintLijstMetEdelsteenFiches(HashMap<Kleur, Integer> ficheStapels) {
+//		/* WIT,ROOD,BLAUW,GROEN,ZWART; */
+//		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
+//		// waarom werkt deze lus niet?
+//		// fiches.forEach(fiche -> {
+//		// switch (fiche.getKleur().name()) {
+//		// case "WIT" -> wit++;
+//		// }
+//		// });
+//		for (int i = 0; i < ficheStapels.size(); i++) {
+//			List<Edelsteenfiche> fiches = ficheStapels[i].getFiches();
+//			for (Edelsteenfiche f : fiches) {
+//				switch (f.getKleur().name()) {
+//				case "WIT" -> wit++;
+//				case "ROOD" -> rood++;
+//				case "BLAUW" -> blauw++;
+//				case "GROEN" -> groen++;
+//				case "ZWART" -> zwart++;
+//				}
+//			}
+//		}
+//
+//		System.out.println();
+//		System.out.println("*****DC test LijstMetFiches goed opgevuld met Fiches***********************");
+//		System.out.printf("Aantal Spelers: %d%nGrootte vd 1ste lijst: %d%n", this.geefAantalSpelers(),
+//				ficheStapels[0].getFiches().size());
+//		for (int i = 0; i < ficheStapels.length; i++) {
+//			System.out.println(ficheStapels[i].getFiches());
+//		}
+//		System.out.println("Aantal fiches per kleur:");
+//		System.out.printf(
+//				"Witte fiches: %d%nRode fiches: %d%nBlauwe fiches: %d%nGroene fiches: %d%nZwarte fiches: %d%n", wit,
+//				rood, blauw, groen, zwart);
+//		System.out.println("***************************************************************************");
+//	}
 
-		System.out.println();
-		System.out.println("*****DC test LijstMetFiches goed opgevuld met Fiches***********************");
-		System.out.printf("Aantal Spelers: %d%nGrootte vd 1ste lijst: %d%n", this.geefAantalSpelers(),
-				ficheStapels[0].getFiches().size());
-		for (int i = 0; i < ficheStapels.length; i++) {
-			System.out.println(ficheStapels[i].getFiches());
-		}
-		System.out.println("Aantal fiches per kleur:");
-		System.out.printf(
-				"Witte fiches: %d%nRode fiches: %d%nBlauwe fiches: %d%nGroene fiches: %d%nZwarte fiches: %d%n", wit,
-				rood, blauw, groen, zwart);
-		System.out.println("***************************************************************************");
+	public int totaalAantalfiches() {
+		return spel.getSpelerAanBeurt().totaalAantalfiches();
+	}
+
+	public String toonAantalFiches() {
+		return spel.getSpelerAanBeurt().toonAantalFiches();
 	}
 
 }

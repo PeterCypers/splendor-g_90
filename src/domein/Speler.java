@@ -60,9 +60,12 @@ public class Speler {
 		if (kleur == null)
 			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
 
-		int currentValue = edelsteenfichesInHand.get(kleur);
-		edelsteenfichesInHand.put(kleur, currentValue + 1);
-
+		Integer currentValue = edelsteenfichesInHand.get(kleur);
+		if (currentValue != null) {
+			edelsteenfichesInHand.put(kleur, currentValue + 1);
+		} else {
+			edelsteenfichesInHand.put(kleur, 1);
+		}
 	}
 
 	public void voegEdeleToeAanHand(Edele e) {
@@ -80,7 +83,11 @@ public class Speler {
 			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
 
 		int currentValue = edelsteenfichesInHand.get(kleur);
-		edelsteenfichesInHand.put(kleur, currentValue - 1);
+		if (currentValue - 1 > 0) {
+			edelsteenfichesInHand.put(kleur, currentValue - 1);
+		} else {
+			edelsteenfichesInHand.remove(kleur);
+		}
 	}
 
 	public static int getMaxEdelsteenfichesInVoorraad() {
@@ -149,6 +156,27 @@ public class Speler {
 		// MAX_EDELSTEENFICHES_IN_VOORRAAD));
 	}
 
+	public String toonAantalFiches() {
+		String representatieFiches = "";
+
+		if (edelsteenfichesInHand.size() > 0) {
+			for (Kleur kleur : Kleur.values()) {
+				Integer aantalFiches = edelsteenfichesInHand.get(kleur);
+				representatieFiches += String.format("%s: %d%n", kleur, aantalFiches != null ? aantalFiches : 0);
+			}
+		}
+
+		return representatieFiches;
+	}
+
+	public int totaalAantalfiches() {
+		int sum = 0;
+		for (int value : edelsteenfichesInHand.values()) {
+			sum += value;
+		}
+		return sum;
+	}
+
 	@Override
 	public String toString() {
 		int leeftijdInJaar = LocalDate.now().getYear() - this.geboortejaar;
@@ -165,25 +193,7 @@ public class Speler {
 		}
 
 		// Fiches /*WIT,ROOD,BLAUW,GROEN,ZWART;*/
-		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
-		String edelSteenFichesInBezit = "";
-
-		if (edelsteenfichesInHand.size() > 0) {
-			for (Edelsteenfiche ef : edelsteenfichesInHand) {
-				String kleur = ef.getKleur().toString();
-				switch (kleur) {
-				case "wit" -> wit++;
-				case "rood" -> rood++;
-				case "blauw" -> blauw++;
-				case "groen" -> groen++;
-				case "zwart" -> zwart++;
-				}
-			}
-		}
-
-		edelSteenFichesInBezit += String.format(
-				"Witte: %d%n" + "Rode: %d%n" + "Blauwe: %d%n" + "Groene: %d%n" + "Zwarte: %d%n", wit, rood, blauw,
-				groen, zwart);
+		String edelSteenFichesInBezit = toonAantalFiches();
 
 		// Edelen
 		String edelenInBezit = "";
