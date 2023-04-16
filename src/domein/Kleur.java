@@ -9,13 +9,13 @@ public enum Kleur {
 		this.KLEUR = kleur;
 	}
 
-	public int getKeuze() {
+	public int getKleur() {
 		return this.KLEUR;
 	}
 
 	public static Kleur valueOf(int kleur) {
 		for (Kleur k : Kleur.values()) {
-			if (k.getKeuze() == kleur) {
+			if (k.getKleur() == kleur) {
 				return k;
 			}
 		}
