@@ -323,7 +323,7 @@ public class SplendorApplicatie {
 					throw new IllegalArgumentException("Kies een stapel van [1-5]");
 				}
 				if (keuzeSet.contains(keuze)) {
-					// TODO: toon de keuzes van de speler die hij al gekozen zijn
+					// TODO: toon de keuzes van de speler die al gekozen zijn
 					throw new IllegalArgumentException(
 							String.format("U probeert 2 edelsteenfiches van dezelfde kleur te nemen."));
 				}
