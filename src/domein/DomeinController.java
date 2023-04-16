@@ -142,7 +142,7 @@ public class DomeinController {
 		return lijstDTOs;
 	}
 
-	public String toonSpelerSituatie() {
+	public String toonSpelersSituatie() {
 		String spelerSituatie = "";
 		List<Speler> spelerInSpel = this.spel.getAangemeldeSpelers();
 		for (Speler s : spelerInSpel) {
@@ -263,41 +263,41 @@ public class DomeinController {
 		System.out.println("***************************************************************************");
 	}
 
-		// [testmethode] om te zien of de edelsteenfiches-lijst goed opgevuld is 
-		private void testPrintLijstMetEdelsteenFiches(FicheStapel[] ficheStapels) {
-			/* WIT,ROOD,BLAUW,GROEN,ZWART; */
-			int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
-			// waarom werkt deze lus niet?
-	//		fiches.forEach(fiche -> {
-	//			switch (fiche.getKleur().name()) {
-	//			case "WIT" -> wit++;
-	//			}
-	//		});
-			for (int i = 0; i < ficheStapels.length; i++) {
-				List<Edelsteenfiche> fiches = ficheStapels[i].getFiches();
-				for (Edelsteenfiche f : fiches) {
-					switch (f.getKleur().name()) {
-					case "WIT" -> wit++;
-					case "ROOD" -> rood++;
-					case "BLAUW" -> blauw++;
-					case "GROEN" -> groen++;
-					case "ZWART" -> zwart++;
-					}
+	// [testmethode] om te zien of de edelsteenfiches-lijst goed opgevuld is
+	private void testPrintLijstMetEdelsteenFiches(FicheStapel[] ficheStapels) {
+		/* WIT,ROOD,BLAUW,GROEN,ZWART; */
+		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
+		// waarom werkt deze lus niet?
+		// fiches.forEach(fiche -> {
+		// switch (fiche.getKleur().name()) {
+		// case "WIT" -> wit++;
+		// }
+		// });
+		for (int i = 0; i < ficheStapels.length; i++) {
+			List<Edelsteenfiche> fiches = ficheStapels[i].getFiches();
+			for (Edelsteenfiche f : fiches) {
+				switch (f.getKleur().name()) {
+				case "WIT" -> wit++;
+				case "ROOD" -> rood++;
+				case "BLAUW" -> blauw++;
+				case "GROEN" -> groen++;
+				case "ZWART" -> zwart++;
 				}
 			}
-	
-			System.out.println();
-			System.out.println("*****DC test LijstMetFiches goed opgevuld met Fiches***********************");
-			System.out.printf("Aantal Spelers: %d%nGrootte vd 1ste lijst: %d%n", this.geefAantalSpelers(),
-					ficheStapels[0].getFiches().size());
-			for (int i = 0; i < ficheStapels.length; i++) {
-				System.out.println(ficheStapels[i].getFiches());
-			}
-			System.out.println("Aantal fiches per kleur:");
-			System.out.printf(
-					"Witte fiches: %d%nRode fiches: %d%nBlauwe fiches: %d%nGroene fiches: %d%nZwarte fiches: %d%n", wit,
-					rood, blauw, groen, zwart);
-			System.out.println("***************************************************************************");
 		}
+
+		System.out.println();
+		System.out.println("*****DC test LijstMetFiches goed opgevuld met Fiches***********************");
+		System.out.printf("Aantal Spelers: %d%nGrootte vd 1ste lijst: %d%n", this.geefAantalSpelers(),
+				ficheStapels[0].getFiches().size());
+		for (int i = 0; i < ficheStapels.length; i++) {
+			System.out.println(ficheStapels[i].getFiches());
+		}
+		System.out.println("Aantal fiches per kleur:");
+		System.out.printf(
+				"Witte fiches: %d%nRode fiches: %d%nBlauwe fiches: %d%nGroene fiches: %d%nZwarte fiches: %d%n", wit,
+				rood, blauw, groen, zwart);
+		System.out.println("***************************************************************************");
+	}
 
 }

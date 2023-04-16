@@ -2,6 +2,7 @@ package domein;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Speler {
@@ -14,7 +15,8 @@ public class Speler {
 	private boolean startSpeler;
 	private List<Ontwikkelingskaart> ontwikkelingskaartenInHand;
 	private List<Edele> edelenInHand;
-	private ArrayList<Edelsteenfiche> edelsteenfichesInHand;
+	// private ArrayList<Edelsteenfiche> edelsteenfichesInHand;
+	private HashMap<Kleur, Integer> edelsteenfichesInHand;
 
 	public Speler(String gebruikersnaam, int geboortejaar) {
 		setGebruikersnaam(gebruikersnaam);
@@ -25,7 +27,7 @@ public class Speler {
 		startSpeler = false;
 		ontwikkelingskaartenInHand = new ArrayList<>();
 		edelenInHand = new ArrayList<>();
-		edelsteenfichesInHand = new ArrayList<>();
+		edelsteenfichesInHand = new HashMap<Kleur, Integer>();
 	}
 
 	public boolean isAanDeBeurt() {
@@ -46,7 +48,7 @@ public class Speler {
 		startSpeler = true;
 	}
 
-	// voeg toe aan hand methodes(nieuw 11-4-2023):
+	// voeg toe aan hand methodes
 	public void voegOntwikkelingskaartToeAanHand(Ontwikkelingskaart ok) {
 		if (ok == null)
 			throw new IllegalArgumentException(
@@ -54,10 +56,13 @@ public class Speler {
 		ontwikkelingskaartenInHand.add(ok);
 	}
 
-	public void voegEdelsteenficheToeAanHand(Edelsteenfiche ef) {
-		if (ef == null)
+	public void voegEdelsteenficheToeAanHand(Kleur kleur) {
+		if (kleur == null)
 			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
-		this.edelsteenfichesInHand.add(ef);
+
+		int currentValue = edelsteenfichesInHand.get(kleur);
+		edelsteenfichesInHand.put(kleur, currentValue + 1);
+
 	}
 
 	public void voegEdeleToeAanHand(Edele e) {
@@ -70,9 +75,12 @@ public class Speler {
 		this.aantalPrestigepunten += prestigepunten;
 	}
 
-	public void verwijderEdelsteenfiche(Edelsteenfiche ef) {
-		edelsteenfichesInHand.remove(ef);
+	public void verwijderEdelsteenfiche(Kleur kleur) {
+		if (kleur == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
 
+		int currentValue = edelsteenfichesInHand.get(kleur);
+		edelsteenfichesInHand.put(kleur, currentValue - 1);
 	}
 
 	public static int getMaxEdelsteenfichesInVoorraad() {
@@ -128,7 +136,7 @@ public class Speler {
 		return ontwikkelingskaartenInHand;
 	}
 
-	public ArrayList<Edelsteenfiche> getEdelsteenfichesInHand() {
+	public HashMap<Kleur, Integer> getEdelsteenfichesInHand() {
 		return edelsteenfichesInHand;
 	}
 

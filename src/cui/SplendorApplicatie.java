@@ -53,7 +53,7 @@ public class SplendorApplicatie {
 		dc.startNieuwSpel(); // volgorde belangrijk
 		System.out.print(spelGestartFeedback()); // volgorde belangrijk
 
-		toonSpelerSituatie();
+		System.out.print(dc.toonSpelersSituatie());
 
 		while (!dc.isEindeSpel()) {
 			toonSpelSituatie();
@@ -124,12 +124,6 @@ public class SplendorApplicatie {
 				+ "\n*****Een nieuw spel is gestart*****\n\nDe jongste speler mag beginnen\n\n");
 	}
 
-	// nieuw 8-4-2023
-	private void toonSpelerSituatie() {
-		System.out.print(dc.toonSpelerSituatie());
-	}
-
-	// nieuw 8-4-2023
 	private void toonSpelSituatie() {
 		List<SpelVoorwerpDTO> dtos = dc.toonSpelSituatie();
 
@@ -271,6 +265,9 @@ public class SplendorApplicatie {
 		}
 	}
 
+	/**
+	 * geef de optie aan de gebruiker om maximaal 3 stenen te nemen
+	 */
 	private void neemDrieVerschillendeFiches() {
 		int aantalFichesDieGenomenMogenWorden = Math.min(3, dc.geefAantalStapelsMeerDanNul());
 
@@ -279,8 +276,7 @@ public class SplendorApplicatie {
 		}
 
 		/*
-		 * Een set heeft altijd unieke waarden =>
-		 * 
+		 * Een set heeft altijd unieke waarden => TODO: context geven
 		 */
 		Set<Integer> keuzeSet = new HashSet<Integer>();
 
@@ -353,10 +349,10 @@ public class SplendorApplicatie {
 		int aantalTerugTePlaatsen = dc.geefSpelerAanBeurtZijnFiches().size() - 10;
 
 		System.out.printf(
-				"U heeft volgende edelsteenfiches in bezit (maar dit zijn er meer dan %d toegestane voorraad)",
+				"U heeft volgende edelsteenfiches in bezit (maar dit zijn er meer dan %d toegestane voorraad)%n",
 				Speler.getMaxEdelsteenfichesInVoorraad());
 
-		dc.toonSpelerAanBeurtSituatie();
+		// TODO: toon speler aan de beurt zijn fiches na elke verwijdering
 
 		System.out.printf("Geef %d fiches terug aan de spel stapels, kies een getal die hoort bij je gekozen stapel.%n",
 				aantalTerugTePlaatsen);
@@ -369,7 +365,7 @@ public class SplendorApplicatie {
 			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer):");
 			int stapelKeuze = input.nextInt();
 
-			dc.plaatsTerugInStapel(stapelKeuze);
+			dc.plaatsTerugInStapel(stapelKeuze - 1);
 		}
 
 	}

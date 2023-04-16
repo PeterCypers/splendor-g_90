@@ -19,15 +19,8 @@ public class FicheStapel implements SpelVoorwerp {
 					String.format("Fout in %s: null obj meegegeven als lijst fiches", this.getClass().getSimpleName()));
 		this.aantalFiches = aantalFiches;
 		this.kleur = kleur;
-		this.ficheStapelFoto = kleur.soort() + ".png";
+		this.ficheStapelFoto = kleur.soort();
 		this.fiches = fiches;
-	}
-
-	private void setAantalFiches(int aantalFiches) {
-		if (aantalFiches != 4 && aantalFiches != 5 && aantalFiches != 7)
-			throw new IllegalArgumentException(
-					String.format("Fout in %s: verkeerde aantal fiches in de stapel", this.getClass().getSimpleName()));
-		this.aantalFiches = aantalFiches;
 	}
 
 	public void voegFicheToe(Edelsteenfiche fiche) {
@@ -38,7 +31,6 @@ public class FicheStapel implements SpelVoorwerp {
 		aantalFiches++;
 	}
 
-	// afgewerkt 11-4-2023
 	public Edelsteenfiche neemFiche() {
 		if (aantalFiches == 0)
 			throw new IllegalArgumentException(String.format("Fout in %s: probeert fiche te nemen, maar stapel is leeg",
@@ -47,7 +39,6 @@ public class FicheStapel implements SpelVoorwerp {
 		return fiches.remove(fiches.size() - 1); // bovenste fiche
 	}
 
-	// nieuw 11-4-2023
 	public List<Edelsteenfiche> neemTweeFiches() {
 		if (aantalFiches < 4)
 			throw new IllegalArgumentException(
@@ -65,6 +56,13 @@ public class FicheStapel implements SpelVoorwerp {
 
 	public int getAantalFiches() {
 		return aantalFiches;
+	}
+
+	private void setAantalFiches(int aantalFiches) {
+		if (aantalFiches != 4 && aantalFiches != 5 && aantalFiches != 7)
+			throw new IllegalArgumentException(
+					String.format("Fout in %s: verkeerde aantal fiches in de stapel", this.getClass().getSimpleName()));
+		this.aantalFiches = aantalFiches;
 	}
 
 	public Kleur getKleur() {

@@ -380,6 +380,27 @@ public class Spel {
 		return String.format("Fout in %s: %s", this.getClass(), specifiekBericht);
 	}
 
+	public void plaatsTerugInStapel(int stapelKeuze) {
+		// TODO: remove this print testing purposes only
+		System.out.println("\n\n\nOriginele toestand\n");
+		System.out.println(spelerAanBeurt.toString());
+		System.out.println(this.toString());
+
+		spelerAanBeurt.verwijderEdelsteenfiche(Kleur.valueOf(stapelKeuze));
+
+		// TODO: remove this print testing purposes only
+		System.out.println("\n\n\nSpeler edelsteen verwijderd\n");
+		System.out.println(spelerAanBeurt.toString());
+		System.out.println(this.toString());
+
+		ficheStapels[stapelKeuze].voegFicheToe(Kleur.valueOf(stapelKeuze));
+
+		// TODO: remove this print testing purposes only
+		System.out.println("\n\n\nSpel terug aan stapel toegevoegd\n");
+		System.out.println(spelerAanBeurt.toString());
+		System.out.println(this.toString());
+	}
+
 	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
 	private void testOntwikkelingskaartStapels() {
 		System.out.println("*****Spel test n1/n2/n3 Ontwikkelingskaart stapels zijn goed aangemaakt****");
@@ -387,12 +408,6 @@ public class Spel {
 		System.out.println(n2);
 		System.out.println(n3);
 		System.out.println("***************************************************************************");
-	}
-
-	public void plaatsTerugInStapel(int stapelKeuze) {
-		Edelsteenfiche ef = new Edelsteenfiche(Kleur.valueOf(stapelKeuze - 1));
-		spelerAanBeurt.verwijderEdelsteenfiche(ef);
-		ficheStapels[stapelKeuze].voegFicheToe(ef);
 	}
 
 }
