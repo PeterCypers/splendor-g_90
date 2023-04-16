@@ -34,12 +34,30 @@ public class SplendorApplicatie {
 			}
 			do {
 				keuze = keuzeMenu();
-				if (keuze != 1 && keuze != 2)
+				if (keuze < 1 || keuze > 5)
 					System.out.println("Kies 1 of 2");
-			} while (keuze != 1 && keuze != 2);
+			} while (keuze < 1 || keuze > 5);
 
 			if (keuze == 1) {
 				System.out.println(voegSpelerToe());
+			}
+
+			switch (keuze) {
+			case 3 -> {
+				dc.voegSpelerToe("user1", 2002);
+				dc.voegSpelerToe("user2", 2000);
+			}
+			case 4 -> {
+				dc.voegSpelerToe("user1", 2002);
+				dc.voegSpelerToe("user2", 2000);
+				dc.voegSpelerToe("user3", 2001);
+			}
+			case 5 -> {
+				dc.voegSpelerToe("user4", 1999);
+				dc.voegSpelerToe("user2", 2000);
+				dc.voegSpelerToe("user3", 2001);
+				dc.voegSpelerToe("user1", 2002);
+			}
 			}
 		}
 
@@ -47,10 +65,17 @@ public class SplendorApplicatie {
 		// System.out.printf("aantal deelnemers: %d%n%s",dc.geefAantalSpelers(),
 		// dc.toonAangemeldeSpelers());
 
-		dc.startNieuwSpel(); // volgorde belangrijk
-		System.out.print(spelGestartFeedback()); // volgorde belangrijk
+		if (keuze == 2) {
+			System.out.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
+					+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
+					+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
 
-		System.out.print(dc.toonSpelersSituatie());
+			dc.startNieuwSpel();
+
+			System.out.print(spelGestartFeedback());
+
+			System.out.print(dc.toonSpelersSituatie());
+		}
 
 		while (!dc.isEindeSpel()) {
 			toonSpelSituatie();
@@ -99,7 +124,10 @@ public class SplendorApplicatie {
 		do {
 			try {
 				System.out.println("Maak een keuze: \n" + "1. Speler toevoegen \n" + "2. Spel starten");
-				System.out.print("keuze: ");
+				System.out.println("Tijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
+						+ "3. Spel starten met 2 juiste spelers\n" + "4. Spel starten met 3 juiste spelers\n"
+						+ "5. Spel starten met 4 juiste spelers");
+				System.out.print("Keuze: ");
 				keuze = input.nextInt();
 				loop = false;
 			} catch (InputMismatchException e) {
@@ -209,8 +237,12 @@ public class SplendorApplicatie {
 				System.out.println("Gelieve optie 1 of 2 te kiezen");
 		} while (keuze2 < 1 || keuze2 > 2);
 
-		if (keuze2 == 1)
-			System.out.print(dc.toonSpelerAanBeurtSituatie());
+		if (keuze2 == 1) {
+			System.out.println("  _                     _   \r\n" + " | |__   ___ _   _ _ __| |_ \r\n"
+					+ " | '_ \\ / _ \\ | | | '__| __|\r\n" + " | |_) |  __/ |_| | |  | |_ \r\n"
+					+ " |_.__/ \\___|\\__,_|_|   \\__|\r\n" + "                            ");
+			System.out.print(dc.toonSpelersSituatie());
+		}
 
 	}
 
@@ -382,30 +414,30 @@ public class SplendorApplicatie {
 	private void geefFichesTerug() {
 		// toon overzicht van edelsteenfiches in speler zijn voorraad
 		System.out.println(dc.toonAantalFichesVanSpelerAanBeurt());
-	
+
 		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
 		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
-	
+
 		System.out.printf(
 				"U heeft volgende edelsteenfiches in bezit (maar dit zijn er meer dan %d toegestane voorraad)%n",
 				Speler.getMaxEdelsteenfichesInVoorraad());
-	
+
 		// toon speler aan de beurt zijn fiches na elke verwijdering
 		System.out.println(dc.toonAantalFichesVanSpelerAanBeurt());
-	
+
 		System.out.printf("Geef %d fiches terug aan de spel stapels, kies een getal die hoort bij je gekozen stapel.%n",
 				aantalTerugTePlaatsen);
-	
+
 		for (Kleur k : Kleur.values()) {
 			System.out.printf("%s %d%n", k, k.getKleur() + 1);
 		}
-	
+
 		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
 			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer):");
 			int stapelKeuze = input.nextInt();
-	
+
 			dc.plaatsTerugInStapel(stapelKeuze - 1);
 		}
-	
+
 	}
 }

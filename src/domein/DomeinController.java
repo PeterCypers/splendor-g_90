@@ -127,7 +127,7 @@ public class DomeinController implements SpelVoorwerp {
 	}
 
 	public String toonSpelerAanBeurtSituatie() {
-		return "*** Speler status na beurt ***%n" + this.spel.getSpelerAanBeurt().toString();
+		return "\n" + "*** Speler status na beurt ***" + "\n" + this.spel.getSpelerAanBeurt().toString();
 	}
 
 	// maakt gebruik van Spel.geefSpelVoorwerpen()
