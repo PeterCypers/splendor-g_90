@@ -1,7 +1,6 @@
 package domein;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Spel {
@@ -292,7 +291,6 @@ public class Spel {
 	}
 
 	/**
-	 * 
 	 * @param indexen [0-4, 0-4, 0-4]
 	 */
 	public void neemDrieFiches(int[] indexen) {
@@ -309,36 +307,6 @@ public class Spel {
 		for (int i = 0; i < indexen.length; i++) {
 			Edelsteenfiche gekozenEdelsteenfiche = ficheStapels[indexen[i]].neemFiche();
 			spelerAanBeurt.voegEdelsteenficheToeAanHand(gekozenEdelsteenfiche);
-		}
-
-		// controleer of speler meer dan MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
-		// heeft
-		if (spelerAanBeurt.meerDanMaxEdelsteenfichesInVoorraad()) {
-			// toon overzicht van edelsteenfiches in speler zijn voorraad
-			ArrayList<Edelsteenfiche> edelsteenfichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
-
-			int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
-
-			for (Edelsteenfiche ef : edelsteenfichesInHand) {
-				Kleur kleur = ef.getKleur();
-				switch (kleur) {
-				case WIT -> wit++;
-				case ROOD -> rood++;
-				case BLAUW -> blauw++;
-				case GROEN -> groen++;
-				case ZWART -> zwart++;
-				}
-			}
-
-			System.out.printf("Witte: %d%n" + "Rode: %d%n" + "Blauwe: %d%n" + "Groene: %d%n" + "Zwarte: %d%n", wit,
-					rood, blauw, groen, zwart);
-
-			// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
-
-			// controleer of speler nu minder of even veel heeft dan
-			// MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
-			spelerAanBeurt.controleerOpMaxVoorraad();
-
 		}
 
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
@@ -370,6 +338,20 @@ public class Spel {
 		}
 
 		return aantalStapelsMeerDanNul;
+	}
+
+	/**
+	 * is er een stapel met meer dan 4 fiches
+	 * 
+	 * @return boolean
+	 */
+	public boolean bestaatStapelMeerDan4() {
+		for (FicheStapel stapel : ficheStapels) {
+			if (stapel.getAantalFiches() >= 4)
+				return true;
+		}
+
+		return false;
 	}
 
 	public Integer getAantalSpelers() {

@@ -129,22 +129,13 @@ public class Speler {
 		return edelsteenfichesInHand;
 	}
 
-	public void controleerOpMaxVoorraad() {
-		// Arrays.stream().sum()
+	public boolean buitenVoorraad() {
+		// controleer of speler meer dan MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
+		// heeft
 		int totaalAantalEdelsteenfiches = this.getEdelsteenfichesInHand().size();
-		if (totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD) {
-			throw new RuntimeException(
-					String.format("Speler heeft een voorraad groter dan %d.", MAX_EDELSTEENFICHES_IN_VOORRAAD));
-		}
-	}
-
-	public boolean meerDanMaxEdelsteenfichesInVoorraad() {
-		// Arrays.stream().sum()
-		int totaalAantalEdelsteenfiches = this.getEdelsteenfichesInHand().size();
-		if (totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD) {
-			return true;
-		}
-		return false;
+		return totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD;
+		// String.format("Speler heeft een voorraad groter dan %d.",
+		// MAX_EDELSTEENFICHES_IN_VOORRAAD));
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package cui;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.InputMismatchException;
@@ -7,7 +8,11 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import domein.*;
+import domein.DomeinController;
+import domein.Edelsteenfiche;
+import domein.Kleur;
+import domein.SoortKeuze;
+import domein.Spel;
 import dto.SpelVoorwerpDTO;
 
 public class SplendorApplicatie {
@@ -279,7 +284,8 @@ public class SplendorApplicatie {
 		Set<Integer> keuzeSet = new HashSet<Integer>();
 
 		System.out.printf(
-				"Kies drie stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n");
+				"Kies %d stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n",
+				aantalFichesDieGenomenMogenWorden);
 		for (Kleur k : Kleur.values()) {
 			System.out.printf("%s %d%n", k, k.getKleur());
 		}
@@ -316,9 +322,48 @@ public class SplendorApplicatie {
 		int[] ficheKeuze = keuzeSet.stream().mapToInt(i -> i - 1).toArray();
 
 		dc.neemDrieFiches(ficheKeuze);
+
+		if (dc.buitenVoorraad()) {
+			geefFicheTerug();
+		}
+	}
+
+	private void geefFicheTerug() {
+		// toon overzicht van edelsteenfiches in speler zijn voorraad
+		ArrayList<Edelsteenfiche> edelsteenfichesInHand = dc.geefSpelerAanBeurtZijnFiches();
+
+		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
+
+		for (Edelsteenfiche ef : edelsteenfichesInHand) {
+			Kleur kleur = ef.getKleur();
+			switch (kleur) {
+			case WIT -> wit++;
+			case ROOD -> rood++;
+			case BLAUW -> blauw++;
+			case GROEN -> groen++;
+			case ZWART -> zwart++;
+			}
+		}
+
+		System.out.printf("Witte: %d%n" + "Rode: %d%n" + "Blauwe: %d%n" + "Groene: %d%n" + "Zwarte: %d%n", wit, rood,
+				blauw, groen, zwart);
+
+		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
+		int aantalTerugTePlaatsen = 0;
+		System.out.printf(
+				"Kies %d stapels om een fiches terug te plaatsen naar de spel stapel, kies een getal die hoort bij je gekozen stapel.%n",
+				aantalTerugTePlaatsen);
+		for (Kleur k : Kleur.values()) {
+			System.out.printf("%s %d%n", k, k.getKleur());
+		}
+
 	}
 
 	private void neemTweeDezelfdeFiches() {
+
+		if (dc.bestaatStapelMeerDan4()) {
+			throw new RuntimeException("Deze actie kan niet gedaan worden omdat alle stapels leeg zijn");
+		}
 
 		try {
 			int keuze = 0;
@@ -347,6 +392,10 @@ public class SplendorApplicatie {
 			dc.neemTweeFiches(index);
 		} catch (IllegalArgumentException e) {
 			System.out.println(e.getMessage());
+		}
+
+		if (dc.buitenVoorraad()) {
+			geefFicheTerug();
 		}
 	}
 }

@@ -1,7 +1,9 @@
 package domein;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import dto.SpelVoorwerpDTO;
 
@@ -290,6 +292,18 @@ public class DomeinController {
 
 	public int geefAantalStapelsMeerDanNul() {
 		return spel.aantalStapelsMeerDanNul();
+	}
+
+	public boolean buitenVoorraad() {
+		return spel.getSpelerAanBeurt().buitenVoorraad();
+	}
+
+	public ArrayList<Edelsteenfiche> geefSpelerAanBeurtZijnFiches() {
+		return spel.getSpelerAanBeurt().getEdelsteenfichesInHand();
+	}
+
+	public boolean bestaatStapelMeerDan4() {
+		return spel.bestaatStapelMeerDan4();
 	}
 
 }
