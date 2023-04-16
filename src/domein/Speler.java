@@ -28,7 +28,6 @@ public class Speler {
 		edelsteenfichesInHand = new ArrayList<>();
 	}
 
-	// nieuw 8-4-2023
 	public boolean isAanDeBeurt() {
 		return aanDeBeurt;
 	}
@@ -74,6 +73,10 @@ public class Speler {
 	public void verwijderEdelsteenfiche(Edelsteenfiche ef) {
 		edelsteenfichesInHand.remove(ef);
 
+	}
+
+	public static int getMaxEdelsteenfichesInVoorraad() {
+		return MAX_EDELSTEENFICHES_IN_VOORRAAD;
 	}
 
 	public String getGebruikersnaam() {

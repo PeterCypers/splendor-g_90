@@ -81,21 +81,8 @@ public class DomeinController {
 			throw new IllegalArgumentException("Maximum aantal spelers bereikt. Kies om een spel te starten.");
 	}
 
-	public int geefAantalSpelers() {
-		return aangemeldeSpelers.size();
-	}
-
 	public boolean spelerIsAanBeurt() {
 		return this.spel.getSpelerAanBeurt().isAanDeBeurt();
-	}
-
-	public String geefSpelerAanBeurtVerkort() {
-		int leeftijdInJaar = LocalDate.now().getYear() - spel.getSpelerAanBeurt().getGeboortejaar();
-		return String.format("%s ---- leeftijd: %d", spel.getSpelerAanBeurt().getGebruikersnaam(), leeftijdInJaar);
-	}
-
-	public String toonSpelerAanBeurtSituatie() {
-		return "*** Speler status na beurt ***%n" + this.spel.getSpelerAanBeurt().toString();
 	}
 
 	private List<List<Ontwikkelingskaart>> haalOntwikkelingskaartenUitRepo() {
@@ -122,6 +109,15 @@ public class DomeinController {
 		testPrintStapelsEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
 		// einde test
 		return edelsteenRepo.geefEdelsteenficheStapels();
+	}
+
+	public String toonSpelerAanBeurtVerkort() {
+		int leeftijdInJaar = LocalDate.now().getYear() - spel.getSpelerAanBeurt().getGeboortejaar();
+		return String.format("%s ---- leeftijd: %d", spel.getSpelerAanBeurt().getGebruikersnaam(), leeftijdInJaar);
+	}
+
+	public String toonSpelerAanBeurtSituatie() {
+		return "*** Speler status na beurt ***%n" + this.spel.getSpelerAanBeurt().toString();
 	}
 
 	// maakt gebruik van Spel.geefSpelVoorwerpen()
@@ -168,6 +164,17 @@ public class DomeinController {
 		return alleSpelers;
 	}
 
+	// [testmethode] om de lijst van deelnemende spelers aan het spel te controleren
+	public String toonAangemeldeSpelers() {
+		String returnStr = "";
+		if (aangemeldeSpelers.size() > 0) {
+			for (Speler speler : aangemeldeSpelers) {
+				returnStr += speler.toString() + "\n"; // als dit niet werkt -> string.format
+			}
+		}
+		return returnStr.isBlank() ? "Er zijn nog geen deelnemers" : returnStr;
+	}
+
 	/**
 	 * @param niveau   : 1-3
 	 * @param positie: 1-4
@@ -189,19 +196,32 @@ public class DomeinController {
 		spel.getSpelerAanBeurt().setAanDeBeurt(false);
 	}
 
-	// [testmethode] om de lijst van deelnemende spelers aan het spel te controleren
-	public String toonAangemeldeSpelers() {
-		String returnStr = "";
-		if (aangemeldeSpelers.size() > 0) {
-			for (Speler speler : aangemeldeSpelers) {
-				returnStr += speler.toString() + "\n"; // als dit niet werkt -> string.format
-			}
-		}
-		return returnStr.isBlank() ? "Er zijn nog geen deelnemers" : returnStr;
-	}
-
 	public void volgendeSpeler() {
 		this.spel.volgendeSpeler();
+	}
+
+	public boolean bestaatStapelMeerDan4() {
+		return spel.bestaatStapelMeerDan4();
+	}
+
+	public boolean buitenVoorraad() {
+		return spel.getSpelerAanBeurt().buitenVoorraad();
+	}
+
+	public void plaatsTerugInStapel(int stapelKeuze) {
+		spel.plaatsTerugInStapel(stapelKeuze);
+	}
+
+	public int geefAantalSpelers() {
+		return aangemeldeSpelers.size();
+	}
+
+	public int geefAantalStapelsMeerDanNul() {
+		return spel.aantalStapelsMeerDanNul();
+	}
+
+	public ArrayList<Edelsteenfiche> geefSpelerAanBeurtZijnFiches() {
+		return spel.getSpelerAanBeurt().getEdelsteenfichesInHand();
 	}
 
 	// [testmethode] om te zien of de n1/n2/n3 lijst-lijst goed opgevuld is
@@ -243,61 +263,41 @@ public class DomeinController {
 		System.out.println("***************************************************************************");
 	}
 
-	// [testmethode] om te zien of de edelsteenfiches-lijst goed opgevuld is
-	private void testPrintLijstMetEdelsteenFiches(FicheStapel[] ficheStapels) {
-		/* WIT,ROOD,BLAUW,GROEN,ZWART; */
-		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
-		// waarom werkt deze lus niet?
-//		fiches.forEach(fiche -> {
-//			switch (fiche.getKleur().name()) {
-//			case "WIT" -> wit++;
-//			}
-//		});
-		for (int i = 0; i < ficheStapels.length; i++) {
-			List<Edelsteenfiche> fiches = ficheStapels[i].getFiches();
-			for (Edelsteenfiche f : fiches) {
-				switch (f.getKleur().name()) {
-				case "WIT" -> wit++;
-				case "ROOD" -> rood++;
-				case "BLAUW" -> blauw++;
-				case "GROEN" -> groen++;
-				case "ZWART" -> zwart++;
+		// [testmethode] om te zien of de edelsteenfiches-lijst goed opgevuld is 
+		private void testPrintLijstMetEdelsteenFiches(FicheStapel[] ficheStapels) {
+			/* WIT,ROOD,BLAUW,GROEN,ZWART; */
+			int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
+			// waarom werkt deze lus niet?
+	//		fiches.forEach(fiche -> {
+	//			switch (fiche.getKleur().name()) {
+	//			case "WIT" -> wit++;
+	//			}
+	//		});
+			for (int i = 0; i < ficheStapels.length; i++) {
+				List<Edelsteenfiche> fiches = ficheStapels[i].getFiches();
+				for (Edelsteenfiche f : fiches) {
+					switch (f.getKleur().name()) {
+					case "WIT" -> wit++;
+					case "ROOD" -> rood++;
+					case "BLAUW" -> blauw++;
+					case "GROEN" -> groen++;
+					case "ZWART" -> zwart++;
+					}
 				}
 			}
+	
+			System.out.println();
+			System.out.println("*****DC test LijstMetFiches goed opgevuld met Fiches***********************");
+			System.out.printf("Aantal Spelers: %d%nGrootte vd 1ste lijst: %d%n", this.geefAantalSpelers(),
+					ficheStapels[0].getFiches().size());
+			for (int i = 0; i < ficheStapels.length; i++) {
+				System.out.println(ficheStapels[i].getFiches());
+			}
+			System.out.println("Aantal fiches per kleur:");
+			System.out.printf(
+					"Witte fiches: %d%nRode fiches: %d%nBlauwe fiches: %d%nGroene fiches: %d%nZwarte fiches: %d%n", wit,
+					rood, blauw, groen, zwart);
+			System.out.println("***************************************************************************");
 		}
-
-		System.out.println();
-		System.out.println("*****DC test LijstMetFiches goed opgevuld met Fiches***********************");
-		System.out.printf("Aantal Spelers: %d%nGrootte vd 1ste lijst: %d%n", this.geefAantalSpelers(),
-				ficheStapels[0].getFiches().size());
-		for (int i = 0; i < ficheStapels.length; i++) {
-			System.out.println(ficheStapels[i].getFiches());
-		}
-		System.out.println("Aantal fiches per kleur:");
-		System.out.printf(
-				"Witte fiches: %d%nRode fiches: %d%nBlauwe fiches: %d%nGroene fiches: %d%nZwarte fiches: %d%n", wit,
-				rood, blauw, groen, zwart);
-		System.out.println("***************************************************************************");
-	}
-
-	public int geefAantalStapelsMeerDanNul() {
-		return spel.aantalStapelsMeerDanNul();
-	}
-
-	public boolean bestaatStapelMeerDan4() {
-		return spel.bestaatStapelMeerDan4();
-	}
-
-	public boolean buitenVoorraad() {
-		return spel.getSpelerAanBeurt().buitenVoorraad();
-	}
-
-	public ArrayList<Edelsteenfiche> geefSpelerAanBeurtZijnFiches() {
-		return spel.getSpelerAanBeurt().getEdelsteenfichesInHand();
-	}
-
-	public void plaatsTerugInStapel(int stapelKeuze) {
-		spel.plaatsTerugInStapel(stapelKeuze);
-	}
 
 }

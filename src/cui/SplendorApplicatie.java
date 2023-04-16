@@ -13,6 +13,7 @@ import domein.Edelsteenfiche;
 import domein.Kleur;
 import domein.SoortKeuze;
 import domein.Spel;
+import domein.Speler;
 import dto.SpelVoorwerpDTO;
 
 public class SplendorApplicatie {
@@ -172,7 +173,7 @@ public class SplendorApplicatie {
 	private void speelBeurt() {
 		SoortKeuze keuze = null;
 
-		System.out.printf("Speler aan beurt is: %s%n%n", dc.geefSpelerAanBeurtVerkort());
+		System.out.printf("Speler aan beurt is: %s%n%n", dc.toonSpelerAanBeurtVerkort());
 
 		/*
 		 * zolang speler aan de beurt is => toon de verschillende opties => en laat hem
@@ -350,11 +351,20 @@ public class SplendorApplicatie {
 
 		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
 		int aantalTerugTePlaatsen = dc.geefSpelerAanBeurtZijnFiches().size() - 10;
+
+		System.out.printf(
+				"U heeft volgende edelsteenfiches in bezit (maar dit zijn er meer dan %d toegestane voorraad)",
+				Speler.getMaxEdelsteenfichesInVoorraad());
+
+		dc.toonSpelerAanBeurtSituatie();
+
 		System.out.printf("Geef %d fiches terug aan de spel stapels, kies een getal die hoort bij je gekozen stapel.%n",
 				aantalTerugTePlaatsen);
+
 		for (Kleur k : Kleur.values()) {
 			System.out.printf("%s %d%n", k, k.getKleur() + 1);
 		}
+
 		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
 			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer):");
 			int stapelKeuze = input.nextInt();
