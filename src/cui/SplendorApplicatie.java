@@ -23,7 +23,6 @@ public class SplendorApplicatie {
 		this.dc = dc;
 	}
 
-	// zet testen in commentaar voor het eigenlijke normaal verloop
 	public void startSpel() {
 		int keuze = -1;
 		// [TEST] connectie db:
@@ -149,15 +148,7 @@ public class SplendorApplicatie {
 			}
 		}
 
-		System.out.println("\nBeschikbare fiches per stapel:"); // foto\n, kleur\n, resterende fiches
-
-		for (SpelVoorwerpDTO dto : dtos) {
-			if (dto.type() == 'S') {
-				System.out.printf("FicheStapel: %s%nKleur: %s%nResterende Fiches: %d%n", dto.foto(),
-						dto.kleur().toString(), dto.aantalFiches());
-			}
-		}
-
+		System.out.println("\nBeschikbare fiches per stapel:");
 		System.out.println(dc.toonSpelFiches());
 
 		System.out.println();

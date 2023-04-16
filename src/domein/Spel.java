@@ -403,10 +403,6 @@ public class Spel {
 	public List<SpelVoorwerp> geefSpelVoorwerpen() {
 		List<SpelVoorwerp> speelbord = new ArrayList<>();
 
-//		for (int i = 0; i < ficheStapels.size(); i++) {
-//			speelbord.add(ficheStapels[i]);
-//		}
-
 		for (Edele edele : this.edelen)
 			speelbord.add(edele);
 

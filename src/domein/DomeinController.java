@@ -128,12 +128,6 @@ public class DomeinController implements SpelVoorwerp {
 		SpelVoorwerpDTO dto = null;
 
 		for (SpelVoorwerp vw : spelvoorwerpen) {
-//			if (vw instanceof HashMap<Kleur, Integer> fs) {
-//				dto = new SpelVoorwerpDTO(fs.getAantalFiches(), fs.getKleur(), fs.getFicheStapelFoto(), fs.getSoort());
-//			} 
-//			if (vw instanceof Edelsteenfiche esf) {
-//				dto = new SpelVoorwerpDTO(esf.getSoort(), esf.getKleur(), esf.getFicheFoto());
-//			} 
 			if (vw instanceof Ontwikkelingskaart ok) {
 				dto = new SpelVoorwerpDTO(ok.getNiveau(), ok.getPrestigepunten(), ok.getKleurBonus(),
 						ok.getFotoOntwikkelingskaart(), ok.getKosten());
