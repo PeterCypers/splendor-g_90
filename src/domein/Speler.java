@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Speler {
+	private static final int MAX_EDELSTEENFICHES_IN_VOORRAAD = 10;
 
 	private String gebruikersnaam;
 	private int geboortejaar;
-	// nieuw 8-4-2023
 	private int aantalPrestigepunten;
 	private boolean aanDeBeurt;
 	private boolean startSpeler;
@@ -127,6 +127,24 @@ public class Speler {
 
 	public ArrayList<Edelsteenfiche> getEdelsteenfichesInHand() {
 		return edelsteenfichesInHand;
+	}
+
+	public void controleerOpMaxVoorraad() {
+		// Arrays.stream().sum()
+		int totaalAantalEdelsteenfiches = this.getEdelsteenfichesInHand().size();
+		if (totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD) {
+			throw new RuntimeException(
+					String.format("Speler heeft een voorraad groter dan %d.", MAX_EDELSTEENFICHES_IN_VOORRAAD));
+		}
+	}
+
+	public boolean meerDanMaxEdelsteenfichesInVoorraad() {
+		// Arrays.stream().sum()
+		int totaalAantalEdelsteenfiches = this.getEdelsteenfichesInHand().size();
+		if (totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override

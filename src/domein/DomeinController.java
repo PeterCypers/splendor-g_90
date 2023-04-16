@@ -251,7 +251,6 @@ public class DomeinController {
 		System.out.println("***************************************************************************");
 	}
 
-	// nieuwe methode 6-4-2023
 	// [testmethode] om te zien of de edelsteenfiches-lijst goed opgevuld is
 	private void testPrintLijstMetEdelsteenFiches(FicheStapel[] ficheStapels) {
 		/* WIT,ROOD,BLAUW,GROEN,ZWART; */
@@ -287,6 +286,10 @@ public class DomeinController {
 				"Witte fiches: %d%nRode fiches: %d%nBlauwe fiches: %d%nGroene fiches: %d%nZwarte fiches: %d%n", wit,
 				rood, blauw, groen, zwart);
 		System.out.println("***************************************************************************");
+	}
+
+	public int geefAantalStapelsMeerDanNul() {
+		return spel.aantalStapelsMeerDanNul();
 	}
 
 }

@@ -293,7 +293,7 @@ public class SplendorApplicatie {
 
 	private void neemDrieVerschillendeFiches() {
 
-		int AANTAL_FICHES_NEMEN = 3;
+		int AANTAL_FICHES_NEMEN = dc.geefAantalStapelsMeerDanNul();
 		int[] ficheKeuze = new int[AANTAL_FICHES_NEMEN];
 
 		System.out

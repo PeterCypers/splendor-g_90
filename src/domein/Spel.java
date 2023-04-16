@@ -7,7 +7,6 @@ import java.util.List;
 public class Spel {
 	public static final int MIN_AANTAL_SPELERS = 2;
 	public static final int MAX_AANTAL_SPELERS = 4;
-	private final int MAX_EDELSTEENFICHES_IN_VOORRAAD = 10;
 	private final List<Speler> aangemeldeSpelers;
 	private Speler spelerAanBeurt;
 	private final List<Ontwikkelingskaart> n1;
@@ -297,34 +296,6 @@ public class Spel {
 	 * @param indexen [0-4, 0-4, 0-4]
 	 */
 	public void neemDrieFiches(int[] indexen) {
-		// controleer of speler meer dan MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
-		// heeft
-
-		// toon overzicht van edelsteenfiches in speler zijn voorraad
-		ArrayList<Edelsteenfiche> edelsteenfichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
-
-		int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
-
-		for (Edelsteenfiche ef : edelsteenfichesInHand) {
-			Kleur kleur = ef.getKleur();
-			switch (kleur) {
-			case WIT -> wit++;
-			case ROOD -> rood++;
-			case BLAUW -> blauw++;
-			case GROEN -> groen++;
-			case ZWART -> zwart++;
-			}
-		}
-
-		System.out.printf("Witte: %d%n" + "Rode: %d%n" + "Blauwe: %d%n" + "Groene: %d%n" + "Zwarte: %d%n", wit, rood,
-				blauw, groen, zwart);
-
-		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
-
-		// controleer of speler nu minder of even veel heeft dan
-		// MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
-		controleerOpMaxVoorraad();
-		// verplaats de edelsteenfiches van spel voorraad naar speler voorraad
 		if (indexen == null)
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: nullobject passed in neemDrieFiches", this.getClass()));
@@ -334,13 +305,14 @@ public class Spel {
 						String.format("Fout in %s: bounds error neemDrieFiches", this.getClass()));
 		}
 
-		if (indexen.length != 3)
-			throw new IllegalArgumentException(
-					String.format("Fout in %s: lengte indexen param neemDrieFiches", this.getClass()));
-		if (indexen[0] == indexen[1] || indexen[0] == indexen[2] || indexen[1] == indexen[2])
-			throw new IllegalArgumentException(String.format(
-					"Fout in %s: Probeert 2x dezelfde kleur fiche te nemen in neemDrieFiches", this.getClass()));
+//		if (indexen.length != 3)
+//			throw new IllegalArgumentException(
+//					String.format("Fout in %s: lengte indexen param neemDrieFiches", this.getClass()));
+//		if (indexen[0] == indexen[1] || indexen[0] == indexen[2] || indexen[1] == indexen[2])
+//			throw new IllegalArgumentException(String.format(
+//					"Fout in %s: Probeert 2x dezelfde kleur fiche te nemen in neemDrieFiches", this.getClass()));
 
+		// verplaats de edelsteenfiches van spel voorraad naar speler voorraad
 		int index1 = indexen[0];
 		int index2 = indexen[1];
 		int index3 = indexen[2];
@@ -348,6 +320,36 @@ public class Spel {
 		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index1].neemFiche());
 		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index2].neemFiche());
 		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index3].neemFiche());
+
+		// controleer of speler meer dan MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
+		// heeft
+		if (spelerAanBeurt.meerDanMaxEdelsteenfichesInVoorraad()) {
+			// toon overzicht van edelsteenfiches in speler zijn voorraad
+			ArrayList<Edelsteenfiche> edelsteenfichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
+
+			int wit = 0, rood = 0, blauw = 0, groen = 0, zwart = 0;
+
+			for (Edelsteenfiche ef : edelsteenfichesInHand) {
+				Kleur kleur = ef.getKleur();
+				switch (kleur) {
+				case WIT -> wit++;
+				case ROOD -> rood++;
+				case BLAUW -> blauw++;
+				case GROEN -> groen++;
+				case ZWART -> zwart++;
+				}
+			}
+
+			System.out.printf("Witte: %d%n" + "Rode: %d%n" + "Blauwe: %d%n" + "Groene: %d%n" + "Zwarte: %d%n", wit,
+					rood, blauw, groen, zwart);
+
+			// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
+
+			// controleer of speler nu minder of even veel heeft dan
+			// MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
+			spelerAanBeurt.controleerOpMaxVoorraad();
+
+		}
 
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
 		spelerAanBeurt.setAanDeBeurt(false);
@@ -369,22 +371,15 @@ public class Spel {
 		spelerAanBeurt.setAanDeBeurt(false);
 	}
 
-	private void controleerOpMaxVoorraad() {
-		// Arrays.stream().sum()
-		int totaalAantalEdelsteenfiches = spelerAanBeurt.getEdelsteenfichesInHand().size();
-		if (totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD) {
-			throw new RuntimeException(
-					String.format("Speler heeft een voorraad groter dan %d.", MAX_EDELSTEENFICHES_IN_VOORRAAD));
-		}
-	}
+	public int aantalStapelsMeerDanNul() {
+		int aantalStapelsMeerDanNul = 0;
 
-	private boolean meerDanMaxEdelsteenfichesInVoorraad() {
-		// Arrays.stream().sum()
-		int totaalAantalEdelsteenfiches = spelerAanBeurt.getEdelsteenfichesInHand().size();
-		if (totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD) {
-			return true;
+		for (FicheStapel stapel : ficheStapels) {
+			if (stapel.getAantalFiches() > 0)
+				aantalStapelsMeerDanNul++;
 		}
-		return false;
+
+		return aantalStapelsMeerDanNul;
 	}
 
 	public Integer getAantalSpelers() {
