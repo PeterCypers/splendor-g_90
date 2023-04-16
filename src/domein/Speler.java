@@ -150,7 +150,7 @@ public class Speler {
 	public boolean buitenVoorraad() {
 		// controleer of speler meer dan MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
 		// heeft
-		int totaalAantalEdelsteenfiches = this.getEdelsteenfichesInHand().size();
+		int totaalAantalEdelsteenfiches = this.totaalAantalFiches();
 		return totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD;
 		// String.format("Speler heeft een voorraad groter dan %d.",
 		// MAX_EDELSTEENFICHES_IN_VOORRAAD));
@@ -169,7 +169,7 @@ public class Speler {
 		return representatieFiches;
 	}
 
-	public int totaalAantalfiches() {
+	public int totaalAantalFiches() {
 		int sum = 0;
 		for (int value : edelsteenfichesInHand.values()) {
 			sum += value;

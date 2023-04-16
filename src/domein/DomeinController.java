@@ -131,9 +131,10 @@ public class DomeinController implements SpelVoorwerp {
 //			if (vw instanceof HashMap<Kleur, Integer> fs) {
 //				dto = new SpelVoorwerpDTO(fs.getAantalFiches(), fs.getKleur(), fs.getFicheStapelFoto(), fs.getSoort());
 //			} 
-			if (vw instanceof Edelsteenfiche esf) {
-				dto = new SpelVoorwerpDTO(esf.getSoort(), esf.getKleur(), esf.getFicheFoto());
-			} else if (vw instanceof Ontwikkelingskaart ok) {
+//			if (vw instanceof Edelsteenfiche esf) {
+//				dto = new SpelVoorwerpDTO(esf.getSoort(), esf.getKleur(), esf.getFicheFoto());
+//			} 
+			if (vw instanceof Ontwikkelingskaart ok) {
 				dto = new SpelVoorwerpDTO(ok.getNiveau(), ok.getPrestigepunten(), ok.getKleurBonus(),
 						ok.getFotoOntwikkelingskaart(), ok.getKosten());
 			} else if (vw instanceof Edele e) {
@@ -303,12 +304,16 @@ public class DomeinController implements SpelVoorwerp {
 //		System.out.println("***************************************************************************");
 //	}
 
-	public int totaalAantalfiches() {
-		return spel.getSpelerAanBeurt().totaalAantalfiches();
+	public int totaalAantalFichesVanSpelerAanBeurt() {
+		return spel.getSpelerAanBeurt().totaalAantalFiches();
 	}
 
-	public String toonAantalFiches() {
+	public String toonAantalFichesVanSpelerAanBeurt() {
 		return spel.getSpelerAanBeurt().toonAantalFiches();
+	}
+
+	public String toonSpelFiches() {
+		return this.spel.toonFiches();
 	}
 
 }

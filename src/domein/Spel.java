@@ -312,7 +312,8 @@ public class Spel {
 				throw new IllegalArgumentException(
 						String.format("U probeert fiches te nemen van een lege stapel. (null)"));
 
-			if (ficheStapels.get(kleur) == 0) {
+			// wanneer een stapel geen fiches bevat
+			if (ficheStapels.get(kleur) == null || ficheStapels.get(kleur) <= 0) {
 				throw new RuntimeException("U probeert fiches te nemen van een lege stapel. (0)");
 			}
 		}
@@ -445,6 +446,19 @@ public class Spel {
 		System.out.println(n2);
 		System.out.println(n3);
 		System.out.println("***************************************************************************");
+	}
+
+	public String toonFiches() {
+		String representatieFiches = "";
+
+		if (ficheStapels.size() > 0) {
+			for (Kleur kleur : Kleur.values()) {
+				Integer aantalFiches = ficheStapels.get(kleur);
+				representatieFiches += String.format("%s: %d%n", kleur, aantalFiches != null ? aantalFiches : 0);
+			}
+		}
+
+		return representatieFiches;
 	}
 
 }
