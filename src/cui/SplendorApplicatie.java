@@ -302,47 +302,46 @@ public class SplendorApplicatie {
 			throw new RuntimeException("Deze actie kan niet gedaan worden omdat alle stapels leeg zijn");
 		}
 
-		int[] ficheKeuze = new int[aantalFichesDieGenomenMogenWorden];
+		/*
+		 * Een set heeft altijd unieke waarden =>
+		 * 
+		 */
+		Set<Integer> keuzeSet = new HashSet<Integer>();
 
 		System.out
 				.printf("Kies drie stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
 						+ "Wit: 1%n" + "Rood: 2%n" + "Blauw: 3%n" + "Groen: 4%n" + "Zwart: 5%n");
 
-		for (int i = 0; i < aantalFichesDieGenomenMogenWorden; i++) {
-			do {
-				System.out.printf("Fiche %d: ", i + 1);
+		do {
+			System.out.printf("Fiche %d: ", keuzeSet.size() + 1);
 
-				try {
-					ficheKeuze[i] = input.nextInt();
+			try {
+				int keuze = input.nextInt();
 
-					Set<Integer> keuzeSet = new HashSet<Integer>();
-
-					for (int j = 0; j < ficheKeuze.length; j++) {
-						keuzeSet.add(ficheKeuze[j]);
-					}
-
-					if (i != keuzeSet.size()) {
-						ficheKeuze[i] = 0;
-						throw new IllegalArgumentException(
-								String.format("Fout in %s: Probeert 2x dezelfde kleur fiche te nemen in neemDrieFiches",
-										this.getClass()));
-					}
-
-				} catch (InputMismatchException e) {
-					input.nextLine(); // buffer leegmaken
-					System.out.println("Je keuze moet een geheel getal zijn\n");
+				// kijk
+				if (keuze < 1 || keuze > 5) {
+					throw new IllegalArgumentException("Kies een stapel van [1-5]");
+				}
+				if (keuzeSet.contains(keuze)) {
+					// TODO: toon de keuzes van de speler die hij al gekozen zijn
+					throw new IllegalArgumentException(
+							String.format("U probeert 2 edelsteenfiches van dezelfde kleur te nemen."));
 				}
 
-				if (ficheKeuze[i] < 1 || ficheKeuze[i] > 5) {
-					System.out.println("Kies een stapel van [1-5]");
-				}
-			} while (ficheKeuze[i] < 1 || ficheKeuze[i] > 5);
-		}
+				keuzeSet.add(keuze);
+			} catch (InputMismatchException e) {
+				input.nextLine(); // buffer leegmaken
+				System.out.println("Je keuze moet een geheel getal zijn\n");
+			} catch (IllegalArgumentException e) {
+				System.out.println(e.getMessage());
+			}
+		} while (aantalFichesDieGenomenMogenWorden != keuzeSet.size());
 
-		// reduce each choice by 1 because of user input
-		for (int i = 0; i < aantalFichesDieGenomenMogenWorden; i++) {
-			ficheKeuze[i]--;
-		}
+		/*
+		 * maakt een array die de unieke keuzes ontvangt van keuzeSet (speler gekozen
+		 * stapels) vermindert elke keuze met 1 door user input
+		 */
+		int[] ficheKeuze = keuzeSet.stream().mapToInt(i -> i - 1).toArray();
 
 		dc.neemDrieFiches(ficheKeuze);
 	}
