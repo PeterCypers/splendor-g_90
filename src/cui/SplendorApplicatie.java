@@ -1,9 +1,11 @@
 package cui;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import domein.*;
 import dto.SpelVoorwerpDTO;
@@ -186,12 +188,15 @@ public class SplendorApplicatie {
 				System.out.println(e.getMessage());
 			}
 			// }
-
-			switch (keuze) {
-			case NEEM_DRIE -> neemDrieVerschillendeFiches();
-			case NEEM_TWEE -> neemTweeDezelfdeFiches();
-			case KOOP_KAART -> koopOntwikkelingskaart();
-			case PAS_BEURT -> dc.pasBeurt();
+			try {
+				switch (keuze) {
+				case NEEM_DRIE -> neemDrieVerschillendeFiches();
+				case NEEM_TWEE -> neemTweeDezelfdeFiches();
+				case KOOP_KAART -> koopOntwikkelingskaart();
+				case PAS_BEURT -> dc.pasBeurt();
+				}
+			} catch (RuntimeException e) {
+				System.out.println(e.getMessage());
 			}
 		}
 
@@ -217,7 +222,6 @@ public class SplendorApplicatie {
 
 	}
 
-	// nieuw 11-4-2023
 	private void koopOntwikkelingskaart() {
 		int niveau = 0;
 		int positie = 0;
@@ -227,8 +231,8 @@ public class SplendorApplicatie {
 
 			try {
 				niveau = input.nextInt();
-//				if (niveau < 1 || niveau > 3)
-//					throw new IllegalArgumentException("Gelieve een niveau van [1-3] te kiezen");
+				if (niveau < 1 || niveau > 3)
+					throw new IllegalArgumentException("Gelieve een niveau van [1-3] te kiezen");
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
 				System.out.println("Je keuze moet een geheel getal zijn tussen [1-3]\n");
@@ -243,8 +247,8 @@ public class SplendorApplicatie {
 
 			try {
 				positie = input.nextInt();
-//				if (positie < 1 || positie > 4)
-//					throw new IllegalArgumentException("Gelieve een positie van [1-4] te kiezen");
+				if (positie < 1 || positie > 4)
+					throw new IllegalArgumentException("Gelieve een positie van [1-4] te kiezen");
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
 				System.out.println("Je keuze moet een geheel getal zijn tussen [1-4]\n");
@@ -292,20 +296,38 @@ public class SplendorApplicatie {
 	}
 
 	private void neemDrieVerschillendeFiches() {
+		int aantalFichesDieGenomenMogenWorden = Math.min(3, dc.geefAantalStapelsMeerDanNul());
 
-		int AANTAL_FICHES_NEMEN = dc.geefAantalStapelsMeerDanNul();
-		int[] ficheKeuze = new int[AANTAL_FICHES_NEMEN];
+		if (aantalFichesDieGenomenMogenWorden == 0) {
+			throw new RuntimeException("Deze actie kan niet gedaan worden omdat alle stapels leeg zijn");
+		}
+
+		int[] ficheKeuze = new int[aantalFichesDieGenomenMogenWorden];
 
 		System.out
 				.printf("Kies drie stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n"
 						+ "Wit: 1%n" + "Rood: 2%n" + "Blauw: 3%n" + "Groen: 4%n" + "Zwart: 5%n");
 
-		for (int i = 0; i < AANTAL_FICHES_NEMEN; i++) {
+		for (int i = 0; i < aantalFichesDieGenomenMogenWorden; i++) {
 			do {
 				System.out.printf("Fiche %d: ", i + 1);
 
 				try {
 					ficheKeuze[i] = input.nextInt();
+
+					Set<Integer> keuzeSet = new HashSet<Integer>();
+
+					for (int j = 0; j < ficheKeuze.length; j++) {
+						keuzeSet.add(ficheKeuze[j]);
+					}
+
+					if (i != keuzeSet.size()) {
+						ficheKeuze[i] = 0;
+						throw new IllegalArgumentException(
+								String.format("Fout in %s: Probeert 2x dezelfde kleur fiche te nemen in neemDrieFiches",
+										this.getClass()));
+					}
+
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
 					System.out.println("Je keuze moet een geheel getal zijn\n");
@@ -318,7 +340,7 @@ public class SplendorApplicatie {
 		}
 
 		// reduce each choice by 1 because of user input
-		for (int i = 0; i < AANTAL_FICHES_NEMEN; i++) {
+		for (int i = 0; i < aantalFichesDieGenomenMogenWorden; i++) {
 			ficheKeuze[i]--;
 		}
 

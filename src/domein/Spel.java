@@ -305,21 +305,11 @@ public class Spel {
 						String.format("Fout in %s: bounds error neemDrieFiches", this.getClass()));
 		}
 
-//		if (indexen.length != 3)
-//			throw new IllegalArgumentException(
-//					String.format("Fout in %s: lengte indexen param neemDrieFiches", this.getClass()));
-//		if (indexen[0] == indexen[1] || indexen[0] == indexen[2] || indexen[1] == indexen[2])
-//			throw new IllegalArgumentException(String.format(
-//					"Fout in %s: Probeert 2x dezelfde kleur fiche te nemen in neemDrieFiches", this.getClass()));
-
 		// verplaats de edelsteenfiches van spel voorraad naar speler voorraad
-		int index1 = indexen[0];
-		int index2 = indexen[1];
-		int index3 = indexen[2];
-
-		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index1].neemFiche());
-		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index2].neemFiche());
-		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index3].neemFiche());
+		for (int i = 0; i < indexen.length; i++) {
+			Edelsteenfiche gekozenEdelsteenfiche = ficheStapels[indexen[i]].neemFiche();
+			spelerAanBeurt.voegEdelsteenficheToeAanHand(gekozenEdelsteenfiche);
+		}
 
 		// controleer of speler meer dan MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
 		// heeft
