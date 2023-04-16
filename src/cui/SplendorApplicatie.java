@@ -183,7 +183,6 @@ public class SplendorApplicatie {
 		System.out.println();
 	}
 
-	// afgewerkt 11-4-2023
 	private void speelBeurt() {
 		SoortKeuze keuze = null;
 		System.out.println(
