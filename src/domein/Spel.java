@@ -278,6 +278,18 @@ public class Spel {
 		}
 	}
 
+	private void verwijderFiche(Kleur kleur) {
+		if (kleur == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Kleur is null", this.getClass()));
+	
+		int currentValue = ficheStapels.get(kleur);
+		if (currentValue - 1 > 0) {
+			ficheStapels.put(kleur, currentValue - 1);
+		} else {
+			ficheStapels.remove(kleur);
+		}
+	}
+
 	public int totaalAantalfiches() {
 		int sum = 0;
 		for (int value : ficheStapels.values()) {
@@ -326,18 +338,6 @@ public class Spel {
 
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
 		spelerAanBeurt.setAanDeBeurt(false);
-	}
-
-	private void verwijderFiche(Kleur kleur) {
-		if (kleur == null)
-			throw new IllegalArgumentException(String.format("Fout in %s: Kleur is null", this.getClass()));
-
-		int currentValue = ficheStapels.get(kleur);
-		if (currentValue - 1 > 0) {
-			ficheStapels.put(kleur, currentValue - 1);
-		} else {
-			ficheStapels.remove(kleur);
-		}
 	}
 
 	/**
@@ -435,15 +435,6 @@ public class Spel {
 		voegFicheToe(Kleur.valueOf(stapelKeuze));
 	}
 
-	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
-	private void testOntwikkelingskaartStapels() {
-		System.out.println("*****Spel test n1/n2/n3 Ontwikkelingskaart stapels zijn goed aangemaakt****");
-		System.out.println(n1);
-		System.out.println(n2);
-		System.out.println(n3);
-		System.out.println("***************************************************************************");
-	}
-
 	public String toonFiches() {
 		String representatieFiches = "";
 
@@ -455,6 +446,15 @@ public class Spel {
 		}
 
 		return representatieFiches;
+	}
+
+	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
+	private void testOntwikkelingskaartStapels() {
+		System.out.println("*****Spel test n1/n2/n3 Ontwikkelingskaart stapels zijn goed aangemaakt****");
+		System.out.println(n1);
+		System.out.println(n2);
+		System.out.println(n3);
+		System.out.println("***************************************************************************");
 	}
 
 }

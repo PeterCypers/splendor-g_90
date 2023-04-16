@@ -191,11 +191,13 @@ public class SplendorApplicatie {
 		}
 
 		/*
-		 * TODO: add context
+		 * Speler kan zijn status bekijken na beurt of overslaan om dit niet te zien
 		 */
 		int keuze2 = 0;
+
 		System.out.print("Wil je nog je speler status bekijken?\n" + "1. Bekijk status en beëindig beurt\n"
 				+ "2. Beëindig beurt\n" + "keuze: ");
+
 		do {
 			try {
 				keuze2 = input.nextInt();
@@ -266,7 +268,8 @@ public class SplendorApplicatie {
 		}
 
 		/*
-		 * Een set heeft altijd unieke waarden => TODO: context geven
+		 * Een set heeft altijd unieke waarden => daardoor worden er 3 verschillende
+		 * edelsteenfiches verwacht die elk uit een verschillende stapel komen
 		 */
 		Set<Integer> keuzeSet = new HashSet<Integer>();
 
@@ -288,7 +291,12 @@ public class SplendorApplicatie {
 					throw new IllegalArgumentException("Kies een stapel van [1-5]");
 				}
 				if (keuzeSet.contains(keuze)) {
-					// TODO: toon de keuzes van de speler die al gekozen zijn
+					System.out.print("U heeft al gekozen voor volgende stapelnummers: ");
+					for (Integer i : keuzeSet) {
+						System.out.print(i + " ");
+					}
+					System.out.println("\n");
+
 					throw new IllegalArgumentException(
 							String.format("U probeert 2 edelsteenfiches van dezelfde kleur te nemen."));
 				}
@@ -325,36 +333,6 @@ public class SplendorApplicatie {
 		if (dc.buitenVoorraad()) {
 			geefFichesTerug();
 		}
-	}
-
-	private void geefFichesTerug() {
-		// toon overzicht van edelsteenfiches in speler zijn voorraad
-		System.out.println(dc.toonAantalFichesVanSpelerAanBeurt());
-
-		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
-		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
-
-		System.out.printf(
-				"U heeft volgende edelsteenfiches in bezit (maar dit zijn er meer dan %d toegestane voorraad)%n",
-				Speler.getMaxEdelsteenfichesInVoorraad());
-
-		// toon speler aan de beurt zijn fiches na elke verwijdering
-		System.out.println(dc.toonAantalFichesVanSpelerAanBeurt());
-
-		System.out.printf("Geef %d fiches terug aan de spel stapels, kies een getal die hoort bij je gekozen stapel.%n",
-				aantalTerugTePlaatsen);
-
-		for (Kleur k : Kleur.values()) {
-			System.out.printf("%s %d%n", k, k.getKleur() + 1);
-		}
-
-		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
-			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer):");
-			int stapelKeuze = input.nextInt();
-
-			dc.plaatsTerugInStapel(stapelKeuze - 1);
-		}
-
 	}
 
 	private void neemTweeDezelfdeFiches() {
@@ -399,5 +377,35 @@ public class SplendorApplicatie {
 		if (dc.buitenVoorraad()) {
 			geefFichesTerug();
 		}
+	}
+
+	private void geefFichesTerug() {
+		// toon overzicht van edelsteenfiches in speler zijn voorraad
+		System.out.println(dc.toonAantalFichesVanSpelerAanBeurt());
+	
+		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
+		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
+	
+		System.out.printf(
+				"U heeft volgende edelsteenfiches in bezit (maar dit zijn er meer dan %d toegestane voorraad)%n",
+				Speler.getMaxEdelsteenfichesInVoorraad());
+	
+		// toon speler aan de beurt zijn fiches na elke verwijdering
+		System.out.println(dc.toonAantalFichesVanSpelerAanBeurt());
+	
+		System.out.printf("Geef %d fiches terug aan de spel stapels, kies een getal die hoort bij je gekozen stapel.%n",
+				aantalTerugTePlaatsen);
+	
+		for (Kleur k : Kleur.values()) {
+			System.out.printf("%s %d%n", k, k.getKleur() + 1);
+		}
+	
+		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
+			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer):");
+			int stapelKeuze = input.nextInt();
+	
+			dc.plaatsTerugInStapel(stapelKeuze - 1);
+		}
+	
 	}
 }
