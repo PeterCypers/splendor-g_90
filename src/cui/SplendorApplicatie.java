@@ -152,7 +152,8 @@ public class SplendorApplicatie {
 	private void toonSpelSituatie() {
 		List<SpelVoorwerpDTO> dtos = dc.toonSpelSituatie();
 
-		System.out.println("************Spel Situatie:************\n");
+		System.out
+				.println("************************************ Spel Situatie: ************************************ \n");
 		System.out.println("Beschikbare edelen:");
 
 		for (SpelVoorwerpDTO dto : dtos) {
@@ -185,7 +186,8 @@ public class SplendorApplicatie {
 	// afgewerkt 11-4-2023
 	private void speelBeurt() {
 		SoortKeuze keuze = null;
-
+		System.out.println(
+				"************************************ Speler Aan Beurt: ************************************ ");
 		System.out.printf("Speler aan beurt is: %s%n%n", dc.toonSpelerAanBeurtVerkort());
 
 		/*
@@ -241,6 +243,8 @@ public class SplendorApplicatie {
 			System.out.println("  _                     _   \r\n" + " | |__   ___ _   _ _ __| |_ \r\n"
 					+ " | '_ \\ / _ \\ | | | '__| __|\r\n" + " | |_) |  __/ |_| | |  | |_ \r\n"
 					+ " |_.__/ \\___|\\__,_|_|   \\__|\r\n" + "                            ");
+			System.out.println(
+					"************************************ Speler situatie: ************************************\n");
 			System.out.print(dc.toonSpelersSituatie());
 		}
 
