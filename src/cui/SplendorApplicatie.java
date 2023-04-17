@@ -46,17 +46,20 @@ public class SplendorApplicatie {
 			case 3 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
+				keuze = 2;
 			}
 			case 4 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
 				dc.voegSpelerToe("user3", 2001);
+				keuze = 2;
 			}
 			case 5 -> {
 				dc.voegSpelerToe("user4", 1999);
 				dc.voegSpelerToe("user2", 2000);
 				dc.voegSpelerToe("user3", 2001);
 				dc.voegSpelerToe("user1", 2002);
+				keuze = 2;
 			}
 			}
 		}
