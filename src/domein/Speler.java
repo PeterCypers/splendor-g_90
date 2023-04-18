@@ -15,7 +15,6 @@ public class Speler {
 	private boolean startSpeler;
 	private List<Ontwikkelingskaart> ontwikkelingskaartenInHand;
 	private List<Edele> edelenInHand;
-	// private ArrayList<Edelsteenfiche> edelsteenfichesInHand;
 	private HashMap<Kleur, Integer> edelsteenfichesInHand;
 
 	public Speler(String gebruikersnaam, int geboortejaar) {

@@ -560,6 +560,10 @@ public class DomeinController implements SpelVoorwerp {
 		System.out.println("***************************************************************************");
 	}
 
+	public void krijgEdele() {
+		spel.krijgEdele();
+	}
+
 	// [testmethode] om te zien of de edelsteenfiches-lijst goed opgevuld is
 //	private void testPrintLijstMetEdelsteenFiches(HashMap<Kleur, Integer> ficheStapels) {
 //		/* WIT,ROOD,BLAUW,GROEN,ZWART; */

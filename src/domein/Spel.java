@@ -457,4 +457,26 @@ public class Spel {
 		System.out.println("***************************************************************************");
 	}
 
+	public void krijgEdele() {
+		ArrayList<Ontwikkelingskaart> ontwikkelingskaartenInHand = (ArrayList<Ontwikkelingskaart>) spelerAanBeurt
+				.getOntwikkelingskaartenInHand();
+		HashMap<Kleur, Integer> aantalOntwikkelingskaartKleurBonus = new HashMap<>();
+
+		for (Ontwikkelingskaart ontwikkelingskaart : ontwikkelingskaartenInHand) {
+			Kleur kleurBonus = ontwikkelingskaart.getKleurBonus();
+			int aantalBonus = aantalOntwikkelingskaartKleurBonus.getOrDefault(kleurBonus, 0);
+			aantalOntwikkelingskaartKleurBonus.put(kleurBonus, aantalBonus + 1);
+		}
+
+		for (int i = 0; i < edelen.size(); i++) {
+			// controle of de speler de edele kan krijgen
+
+			// voeg de edele toe als de speler het juist aantal ontwikkelingskaarten heeft
+			spelerAanBeurt.voegEdeleToeAanHand(edelen.get(i));
+
+			// verwijder de edele uit de lijst van spel
+		}
+
+	}
+
 }
