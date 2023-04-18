@@ -1,6 +1,7 @@
 package testen;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 
@@ -12,6 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import domein.Speler;
 
 class SpelerTest {
+	// TODO TESTEN VOOR SPELER
 
 	Speler s, s2, s3, s4;
 
@@ -33,7 +35,7 @@ class SpelerTest {
 	@ValueSource(strings = { "speler3", "S123456", "S 1234_", "s___ 123" })
 	void maakSpeler_geldigeGebruikersnamen_maaktDeSpelersAan(String geldigeNaam) {
 		Speler s = new Speler(geldigeNaam, GELDIGE_LEEFTIJD);
-		
+
 		assertEquals(geldigeNaam, s.getGebruikersnaam());
 	}
 
@@ -61,7 +63,7 @@ class SpelerTest {
 		int geboortejaarTeJongeSpeler = now.getYear() - 5;
 		assertThrows(IllegalArgumentException.class, () -> new Speler(GELDIGE_NAAM, geboortejaarTeJongeSpeler));
 	}
-	
+
 	@Test
 	void maakSpeler_spelerNetOudGenoeg_maaktDeSpelerAan() {
 		LocalDate now = LocalDate.now();

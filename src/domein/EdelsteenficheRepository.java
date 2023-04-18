@@ -1,13 +1,13 @@
 package domein;
 
-import java.util.List;
+import java.util.HashMap;
 
 import persistentie.EdelsteenficheMapper;
 
 public class EdelsteenficheRepository {
 
 	private EdelsteenficheMapper mapper;
-	private FicheStapel[] ficheStapels;
+	private HashMap<Kleur, Integer> ficheStapels;
 
 	// aantalFiches afhankelijk van aantalSpelers
 	public EdelsteenficheRepository(int aantalSpelers) {
@@ -18,7 +18,7 @@ public class EdelsteenficheRepository {
 
 	// lijst wordt perfect ingesteld in mapper klasse, voor zover dit op deze manier
 	// mag (zie dc.startNieuwSpel())
-	public FicheStapel[] geefEdelsteenficheStapels() {
+	public HashMap<Kleur, Integer> geefEdelsteenficheStapels() {
 		return this.ficheStapels;
 	}
 

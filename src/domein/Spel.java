@@ -1,8 +1,8 @@
 package domein;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Spel {
 	public static final int MIN_AANTAL_SPELERS = 2;
@@ -16,14 +16,13 @@ public class Spel {
 	private Speler winnaar;
 	private boolean eindeSpel = false;
 	private final List<Edele> edelen;
-	private FicheStapel[] ficheStapels; // final mogelijk? waarschijnlijk niet /* volgorde per index:
-										// WIT,ROOD,BLAUW,GROEN,ZWART;*/
+	private HashMap<Kleur, Integer> ficheStapels;
 	private Ontwikkelingskaart[] niveau1Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau2Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau3Zichtbaar = { null, null, null, null };
 
 	public Spel(List<Speler> aangemeldeSpelers, List<List<Ontwikkelingskaart>> ontwikkelingsKaarten, List<Edele> edelen,
-			FicheStapel[] ficheStapels) {
+			HashMap<Kleur, Integer> ficheStapels) {
 		controleerAantalSpelers(aangemeldeSpelers);
 		this.aangemeldeSpelers = aangemeldeSpelers;
 		// jongste speler wordt 1ste speler aanbeurt, jongste speler is startspeler en
@@ -90,12 +89,15 @@ public class Spel {
 			throw new IllegalArgumentException(foutBoodschap("Verkeerd aantal edelen in de lijst edelen"));
 	}
 
-	private void controleerFicheStapels(FicheStapel[] ficheStapels) {
+	private void controleerFicheStapels(HashMap<Kleur, Integer> ficheStapels) {
+		int aantalFichesPerStapel;
+
 		if (ficheStapels == null)
 			throw new IllegalArgumentException(foutBoodschap("Fichestapel is null"));
-		if (ficheStapels.length != 5)
+
+		if (ficheStapels.size() != 5)
 			throw new IllegalArgumentException(foutBoodschap("Aantal fichestapels is niet exact 5"));
-		int aantalFichesPerStapel;
+
 		switch (aangemeldeSpelers.size()) {
 		case 2 -> aantalFichesPerStapel = 4;
 		case 3 -> aantalFichesPerStapel = 5;
@@ -104,17 +106,15 @@ public class Spel {
 				String.format("Fout in %s, Unexpected value: ", this.getClass()) + aangemeldeSpelers.size());
 		}
 
-		for (int i = 0; i < ficheStapels.length; i++) {
-			if (ficheStapels[i].getFiches() == null || ficheStapels[i].getFiches().size() == 0) {
+		ficheStapels.forEach((kleur, aantalFiches) -> {
+			if (aantalFiches == null || aantalFiches == 0) {
 				throw new IllegalArgumentException(foutBoodschap("Een of meerdere fichestapels zijn leeg"));
 			}
-			if (ficheStapels[i].getFiches().size() != aantalFichesPerStapel)
+
+			if (aantalFiches != aantalFichesPerStapel) {
 				throw new IllegalArgumentException(foutBoodschap("Aantal fiches per stapel is niet juist"));
-			ficheStapels[i].getFiches().forEach((fiche) -> {
-				if (fiche == null)
-					throw new IllegalArgumentException(foutBoodschap("Een of meerdere fiches is null"));
-			});
-		}
+			}
+		});
 	}
 
 	public Speler getSpelerAanBeurt() {
@@ -165,7 +165,7 @@ public class Spel {
 		// heeft om deze kaart te kopen
 		if (!kanKaartKopen(gekozenOntwikkelingskaart)) {
 			throw new RuntimeException(
-					"Speler mag deze kaart niet kopen.\nU heeft niet genoeg edelsteenfiches om deze ontwikkelingskaart te kopen.");
+					"\nSpeler mag deze kaart niet kopen.\nU heeft niet genoeg edelsteenfiches om deze ontwikkelingskaart te kopen.\n");
 		}
 
 		// Verwijder fiches uit voorraad speler
@@ -174,13 +174,17 @@ public class Spel {
 
 		// Verwijder kaart van de zichtbare kaarten
 		niveauZichtbaar[niveau - 1][positie - 1] = null;
+
 		// Voeg de kaart toe aan de voorraad van de speler
 		spelerAanBeurt.voegOntwikkelingskaartToeAanHand(gekozenOntwikkelingskaart);
+
 		// Voeg de prestigepunten van de ontwikkelingskaart toe aan de speler zijn
 		// punten
 		spelerAanBeurt.voegPuntenToe(gekozenOntwikkelingskaart.getPrestigepunten());
+
 		// zichtbare kaarten stapel worden bijgevuld
 		vulKaartenBij();
+
 		// speler zijn beurt wordt stopgezet
 		spelerAanBeurt.setAanDeBeurt(false);
 	}
@@ -207,6 +211,8 @@ public class Spel {
 	public int[] somAantalPerKleurInBezit() {
 		int[] somAantalPerKleurInBezit = new int[5];
 		List<Ontwikkelingskaart> ontwikkelingsKaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
+		HashMap<Kleur, Integer> edelSteenFichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
+
 		for (Ontwikkelingskaart ontwk : ontwikkelingsKaartenInHand) {
 			switch (ontwk.getKleurBonus()) {
 			case WIT -> somAantalPerKleurInBezit[0]++;
@@ -217,16 +223,19 @@ public class Spel {
 			}
 		}
 
-		List<Edelsteenfiche> edelSteenFichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
-		for (Edelsteenfiche e : edelSteenFichesInHand) {
-			switch (e.getKleur()) {
-			case WIT -> somAantalPerKleurInBezit[0]++;
-			case ROOD -> somAantalPerKleurInBezit[1]++;
-			case BLAUW -> somAantalPerKleurInBezit[2]++;
-			case GROEN -> somAantalPerKleurInBezit[3]++;
-			case ZWART -> somAantalPerKleurInBezit[4]++;
+		for (Kleur kleur : Kleur.values()) {
+			// haal aantal fiches op uit de hashmap
+			Integer aantalFiches = edelSteenFichesInHand.get(kleur);
+
+			/*
+			 * als er voor die kleur geen fiches zijn krijg je null terug => voeg enkel de
+			 * hoeveelheid toe wanneer het verschillend is van null en er dus fiches zijn
+			 */
+			if (aantalFiches != null) {
+				somAantalPerKleurInBezit[kleur.getKleur()] += aantalFiches;
 			}
 		}
+
 		return somAantalPerKleurInBezit;
 	}
 
@@ -246,25 +255,47 @@ public class Spel {
 			}
 
 		}
+
 		for (int i = 0; i < wegTeNemenEdelsteenfichesUitVoorraad.length; i++) {
-			String[] soort = { "diamant", "robijn", "saffier", "smaragd", "onyx" };
-			Kleur kleur = switch (i) {
-			case 0 -> Kleur.WIT;
-			case 1 -> Kleur.ROOD;
-			case 2 -> Kleur.BLAUW;
-			case 3 -> Kleur.GROEN;
-			case 4 -> Kleur.ZWART;
-			default -> throw new IllegalArgumentException("Unexpected value: " + i);
-			};
-			// Kleur kleur = Kleur.values(i);
 			for (int j = 0; j < wegTeNemenEdelsteenfichesUitVoorraad[i]; j++) {
-				Edelsteenfiche ef = new Edelsteenfiche(soort[i], kleur, null);
 				// Terug toevoegen van de fiche aan de stapel
-				ficheStapels[i].voegFicheToe(ef);
+				voegFicheToe(Kleur.valueOf(i));
 				// verwijderen van fiches uit de speler zjin voorraad
-				spelerAanBeurt.verwijderEdelsteenfiche(ef);
+				spelerAanBeurt.verwijderEdelsteenfiche(Kleur.valueOf(i));
 			}
 		}
+	}
+
+	private void voegFicheToe(Kleur kleur) {
+		if (kleur == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
+
+		Integer currentValue = ficheStapels.get(kleur);
+		if (currentValue != null) {
+			ficheStapels.put(kleur, currentValue + 1);
+		} else {
+			ficheStapels.put(kleur, 1);
+		}
+	}
+
+	private void verwijderFiche(Kleur kleur) {
+		if (kleur == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Kleur is null", this.getClass()));
+
+		int currentValue = ficheStapels.get(kleur);
+		if (currentValue - 1 > 0) {
+			ficheStapels.put(kleur, currentValue - 1);
+		} else {
+			ficheStapels.remove(kleur);
+		}
+	}
+
+	public int totaalAantalfiches() {
+		int sum = 0;
+		for (int value : ficheStapels.values()) {
+			sum += value;
+		}
+		return sum;
 	}
 
 	public void vulKaartenBij() {
@@ -282,34 +313,28 @@ public class Spel {
 	}
 
 	/**
-	 * 
-	 * @param indexen [0-4, 0-4, 0-4]
+	 * @param kleuren [0-4, 0-4, 0-4]
 	 */
-	// nieuw 11-4-2023
-	public void neemDrieFiches(int[] indexen) {
-		if (indexen == null)
+	public void neemDrieFiches(Kleur[] kleuren) {
+		if (kleuren == null)
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: nullobject passed in neemDrieFiches", this.getClass()));
-		for (int i : indexen) {
-			if (i < 0 || i > 4)
+		for (Kleur kleur : kleuren) {
+			if (kleur == null)
 				throw new IllegalArgumentException(
-						String.format("Fout in %s: bounds error neemDrieFiches", this.getClass()));
+						String.format("\nU probeert fiches te nemen van een lege stapel. (null)\n"));
+
+			// wanneer een stapel geen fiches bevat
+			if (ficheStapels.get(kleur) == null || ficheStapels.get(kleur) <= 0) {
+				throw new RuntimeException("\nU probeert fiches te nemen van een lege stapel. (0)\n");
+			}
 		}
 
-		if (indexen.length != 3)
-			throw new IllegalArgumentException(
-					String.format("Fout in %s: lengte indexen param neemDrieFiches", this.getClass()));
-		if (indexen[0] == indexen[1] || indexen[0] == indexen[2] || indexen[1] == indexen[2])
-			throw new IllegalArgumentException(String.format(
-					"Fout in %s: Probeert 2x dezelfde kleur fiche te nemen in neemDrieFiches", this.getClass()));
-
-		int index1 = indexen[0];
-		int index2 = indexen[1];
-		int index3 = indexen[2];
-
-		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index1].neemFiche());
-		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index2].neemFiche());
-		spelerAanBeurt.voegEdelsteenficheToeAanHand(ficheStapels[index3].neemFiche());
+		// verplaats de edelsteenfiches van spel voorraad naar speler voorraad
+		for (Kleur kleur : kleuren) {
+			verwijderFiche(kleur);
+			spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+		}
 
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
 		spelerAanBeurt.setAanDeBeurt(false);
@@ -319,17 +344,52 @@ public class Spel {
 	 * 
 	 * @param index 0-4
 	 */
-	// nieuw 11-4-2023
-	public void neemTweeFiches(int index) {
-		if (index < 0 || index > 4)
+	public void neemTweeFiches(Kleur kleur) {
+		if (kleur == null)
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: nullobject passed in neemTweeFiches", this.getClass()));
-		List<Edelsteenfiche> tweeFiches = ficheStapels[index].neemTweeFiches();
-		for (Edelsteenfiche ef : tweeFiches) {
-			spelerAanBeurt.voegEdelsteenficheToeAanHand(ef);
+
+		// controleren of het mogelijk is om 2 te verwijderen uit gekozen kleur stapel
+		if (ficheStapels.get(kleur) < 4) {
+			throw new IllegalArgumentException(
+					"U mag geen 2 dezelfde fiches nemen uit 1 stapel als deze minder heeft dan 4");
 		}
+
+		// 2 verwijderen uit stapel van spel
+		verwijderFiche(kleur);
+		verwijderFiche(kleur);
+
+		// 2 toevoegen aan speler zijn stapel
+		spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+		spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+
 		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
 		spelerAanBeurt.setAanDeBeurt(false);
+	}
+
+	public int aantalStapelsMeerDanNul() {
+		int aantalStapelsMeerDanNul = 0;
+
+		for (Integer aantalFiches : ficheStapels.values()) {
+			if (aantalFiches > 0)
+				aantalStapelsMeerDanNul++;
+		}
+
+		return aantalStapelsMeerDanNul;
+	}
+
+	/**
+	 * is er een stapel met meer dan 4 fiches
+	 * 
+	 * @return boolean
+	 */
+	public boolean bestaatStapelMeerDan4() {
+		for (Integer aantalFiches : ficheStapels.values()) {
+			if (aantalFiches >= 4)
+				return true;
+		}
+
+		return false;
 	}
 
 	public Integer getAantalSpelers() {
@@ -340,19 +400,18 @@ public class Spel {
 		return aangemeldeSpelers;
 	}
 
-	// nieuwe methode 7-4-2023
 	public List<SpelVoorwerp> geefSpelVoorwerpen() {
 		List<SpelVoorwerp> speelbord = new ArrayList<>();
-		for (int i = 0; i < ficheStapels.length; i++) {
-			speelbord.add(ficheStapels[i]);
-		}
+
 		for (Edele edele : this.edelen)
 			speelbord.add(edele);
+
 		for (int i = 0; i < niveau1Zichtbaar.length; i++) {
 			speelbord.add(niveau1Zichtbaar[i]);
 			speelbord.add(niveau2Zichtbaar[i]);
 			speelbord.add(niveau3Zichtbaar[i]);
 		}
+
 		return speelbord;
 	}
 
@@ -366,6 +425,27 @@ public class Spel {
 
 	private String foutBoodschap(String specifiekBericht) {
 		return String.format("Fout in %s: %s", this.getClass(), specifiekBericht);
+	}
+
+	public void plaatsTerugInStapel(int stapelKeuze) {
+		// verwijder fiche bij speler
+		spelerAanBeurt.verwijderEdelsteenfiche(Kleur.valueOf(stapelKeuze));
+
+		// voeg fiche toe aan bord
+		voegFicheToe(Kleur.valueOf(stapelKeuze));
+	}
+
+	public String toonFiches() {
+		String representatieFiches = "";
+
+		if (ficheStapels.size() > 0) {
+			for (Kleur kleur : Kleur.values()) {
+				Integer aantalFiches = ficheStapels.get(kleur);
+				representatieFiches += String.format("%s: %d%n", kleur, aantalFiches != null ? aantalFiches : 0);
+			}
+		}
+
+		return representatieFiches;
 	}
 
 	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?

@@ -1,6 +1,3 @@
-TODon'ts:
-domein.SpelerRepository/main.StartUpCui/persistentie.Connectie klassen voorlopig afgewerkt
-
 DC/repos/mappers moeten niet getest worden -> geen testklassen
 
 TODO's:
@@ -37,3 +34,11 @@ wanneer wordt op winnaar gecontroleerd? hoe eindigt het spel? wanneer worden de 
 na elke beurt?
 
 nog een grote TODO: methode om een edele te kopen en toe te voegen aan speler hand
+
+
+
+Link ASCII Tekst (gebruikmakend van font Standard):
+https://patorjk.com/software/taag/#p=display&f=Standard&t=Ronde
+
+
+zie edelen -> benaming fotos -> geef ontw-kaarten ook een goeie naam voor hun fotos

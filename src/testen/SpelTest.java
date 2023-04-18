@@ -1,20 +1,9 @@
 package testen;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
-
-import domein.Spel;
 import domein.Speler;
 
 class SpelTest {
+	// TODO TESTEN VOOR SPEL
 //	
 //	Spel s, s2, s3;
 //	public static final int MIN_AANTAL_SPELERS = 2;
@@ -52,16 +41,14 @@ class SpelTest {
 //		
 //	}
 
-	@Test
-	public void maakSpel_lijstGeldigeSpelerAantal_maaktNieuwSpelAan() {
-		List<Speler> spelers = new ArrayList<Speler>();
-		spelers.add(spelerA);
-		spelers.add(spelerB);
-		Spel spel = new Spel(spelers);
-		assertEquals(2, spel.getAantalSpelers());
-	}
-
-	// TODO hieronder een idee van mogelijkse test
+//	@Test
+//	public void maakSpel_lijstGeldigeSpelerAantal_maaktNieuwSpelAan() {
+//		List<Speler> spelers = new ArrayList<Speler>();
+//		spelers.add(spelerA);
+//		spelers.add(spelerB);
+//		Spel spel = new Spel(spelers);
+//		assertEquals(2, spel.getAantalSpelers());
+//	}
 
 //	@Test
 //	public void maakSpel_lijstOngeldigSpelerAantal_maaktSpelNiet() {
