@@ -37,3 +37,5 @@ wanneer wordt op winnaar gecontroleerd? hoe eindigt het spel? wanneer worden de 
 na elke beurt?
 
 nog een grote TODO: methode om een edele te kopen en toe te voegen aan speler hand
+
+zie edelen -> benaming fotos -> geef ontw-kaarten ook een goeie naam voor hun fotos
