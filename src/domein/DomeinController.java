@@ -52,6 +52,7 @@ public class DomeinController implements SpelVoorwerp {
 	public void voegSpelerToe(String gebruikersNaam, int geboorteJaar) {
 		// controle max aantal spelers bereikt:
 		controleerAantalSpelers();
+
 		// controle of speler al is toegevoegd:
 		if (aangemeldeSpelers.size() > 0) {
 			for (Speler speler : aangemeldeSpelers) {
@@ -60,11 +61,13 @@ public class DomeinController implements SpelVoorwerp {
 							String.format("Speler met de naam %s is al aan het spel toegevoegd.", gebruikersNaam));
 			}
 		}
+
 		// controle gebruiker wil dezelfde speler opnieuw toevoegen uit
 		// database/repository:
 		List<Speler> spelersInRepository = spelerRepo.getSpelers();
 		boolean spelerBestaat = false;
 		Speler geselecteerdeSpeler = null;
+
 		for (Speler speler : spelersInRepository) {
 
 			if (speler.getGebruikersnaam().equals(gebruikersNaam) && speler.getGeboortejaar() == geboorteJaar) {
@@ -72,8 +75,10 @@ public class DomeinController implements SpelVoorwerp {
 				geselecteerdeSpeler = speler;
 			}
 		}
+
 		if (!spelerBestaat)
 			throw new IllegalArgumentException("Speler bestaat niet.");
+
 		aangemeldeSpelers.add(geselecteerdeSpeler);
 	}
 
@@ -143,17 +148,21 @@ public class DomeinController implements SpelVoorwerp {
 			} else if (vw instanceof Edele e) {
 				dto = new SpelVoorwerpDTO(e.getPrestigePunten(), e.getEdeleFoto(), e.getKosten());
 			}
+
 			lijstDTOs.add(dto);
 		}
+
 		return lijstDTOs;
 	}
 
 	public String toonSpelersSituatie() {
 		String spelerSituatie = "";
 		List<Speler> spelerInSpel = this.spel.getAangemeldeSpelers();
+
 		for (Speler s : spelerInSpel) {
 			spelerSituatie += String.format("%s%n", s.toString());
 		}
+
 		return spelerSituatie;
 	}
 
@@ -162,22 +171,27 @@ public class DomeinController implements SpelVoorwerp {
 	public String toonAlleSpelers() {
 		List<Speler> spelers = spelerRepo.getSpelers();
 		String alleSpelers = String.format("***DB-Spelers***%n");
+
 		for (Speler s : spelers) {
 			alleSpelers += String.format("Naam: %6s  | leeftijd: %3d jaar | geboortejaar: %d%n", s.getGebruikersnaam(),
 					LocalDate.now().getYear() - s.getGeboortejaar(), s.getGeboortejaar());
 		}
+
 		alleSpelers += String.format("*******************************************************%n");
+
 		return alleSpelers;
 	}
 
 	// [testmethode] om de lijst van deelnemende spelers aan het spel te controleren
 	public String toonAangemeldeSpelers() {
 		String returnStr = "";
+
 		if (aangemeldeSpelers.size() > 0) {
 			for (Speler speler : aangemeldeSpelers) {
 				returnStr += speler.toString() + "\n"; // als dit niet werkt -> string.format
 			}
 		}
+
 		return returnStr.isBlank() ? "Er zijn nog geen deelnemers" : returnStr;
 	}
 
@@ -524,9 +538,11 @@ public class DomeinController implements SpelVoorwerp {
 	private void testPrintLijstMetO_Kaarten(List<List<Ontwikkelingskaart>> listlist) {
 		System.out.println();
 		System.out.println("*****DC test alle kaartstapels goed opgevuld met ontwikkelings kaarten*****");
+
 		for (List<Ontwikkelingskaart> list : listlist) {
 			System.out.println(list);
 		}
+
 		System.out.println("***************************************************************************");
 	}
 
@@ -536,10 +552,12 @@ public class DomeinController implements SpelVoorwerp {
 		System.out.println("*****DC test LijstMetEdelen goed opgevuld met EdelenKaarten****************");
 		System.out.printf("Aantal Spelers: %d%nGrootte vd lijst: %d%n", this.geefAantalSpelers(), edelen.size());
 		System.out.println(edelen);
+
 		for (Edele e : edelen) {
 			System.out.printf("prestige: %d%nfoto: %s%nkosten: %s%n", e.getPrestigePunten(), e.getEdeleFoto(),
 					Arrays.toString(e.getKosten()));
 		}
+
 		System.out.println("***************************************************************************");
 	}
 
@@ -549,6 +567,7 @@ public class DomeinController implements SpelVoorwerp {
 		// (%d(i), %s,%s,%d,%d,%s)
 		System.out.println();
 		System.out.println("*****DC test op de 5 FicheStapels******************************************");
+
 		for (Kleur kleur : Kleur.values()) {
 //			System.out.printf(
 //					"-------------%n%s %d: %s%nKleur: %s%n" + "AantalFiches: %d, lijst-lengte: %d%n" + "Foto: %s%n",
@@ -557,6 +576,7 @@ public class DomeinController implements SpelVoorwerp {
 //					alleFicheStapels[i].getFiches().size(), alleFicheStapels[i].getFicheStapelFoto());
 			System.out.printf("Kleur %s: aantal %d%n", kleur, alleFicheStapels.get(kleur));
 		}
+
 		System.out.println("***************************************************************************");
 	}
 
