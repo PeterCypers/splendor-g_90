@@ -458,25 +458,33 @@ public class Spel {
 	}
 
 	public void krijgEdele() {
-		ArrayList<Ontwikkelingskaart> ontwikkelingskaartenInHand = (ArrayList<Ontwikkelingskaart>) spelerAanBeurt
-				.getOntwikkelingskaartenInHand();
-		HashMap<Kleur, Integer> aantalOntwikkelingskaartKleurBonus = new HashMap<>();
+		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
+		int[] aantalOntwikkelingskaartKleurBonus = new int[Kleur.values().length];
 
 		for (Ontwikkelingskaart ontwikkelingskaart : ontwikkelingskaartenInHand) {
 			Kleur kleurBonus = ontwikkelingskaart.getKleurBonus();
-			int aantalBonus = aantalOntwikkelingskaartKleurBonus.getOrDefault(kleurBonus, 0);
-			aantalOntwikkelingskaartKleurBonus.put(kleurBonus, aantalBonus + 1);
+			aantalOntwikkelingskaartKleurBonus[kleurBonus.ordinal()]++;
 		}
+		// controle of de speler de edele kan krijgen
+		for (Edele edele : edelen) {
+			boolean kanEdeleKopen = true;
+			int[] kosten = edele.getKosten();
 
-		for (int i = 0; i < edelen.size(); i++) {
-			// controle of de speler de edele kan krijgen
+			for (int kleurIndex = 0; kleurIndex < kosten.length; kleurIndex++) {
+				if (kosten[kleurIndex] > aantalOntwikkelingskaartKleurBonus[kleurIndex]) {
+					kanEdeleKopen = false;
+					break;
+				}
+			}
 
-			// voeg de edele toe als de speler het juist aantal ontwikkelingskaarten heeft
-			spelerAanBeurt.voegEdeleToeAanHand(edelen.get(i));
-
-			// verwijder de edele uit de lijst van spel
+			if (kanEdeleKopen) {
+				// voeg de edele toe als de speler het juist aantal ontwikkelingskaarten heeft
+				spelerAanBeurt.voegEdeleToeAanHand(edele);
+				// verwijder de edele uit de lijst van spel
+				edelen.remove(edele);
+				break;
+			}
 		}
-
 	}
 
 }
