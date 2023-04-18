@@ -247,18 +247,6 @@ public class DomeinController implements SpelVoorwerp {
 		return aangemeldeSpelers.size();
 	}
 
-	// [TEST] om te zien of de n1/n2/n3 lijst-lijst goed opgevuld is
-	private void testPrintLijstMetO_Kaarten(List<List<Ontwikkelingskaart>> listlist) {
-		System.out.println();
-		System.out.println("*****DC test alle kaartstapels goed opgevuld met ontwikkelings kaarten*****");
-
-		for (List<Ontwikkelingskaart> list : listlist) {
-			System.out.println(list);
-		}
-
-		System.out.println("***************************************************************************");
-	}
-
 	// [TEST] om te zien of de edelen-lijst goed opgevuld is
 	private void testPrintLijstMetEdelen(List<Edele> edelen) {
 		System.out.println();
