@@ -479,8 +479,12 @@ public class Spel {
 			}
 
 			if (kanEdeleKopen) {
+				// voeg prestigepunten toe van edele aan speler zijn totaal
+				spelerAanBeurt.voegPuntenToe(edele.getPrestigePunten());
+
 				// voeg de edele toe als de speler het juist aantal ontwikkelingskaarten heeft
 				spelerAanBeurt.voegEdeleToeAanHand(edele);
+
 				// verwijder de edele uit de lijst van spel
 				edelen.remove(edele);
 				break;
