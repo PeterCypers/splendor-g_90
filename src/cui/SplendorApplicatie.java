@@ -240,7 +240,7 @@ public class SplendorApplicatie {
 		int keuze2 = 0;
 
 		System.out.print("\nWil je nog je speler status bekijken?\n" + "1. Bekijk status en beëindig beurt\n"
-				+ "2. Beëindig beurt\n" + "keuze: ");
+				+ "2. Beëindig beurt\n" + "Keuze: ");
 
 		do {
 			try {
