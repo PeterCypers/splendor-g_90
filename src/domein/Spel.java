@@ -480,7 +480,7 @@ public class Spel {
 
 			if (kanEdeleKopen) {
 				// voeg prestigepunten toe van edele aan speler zijn totaal
-				spelerAanBeurt.voegPuntenToe(edele.getPrestigePunten());
+				spelerAanBeurt.voegPuntenToe(edele.getPrestigepunten());
 
 				// voeg de edele toe als de speler het juist aantal ontwikkelingskaarten heeft
 				spelerAanBeurt.voegEdeleToeAanHand(edele);

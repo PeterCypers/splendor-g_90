@@ -1,7 +1,7 @@
 package domein;
 
 public class Edele implements SpelVoorwerp{
-	private int prestigePunten;
+	private int prestigepunten;
 	private String edeleFoto;
 	private int[] kosten;
 	
@@ -11,12 +11,12 @@ public class Edele implements SpelVoorwerp{
 		setKosten(kosten);
 	}
 	
-	public int getPrestigePunten() {
-		return prestigePunten;
+	public int getPrestigepunten() {
+		return prestigepunten;
 	}
 
 	private void setPrestigePunten(int prestigePunten) {
-		this.prestigePunten = prestigePunten;
+		this.prestigepunten = prestigePunten;
 	}
 
 	public String getEdeleFoto() {

@@ -200,7 +200,7 @@ public class Speler {
 
 		if (edelenInHand.size() > 0) {
 			for (Edele e : edelenInHand) {
-				edelPrestigeTotaal += e.getPrestigePunten();
+				edelPrestigeTotaal += e.getPrestigepunten();
 			}
 		}
 

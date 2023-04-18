@@ -148,7 +148,7 @@ public class DomeinController implements SpelVoorwerp {
 				dto = new SpelVoorwerpDTO(ok.getNiveau(), ok.getPrestigepunten(), ok.getKleurBonus(),
 						ok.getFotoOntwikkelingskaart(), ok.getKosten());
 			} else if (vw instanceof Edele e) {
-				dto = new SpelVoorwerpDTO(e.getPrestigePunten(), e.getEdeleFoto(), e.getKosten());
+				dto = new SpelVoorwerpDTO(e.getPrestigepunten(), e.getEdeleFoto(), e.getKosten());
 			}
 
 			lijstDTOs.add(dto);
@@ -261,7 +261,7 @@ public class DomeinController implements SpelVoorwerp {
 		System.out.println(edelen);
 
 		for (Edele e : edelen) {
-			System.out.printf("prestige: %d%nfoto: %s%nkosten: %s%n", e.getPrestigePunten(), e.getEdeleFoto(),
+			System.out.printf("prestige: %d%nfoto: %s%nkosten: %s%n", e.getPrestigepunten(), e.getEdeleFoto(),
 					Arrays.toString(e.getKosten()));
 		}
 
