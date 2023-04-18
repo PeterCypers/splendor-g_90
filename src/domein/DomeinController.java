@@ -106,22 +106,24 @@ public class DomeinController implements SpelVoorwerp {
 		alleKaartenPerNiveau.add(kaartRepo.geefN2Kaarten());
 		alleKaartenPerNiveau.add(kaartRepo.geefN3Kaarten());
 
-		// test:
+		// [TEST]
 		// testPrintLijstMetO_Kaarten(alleKaartenPerNiveau);
 		return alleKaartenPerNiveau;
 	}
 
 	private List<Edele> haalEdelenUitRepo(int aantalSpelers) {
-		// test:
+		// [TEST]
 		testPrintLijstMetEdelen(edeleRepo.geefEdelen(aantalSpelers));
-		// einde test
+
+		// einde [TEST]
 		return edeleRepo.geefEdelen(aantalSpelers);
 	}
 
 	private HashMap<Kleur, Integer> haalEdelsteenficheStapelsUitRepo() {
-		// test:
+		// [TEST]
 		// testPrintLijstMetEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
 		testPrintStapelsEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
+
 		// einde test
 		return edelsteenRepo.geefEdelsteenficheStapels();
 	}
@@ -157,6 +159,10 @@ public class DomeinController implements SpelVoorwerp {
 
 	public String toonSpelersSituatie() {
 		String spelerSituatie = "";
+		spelerSituatie += "\n" + "  _                     _   \r\n" + " | |__   ___ _   _ _ __| |_ \r\n"
+				+ " | '_ \\ / _ \\ | | | '__| __|\r\n" + " | |_) |  __/ |_| | |  | |_ \r\n"
+				+ " |_.__/ \\___|\\__,_|_|   \\__|\r\n" + "                            " + "\n";
+		spelerSituatie += "\n************************************ Speler situatie: ************************************\n\n";
 		List<Speler> spelerInSpel = this.spel.getAangemeldeSpelers();
 
 		for (Speler s : spelerInSpel) {
