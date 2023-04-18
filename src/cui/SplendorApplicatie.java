@@ -293,6 +293,12 @@ public class SplendorApplicatie {
 		} catch (RuntimeException e) {
 			System.out.println(e.getMessage());
 		}
+
+		try {
+			dc.krijgEdele();
+		} catch (RuntimeException e) {
+			System.out.printf("Er is iets fout gelopen in de krijgEdele methode");
+		}
 	}
 
 	/**
