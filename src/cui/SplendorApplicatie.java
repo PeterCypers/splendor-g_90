@@ -451,8 +451,10 @@ public class SplendorApplicatie {
 			System.out.printf("%s %d%n", k, k.getKleur() + 1);
 		}
 
+		System.out.println("");
+
 		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
-			System.out.printf("\nPlaats fiche terug uit eigen stapel (met nummer): ");
+			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
 			int stapelKeuze = input.nextInt();
 
 			dc.plaatsTerugInStapel(stapelKeuze - 1);
