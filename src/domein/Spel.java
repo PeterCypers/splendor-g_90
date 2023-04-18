@@ -7,16 +7,21 @@ import java.util.List;
 public class Spel {
 	public static final int MIN_AANTAL_SPELERS = 2;
 	public static final int MAX_AANTAL_SPELERS = 4;
+
 	private final List<Speler> aangemeldeSpelers;
 	private Speler spelerAanBeurt;
+
 	private final List<Ontwikkelingskaart> n1;
 	private final List<Ontwikkelingskaart> n2;
 	private final List<Ontwikkelingskaart> n3;
-	// nieuw 7-4-2023
+
 	private Speler winnaar;
 	private boolean eindeSpel = false;
+
 	private final List<Edele> edelen;
+
 	private HashMap<Kleur, Integer> ficheStapels;
+
 	private Ontwikkelingskaart[] niveau1Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau2Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau3Zichtbaar = { null, null, null, null };
@@ -132,12 +137,15 @@ public class Spel {
 			spelerAanBeurt.setAanDeBeurt(false);
 
 		int indexHuidigeSpeler = aangemeldeSpelers.indexOf(spelerAanBeurt);
+
 		// index laatste speler in lijst
 		int maxIndex = aangemeldeSpelers.size() - 1;
+
 		// als speler == laatste in de lijst -> volgende speler = 1ste in de lijst
 		int indexVolgendeSpeler = indexHuidigeSpeler == maxIndex ? 0 : indexHuidigeSpeler + 1;
 
 		this.spelerAanBeurt = aangemeldeSpelers.get(indexVolgendeSpeler);
+
 		// volgende speler is aandebeurt, wordt ook in die speler bijgehouden,
 		// een speler aandebeurt wordt false, na successvolle afronden van
 		// spelmethodes(fiches/o-kaarten nemen)
@@ -153,10 +161,11 @@ public class Spel {
 			throw new IllegalArgumentException(foutBoodschap("Positie moet in range: [1-4] zijn"));
 		if (niveau < 1 || niveau > 3)
 			throw new IllegalArgumentException(foutBoodschap("Niveau moet in range: [2-3] zijn"));
-		Ontwikkelingskaart gekozenOntwikkelingskaart = null;
 
+		Ontwikkelingskaart gekozenOntwikkelingskaart = null;
 		Ontwikkelingskaart[][] niveauZichtbaar = { niveau1Zichtbaar, niveau2Zichtbaar, niveau3Zichtbaar };
 		gekozenOntwikkelingskaart = niveauZichtbaar[niveau - 1][positie - 1];
+
 		if (gekozenOntwikkelingskaart == null) {
 			throw new IllegalArgumentException("Gekozen ontwikkelingskaart is null");
 		}
@@ -319,6 +328,7 @@ public class Spel {
 		if (kleuren == null)
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: nullobject passed in neemDrieFiches", this.getClass()));
+
 		for (Kleur kleur : kleuren) {
 			if (kleur == null)
 				throw new IllegalArgumentException(
@@ -448,15 +458,6 @@ public class Spel {
 		return representatieFiches;
 	}
 
-	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
-	private void testOntwikkelingskaartStapels() {
-		System.out.println("*****Spel test n1/n2/n3 Ontwikkelingskaart stapels zijn goed aangemaakt****");
-		System.out.println(n1);
-		System.out.println(n2);
-		System.out.println(n3);
-		System.out.println("***************************************************************************");
-	}
-
 	public void krijgEdele() {
 		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
 		int[] aantalOntwikkelingskaartKleurBonus = new int[Kleur.values().length];
@@ -485,6 +486,15 @@ public class Spel {
 				break;
 			}
 		}
+	}
+
+	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
+	private void testOntwikkelingskaartStapels() {
+		System.out.println("*****Spel test n1/n2/n3 Ontwikkelingskaart stapels zijn goed aangemaakt****");
+		System.out.println(n1);
+		System.out.println(n2);
+		System.out.println(n3);
+		System.out.println("***************************************************************************");
 	}
 
 }
