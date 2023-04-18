@@ -68,6 +68,8 @@ public class SplendorApplicatie {
 		// System.out.printf("aantal deelnemers: %d%n%s",dc.geefAantalSpelers(),
 		// dc.toonAangemeldeSpelers());
 
+//		int beurten = dc.geefAantalSpelers();
+
 		if (keuze == 2) {
 			System.out.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
 					+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
@@ -76,6 +78,16 @@ public class SplendorApplicatie {
 			dc.startNieuwSpel();
 
 			System.out.print(spelGestartFeedback());
+
+//			if (beurten == dc.geefAantalSpelers()) {
+//				System.out.println("                      _      \r\n" + "  _ __ ___  _ __   __| | ___ \r\n"
+//						+ " | '__/ _ \\| '_ \\ / _` |/ _ \\\r\n" + " | | | (_) | | | | (_| |  __/\r\n"
+//						+ " |_|  \\___/|_| |_|\\__,_|\\___|\r\n" + "                             ");
+//			}
+//			beurten--;
+//			if (beurten == 0) {
+//				beurten = dc.geefAantalSpelers();
+//			}
 
 			System.out.print(dc.toonSpelersSituatie());
 		}
@@ -242,11 +254,6 @@ public class SplendorApplicatie {
 		} while (keuze2 < 1 || keuze2 > 2);
 
 		if (keuze2 == 1) {
-			System.out.println("  _                     _   \r\n" + " | |__   ___ _   _ _ __| |_ \r\n"
-					+ " | '_ \\ / _ \\ | | | '__| __|\r\n" + " | |_) |  __/ |_| | |  | |_ \r\n"
-					+ " |_.__/ \\___|\\__,_|_|   \\__|\r\n" + "                            ");
-			System.out.println(
-					"************************************ Speler situatie: ************************************\n");
 			System.out.print(dc.toonSpelersSituatie());
 		}
 
