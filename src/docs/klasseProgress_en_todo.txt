@@ -37,3 +37,9 @@ wanneer wordt op winnaar gecontroleerd? hoe eindigt het spel? wanneer worden de 
 na elke beurt?
 
 nog een grote TODO: methode om een edele te kopen en toe te voegen aan speler hand
+
+
+
+
+Link ASCII Tekst (gebruikmakend van font Standard):
+https://patorjk.com/software/taag/#p=display&f=Standard&t=Ronde

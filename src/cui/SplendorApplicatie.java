@@ -227,7 +227,7 @@ public class SplendorApplicatie {
 		 */
 		int keuze2 = 0;
 
-		System.out.print("Wil je nog je speler status bekijken?\n" + "1. Bekijk status en beëindig beurt\n"
+		System.out.print("\nWil je nog je speler status bekijken?\n" + "1. Bekijk status en beëindig beurt\n"
 				+ "2. Beëindig beurt\n" + "keuze: ");
 
 		do {
@@ -257,7 +257,7 @@ public class SplendorApplicatie {
 		int positie = 0;
 
 		do {
-			System.out.print("Kies niveau van kaart [1-3]: ");
+			System.out.print("\nKies niveau van kaart [1-3]: ");
 
 			try {
 				niveau = input.nextInt();
@@ -302,7 +302,7 @@ public class SplendorApplicatie {
 		int aantalFichesDieGenomenMogenWorden = Math.min(3, dc.geefAantalStapelsMeerDanNul());
 
 		if (aantalFichesDieGenomenMogenWorden == 0) {
-			throw new RuntimeException("Deze actie kan niet gedaan worden omdat alle stapels leeg zijn");
+			throw new RuntimeException("\nDeze actie kan niet gedaan worden omdat alle stapels leeg zijn\n");
 		}
 
 		/*
@@ -312,7 +312,7 @@ public class SplendorApplicatie {
 		Set<Integer> keuzeSet = new HashSet<Integer>();
 
 		System.out.printf(
-				"Kies %d stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n",
+				"%nKies %d stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n",
 				aantalFichesDieGenomenMogenWorden);
 		for (Kleur k : Kleur.values()) {
 			System.out.printf("%s %d%n", k, k.getKleur() + 1);
@@ -377,21 +377,21 @@ public class SplendorApplicatie {
 
 		if (!dc.bestaatStapelMeerDan4()) {
 			throw new RuntimeException(
-					"Deze actie kan niet gedaan worden omdat er geen stapels zijn die 4 of meer fiches hebben");
+					"\nDeze actie kan niet gedaan worden omdat er geen stapels zijn die 4 of meer fiches hebben\n");
 		}
 
 		try {
 			int keuze = 0;
 
 			System.out.printf(
-					"Kies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n");
+					"\nKies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n");
 
 			for (Kleur k : Kleur.values()) {
 				System.out.printf("%s %d%n", k, k.getKleur() + 1);
 			}
 
 			do {
-				System.out.print("keuze: ");
+				System.out.print("Keuze: ");
 
 				try {
 					keuze = input.nextInt();
@@ -439,7 +439,7 @@ public class SplendorApplicatie {
 		}
 
 		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
-			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer):");
+			System.out.printf("\nPlaats fiche terug uit eigen stapel (met nummer): ");
 			int stapelKeuze = input.nextInt();
 
 			dc.plaatsTerugInStapel(stapelKeuze - 1);

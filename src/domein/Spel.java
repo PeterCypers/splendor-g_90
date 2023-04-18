@@ -165,7 +165,7 @@ public class Spel {
 		// heeft om deze kaart te kopen
 		if (!kanKaartKopen(gekozenOntwikkelingskaart)) {
 			throw new RuntimeException(
-					"Speler mag deze kaart niet kopen.\nU heeft niet genoeg edelsteenfiches om deze ontwikkelingskaart te kopen.");
+					"\nSpeler mag deze kaart niet kopen.\nU heeft niet genoeg edelsteenfiches om deze ontwikkelingskaart te kopen.\n");
 		}
 
 		// Verwijder fiches uit voorraad speler
@@ -281,7 +281,7 @@ public class Spel {
 	private void verwijderFiche(Kleur kleur) {
 		if (kleur == null)
 			throw new IllegalArgumentException(String.format("Fout in %s: Kleur is null", this.getClass()));
-	
+
 		int currentValue = ficheStapels.get(kleur);
 		if (currentValue - 1 > 0) {
 			ficheStapels.put(kleur, currentValue - 1);
@@ -322,11 +322,11 @@ public class Spel {
 		for (Kleur kleur : kleuren) {
 			if (kleur == null)
 				throw new IllegalArgumentException(
-						String.format("U probeert fiches te nemen van een lege stapel. (null)"));
+						String.format("\nU probeert fiches te nemen van een lege stapel. (null)\n"));
 
 			// wanneer een stapel geen fiches bevat
 			if (ficheStapels.get(kleur) == null || ficheStapels.get(kleur) <= 0) {
-				throw new RuntimeException("U probeert fiches te nemen van een lege stapel. (0)");
+				throw new RuntimeException("\nU probeert fiches te nemen van een lege stapel. (0)\n");
 			}
 		}
 
