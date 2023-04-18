@@ -1,6 +1,3 @@
-TODon'ts:
-domein.SpelerRepository/main.StartUpCui/persistentie.Connectie klassen voorlopig afgewerkt
-
 DC/repos/mappers moeten niet getest worden -> geen testklassen
 
 TODO's:
