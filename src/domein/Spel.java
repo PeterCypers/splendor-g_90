@@ -67,6 +67,8 @@ public class Spel {
 	}
 
 	private void controleerAantalSpelers(List<Speler> aangemeldeSpelers) {
+		if(aangemeldeSpelers == null)
+			throw new IllegalArgumentException("Lijst met Spelers is null");
 		if (aangemeldeSpelers.size() < MIN_AANTAL_SPELERS || aangemeldeSpelers.size() > MAX_AANTAL_SPELERS)
 			throw new IllegalArgumentException(
 					String.format("Een spel moet Min [2], Max [4] spelers bevatten " + "aantal spelers in de lijst: %d",
@@ -74,6 +76,8 @@ public class Spel {
 	}
 
 	private void controleerOntwikkelingsKaartLijsten(List<List<Ontwikkelingskaart>> ontwikkelingsKaarten) {
+		if (ontwikkelingsKaarten == null)
+			throw new IllegalArgumentException("Lijst met de lijsten van ontwikkelings kaarten per niveau is null");
 		if (ontwikkelingsKaarten.size() != 3)
 			throw new IllegalArgumentException(foutBoodschap("Lijst met OntwikkelingsKaarten is niet van lengte 3"));
 		ontwikkelingsKaarten.forEach((lijst) -> {
@@ -85,6 +89,9 @@ public class Spel {
 							foutBoodschap("Kaart in een lijst van OntwikkelingsKaarten is null"));
 			});
 		});
+		//nieuwe conditie, controler op duplicate lijsten, gecontroleerd op unieke size van kaartlijsten
+		if(ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(1).size() || ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(2).size() || ontwikkelingsKaarten.get(1).size() == ontwikkelingsKaarten.get(2).size())
+			throw new IllegalArgumentException("Duplicate lijsten ontwikkelingskaarten");
 	}
 
 	private void controleerEdelenLijst(List<Edele> edelen) {
@@ -429,7 +436,7 @@ public class Spel {
 		int[] rest = new int[3];
 		rest[0] = n1.size();
 		rest[1] = n2.size();
-		rest[3] = n3.size();
+		rest[2] = n3.size();
 		return rest;
 	}
 

@@ -1,61 +1,245 @@
 package testen;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import domein.Edele;
+import domein.EdeleRepository;
+import domein.EdelsteenficheRepository;
+import domein.Kleur;
+import domein.Ontwikkelingskaart;
+import domein.OntwikkelingskaartRepository;
+import domein.Spel;
+import domein.SpelVoorwerp;
 import domein.Speler;
 
 class SpelTest {
-	// TODO TESTEN VOOR SPEL
-//	
-//	Spel s, s2, s3;
-//	public static final int MIN_AANTAL_SPELERS = 2;
-//	public static final int MID_AANTAL_SPELERS = 3;
-//	public static final int MAX_AANTAL_SPELERS = 4;
-// 	
-//	@Test
-//	void maakSpel_geldigeAantalSpelers_maaktSpelMetJuisteAttribuutWaarden () {
-//		s = new Spel(MIN_AANTAL_SPELERS); //4 3
-//		s2 = new Spel(MID_AANTAL_SPELERS); // 5 4
-//		s3 = new Spel(MAX_AANTAL_SPELERS); // 7 5
-//		
-//		//spel min-aantal:
-//		assertEquals(4, s.getAantalSteentjes());
-//		assertEquals(3, s.getAantalEdelen());
-//		//spel mid-aantal:
-//		assertEquals(5, s2.getAantalSteentjes());
-//		assertEquals(4, s2.getAantalEdelen());
-//		//spel max-aantal:
-//		assertEquals(7, s3.getAantalSteentjes());
-//		assertEquals(5, s3.getAantalEdelen());
-//	}
-//	@ParameterizedTest
-//	@ValueSource(ints = {-1, MIN_AANTAL_SPELERS -1, MAX_AANTAL_SPELERS + 1, 10_000})
-//	void maakSpel_ongeldigeAantalSpelers_werptException(int ongeldigeAantalSpelers) {
-//		assertThrows(IllegalArgumentException.class, () -> new Spel(ongeldigeAantalSpelers));
-//	}
-	Speler spelerA = new Speler("sA", 2002);
-	Speler spelerB = new Speler("sB", 2000);
-	Speler spelerC = new Speler("sC", 1999);
-	Speler spelerD = new Speler("sD", 1998);
-
-//	@BeforeEach
-//	public void setUp() {
-//		
-//	}
-
-//	@Test
-//	public void maakSpel_lijstGeldigeSpelerAantal_maaktNieuwSpelAan() {
-//		List<Speler> spelers = new ArrayList<Speler>();
-//		spelers.add(spelerA);
-//		spelers.add(spelerB);
-//		Spel spel = new Spel(spelers);
-//		assertEquals(2, spel.getAantalSpelers());
-//	}
-
-//	@Test
-//	public void maakSpel_lijstOngeldigSpelerAantal_maaktSpelNiet() {
-//		List<Speler> spelers = new ArrayList<Speler>();
-//		spelers.add(spelerA);
-//		Spel spel = new Spel(spelers);
-//		assertThrows(IllegalArgumentException.class, () -> "De lijst met spelers moet volledig zijn");
-//	}
+	
+//	Spel spelMetGeldigeParameters; //spel in spe
+	Spel spelMethodeTester; //spel aangemaakt met juiste parameters voor 4 spelers
+	Speler s, s2, s3, s4, s5; //s1 is jongste speler
+	OntwikkelingskaartRepository okRepo;
+	EdeleRepository edeleRepo;
+	EdelsteenficheRepository ficheRepo;
+	
+	List<Speler> spelersLijstMetTeWeinigSpelers_1, spelersLijstMetMinAantalSpelers_2, spelersLijstMetMidAantalSpelers_3,
+	             spelersLijstMetMaxAantalSpelers_4, spelersLijstMetTeveelSpelers_5;
+	List<Edele> edelenVoor2Spelers, edelenVoor3Spelers, edelenVoor4Spelers, lijstMetTeWeinigEdelen, lijstMetTeVeelEdelen;
+	List<List<Ontwikkelingskaart>> ontwikkelingsKaarten_goedeLijsten, ontwikkelingsKaarten_metNullLijst, ontwikkelingsKaarten_eenNullKaartInEenLijst,
+	ontwikkelingsKaarten_metEenLijstOntbrekend, ontwikkelingsKaarten_metDuplicateLijst;
+	
+	HashMap<Kleur, Integer> ficheStapel_2_spelers, ficheStapel_3_spelers, ficheStapel_4_spelers;
+	
+	
+	
+	/* domeinregels: UC1 -> DR_SPEL_STARTER(1ste speler = jongste speler) | DR_SPEL_ AANTAL_SPELERS(2-4) | DR_SPEL_NIEUW(grootte van de lijsten/fields)
+	 *               UC2 -> DR_SPEL_SITUATIE | DR_SPEL_EINDE |  DR_SPEL_WINNAAR
+	 *               
+	 *  note: fields van Spel hangen voor een groot deel af van het aantal deelnemende spelers -> grootte van de lijsten
+	 */
+	
+	//setup:
+	@BeforeEach
+	void setup() {
+		String speler_1_naam = "speler1", speler_2_naam = "speler2", speler_3_naam = "speler3", speler_4_naam = "speler4", speler_5_naam = "speler5";
+		int geboorteJaarSpeler1 = 2010, geboorteJaarSpeler2 = 2000, geboorteJaarSpeler3 = 2005, geboorteJaarSpeler4 = 2006, geboorteJaarSpeler5 = 2001;
+		s = new Speler(speler_1_naam, geboorteJaarSpeler1);
+		s2 = new Speler(speler_2_naam, geboorteJaarSpeler2);
+		s3 = new Speler(speler_3_naam, geboorteJaarSpeler3);
+		s4 = new Speler(speler_4_naam, geboorteJaarSpeler4);
+		s5 = new Speler(speler_5_naam, geboorteJaarSpeler5); //extra speler test constructor spel
+		Speler[] vijfSpelers = {s, s2, s3, s4, s5};
+		okRepo = new OntwikkelingskaartRepository();
+		edeleRepo = new EdeleRepository();
+		
+		//speler lijsten opvullen:
+		spelersLijstMetTeWeinigSpelers_1 = new ArrayList<>();
+		spelersLijstMetMinAantalSpelers_2 = new ArrayList<>();
+		spelersLijstMetMidAantalSpelers_3 = new ArrayList<>();
+		spelersLijstMetMaxAantalSpelers_4 = new ArrayList<>();
+		spelersLijstMetTeveelSpelers_5 = new ArrayList<>();
+		for (int i = 1; i <= vijfSpelers.length; i++) {
+			if(i <= 1) spelersLijstMetTeWeinigSpelers_1.add(vijfSpelers[i-1]);
+			if(i <= 2) spelersLijstMetMinAantalSpelers_2.add(vijfSpelers[i-1]);
+			if(i <= 3) spelersLijstMetMidAantalSpelers_3.add(vijfSpelers[i-1]);
+			if(i <= 4) spelersLijstMetMaxAantalSpelers_4.add(vijfSpelers[i-1]);
+			if(i <= 5) spelersLijstMetTeveelSpelers_5.add(vijfSpelers[i-1]);
+		}
+		
+		//goede lijst opvullen met de 3 kaartniveaus:
+		ontwikkelingsKaarten_goedeLijsten = new ArrayList<>();
+		ontwikkelingsKaarten_goedeLijsten.add(okRepo.geefN1Kaarten());
+		ontwikkelingsKaarten_goedeLijsten.add(okRepo.geefN2Kaarten());
+		ontwikkelingsKaarten_goedeLijsten.add(okRepo.geefN3Kaarten());
+		//met null lijst:
+		ontwikkelingsKaarten_metNullLijst = new ArrayList<>();
+		ontwikkelingsKaarten_metNullLijst.add(okRepo.geefN1Kaarten());
+		ontwikkelingsKaarten_metNullLijst.add(null);
+		ontwikkelingsKaarten_metNullLijst.add(okRepo.geefN3Kaarten());
+		//met 1 lijst ontbrekend:
+		ontwikkelingsKaarten_metEenLijstOntbrekend = new ArrayList<>();
+		ontwikkelingsKaarten_metEenLijstOntbrekend.add(okRepo.geefN1Kaarten());
+		ontwikkelingsKaarten_metEenLijstOntbrekend.add(okRepo.geefN2Kaarten());
+		//met duplicate lijst:
+		ontwikkelingsKaarten_metDuplicateLijst = new ArrayList<>();
+		ontwikkelingsKaarten_metDuplicateLijst.add(okRepo.geefN1Kaarten());
+		ontwikkelingsKaarten_metDuplicateLijst.add(okRepo.geefN1Kaarten());
+		ontwikkelingsKaarten_metDuplicateLijst.add(okRepo.geefN2Kaarten());
+		
+		//met 1 null kaart in een lijst: (hiervoor moet repo opnieuw gemaakt worden om de lijst N3 kaart reference te veranderen
+		//anders zal N3 voor alle goeie lijsten ook gemuteerd worden en een null kaart bevatten
+		okRepo = new OntwikkelingskaartRepository();
+		ontwikkelingsKaarten_eenNullKaartInEenLijst = new ArrayList<>();
+		ontwikkelingsKaarten_eenNullKaartInEenLijst.add(okRepo.geefN1Kaarten());
+		ontwikkelingsKaarten_eenNullKaartInEenLijst.add(okRepo.geefN2Kaarten());
+		List<Ontwikkelingskaart> n3MetNullKaart = okRepo.geefN3Kaarten();
+		n3MetNullKaart.set(0, null);
+		ontwikkelingsKaarten_eenNullKaartInEenLijst.add(n3MetNullKaart);
+		
+		
+		//edele lijsten:
+		edelenVoor2Spelers = edeleRepo.geefEdelen(2);
+		edeleRepo = new EdeleRepository();
+		edelenVoor3Spelers = edeleRepo.geefEdelen(3);
+		edeleRepo = new EdeleRepository();
+		edelenVoor4Spelers = edeleRepo.geefEdelen(4);
+		edeleRepo = new EdeleRepository();
+		lijstMetTeWeinigEdelen = edeleRepo.geefEdelen(1);
+		edeleRepo = new EdeleRepository();
+		lijstMetTeVeelEdelen = edeleRepo.geefEdelen(4);
+		int[] kosten = {4, 4, 4, 4, 4};
+		lijstMetTeVeelEdelen.add(new Edele(3, "dame6", kosten));
+		//fichestapels:
+		ficheRepo = new EdelsteenficheRepository(2);
+		ficheStapel_2_spelers = ficheRepo.geefEdelsteenficheStapels();
+		ficheRepo = new EdelsteenficheRepository(3);
+		ficheStapel_3_spelers = ficheRepo.geefEdelsteenficheStapels();
+		ficheRepo = new EdelsteenficheRepository(4);
+		ficheStapel_4_spelers = ficheRepo.geefEdelsteenficheStapels();
+		
+		spelMethodeTester = new Spel(spelersLijstMetMaxAantalSpelers_4, ontwikkelingsKaarten_goedeLijsten, edelenVoor4Spelers,
+				ficheStapel_4_spelers);
+	}
+	/**
+	   << Spel constructor verwachte parameters:>>
+	   List<Speler> aangemeldeSpelers, List<List<Ontwikkelingskaart>> ontwikkelingsKaarten, List<Edele> edelen,
+	   HashMap<Kleur, Integer> ficheStapels
+	   
+	   grootte van de lijst test met mediaan van lijst grootte: 3 spelers, een lijst teklein is grootte bedoeld voor 2 spelers / lijst tegroot
+	   een lijstgrootte voor 4 spelers
+	 */
+	//constructor tests:
+	//ongeldige aangemeldeSpelers parameter:
+	@Test
+	void maakSpel_teWeinigSpelers_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetTeWeinigSpelers_1, ontwikkelingsKaarten_goedeLijsten,edelenVoor2Spelers, ficheStapel_2_spelers));
+	}
+	
+	@Test
+	void maakSpel_teVeelSpelers_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetTeveelSpelers_5, ontwikkelingsKaarten_goedeLijsten,edelenVoor2Spelers, ficheStapel_2_spelers));
+	}
+	@Test
+	void maakSpel_spelers_null_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(null, ontwikkelingsKaarten_goedeLijsten, edelenVoor2Spelers, ficheStapel_2_spelers));
+	}
+	//ongeldige ontwikkelingsKaarten parameter:
+	@Test
+	void maakSpel_ontwikkelingsKaarten_metNullLijst_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMinAantalSpelers_2, ontwikkelingsKaarten_metNullLijst, edelenVoor2Spelers, ficheStapel_2_spelers));
+	}
+	@Test
+	void maakSpel_ontwikkelingsKaarten_eenNullKaartInEenLijst_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMinAantalSpelers_2, ontwikkelingsKaarten_eenNullKaartInEenLijst, edelenVoor2Spelers, ficheStapel_2_spelers));
+	}
+	
+	@Test
+	void maakSpel_ontwikkelingsKaarten_metEenLijstOntbrekend_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMinAantalSpelers_2, ontwikkelingsKaarten_metEenLijstOntbrekend, edelenVoor2Spelers, ficheStapel_2_spelers));
+	}
+	
+	@Test
+	void maakSpel_ontwikkelingsKaarten_metDuplicateLijst_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMinAantalSpelers_2, ontwikkelingsKaarten_metDuplicateLijst, edelenVoor2Spelers, ficheStapel_2_spelers));
+	}
+	@Test
+	void maakSpel_ontwikkelingsKaarten_null_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMinAantalSpelers_2, null, edelenVoor2Spelers, ficheStapel_2_spelers));
+	}
+	//ongeldige edelen parameter:
+	@Test
+	void maakSpel_lijstMetTeWeinigEdelen_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMinAantalSpelers_2, ontwikkelingsKaarten_goedeLijsten, lijstMetTeWeinigEdelen, ficheStapel_2_spelers));
+	}
+	@Test
+	void maakSpel_lijstMetTeVeelEdelen_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMinAantalSpelers_2, ontwikkelingsKaarten_goedeLijsten, lijstMetTeVeelEdelen, ficheStapel_2_spelers));
+	}
+	@Test
+	void maakSpel_edelen_null_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMinAantalSpelers_2, ontwikkelingsKaarten_goedeLijsten, null, ficheStapel_2_spelers));
+	}
+	/**
+	 * List<Edele> voor 2 spelers ipv 3
+	 */
+	@Test
+	void maakSpel_lijstMetTeWeinigEdelenVoorDrieSpelers_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMidAantalSpelers_3, ontwikkelingsKaarten_goedeLijsten, edelenVoor2Spelers, ficheStapel_3_spelers));
+	}
+	/**
+	 * List<Edele> voor 4 spelers ipv 3
+	 */
+	@Test
+	void maakSpel_lijstMetTeVeelEdelenVoorDrieSpelers_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMidAantalSpelers_3, ontwikkelingsKaarten_goedeLijsten, edelenVoor4Spelers, ficheStapel_3_spelers));
+	}
+	//ongeldige ficheStapels parameter:
+	@Test
+	void maakSpel_ficheStapels_null_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMidAantalSpelers_3, ontwikkelingsKaarten_goedeLijsten, edelenVoor3Spelers, null));
+	}
+	/**
+	 * HashMap<Kleur, Integer> ficheStapels voor 4 spelers ipv 3
+	 */
+	@Test
+	void maakSpel_stapelTeGrootVoorSpelMetDrieSpelers_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMidAantalSpelers_3, ontwikkelingsKaarten_goedeLijsten, edelenVoor3Spelers, ficheStapel_4_spelers));
+	}
+	/**
+	 * HashMap<Kleur, Integer> ficheStapels voor 2 spelers ipv 3
+	 */
+	@Test
+	void maakSpel_stapelTekleinVoorSpelMetDrieSpelers_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMidAantalSpelers_3, ontwikkelingsKaarten_goedeLijsten, edelenVoor3Spelers, ficheStapel_2_spelers));
+	}
+	//alle geldige parameters: maakt object(controleer op jongste speler -> "speler1" is in deze klasse de jongste)
+	@Test
+	void maakSpel_geldigeParameters_maaktSpel() {
+		Spel spelMetGeldigeParameters = new Spel(spelersLijstMetMinAantalSpelers_2, ontwikkelingsKaarten_goedeLijsten, edelenVoor2Spelers, ficheStapel_2_spelers);
+		int somAantalZichtbareKaarten = 0;
+		Assertions.assertEquals("speler1" , spelMetGeldigeParameters.getSpelerAanBeurt().getGebruikersnaam());
+		Assertions.assertFalse(spelMetGeldigeParameters.isEindeSpel());
+		Assertions.assertTrue(spelMetGeldigeParameters.getSpelerAanBeurt().isAanDeBeurt());
+		Assertions.assertTrue(spelMetGeldigeParameters.getSpelerAanBeurt().isStartSpeler());
+//		Assertions.assertEquals("[36, 26, 16]", Arrays.toString(spelMetGeldigeParameters.aantalKaartenResterend()));
+		Assertions.assertEquals(36, spelMetGeldigeParameters.aantalKaartenResterend()[0]);
+		Assertions.assertEquals(26, spelMetGeldigeParameters.aantalKaartenResterend()[1]);
+		Assertions.assertEquals(16, spelMetGeldigeParameters.aantalKaartenResterend()[2]);
+		//juist aantal zichtbare kaarten: 4 + 4 + 4 = 12
+		List<SpelVoorwerp> spelvoorwerpen = spelMetGeldigeParameters.geefSpelVoorwerpen();
+		for (SpelVoorwerp sv : spelvoorwerpen)
+			if(sv instanceof Ontwikkelingskaart) somAantalZichtbareKaarten++;
+		Assertions.assertEquals(12, somAantalZichtbareKaarten);
+	}
+	
+	//method tests:
+	//TODO
 
 }
