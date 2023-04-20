@@ -67,7 +67,7 @@ public class Spel {
 	}
 
 	private void controleerAantalSpelers(List<Speler> aangemeldeSpelers) {
-		if(aangemeldeSpelers == null)
+		if (aangemeldeSpelers == null)
 			throw new IllegalArgumentException("Lijst met Spelers is null");
 		if (aangemeldeSpelers.size() < MIN_AANTAL_SPELERS || aangemeldeSpelers.size() > MAX_AANTAL_SPELERS)
 			throw new IllegalArgumentException(
@@ -76,7 +76,7 @@ public class Spel {
 	}
 
 	private void controleerOntwikkelingsKaartLijsten(List<List<Ontwikkelingskaart>> ontwikkelingsKaarten) {
-		if (ontwikkelingsKaarten == null) //commit extra msg
+		if (ontwikkelingsKaarten == null) // commit extra msg
 			throw new IllegalArgumentException("Lijst met de lijsten van ontwikkelings kaarten per niveau is null");
 		if (ontwikkelingsKaarten.size() != 3)
 			throw new IllegalArgumentException(foutBoodschap("Lijst met OntwikkelingsKaarten is niet van lengte 3"));
@@ -89,8 +89,11 @@ public class Spel {
 							foutBoodschap("Kaart in een lijst van OntwikkelingsKaarten is null"));
 			});
 		});
-		//nieuwe conditie, controler op duplicate lijsten, gecontroleerd op unieke size van kaartlijsten
-		if(ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(1).size() || ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(2).size() || ontwikkelingsKaarten.get(1).size() == ontwikkelingsKaarten.get(2).size())
+		// nieuwe conditie, controler op duplicate lijsten, gecontroleerd op unieke size
+		// van kaartlijsten
+		if (ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(1).size()
+				|| ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(2).size()
+				|| ontwikkelingsKaarten.get(1).size() == ontwikkelingsKaarten.get(2).size())
 			throw new IllegalArgumentException("Duplicate lijsten ontwikkelingskaarten");
 	}
 
@@ -369,7 +372,7 @@ public class Spel {
 		// controleren of het mogelijk is om 2 te verwijderen uit gekozen kleur stapel
 		if (ficheStapels.get(kleur) < 4) {
 			throw new IllegalArgumentException(
-					"U mag geen 2 dezelfde fiches nemen uit 1 stapel als deze minder heeft dan 4");
+					"\nU mag geen 2 dezelfde fiches nemen uit 1 stapel als deze minder heeft dan 4\n");
 		}
 
 		// 2 verwijderen uit stapel van spel

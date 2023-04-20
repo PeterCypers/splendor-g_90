@@ -210,7 +210,7 @@ public class SplendorApplicatie {
 		 */
 		while (dc.spelerIsAanBeurt()) {
 			System.out.print("Maak een keuze:\n" + "1. Neem 3 verschillende fiches\n" + "2. Neem 2 dezelfde fiches\n"
-					+ "3. Koop een ontwikkelingskaart\n" + "4. Pas u beurt\nKeuze: ");
+					+ "3. Koop een ontwikkelingskaart\n" + "4. Pas uw beurt\nKeuze: ");
 
 			try {
 				int keuzeGetal = input.nextInt();
