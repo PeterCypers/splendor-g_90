@@ -76,7 +76,7 @@ public class Spel {
 	}
 
 	private void controleerOntwikkelingsKaartLijsten(List<List<Ontwikkelingskaart>> ontwikkelingsKaarten) {
-		if (ontwikkelingsKaarten == null)
+		if (ontwikkelingsKaarten == null) //commit extra msg
 			throw new IllegalArgumentException("Lijst met de lijsten van ontwikkelings kaarten per niveau is null");
 		if (ontwikkelingsKaarten.size() != 3)
 			throw new IllegalArgumentException(foutBoodschap("Lijst met OntwikkelingsKaarten is niet van lengte 3"));
