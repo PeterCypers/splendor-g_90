@@ -184,7 +184,7 @@ public class SplendorApplicatie {
 
 		for (SpelVoorwerpDTO dto : dtos) {
 			if (dto.type() == 'E') {
-				System.out.printf("Edele: %s, prestige: %d%nKost: %s%n", dto.foto(), dto.prestigepunten(),
+				System.out.printf("Edele: %s --- Prestigepunten: %d%nKost: %s%n", dto.foto(), dto.prestigepunten(),
 						Arrays.toString(dto.kosten()));
 			}
 		}
@@ -478,7 +478,7 @@ public class SplendorApplicatie {
 
 					isTerugGelegd = false;
 				} catch (RuntimeException e) {
-					System.out.println(e.getMessage());
+					System.out.println("\nU probeert fiches terug te plaatsen van een lege stapel.\n");
 					isTerugGelegd = true;
 				}
 

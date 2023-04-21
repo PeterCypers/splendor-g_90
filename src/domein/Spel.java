@@ -465,7 +465,7 @@ public class Spel {
 			}
 		}
 
-		return representatieFiches;
+		return representatieFiches.isBlank() ? "Alle fiche stapels zijn leeg" : representatieFiches;
 	}
 
 	public void krijgEdele() {
