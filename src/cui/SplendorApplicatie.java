@@ -326,9 +326,11 @@ public class SplendorApplicatie {
 		int aantalFichesDieGenomenMogenWorden = Math.min(3, dc.geefAantalStapelsMeerDanNul());
 
 		if (aantalFichesDieGenomenMogenWorden == 0) {
-			throw new RuntimeException("\nDeze actie kan niet gedaan worden omdat alle stapels leeg zijn\n");
+			throw new RuntimeException("\nDeze actie kan niet gedaan worden omdat alle stapels leeg zijn.\n");
 		}
-
+		if (dc.totaalAantalFichesVanSpelerAanBeurt() == 10) {
+			throw new RuntimeException("\nSpeler heeft reeds 10 edelsteenfiches in voorraad.\n");
+		}
 		/*
 		 * Een set heeft altijd unieke waarden => daardoor worden er 3 verschillende
 		 * edelsteenfiches verwacht die elk uit een verschillende stapel komen
