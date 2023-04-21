@@ -25,6 +25,7 @@ public class SplendorApplicatie {
 
 	public void startSpel() {
 		int keuze = -1;
+
 		// [TEST] connectie db:
 		System.out.printf("%s", dc.toonAlleSpelers());
 
@@ -32,6 +33,7 @@ public class SplendorApplicatie {
 			if (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && keuze == 2) {
 				System.out.println("Je hebt nog niet genoeg spelers gekozen om een spel te starten.\n");
 			}
+
 			do {
 				keuze = keuzeMenu();
 				if (keuze < 1 || keuze > 5)
@@ -246,25 +248,25 @@ public class SplendorApplicatie {
 		/*
 		 * Speler kan zijn status bekijken na beurt of overslaan om dit niet te zien
 		 */
-		int keuze2 = 0;
-
-		System.out.print("\nWil je nog je speler status bekijken?\n" + "1. Bekijk status en beëindig beurt\n"
-				+ "2. Beëindig beurt\n" + "Keuze: ");
-
-		do {
-			try {
-				keuze2 = input.nextInt();
-			} catch (InputMismatchException e) {
-				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn\n");
-			}
-			if (keuze2 < 1 || keuze2 > 2)
-				System.out.println("Gelieve optie 1 of 2 te kiezen");
-		} while (keuze2 < 1 || keuze2 > 2);
-
-		if (keuze2 == 1) {
-			System.out.print(dc.toonSpelersSituatie());
-		}
+//		int keuze2 = 0;
+//
+//		System.out.print("\nWil je nog je speler status bekijken?\n" + "1. Bekijk status en beëindig beurt\n"
+//				+ "2. Beëindig beurt\n" + "Keuze: ");
+//
+//		do {
+//			try {
+//				keuze2 = input.nextInt();
+//			} catch (InputMismatchException e) {
+//				input.nextLine(); // buffer leegmaken
+//				System.out.println("Je keuze moet een geheel getal zijn\n");
+//			}
+//			if (keuze2 < 1 || keuze2 > 2)
+//				System.out.println("Gelieve optie 1 of 2 te kiezen");
+//		} while (keuze2 < 1 || keuze2 > 2);
+//
+//		if (keuze2 == 1) {
+		System.out.print(dc.toonSpelersSituatie());
+//		}
 
 	}
 
@@ -463,10 +465,24 @@ public class SplendorApplicatie {
 		System.out.println("");
 
 		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
-			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
-			int stapelKeuze = input.nextInt();
+			boolean isTerugGelegd = true;
 
-			dc.plaatsTerugInStapel(stapelKeuze - 1);
+			while (isTerugGelegd) {
+
+				try {
+					System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
+
+					int stapelKeuze = input.nextInt();
+
+					dc.plaatsTerugInStapel(stapelKeuze - 1);
+
+					isTerugGelegd = false;
+				} catch (RuntimeException e) {
+					System.out.println(e.getMessage());
+					isTerugGelegd = true;
+				}
+
+			}
 		}
 
 	}
