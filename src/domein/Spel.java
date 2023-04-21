@@ -187,9 +187,16 @@ public class Spel {
 					"\nSpeler mag deze kaart niet kopen.\nU heeft niet genoeg edelsteenfiches om deze ontwikkelingskaart te kopen.\n");
 		}
 
+		// [TEST]
+		int[] somAantalKleur = somAantalPerKleurInBezit();
+		System.out.println("HIER ---------------------------------------------------------------------------------");
+		for (int i : somAantalKleur) {
+			System.out.println(i);
+		}
+
 		// Verwijder fiches uit voorraad speler
 		// Terug toevoegen aan fichestapel
-		verwijderFichesUitVoorraadVanSpelerAanBeurtEnVoegTerugAanStapelToe();
+		verwijderFichesVanSpelerEnVoegToeAanSpel(gekozenOntwikkelingskaart);
 
 		// Verwijder kaart van de zichtbare kaarten
 		niveauZichtbaar[niveau - 1][positie - 1] = null;
@@ -229,58 +236,43 @@ public class Spel {
 
 	public int[] somAantalPerKleurInBezit() {
 		int[] somAantalPerKleurInBezit = new int[5];
-		List<Ontwikkelingskaart> ontwikkelingsKaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
-		HashMap<Kleur, Integer> edelSteenFichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
+		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
+		HashMap<Kleur, Integer> edelsteenfichesInHand = spelerAanBeurt.getEdelsteenfichesInHand();
 
-		for (Ontwikkelingskaart ontwk : ontwikkelingsKaartenInHand) {
-			switch (ontwk.getKleurBonus()) {
-			case WIT -> somAantalPerKleurInBezit[0]++;
-			case ROOD -> somAantalPerKleurInBezit[1]++;
-			case BLAUW -> somAantalPerKleurInBezit[2]++;
-			case GROEN -> somAantalPerKleurInBezit[3]++;
-			case ZWART -> somAantalPerKleurInBezit[4]++;
-			}
+		for (Ontwikkelingskaart ontwk : ontwikkelingskaartenInHand) {
+			somAantalPerKleurInBezit[ontwk.getKleurBonus().getKleur()]++;
 		}
 
 		for (Kleur kleur : Kleur.values()) {
 			// haal aantal fiches op uit de hashmap
-			Integer aantalFiches = edelSteenFichesInHand.get(kleur);
+			int aantalFiches = 0;
+			Integer aantalFichesUitMap = edelsteenfichesInHand.get(kleur);
 
-			/*
-			 * als er voor die kleur geen fiches zijn krijg je null terug => voeg enkel de
-			 * hoeveelheid toe wanneer het verschillend is van null en er dus fiches zijn
-			 */
-			if (aantalFiches != null) {
-				somAantalPerKleurInBezit[kleur.getKleur()] += aantalFiches;
+			// controleert of de hashmap een null waarde retourneert
+			if (aantalFichesUitMap != null) {
+				aantalFiches = aantalFichesUitMap.intValue();
 			}
+
+			somAantalPerKleurInBezit[kleur.getKleur()] += aantalFiches;
 		}
 
 		return somAantalPerKleurInBezit;
 	}
 
-	private void verwijderFichesUitVoorraadVanSpelerAanBeurtEnVoegTerugAanStapelToe() {
+	private void verwijderFichesVanSpelerEnVoegToeAanSpel(Ontwikkelingskaart gekozenOntwikkelingskaart) {
 		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
-		int[] wegTeNemenEdelsteenfichesUitVoorraad = somAantalPerKleurInBezit();
+		int[] wegTeNemenFichesUitVoorraad = gekozenOntwikkelingskaart.getKosten();
 
-		for (int i = 0; i < wegTeNemenEdelsteenfichesUitVoorraad.length; i++) {
-			for (Ontwikkelingskaart ontwk : ontwikkelingskaartenInHand) {
-				switch (ontwk.getKleurBonus()) {
-				case WIT -> wegTeNemenEdelsteenfichesUitVoorraad[0]--;
-				case ROOD -> wegTeNemenEdelsteenfichesUitVoorraad[1]--;
-				case BLAUW -> wegTeNemenEdelsteenfichesUitVoorraad[2]--;
-				case GROEN -> wegTeNemenEdelsteenfichesUitVoorraad[3]--;
-				case ZWART -> wegTeNemenEdelsteenfichesUitVoorraad[4]--;
-				}
-			}
-
+		for (Ontwikkelingskaart ontwk : ontwikkelingskaartenInHand) {
+			wegTeNemenFichesUitVoorraad[ontwk.getKleurBonus().getKleur()]--;
 		}
 
-		for (int i = 0; i < wegTeNemenEdelsteenfichesUitVoorraad.length; i++) {
-			for (int j = 0; j < wegTeNemenEdelsteenfichesUitVoorraad[i]; j++) {
+		for (Kleur kleur : Kleur.values()) {
+			for (int j = 0; j < wegTeNemenFichesUitVoorraad[kleur.getKleur()]; j++) {
 				// Terug toevoegen van de fiche aan de stapel
-				voegFicheToe(Kleur.valueOf(i));
+				voegFicheToe(kleur);
 				// verwijderen van fiches uit de speler zjin voorraad
-				spelerAanBeurt.verwijderEdelsteenfiche(Kleur.valueOf(i));
+				spelerAanBeurt.verwijderEdelsteenfiche(kleur);
 			}
 		}
 	}
@@ -465,7 +457,7 @@ public class Spel {
 			}
 		}
 
-		return representatieFiches;
+		return representatieFiches.isBlank() ? "Alle fiche stapels zijn leeg" : representatieFiches;
 	}
 
 	public void krijgEdele() {
