@@ -138,7 +138,16 @@ public class SplendorApplicatie {
 
 		do {
 			try {
-				System.out.println("Maak een keuze: \n" + "1. Speler toevoegen \n" + "2. Spel starten");
+				System.out.println("Maak een keuze:");
+
+				if (dc.geefAantalSpelers() != Spel.MAX_AANTAL_SPELERS) {
+					System.out.println("1. Speler toevoegen");
+				}
+
+				if (dc.geefAantalSpelers() >= Spel.MIN_AANTAL_SPELERS) {
+					System.out.println("2. Spel starten");
+				}
+
 				System.out.println("Tijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
 						+ "3. Spel starten met 2 juiste spelers\n" + "4. Spel starten met 3 juiste spelers\n"
 						+ "5. Spel starten met 4 juiste spelers");
