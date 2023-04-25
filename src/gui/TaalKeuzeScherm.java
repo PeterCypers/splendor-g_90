@@ -7,12 +7,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 
-public class TaalKeuzeScherm extends GridPane {
+public class TaalKeuzeScherm extends VBox {
 
 	public TaalKeuzeScherm() {
 		buildGui();
@@ -20,13 +23,12 @@ public class TaalKeuzeScherm extends GridPane {
 
 	private void buildGui() {
 		this.setAlignment(Pos.CENTER);
-		this.setHgap(10);
-		this.setVgap(10);
+		this.setSpacing(10);
 		this.setPadding(new Insets(20));
+		Label lblSplendor = new Label("SPLENDOR");
+		lblSplendor.setFont(Font.font("Helvetica",FontWeight.EXTRA_BOLD,100));
+		lblSplendor.setAlignment(Pos.CENTER);
 
-		Label splendorLabel = new Label("SPLENDOR");
-		splendorLabel.setFont(Font.font("Helvetica",FontWeight.EXTRA_BOLD,20));
-		splendorLabel.setAlignment(Pos.CENTER);
 
 		//knop NL
 		Button btnNederlands = new Button("NL");
@@ -47,18 +49,19 @@ public class TaalKeuzeScherm extends GridPane {
 		btnFrans.setPrefSize(100, 50);
 		btnFrans.setOnAction(this::buttonPushed);
 
+		//wrap knoppen in HBox
+		HBox btnBox = new HBox(btnNederlands, btnEngels, btnFrans);
+		btnBox.setAlignment(Pos.CENTER);
+		btnBox.setSpacing(10);
 
-		// toevoegen aan grid
-		this.add(splendorLabel, 1, 0, 3, 1);
-		this.add(btnNederlands, 0, 1);
-		this.add(btnEngels, 1, 1);
-		this.add(btnFrans, 2, 1);
+		// toevoegen aan VBox
+		this.getChildren().addAll(lblSplendor,btnBox);
 
 
 
 	}
 	private void buttonPushed(ActionEvent event) {	        
-		
+
 		SpelersToevoegenScherm spelersToevoegen = new SpelersToevoegenScherm();
 		Scene scene = new Scene(spelersToevoegen, 500, 300);
 		Stage stage = (Stage) this.getScene().getWindow();

@@ -13,7 +13,7 @@ public class StartUpGui extends Application {
 	public void start(Stage primaryStage) {
 
 		TaalKeuzeScherm root = new TaalKeuzeScherm();
-		Scene scene = new Scene(root, 500, 300);
+		Scene scene = new Scene(root, 800, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Taalkeuze");
 		primaryStage.show();

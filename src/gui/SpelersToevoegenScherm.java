@@ -80,7 +80,7 @@ public class SpelersToevoegenScherm extends GridPane {
 	}
 	private void buttonPushed(ActionEvent event) {
 		TaalKeuzeScherm root = new TaalKeuzeScherm();
-		Scene scene = new Scene(root, 500, 300);
+		Scene scene = new Scene(root, 800, 600);
 		Stage stage = (Stage) this.getScene().getWindow();
 		stage.setScene(scene);
 		stage.show();
