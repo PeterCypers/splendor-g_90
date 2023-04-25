@@ -1,19 +1,21 @@
 package gui;
 
 import domein.Spel;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public class SpelersToevoegenScherm extends GridPane {
-
-	private int aantalSpelers;
+	int aantalSpelers = 0;
 
 	public SpelersToevoegenScherm() {
-		aantalSpelers = 0;
 		buildGui();
 	}
 
@@ -23,52 +25,65 @@ public class SpelersToevoegenScherm extends GridPane {
 		this.setVgap(10);
 		this.setPadding(new Insets(20));
 
+
 		Label lblAantalSpelers = new Label("Aantal spelers: " + aantalSpelers);
+		lblAantalSpelers.setFont(Font.font("Helvetica"));
 
 		Label lblGebruikersnaam = new Label("Gebruikersnaam:");
-		TextField fldGebruikersnaam = new TextField();
+		lblGebruikersnaam.setFont(Font.font("Helvetica"));
+		TextField txfGebruikersnaam = new TextField();
 
-		Label lblGeboorteJaar = new Label("Geboorte Jaar:");
-		TextField fldGeboorteJaar = new TextField();
+		Label lblGeboortejaar = new Label("Geboortejaar:");
+		lblGeboortejaar.setFont(Font.font("Helvetica"));
+		TextField txfGeboorteJaar = new TextField();
 
-		Button addButton = new Button("Speler Toevoegen");
+		Button btnAdd = new Button("Speler Toevoegen");
+		btnAdd.setFont(Font.font("Helvetica"));
 
-		Button startSpel = new Button("Start Spel");
-		startSpel.setDisable(true);
+		Button btnStartSpel = new Button("Start Spel");
+		btnStartSpel.setFont(Font.font("Helvetica"));
+		btnStartSpel.setDisable(true);
 
-		addButton.setOnAction(e -> {
-			if (fldGebruikersnaam.getText().isEmpty() || fldGeboorteJaar.getText().isEmpty()) {
-				// lege velden
+		Button btnKeerTerug = new Button("Keer Terug");
+		btnKeerTerug.setFont(Font.font("Helvetica"));
+		btnKeerTerug.setOnAction(this::buttonPushed);
+
+		btnAdd
+		.setOnAction(e -> {
+			if (txfGebruikersnaam.getText().isEmpty() || txfGeboorteJaar.getText().isEmpty()) {// lege velden
 				return;
 			}
-			
-			//TODO: valideren met database?
 
+			//TODO: valideren met database? 
+			//TODO: dc.voegSpelerToe(txfGebruikersnaam.getText(), Integer.parseInt(txfGeboorteJaar.getText()));
 
-			aantalSpelers++;
+			if (aantalSpelers == Spel.MAX_AANTAL_SPELERS) // max spelers, 
+				btnAdd.setDisable(true);
 
-			if (aantalSpelers == Spel.MIN_AANTAL_SPELERS) // max spelers, 
-				addButton.setDisable(true);
-			// TODO: speler toevoegen
-
-			
-
-			if (aantalSpelers >= Spel.MAX_AANTAL_SPELERS) // minimum spelers
-				startSpel.setDisable(false);
-
+			if (aantalSpelers >= Spel.MIN_AANTAL_SPELERS) // minimum spelers
+				btnStartSpel.setDisable(false);
 
 			// velden legen
-			fldGebruikersnaam.clear();
-			fldGeboorteJaar.clear();
+			txfGebruikersnaam.clear();
+			txfGeboorteJaar.clear();
 		});
-		this.add(lblAantalSpelers, 0, 0);
-		this.add(lblGebruikersnaam, 0, 1);
-		this.add(fldGebruikersnaam, 1, 1);
-		this.add(lblGeboorteJaar, 0, 2);
-		this.add(fldGeboorteJaar, 1, 2);
-		this.add(addButton, 0, 3, 2, 1);
-		this.add(startSpel, 0, 4, 2, 1);
-		//        this.setHalignment(addButton, Pos.CENTER);
+
+		this.add(btnKeerTerug, 0,0);
+		this.add(lblAantalSpelers, 1, 0);
+		this.add(lblGebruikersnaam, 1, 1);
+		this.add(txfGebruikersnaam, 2, 1);
+		this.add(lblGeboortejaar, 1, 2);
+		this.add(txfGeboorteJaar, 2, 2);
+		this.add(btnAdd, 1, 3, 2, 1);
+		this.add(btnStartSpel, 1, 4, 2, 1);
+
+	}
+	private void buttonPushed(ActionEvent event) {
+		TaalKeuzeScherm root = new TaalKeuzeScherm();
+		Scene scene = new Scene(root, 500, 300);
+		Stage stage = (Stage) this.getScene().getWindow();
+		stage.setScene(scene);
+		stage.show();
 	}
 }
 
