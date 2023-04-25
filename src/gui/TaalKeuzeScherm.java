@@ -1,21 +1,13 @@
 package gui;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import main.StartUpGui;
+
 
 public class TaalKeuzeScherm extends GridPane {
-
-	private Button btnNederlands;
-	private Button btnEngels;
-	private Button btnFrans;
 
 	public TaalKeuzeScherm() {
 		buildGui();
@@ -27,35 +19,42 @@ public class TaalKeuzeScherm extends GridPane {
 		this.setVgap(10);
 		this.setPadding(new Insets(20));
 
-		Label lblTaalKeuze = new Label("Kies je taal:");
-		Font verdanaFont = Font.font("Verdana", 16);
-		lblTaalKeuze.setFont(verdanaFont);
+		Label splendorLabel = new Label("SPLENDOR");
+		splendorLabel.setFont(Font.font("Verdana",20));
+		splendorLabel.setAlignment(Pos.CENTER);
 
-		Button btnNederlands = new Button("Nederlands");
-		btnNederlands.setPrefSize(200, 50);
-	
-		btnNederlands.setFont(verdanaFont);
+		//knop NL
+		Button btnNederlands = new Button("NL");
+		btnNederlands.setFont(Font.font("Verdana",16));
+		btnNederlands.setPrefSize(100, 50);
+		btnNederlands.setOnAction(e->{
+			//TODO programma in nederlands
+		});
 
-		Button btnEngels = new Button("Engels");
-		btnEngels.setPrefSize(200, 50);
-	
+		//knop EN
+		Button btnEngels = new Button("EN");
+		btnEngels.setFont(Font.font("Verdana",16));
+		btnEngels.setPrefSize(100, 50);
+		btnEngels.setOnAction(e->{
+			//TODO programma in engels
+		});
 
-		btnEngels.setFont(verdanaFont);
 
-		Button btnFrans = new Button("Frans");
-		btnFrans.setPrefSize(200, 50);
-		
-		btnFrans.setFont(verdanaFont);
+		//knop FR
+		Button btnFrans = new Button("FR");
+		btnFrans.setFont(Font.font("Verdana",16));
+		btnFrans.setPrefSize(100, 50);
+		btnFrans.setOnAction(e->{
+			//TODO programma in frans
+		});
 
-		this.add(lblTaalKeuze, 0, 0, 3, 1);
+
+		// toevoegen aan grid
+		this.add(splendorLabel, 1, 0, 3, 1);
 		this.add(btnNederlands, 0, 1);
 		this.add(btnEngels, 1, 1);
 		this.add(btnFrans, 2, 1);
-	}
-	public void setOnTaalGekozen(EventHandler<ActionEvent> handler) {
-		btnNederlands.setOnAction(handler);
-		btnEngels.setOnAction(handler);
-		btnFrans.setOnAction(handler);
+
 	}
 
 }
