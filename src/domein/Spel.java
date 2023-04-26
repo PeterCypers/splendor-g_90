@@ -15,7 +15,6 @@ public class Spel {
 	private final List<Ontwikkelingskaart> n2;
 	private final List<Ontwikkelingskaart> n3;
 
-	private Speler winnaar;
 	private boolean eindeSpel = false;
 
 	private final List<Edele> edelen;
@@ -492,6 +491,36 @@ public class Spel {
 				break;
 			}
 		}
+	}
+
+	public List<Speler> bepaalWinnaar() {
+		List<Speler> potentieleWinnaars = new ArrayList<>();
+		List<Speler> winnaars = new ArrayList<>();
+
+		// Stap 1: Bepaal het hoogste aantal prestigepunten van de potiënle winnaars
+		int hoogstePrestigepunten = 0;
+
+		for (Speler speler : aangemeldeSpelers) {
+			int prestigepunten = speler.getPrestigepunten();
+
+			if (prestigepunten >= 15) {
+				eindeSpel = true;
+				potentieleWinnaars.add(speler);
+			}
+
+			if (prestigepunten > hoogstePrestigepunten) {
+				hoogstePrestigepunten = prestigepunten;
+			}
+		}
+
+		// Itereer over de winnaars lijst en voeg de spelers die er aan voldoen
+		for (Speler speler : winnaars) {
+			if (speler.getPrestigepunten() == hoogstePrestigepunten) {
+				winnaars.add(speler);
+			}
+		}
+
+		return winnaars;
 	}
 
 	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?

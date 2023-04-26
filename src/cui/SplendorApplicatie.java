@@ -104,11 +104,6 @@ public class SplendorApplicatie {
 
 			beurten--;
 
-			if (beurten == 0) {
-				beurten = dc.geefAantalSpelers();
-				ronde++;
-			}
-
 			// toont speler situatie
 			System.out.print(dc.toonSpelersSituatie());
 
@@ -120,6 +115,22 @@ public class SplendorApplicatie {
 
 			// bepaalt volgende speler
 			dc.volgendeSpeler();
+
+			// TODO context hier geven
+			if (beurten == 0) {
+				beurten = dc.geefAantalSpelers();
+				ronde++;
+
+				List<Speler> winnaars = dc.bepaalWinnaar();
+
+				if (winnaars.size() > 0) {
+					System.out.printf("DE WINNAAR%s:%n", winnaars.size() == 1 ? " IS" : "S ZIJN");
+					for (Speler speler : winnaars) {
+						System.out.printf("Speler %d%n", speler.getGebruikersnaam());
+					}
+				}
+
+			}
 		}
 
 	}
@@ -136,11 +147,14 @@ public class SplendorApplicatie {
 				try {
 					System.out.print("Kies een naam: ");
 					naam = input.next();
+
 					input.nextLine(); // buffer leegmaken
+
 					System.out.print("Geef geboortejaar in: ");
 					geboorteJaar = input.nextInt();
 
 					dc.voegSpelerToe(naam, geboorteJaar);
+
 					loop = false;
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken

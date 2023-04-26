@@ -292,4 +292,8 @@ public class DomeinController implements SpelVoorwerp {
 
 	}
 
+	public List<Speler> bepaalWinnaar() {
+		return spel.bepaalWinnaar();
+	}
+
 }
