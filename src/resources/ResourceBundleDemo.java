@@ -22,5 +22,7 @@ public class ResourceBundleDemo {
 		String message = resourceBundle_en_UK.getString("message");
 		message = MessageFormat.format(message, "ABC", "DEF");
 		System.out.println(message);
+		// edelseenfiches=gems
+		// message={0}test{2}
 	}
 }

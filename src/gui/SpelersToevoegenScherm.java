@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import resources.Taal;
 
 public class SpelersToevoegenScherm extends GridPane {
 	int aantalSpelers = 0;
@@ -25,8 +26,7 @@ public class SpelersToevoegenScherm extends GridPane {
 		this.setVgap(10);
 		this.setPadding(new Insets(20));
 
-
-		Label lblAantalSpelers = new Label("Aantal spelers: " + aantalSpelers);
+		Label lblAantalSpelers = new Label(Taal.getString("amountOfPlayers") + aantalSpelers);
 		lblAantalSpelers.setFont(Font.font("Helvetica"));
 
 		Label lblGebruikersnaam = new Label("Gebruikersnaam:");
@@ -48,17 +48,17 @@ public class SpelersToevoegenScherm extends GridPane {
 		btnKeerTerug.setFont(Font.font("Helvetica"));
 		btnKeerTerug.setOnAction(this::buttonPushed);
 
-		btnAdd
-		.setOnAction(e -> {
+		btnAdd.setOnAction(e -> {
 			if (txfGebruikersnaam.getText().isEmpty() || txfGeboorteJaar.getText().isEmpty()) {// lege velden
 				return;
 			}
 			aantalSpelers++;
 
-			//TODO: valideren met database? 
-			//TODO: dc.voegSpelerToe(txfGebruikersnaam.getText(), Integer.parseInt(txfGeboorteJaar.getText()));
+			// TODO: valideren met database?
+			// TODO: dc.voegSpelerToe(txfGebruikersnaam.getText(),
+			// Integer.parseInt(txfGeboorteJaar.getText()));
 
-			if (aantalSpelers == Spel.MAX_AANTAL_SPELERS) // max spelers, 
+			if (aantalSpelers == Spel.MAX_AANTAL_SPELERS) // max spelers,
 				btnAdd.setDisable(true);
 
 			if (aantalSpelers >= Spel.MIN_AANTAL_SPELERS) // minimum spelers
@@ -69,7 +69,7 @@ public class SpelersToevoegenScherm extends GridPane {
 			txfGeboorteJaar.clear();
 		});
 
-		this.add(btnKeerTerug, 0,0);
+		this.add(btnKeerTerug, 0, 0);
 		this.add(lblAantalSpelers, 1, 0);
 		this.add(lblGebruikersnaam, 1, 1);
 		this.add(txfGebruikersnaam, 2, 1);
@@ -79,6 +79,7 @@ public class SpelersToevoegenScherm extends GridPane {
 		this.add(btnStartSpel, 1, 4, 2, 1);
 
 	}
+
 	private void buttonPushed(ActionEvent event) {
 		TaalKeuzeScherm root = new TaalKeuzeScherm();
 		Scene scene = new Scene(root, 800, 600);
@@ -87,5 +88,3 @@ public class SpelersToevoegenScherm extends GridPane {
 		stage.show();
 	}
 }
-
-

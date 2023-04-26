@@ -9,11 +9,9 @@ import java.util.List;
 import dto.SpelVoorwerpDTO;
 
 public class DomeinController implements SpelVoorwerp {
-
 	private Spel spel;
 	private final List<Speler> aangemeldeSpelers;
 
-	// moet een getter voor zijn
 	private final SpelerRepository spelerRepo;
 	private final OntwikkelingskaartRepository kaartRepo; // nieuw
 	private EdelsteenficheRepository edelsteenRepo;
