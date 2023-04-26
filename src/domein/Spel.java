@@ -3,6 +3,7 @@ package domein;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class Spel {
 	public static final int MIN_AANTAL_SPELERS = 2;
@@ -15,7 +16,6 @@ public class Spel {
 	private final List<Ontwikkelingskaart> n2;
 	private final List<Ontwikkelingskaart> n3;
 
-	private Speler winnaar;
 	private boolean eindeSpel = false;
 
 	private final List<Edele> edelen;
@@ -494,6 +494,36 @@ public class Spel {
 		}
 	}
 
+	public List<Speler> bepaalWinnaar() {
+		List<Speler> potentieleWinnaars = new ArrayList<>();
+		List<Speler> winnaars = new ArrayList<>();
+
+		// Stap 1: Bepaal het hoogste aantal prestigepunten van de potiënle winnaars
+		int hoogstePrestigepunten = 0;
+
+		for (Speler speler : aangemeldeSpelers) {
+			int prestigepunten = speler.getPrestigepunten();
+
+			if (prestigepunten >= 15) {
+				eindeSpel = true;
+				potentieleWinnaars.add(speler);
+			}
+
+			if (prestigepunten > hoogstePrestigepunten) {
+				hoogstePrestigepunten = prestigepunten;
+			}
+		}
+
+		// Itereer over de winnaars lijst en voeg de spelers die er aan voldoen
+		for (Speler speler : potentieleWinnaars) {
+			if (speler.getPrestigepunten() == hoogstePrestigepunten) {
+				winnaars.add(speler);
+			}
+		}
+
+		return winnaars;
+	}
+
 	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
 	private void testOntwikkelingskaartStapels() {
 		System.out.println("*****Spel test n1/n2/n3 Ontwikkelingskaart stapels zijn goed aangemaakt****");
@@ -501,6 +531,24 @@ public class Spel {
 		System.out.println(n2);
 		System.out.println(n3);
 		System.out.println("***************************************************************************");
+	}
+
+	// [TEST]
+	public void testGeeftVeelEdelsteenfichesAanSpelers() {
+		for (Kleur kleur : Kleur.values()) {
+			for (int i = 0; i < 100; i++)
+				spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+		}
+
+	}
+
+	public void testMaaktWinnaarAan() {
+		Random random = new Random();
+
+		for (Speler speler : aangemeldeSpelers) {
+			int randomWaarde = random.nextInt(3) + 1;
+			speler.voegPuntenToe(15 + randomWaarde);
+		}
 	}
 
 }
