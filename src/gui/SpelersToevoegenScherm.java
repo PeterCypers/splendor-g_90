@@ -53,6 +53,7 @@ public class SpelersToevoegenScherm extends GridPane {
 			if (txfGebruikersnaam.getText().isEmpty() || txfGeboorteJaar.getText().isEmpty()) {// lege velden
 				return;
 			}
+			aantalSpelers++;
 
 			//TODO: valideren met database? 
 			//TODO: dc.voegSpelerToe(txfGebruikersnaam.getText(), Integer.parseInt(txfGeboorteJaar.getText()));
