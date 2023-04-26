@@ -5,14 +5,20 @@ import java.util.Scanner;
 
 import cui.SplendorApplicatie;
 import domein.DomeinController;
+import gui.TaalKeuzeScherm;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class StartUp extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		// TODO GUI opbouw
+		TaalKeuzeScherm root = new TaalKeuzeScherm();
+		Scene scene = new Scene(root, 800, 600);
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("Taalkeuze");
+		primaryStage.show();
 		
 	}
 
