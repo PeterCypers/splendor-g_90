@@ -29,22 +29,22 @@ public class SpelersToevoegenScherm extends GridPane {
 		Label lblAantalSpelers = new Label(Taal.getString("amountOfPlayers") + aantalSpelers);
 		lblAantalSpelers.setFont(Font.font("Helvetica"));
 
-		Label lblGebruikersnaam = new Label("Gebruikersnaam:");
+		Label lblGebruikersnaam = new Label(String.format("%s:", Taal.getString("username")));
 		lblGebruikersnaam.setFont(Font.font("Helvetica"));
 		TextField txfGebruikersnaam = new TextField();
 
-		Label lblGeboortejaar = new Label("Geboortejaar:");
+		Label lblGeboortejaar = new Label(String.format("%s:", Taal.getString("birthyear")));
 		lblGeboortejaar.setFont(Font.font("Helvetica"));
 		TextField txfGeboorteJaar = new TextField();
 
-		Button btnAdd = new Button("Speler Toevoegen");
+		Button btnAdd = new Button(Taal.getString("addPlayer"));
 		btnAdd.setFont(Font.font("Helvetica"));
 
-		Button btnStartSpel = new Button("Start Spel");
+		Button btnStartSpel = new Button(Taal.getString("startGame"));
 		btnStartSpel.setFont(Font.font("Helvetica"));
 		btnStartSpel.setDisable(true);
 
-		Button btnKeerTerug = new Button("Keer Terug");
+		Button btnKeerTerug = new Button(Taal.getString("goBack"));
 		btnKeerTerug.setFont(Font.font("Helvetica"));
 		btnKeerTerug.setOnAction(this::buttonPushed);
 
