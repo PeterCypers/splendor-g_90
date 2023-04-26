@@ -163,6 +163,8 @@ public class Speler {
 				Integer aantalFiches = edelsteenfichesInHand.get(kleur);
 				representatieFiches += String.format("%s: %d%n", kleur, aantalFiches != null ? aantalFiches : 0);
 			}
+		} else {
+			representatieFiches += "De speler heeft momenteel geen edelsteenfiches in bezit.\n";
 		}
 
 		return representatieFiches;

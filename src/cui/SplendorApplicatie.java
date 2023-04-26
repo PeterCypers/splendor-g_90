@@ -25,23 +25,29 @@ public class SplendorApplicatie {
 
 	public void startSpel() {
 		int keuze = -1;
+
 		// [TEST] connectie db:
 		System.out.printf("%s", dc.toonAlleSpelers());
+
+		// [TEST]
+		boolean keuzeIs6Of7Geweest = false;
 
 		while (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS || keuze != 2) {
 			if (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && keuze == 2) {
 				System.out.println("Je hebt nog niet genoeg spelers gekozen om een spel te starten.\n");
 			}
+
 			do {
 				keuze = keuzeMenu();
-				if (keuze < 1 || keuze > 5)
+				if (keuze < 1 || keuze > 7)
 					System.out.println("Kies 1 of 2");
-			} while (keuze < 1 || keuze > 5);
+			} while (keuze < 1 || keuze > 7);
 
 			if (keuze == 1) {
 				System.out.println(voegSpelerToe());
 			}
 
+			// [TEST]
 			switch (keuze) {
 			case 3 -> {
 				dc.voegSpelerToe("user1", 2002);
@@ -61,6 +67,34 @@ public class SplendorApplicatie {
 				dc.voegSpelerToe("user1", 2002);
 				keuze = 2;
 			}
+			case 6 -> {
+				dc.voegSpelerToe("user1", 2002);
+				dc.voegSpelerToe("user2", 2000);
+				// print de ASCII art "testen" af
+				System.out
+						.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
+								+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
+								+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
+
+				dc.startNieuwSpel();
+				dc.testGeeftVeelEdelsteenfichesAanSpelers();
+				keuze = 2;
+				keuzeIs6Of7Geweest = true;
+			}
+			case 7 -> {
+				dc.voegSpelerToe("user1", 2002);
+				dc.voegSpelerToe("user2", 2000);
+				// print de ASCII art "testen" af
+				System.out
+						.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
+								+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
+								+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
+
+				dc.startNieuwSpel();
+				dc.testMaaktWinnaarAan();
+				keuze = 2;
+				keuzeIs6Of7Geweest = true;
+			}
 			}
 		}
 
@@ -68,34 +102,70 @@ public class SplendorApplicatie {
 		// System.out.printf("aantal deelnemers: %d%n%s",dc.geefAantalSpelers(),
 		// dc.toonAangemeldeSpelers());
 
-//		int beurten = dc.geefAantalSpelers();
-
 		if (keuze == 2) {
-			System.out.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
-					+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
-					+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
 
-			dc.startNieuwSpel();
+			// TODO deze if moet weg na het verwijderen van de tijdelijke keuzes
+			if (!keuzeIs6Of7Geweest) {
+				// print de ASCII art "testen" af
+				System.out
+						.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
+								+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
+								+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
+
+				dc.startNieuwSpel();
+			}
 
 			System.out.print(spelGestartFeedback());
-
-//			if (beurten == dc.geefAantalSpelers()) {
-//				System.out.println("                      _      \r\n" + "  _ __ ___  _ __   __| | ___ \r\n"
-//						+ " | '__/ _ \\| '_ \\ / _` |/ _ \\\r\n" + " | | | (_) | | | | (_| |  __/\r\n"
-//						+ " |_|  \\___/|_| |_|\\__,_|\\___|\r\n" + "                             ");
-//			}
-//			beurten--;
-//			if (beurten == 0) {
-//				beurten = dc.geefAantalSpelers();
-//			}
-
-			System.out.print(dc.toonSpelersSituatie());
 		}
 
+		int beurten = dc.geefAantalSpelers();
+		int ronde = 1;
+
 		while (!dc.isEindeSpel()) {
+			// print de ASCII art "ronde" elke keer er een nieuwe ronde is
+			if (beurten == dc.geefAantalSpelers()) {
+				System.out.println("                      _      \r\n" + "  _ __ ___  _ __   __| | ___ \r\n"
+						+ " | '__/ _ \\| '_ \\ / _` |/ _ \\\r\n" + " | | | (_) | | | | (_| |  __/\r\n"
+						+ " |_|  \\___/|_| |_|\\__,_|\\___|\r\n" + "                             ");
+			}
+
+			System.out.printf("*****Het is nu ronde %d*****", ronde);
+
+			beurten--;
+
+			// toont speler situatie
+			System.out.print(dc.toonSpelersSituatie());
+
+			// toont spel situatie
 			toonSpelSituatie();
+
+			// start een beurt
 			speelBeurt();
+
+			// bepaalt volgende speler
 			dc.volgendeSpeler();
+
+			// Winnaar wordt hier bepaalt en getoond, maar ook het tellen van de ronden
+			if (beurten == 0) {
+				beurten = dc.geefAantalSpelers();
+				ronde++;
+
+				List<Speler> winnaars = dc.bepaalWinnaar();
+
+				if (winnaars.size() > 0) {
+					System.out.println("           _                              \r\n"
+							+ " __      _(_)_ __  _ __   __ _  __ _ _ __ \r\n"
+							+ " \\ \\ /\\ / / | '_ \\| '_ \\ / _` |/ _` | '__|\r\n"
+							+ "  \\ V  V /| | | | | | | | (_| | (_| | |   \r\n"
+							+ "   \\_/\\_/ |_|_| |_|_| |_|\\__,_|\\__,_|_|   \r\n"
+							+ "                                          ");
+					System.out.printf("DE WINNAAR%s:%n", winnaars.size() == 1 ? " IS" : "S ZIJN");
+					for (Speler speler : winnaars) {
+						System.out.printf("Speler %s%n", speler.getGebruikersnaam());
+					}
+				}
+
+			}
 		}
 
 	}
@@ -112,11 +182,14 @@ public class SplendorApplicatie {
 				try {
 					System.out.print("Kies een naam: ");
 					naam = input.next();
+
 					input.nextLine(); // buffer leegmaken
+
 					System.out.print("Geef geboortejaar in: ");
 					geboorteJaar = input.nextInt();
 
 					dc.voegSpelerToe(naam, geboorteJaar);
+
 					loop = false;
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
@@ -138,10 +211,22 @@ public class SplendorApplicatie {
 
 		do {
 			try {
-				System.out.println("Maak een keuze: \n" + "1. Speler toevoegen \n" + "2. Spel starten");
-				System.out.println("Tijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
+				System.out.println("Maak een keuze:");
+
+				if (dc.geefAantalSpelers() != Spel.MAX_AANTAL_SPELERS) {
+					System.out.println("1. Speler toevoegen");
+				}
+
+				if (dc.geefAantalSpelers() >= Spel.MIN_AANTAL_SPELERS) {
+					System.out.println("2. Spel starten");
+				}
+
+				System.out.println("\nTijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
 						+ "3. Spel starten met 2 juiste spelers\n" + "4. Spel starten met 3 juiste spelers\n"
-						+ "5. Spel starten met 4 juiste spelers");
+						+ "5. Spel starten met 4 juiste spelers\n"
+						+ "6. Zal het spel starten met 2 spelers en veel edelsteenfiches toekennen\n"
+						+ "7. Zal het spel starten met 2 spelers die al een aantal prestigepunten hebben om te winnen "
+						+ "(15 + random waarde van 1 tot 3)\n");
 				System.out.print("Keuze: ");
 				keuze = input.nextInt();
 				loop = false;
@@ -173,7 +258,7 @@ public class SplendorApplicatie {
 
 		for (SpelVoorwerpDTO dto : dtos) {
 			if (dto.type() == 'E') {
-				System.out.printf("Edele: %s, prestige: %d%nKost: %s%n", dto.foto(), dto.prestigepunten(),
+				System.out.printf("Edele: %s --- Prestigepunten: %d%nKost: %s%n", dto.foto(), dto.prestigepunten(),
 						Arrays.toString(dto.kosten()));
 			}
 		}
@@ -234,29 +319,6 @@ public class SplendorApplicatie {
 			}
 		}
 
-		/*
-		 * Speler kan zijn status bekijken na beurt of overslaan om dit niet te zien
-		 */
-		int keuze2 = 0;
-
-		System.out.print("\nWil je nog je speler status bekijken?\n" + "1. Bekijk status en beëindig beurt\n"
-				+ "2. Beëindig beurt\n" + "Keuze: ");
-
-		do {
-			try {
-				keuze2 = input.nextInt();
-			} catch (InputMismatchException e) {
-				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn\n");
-			}
-			if (keuze2 < 1 || keuze2 > 2)
-				System.out.println("Gelieve optie 1 of 2 te kiezen");
-		} while (keuze2 < 1 || keuze2 > 2);
-
-		if (keuze2 == 1) {
-			System.out.print(dc.toonSpelersSituatie());
-		}
-
 	}
 
 	private void koopOntwikkelingskaart() {
@@ -315,9 +377,11 @@ public class SplendorApplicatie {
 		int aantalFichesDieGenomenMogenWorden = Math.min(3, dc.geefAantalStapelsMeerDanNul());
 
 		if (aantalFichesDieGenomenMogenWorden == 0) {
-			throw new RuntimeException("\nDeze actie kan niet gedaan worden omdat alle stapels leeg zijn\n");
+			throw new RuntimeException("\nDeze actie kan niet gedaan worden omdat alle stapels leeg zijn.\n");
 		}
-
+		if (dc.totaalAantalFichesVanSpelerAanBeurt() == 10) {
+			throw new RuntimeException("\nSpeler heeft reeds 10 edelsteenfiches in voorraad.\n");
+		}
 		/*
 		 * Een set heeft altijd unieke waarden => daardoor worden er 3 verschillende
 		 * edelsteenfiches verwacht die elk uit een verschillende stapel komen
@@ -454,10 +518,24 @@ public class SplendorApplicatie {
 		System.out.println("");
 
 		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
-			System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
-			int stapelKeuze = input.nextInt();
+			boolean isTerugGelegd = true;
 
-			dc.plaatsTerugInStapel(stapelKeuze - 1);
+			while (isTerugGelegd) {
+
+				try {
+					System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
+
+					int stapelKeuze = input.nextInt();
+
+					dc.plaatsTerugInStapel(stapelKeuze - 1);
+
+					isTerugGelegd = false;
+				} catch (RuntimeException e) {
+					System.out.println("\nU probeert fiches terug te plaatsen van een lege stapel.\n");
+					isTerugGelegd = true;
+				}
+
+			}
 		}
 
 	}
