@@ -36,9 +36,9 @@ public class SplendorApplicatie {
 
 			do {
 				keuze = keuzeMenu();
-				if (keuze < 1 || keuze > 6)
+				if (keuze < 1 || keuze > 7)
 					System.out.println("Kies 1 of 2");
-			} while (keuze < 1 || keuze > 6);
+			} while (keuze < 1 || keuze > 7);
 
 			if (keuze == 1) {
 				System.out.println(voegSpelerToe());
@@ -68,6 +68,13 @@ public class SplendorApplicatie {
 				dc.voegSpelerToe("user2", 2000);
 				dc.startNieuwSpel();
 				dc.testGeeftVeelEdelsteenfichesAanSpelers();
+				keuze = 2;
+			}
+			case 7 -> {
+				dc.voegSpelerToe("user1", 2002);
+				dc.voegSpelerToe("user2", 2000);
+				dc.startNieuwSpel();
+				dc.testMaaktWinnaarAan();
 				keuze = 2;
 			}
 			}
@@ -116,7 +123,7 @@ public class SplendorApplicatie {
 			// bepaalt volgende speler
 			dc.volgendeSpeler();
 
-			// TODO context hier geven
+			// Winnaar wordt hier bepaalt en getoond, maar ook het tellen van de ronden
 			if (beurten == 0) {
 				beurten = dc.geefAantalSpelers();
 				ronde++;
@@ -124,9 +131,15 @@ public class SplendorApplicatie {
 				List<Speler> winnaars = dc.bepaalWinnaar();
 
 				if (winnaars.size() > 0) {
+					System.out.println("           _                              \r\n"
+							+ " __      _(_)_ __  _ __   __ _  __ _ _ __ \r\n"
+							+ " \\ \\ /\\ / / | '_ \\| '_ \\ / _` |/ _` | '__|\r\n"
+							+ "  \\ V  V /| | | | | | | | (_| | (_| | |   \r\n"
+							+ "   \\_/\\_/ |_|_| |_|_| |_|\\__,_|\\__,_|_|   \r\n"
+							+ "                                          ");
 					System.out.printf("DE WINNAAR%s:%n", winnaars.size() == 1 ? " IS" : "S ZIJN");
 					for (Speler speler : winnaars) {
-						System.out.printf("Speler %d%n", speler.getGebruikersnaam());
+						System.out.printf("Speler %s%n", speler.getGebruikersnaam());
 					}
 				}
 
@@ -189,7 +202,9 @@ public class SplendorApplicatie {
 				System.out.println("Tijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
 						+ "3. Spel starten met 2 juiste spelers\n" + "4. Spel starten met 3 juiste spelers\n"
 						+ "5. Spel starten met 4 juiste spelers\n"
-						+ "6. Zal het spel starten met 2 spelers en veel edelsteenfiches toekennen\n");
+						+ "6. Zal het spel starten met 2 spelers en veel edelsteenfiches toekennen\n"
+						+ "7. Zal het spel starten met 2 spelers die al een aantal prestigepunten hebben om te winnen "
+						+ "(15 + random waarde van 1 tot 3)\n");
 				System.out.print("Keuze: ");
 				keuze = input.nextInt();
 				loop = false;

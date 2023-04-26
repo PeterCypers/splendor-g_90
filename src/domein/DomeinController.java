@@ -296,4 +296,9 @@ public class DomeinController implements SpelVoorwerp {
 		return spel.bepaalWinnaar();
 	}
 
+	public void testMaaktWinnaarAan() {
+		spel.testMaaktWinnaarAan();
+
+	}
+
 }

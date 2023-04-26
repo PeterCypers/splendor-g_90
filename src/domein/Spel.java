@@ -3,6 +3,7 @@ package domein;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class Spel {
 	public static final int MIN_AANTAL_SPELERS = 2;
@@ -514,7 +515,7 @@ public class Spel {
 		}
 
 		// Itereer over de winnaars lijst en voeg de spelers die er aan voldoen
-		for (Speler speler : winnaars) {
+		for (Speler speler : potentieleWinnaars) {
 			if (speler.getPrestigepunten() == hoogstePrestigepunten) {
 				winnaars.add(speler);
 			}
@@ -539,6 +540,15 @@ public class Spel {
 				spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
 		}
 
+	}
+
+	public void testMaaktWinnaarAan() {
+		Random random = new Random();
+
+		for (Speler speler : aangemeldeSpelers) {
+			int randomWaarde = random.nextInt(3) + 1;
+			speler.voegPuntenToe(15 + randomWaarde);
+		}
 	}
 
 }
