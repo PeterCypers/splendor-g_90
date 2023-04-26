@@ -7,18 +7,18 @@ module splendorModule {
 	exports dto;
 
 	requires java.sql;
-  
+
 	requires javafx.graphics;
 	requires javafx.base;
 	requires javafx.controls;
-  
+
 	requires org.junit.jupiter.api;
 	requires org.junit.jupiter.params;
-  
-    //exports main to javafx.graphics; //auto-generated exports main -> duplicate
-	exports main to javafx.graphics;
-  
-	//scenebuilder:
-	//requires javafx.fxml;
-	//opens gui to javafx.fxml;
+
+	// exports main to javafx.graphics; //auto-generated exports main -> duplicate
+	// exports main to javafx.graphics;
+
+	// scenebuilder:
+	// requires javafx.fxml;
+	// opens gui to javafx.fxml;
 }
