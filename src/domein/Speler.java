@@ -164,7 +164,7 @@ public class Speler {
 				representatieFiches += String.format("%s: %d%n", kleur, aantalFiches != null ? aantalFiches : 0);
 			}
 		} else {
-			representatieFiches += "De speler heeft momenteel geen edelsteenfiches in bezit.";
+			representatieFiches += "De speler heeft momenteel geen edelsteenfiches in bezit.\n";
 		}
 
 		return representatieFiches;

@@ -66,14 +66,9 @@ public class SplendorApplicatie {
 			case 6 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
-				System.out
-						.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
-								+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
-								+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
 				dc.startNieuwSpel();
-				System.out.print(spelGestartFeedback());
-				System.out.print(dc.toonSpelersSituatie());
 				dc.testGeeftVeelEdelsteenfichesAanSpelers();
+				keuze = 2;
 			}
 			}
 		}
@@ -82,9 +77,8 @@ public class SplendorApplicatie {
 		// System.out.printf("aantal deelnemers: %d%n%s",dc.geefAantalSpelers(),
 		// dc.toonAangemeldeSpelers());
 
-//		int beurten = dc.geefAantalSpelers();
-
 		if (keuze == 2) {
+			// print de ASCII art "testen" af
 			System.out.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
 					+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
 					+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
@@ -93,22 +87,38 @@ public class SplendorApplicatie {
 
 			System.out.print(spelGestartFeedback());
 
-//			if (beurten == dc.geefAantalSpelers()) {
-//				System.out.println("                      _      \r\n" + "  _ __ ___  _ __   __| | ___ \r\n"
-//						+ " | '__/ _ \\| '_ \\ / _` |/ _ \\\r\n" + " | | | (_) | | | | (_| |  __/\r\n"
-//						+ " |_|  \\___/|_| |_|\\__,_|\\___|\r\n" + "                             ");
-//			}
-//			beurten--;
-//			if (beurten == 0) {
-//				beurten = dc.geefAantalSpelers();
-//			}
-
-			System.out.print(dc.toonSpelersSituatie());
 		}
 
+		int beurten = dc.geefAantalSpelers();
+		int ronde = 1;
+
 		while (!dc.isEindeSpel()) {
+			// print de ASCII art "ronde" elke keer er een nieuwe ronde is
+			if (beurten == dc.geefAantalSpelers()) {
+				System.out.println("                      _      \r\n" + "  _ __ ___  _ __   __| | ___ \r\n"
+						+ " | '__/ _ \\| '_ \\ / _` |/ _ \\\r\n" + " | | | (_) | | | | (_| |  __/\r\n"
+						+ " |_|  \\___/|_| |_|\\__,_|\\___|\r\n" + "                             ");
+			}
+
+			System.out.printf("*****Het is nu ronde %d*****", ronde);
+
+			beurten--;
+
+			if (beurten == 0) {
+				beurten = dc.geefAantalSpelers();
+				ronde++;
+			}
+
+			// toont speler situatie
+			System.out.print(dc.toonSpelersSituatie());
+
+			// toont spel situatie
 			toonSpelSituatie();
+
+			// start een beurt
 			speelBeurt();
+
+			// bepaalt volgende speler
 			dc.volgendeSpeler();
 		}
 
@@ -257,29 +267,6 @@ public class SplendorApplicatie {
 				System.out.println(e.getMessage());
 			}
 		}
-
-		/*
-		 * Speler kan zijn status bekijken na beurt of overslaan om dit niet te zien
-		 */
-//		int keuze2 = 0;
-//
-//		System.out.print("\nWil je nog je speler status bekijken?\n" + "1. Bekijk status en beëindig beurt\n"
-//				+ "2. Beëindig beurt\n" + "Keuze: ");
-//
-//		do {
-//			try {
-//				keuze2 = input.nextInt();
-//			} catch (InputMismatchException e) {
-//				input.nextLine(); // buffer leegmaken
-//				System.out.println("Je keuze moet een geheel getal zijn\n");
-//			}
-//			if (keuze2 < 1 || keuze2 > 2)
-//				System.out.println("Gelieve optie 1 of 2 te kiezen");
-//		} while (keuze2 < 1 || keuze2 > 2);
-//
-//		if (keuze2 == 1) {
-		System.out.print(dc.toonSpelersSituatie());
-//		}
 
 	}
 
