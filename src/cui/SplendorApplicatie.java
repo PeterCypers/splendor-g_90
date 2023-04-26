@@ -199,7 +199,7 @@ public class SplendorApplicatie {
 					System.out.println("2. Spel starten");
 				}
 
-				System.out.println("Tijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
+				System.out.println("\nTijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
 						+ "3. Spel starten met 2 juiste spelers\n" + "4. Spel starten met 3 juiste spelers\n"
 						+ "5. Spel starten met 4 juiste spelers\n"
 						+ "6. Zal het spel starten met 2 spelers en veel edelsteenfiches toekennen\n"
