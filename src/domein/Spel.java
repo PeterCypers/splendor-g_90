@@ -503,4 +503,13 @@ public class Spel {
 		System.out.println("***************************************************************************");
 	}
 
+	// [TEST]
+	public void testGeeftVeelEdelsteenfichesAanSpelers() {
+		for (Kleur kleur : Kleur.values()) {
+			for (int i = 0; i < 100; i++)
+				spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+		}
+
+	}
+
 }

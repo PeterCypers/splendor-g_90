@@ -36,9 +36,9 @@ public class SplendorApplicatie {
 
 			do {
 				keuze = keuzeMenu();
-				if (keuze < 1 || keuze > 5)
+				if (keuze < 1 || keuze > 6)
 					System.out.println("Kies 1 of 2");
-			} while (keuze < 1 || keuze > 5);
+			} while (keuze < 1 || keuze > 6);
 
 			if (keuze == 1) {
 				System.out.println(voegSpelerToe());
@@ -62,6 +62,18 @@ public class SplendorApplicatie {
 				dc.voegSpelerToe("user3", 2001);
 				dc.voegSpelerToe("user1", 2002);
 				keuze = 2;
+			}
+			case 6 -> {
+				dc.voegSpelerToe("user1", 2002);
+				dc.voegSpelerToe("user2", 2000);
+				System.out
+						.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
+								+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
+								+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
+				dc.startNieuwSpel();
+				System.out.print(spelGestartFeedback());
+				System.out.print(dc.toonSpelersSituatie());
+				dc.testGeeftVeelEdelsteenfichesAanSpelers();
 			}
 			}
 		}
@@ -152,7 +164,8 @@ public class SplendorApplicatie {
 
 				System.out.println("Tijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
 						+ "3. Spel starten met 2 juiste spelers\n" + "4. Spel starten met 3 juiste spelers\n"
-						+ "5. Spel starten met 4 juiste spelers");
+						+ "5. Spel starten met 4 juiste spelers\n"
+						+ "6. Zal het spel starten met 2 spelers en veel edelsteenfiches toekennen\n");
 				System.out.print("Keuze: ");
 				keuze = input.nextInt();
 				loop = false;

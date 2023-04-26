@@ -286,4 +286,10 @@ public class DomeinController implements SpelVoorwerp {
 		spel.krijgEdele();
 	}
 
+	// [TEST]
+	public void testGeeftVeelEdelsteenfichesAanSpelers() {
+		spel.testGeeftVeelEdelsteenfichesAanSpelers();
+
+	}
+
 }
