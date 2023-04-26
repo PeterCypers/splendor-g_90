@@ -63,7 +63,7 @@ public class TaalKeuzeScherm extends VBox {
 	private void buttonPushed(ActionEvent event) {	        
 
 		SpelersToevoegenScherm spelersToevoegen = new SpelersToevoegenScherm();
-		Scene scene = new Scene(spelersToevoegen, 500, 300);
+		Scene scene = new Scene(spelersToevoegen, 800, 600);
 		Stage stage = (Stage) this.getScene().getWindow();
 		stage.setScene(scene);
 		stage.show();
