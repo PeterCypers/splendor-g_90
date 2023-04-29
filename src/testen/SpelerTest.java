@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import domein.Speler;
 
 class SpelerTest {
-	// TODO TESTEN VOOR SPELER
+
 
 	Speler s, s2, s3, s4;
 

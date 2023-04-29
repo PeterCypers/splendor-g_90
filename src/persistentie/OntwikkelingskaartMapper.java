@@ -8,8 +8,8 @@ import domein.Ontwikkelingskaart;
 
 public class OntwikkelingskaartMapper {
 	
-	//fotoOntwikkelingskaart (foto's hebben we nog niet, voorlopig null meegeven in constructor O-Kaart)
-
+	//fotoOntwikkelingskaart TODO - hoe gaan die fotos ingevuld worden?
+	private static final String PLACEHOLDER = "999";
 	public List<Ontwikkelingskaart> geefN1Kaarten(){
 		Kleur kleur;
 		List<Ontwikkelingskaart> niveau1 = new ArrayList<>();
@@ -62,15 +62,15 @@ public class OntwikkelingskaartMapper {
 	for (int i = 0; i < witteKaartKosten.length; i++) {
 		int prestigepunten = i==0? 1 : 0;
 		kleur = Kleur.WIT;
-		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, witteKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, PLACEHOLDER, witteKaartKosten[i]));
 		kleur = Kleur.ROOD;
-		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, rodeKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, PLACEHOLDER, rodeKaartKosten[i]));
 		kleur = Kleur.BLAUW;
-		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, blauweKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, PLACEHOLDER, blauweKaartKosten[i]));
 		kleur = Kleur.GROEN;
-		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, groeneKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, PLACEHOLDER, groeneKaartKosten[i]));
 		kleur = Kleur.ZWART;
-		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, null, zwarteKaartKosten[i]));
+		niveau1.add(new Ontwikkelingskaart(1, prestigepunten, kleur, PLACEHOLDER, zwarteKaartKosten[i]));
 	}
 	
 	
@@ -85,7 +85,7 @@ public class OntwikkelingskaartMapper {
 		/* WIT,ROOD,BLAUW,GROEN,ZWART; */
 		int[] prestigeLijst = {1, 1, 2, 2, 2, 3};
 		String[] fotoLijst = {"1", "1", "2", "1", "2", "2"};
-		String[] fotoBuitenPatroon = {null, null, null, "2", "1", null}; //zie excel file
+		String[] fotoBuitenPatroon = {PLACEHOLDER, PLACEHOLDER, PLACEHOLDER, "2", "1", PLACEHOLDER}; //zie excel file
 		
 		
 		int[][] witteKaartKosten = {{ 0, 2, 0, 3, 2 },

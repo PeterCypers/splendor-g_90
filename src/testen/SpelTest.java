@@ -24,7 +24,7 @@ class SpelTest {
 	
 //	Spel spelMetGeldigeParameters; //spel in spe
 	Spel spelMethodeTester; //spel aangemaakt met juiste parameters voor 4 spelers
-	Speler s, s2, s3, s4, s5; //s1 is jongste speler
+	Speler s, s2, s3, s4, s5; //s is jongste speler
 	OntwikkelingskaartRepository okRepo;
 	EdeleRepository edeleRepo;
 	EdelsteenficheRepository ficheRepo;
@@ -240,6 +240,107 @@ class SpelTest {
 	}
 	
 	//method tests:
-	//TODO
-
+	/**
+	 * method: Spel.volgendeSpeler()
+	 * spel met 4 spelers, volgende speler cycled juist door de spelers
+	 * spelerslijst: [s, s2, s3, s4]
+	 * spelers.getNaam: ["speler1", "speler2", "speler3", "speler4"]
+	 */
+	@Test
+	void testVolgendeSpeler_eenKeerVolgendeSpeler_spelerAanBeurtIsJuisteSpeler() {
+		//start bij speler s, volgende spelerAanBeurt == s2
+		spelMethodeTester.volgendeSpeler();
+		List<Speler> spelers = spelMethodeTester.getAangemeldeSpelers();
+		Speler speler1 = spelers.get(0);
+		Speler speler2 = spelers.get(1);
+		Speler speler3 = spelers.get(2);
+		Speler speler4 = spelers.get(3);
+		Assertions.assertEquals("speler2", spelMethodeTester.getSpelerAanBeurt().getGebruikersnaam());
+		
+		Assertions.assertFalse(speler1.isAanDeBeurt());
+		Assertions.assertTrue(speler2.isAanDeBeurt()); //speler2 is aan de beurt
+		Assertions.assertFalse(speler3.isAanDeBeurt());
+		Assertions.assertFalse(speler4.isAanDeBeurt());
+	}
+	@Test
+	void testVolgendeSpeler_tweeKeerVolgendeSpeler_spelerAanBeurtIsJuisteSpeler() {
+		//start bij speler s, tweeKeerVolgendeSpeler, spelerAanBeurt == s3
+		for (int i = 0; i < 2; i++) {
+			spelMethodeTester.volgendeSpeler();
+		}
+		List<Speler> spelers = spelMethodeTester.getAangemeldeSpelers();
+		Speler speler1 = spelers.get(0);
+		Speler speler2 = spelers.get(1);
+		Speler speler3 = spelers.get(2);
+		Speler speler4 = spelers.get(3);
+		Assertions.assertEquals("speler3", spelMethodeTester.getSpelerAanBeurt().getGebruikersnaam());
+		
+		Assertions.assertFalse(speler1.isAanDeBeurt());
+		Assertions.assertFalse(speler2.isAanDeBeurt()); 
+		Assertions.assertTrue(speler3.isAanDeBeurt()); //speler3 is aan de beurt
+		Assertions.assertFalse(speler4.isAanDeBeurt());
+	}
+	@Test
+	void testVolgendeSpeler_drieKeerVolgendeSpeler_spelerAanBeurtIsJuisteSpeler() {
+		//start bij speler s, drieKeerVolgendeSpeler, spelerAanBeurt == s4
+		for (int i = 0; i < 3; i++) {
+			spelMethodeTester.volgendeSpeler();
+		}
+		List<Speler> spelers = spelMethodeTester.getAangemeldeSpelers();
+		Speler speler1 = spelers.get(0);
+		Speler speler2 = spelers.get(1);
+		Speler speler3 = spelers.get(2);
+		Speler speler4 = spelers.get(3);
+		Assertions.assertEquals("speler4", spelMethodeTester.getSpelerAanBeurt().getGebruikersnaam());
+		
+		Assertions.assertFalse(speler1.isAanDeBeurt());
+		Assertions.assertFalse(speler2.isAanDeBeurt()); 
+		Assertions.assertFalse(speler3.isAanDeBeurt());
+		Assertions.assertTrue(speler4.isAanDeBeurt()); //speler4 is aan de beurt
+	}
+	@Test
+	void testVolgendeSpeler_vierKeerVolgendeSpeler_spelerAanBeurtIsJuisteSpeler() {
+		//start bij speler s, vierKeerVolgendeSpeler, spelerAanBeurt == s1
+		for (int i = 0; i < 4; i++) {
+			spelMethodeTester.volgendeSpeler();
+		}
+		List<Speler> spelers = spelMethodeTester.getAangemeldeSpelers();
+		Speler speler1 = spelers.get(0);
+		Speler speler2 = spelers.get(1);
+		Speler speler3 = spelers.get(2);
+		Speler speler4 = spelers.get(3);
+		Assertions.assertEquals("speler1", spelMethodeTester.getSpelerAanBeurt().getGebruikersnaam());
+		
+		Assertions.assertTrue(speler1.isAanDeBeurt()); //speler1 is aan de beurt
+		Assertions.assertFalse(speler2.isAanDeBeurt()); 
+		Assertions.assertFalse(speler3.isAanDeBeurt());
+		Assertions.assertFalse(speler4.isAanDeBeurt());
+	}
+	@Test
+	void testVolgendeSpeler_vijfKeerVolgendeSpeler_spelerAanBeurtIsJuisteSpeler() {
+		//start bij speler s, vijfKeerVolgendeSpeler, spelerAanBeurt == s2
+		for (int i = 0; i < 5; i++) {
+			spelMethodeTester.volgendeSpeler();
+		}
+		List<Speler> spelers = spelMethodeTester.getAangemeldeSpelers();
+		Speler speler1 = spelers.get(0);
+		Speler speler2 = spelers.get(1);
+		Speler speler3 = spelers.get(2);
+		Speler speler4 = spelers.get(3);
+		Assertions.assertEquals("speler2", spelMethodeTester.getSpelerAanBeurt().getGebruikersnaam());
+		
+		Assertions.assertFalse(speler1.isAanDeBeurt());
+		Assertions.assertTrue(speler2.isAanDeBeurt()); //speler2 is aan de beurt
+		Assertions.assertFalse(speler3.isAanDeBeurt());
+		Assertions.assertFalse(speler4.isAanDeBeurt());
+	}
+	/**
+	 * method: Spel.kiesOntwikkelingskaart(int niveau, int positie)
+	 * niveau: [1-3]
+	 * positie: [1-4]
+	 */
+	@Test
+	void testkiesOntwikkelingskaart_ongeldigNiveau_werptException() {
+		
+	}
 }
