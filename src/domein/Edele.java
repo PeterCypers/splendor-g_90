@@ -38,7 +38,7 @@ public class Edele implements SpelVoorwerp{
 
 	private void setKosten(int[] kosten) {
 		if(kosten == null)
-			throw new IllegalArgumentException("Kosten is null");
+			throw new IllegalArgumentException("Kosten-array is null");
 		if(kosten.length != 5)
 			throw new IllegalArgumentException("Lengte van de kosten-array is niet exact 5");
 		this.kosten = kosten;

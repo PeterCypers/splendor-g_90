@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import domein.Edele;
 
-public class EdeleTest {
+class EdeleTest {
 	
 	Edele e;
 	static final int GELDIGE_EDELEN_PRESTIGE = 3;
