@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import domein.Edele;
 import domein.EdeleRepository;
@@ -338,9 +341,115 @@ class SpelTest {
 	 * method: Spel.kiesOntwikkelingskaart(int niveau, int positie)
 	 * niveau: [1-3]
 	 * positie: [1-4]
+	 * spelerAanBeurt krijgt de gekozen kaart, de prestige die bij die kaart hoort wordt bij de spelers prestige
+	 * geteld, de gekozen kaart komt in de hand van de speler terecht, de plaats waar eerst die kaart was, daar komt nu
+	 * een nieuwe kaart
 	 */
+	@ParameterizedTest
+	@ValueSource(ints = {-100, 0, 4, 50})
+	void testkiesOntwikkelingskaart_ongeldigNiveau_werptException(int ongeldigNiveau) {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> this.spelMethodeTester.kiesOntwikkelingskaart(ongeldigNiveau, 1));
+	}
+	@ParameterizedTest
+	@ValueSource(ints = {-100, 0, 5, 50})
+	void testkiesOntwikkelingskaart_ongeldigPositie_werptException(int ongeldigPositie) {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> this.spelMethodeTester.kiesOntwikkelingskaart(1, ongeldigPositie));
+	}
+	 /*de random genomen kaarten maakt voor een moeilijk te testen methode...*/
 	@Test
-	void testkiesOntwikkelingskaart_ongeldigNiveau_werptException() {
+	void testkiesOntwikkelingskaart_geldigeParametersNiveau1_spelerNeemtKaartNiveau1() {
+		//arrange
+		Ontwikkelingskaart ok1 = spelMethodeTester.getNiveau1Zichtbaar()[0];
+		Ontwikkelingskaart ok2 = spelMethodeTester.getNiveau1Zichtbaar()[1];
+		Ontwikkelingskaart ok3 = spelMethodeTester.getNiveau1Zichtbaar()[2]; // niveau1, positie 3
+		Ontwikkelingskaart ok4 = spelMethodeTester.getNiveau1Zichtbaar()[3];
 		
+		int handSpeler = spelMethodeTester.getSpelerAanBeurt().getOntwikkelingskaartenInHand().size();
+		int prestigeSpeler = spelMethodeTester.getSpelerAanBeurt().getPrestigepunten();
+		int kaartPrestige = ok3.getPrestigepunten();
+		//speler moet genoeg fiches hebben om de kaart te nemen -> we bekijken de kosten en geven spelerAanBeurt de nodige fiches
+		//om de kaart te kunnen kopen
+		for (int i = 0; i < ok3.getKosten().length; i++) {
+			if(ok3.getKosten()[i] != 0) {
+				for (int j = 0; j < ok3.getKosten()[i]; j++) {
+					spelMethodeTester.getSpelerAanBeurt().voegEdelsteenficheToeAanHand(Kleur.values()[i]);
+				}
+			}
+		}
+		//act
+		spelMethodeTester.kiesOntwikkelingskaart(1, 3); //  niveau 1, positie 3
+		//assert (kaart in hand, 1ste kaart in hand, positie 0)
+		//assert speler heeft de kaart van positie 3 nu in de hand:
+		Assertions.assertEquals(ok3, spelMethodeTester.getSpelerAanBeurt().getOntwikkelingskaartenInHand().get(0));
+		//assert lijst kaarten in speler hand is nu grootte +1 
+		Assertions.assertEquals(handSpeler + 1, spelMethodeTester.getSpelerAanBeurt().getOntwikkelingskaartenInHand().size());
+		//assert speler prestige is nu vermeerdert met de prestigewaarde van de genomen kaart
+		Assertions.assertEquals(kaartPrestige, spelMethodeTester.getSpelerAanBeurt().getPrestigepunten());
+		//assert kaart op positie 3 moet nu vervangen zijn met een andere kaart
+		Assertions.assertNotEquals(ok3, spelMethodeTester.getNiveau1Zichtbaar()[2]);
+	}
+	@Test
+	void testkiesOntwikkelingskaart_geldigeParametersNiveau2_spelerNeemtKaartNiveau2() {
+		//arrange
+		Ontwikkelingskaart ok1 = spelMethodeTester.getNiveau2Zichtbaar()[0]; // niveau 2, positie 1
+		Ontwikkelingskaart ok2 = spelMethodeTester.getNiveau2Zichtbaar()[1];
+		Ontwikkelingskaart ok3 = spelMethodeTester.getNiveau2Zichtbaar()[2]; 
+		Ontwikkelingskaart ok4 = spelMethodeTester.getNiveau2Zichtbaar()[3];
+		
+		int handSpeler = spelMethodeTester.getSpelerAanBeurt().getOntwikkelingskaartenInHand().size();
+		int prestigeSpeler = spelMethodeTester.getSpelerAanBeurt().getPrestigepunten();
+		int kaartPrestige = ok1.getPrestigepunten();
+		//speler moet genoeg fiches hebben om de kaart te nemen -> we bekijken de kosten en geven spelerAanBeurt de nodige fiches
+		//om de kaart te kunnen kopen
+		for (int i = 0; i < ok1.getKosten().length; i++) {
+			if(ok1.getKosten()[i] != 0) {
+				for (int j = 0; j < ok1.getKosten()[i]; j++) {
+					spelMethodeTester.getSpelerAanBeurt().voegEdelsteenficheToeAanHand(Kleur.values()[i]);
+				}
+			}
+		}
+		//act
+		spelMethodeTester.kiesOntwikkelingskaart(2, 1); //  niveau 2, positie 1
+		//assert (kaart in hand, 1ste kaart in hand, positie 0)
+		//assert speler heeft de kaart van positie 1 nu in de hand:
+		Assertions.assertEquals(ok1, spelMethodeTester.getSpelerAanBeurt().getOntwikkelingskaartenInHand().get(0));
+		//assert lijst kaarten in speler hand is nu grootte +1 
+		Assertions.assertEquals(handSpeler + 1, spelMethodeTester.getSpelerAanBeurt().getOntwikkelingskaartenInHand().size());
+		//assert speler prestige is nu vermeerdert met de prestigewaarde van de genomen kaart
+		Assertions.assertEquals(kaartPrestige, spelMethodeTester.getSpelerAanBeurt().getPrestigepunten());
+		//assert kaart op positie 1 moet nu vervangen zijn met een andere kaart
+		Assertions.assertNotEquals(ok1, spelMethodeTester.getNiveau2Zichtbaar()[0]);
+	}
+	@Test
+	void testkiesOntwikkelingskaart_geldigeParametersNiveau3_spelerNeemtKaartNiveau3() {
+		//arrange
+		Ontwikkelingskaart ok1 = spelMethodeTester.getNiveau3Zichtbaar()[0];
+		Ontwikkelingskaart ok2 = spelMethodeTester.getNiveau3Zichtbaar()[1];
+		Ontwikkelingskaart ok3 = spelMethodeTester.getNiveau3Zichtbaar()[2]; 
+		Ontwikkelingskaart ok4 = spelMethodeTester.getNiveau3Zichtbaar()[3]; // niveau 3, positie 4
+		
+		int handSpeler = spelMethodeTester.getSpelerAanBeurt().getOntwikkelingskaartenInHand().size();
+		int prestigeSpeler = spelMethodeTester.getSpelerAanBeurt().getPrestigepunten();
+		int kaartPrestige = ok4.getPrestigepunten();
+		//speler moet genoeg fiches hebben om de kaart te nemen -> we bekijken de kosten en geven spelerAanBeurt de nodige fiches
+		//om de kaart te kunnen kopen
+		for (int i = 0; i < ok4.getKosten().length; i++) {
+			if(ok4.getKosten()[i] != 0) {
+				for (int j = 0; j < ok4.getKosten()[i]; j++) {
+					spelMethodeTester.getSpelerAanBeurt().voegEdelsteenficheToeAanHand(Kleur.values()[i]);
+				}
+			}
+		}
+		//act
+		spelMethodeTester.kiesOntwikkelingskaart(3, 4); //  niveau 3, positie 4
+		//assert (kaart in hand, 1ste kaart in hand, positie 0)
+		//assert speler heeft de kaart van positie 4 nu in de hand:
+		Assertions.assertEquals(ok4, spelMethodeTester.getSpelerAanBeurt().getOntwikkelingskaartenInHand().get(0));
+		//assert lijst kaarten in speler hand is nu grootte +1 
+		Assertions.assertEquals(handSpeler + 1, spelMethodeTester.getSpelerAanBeurt().getOntwikkelingskaartenInHand().size());
+		//assert speler prestige is nu vermeerdert met de prestigewaarde van de genomen kaart
+		Assertions.assertEquals(kaartPrestige, spelMethodeTester.getSpelerAanBeurt().getPrestigepunten());
+		//assert kaart op positie 4 moet nu vervangen zijn met een andere kaart
+		Assertions.assertNotEquals(ok4, spelMethodeTester.getNiveau3Zichtbaar()[0]);
 	}
 }
