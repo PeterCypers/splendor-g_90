@@ -224,6 +224,8 @@ public class Spel {
 	}
 
 	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
+		if(gekozenOntwikkelingskaart == null)
+			throw new IllegalArgumentException("Ontwikkelingskaart is null in Spel.kanKaartKopen");
 		int[] somAantalPerKleurInBezit = somAantalPerKleurInBezit();
 
 		int[] kosten = gekozenOntwikkelingskaart.getKosten();

@@ -452,4 +452,100 @@ class SpelTest {
 		//assert kaart op positie 4 moet nu vervangen zijn met een andere kaart
 		Assertions.assertNotEquals(ok4, spelMethodeTester.getNiveau3Zichtbaar()[0]);
 	}
+	/**
+	 *  method: Spel.kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart)
+	 *  1) een nieuw spel, speler aan beurt kan geen Ontwikkelingskaart kopen
+	 *  2) een spel in progress, speler met net te weinig fiches kan geen Ontwikkelingskaart kopen
+	 *  3) een spel in progress, speler met net genoeg fiches kan wel een Ontwikkelingskaart kopen
+	 */
+	@Test
+	void testKanKaartKopen_spelerNieuwSpelMetTeWeinigFiches_returnFalse() {
+		//arrange
+		Ontwikkelingskaart o = new Ontwikkelingskaart(1, 0, Kleur.WIT, "src\\img\\cards\\level1\\mine_diamond.jpg", new int[] {0, 0, 4, 0, 0});
+		//act & assert
+		Assertions.assertFalse(spelMethodeTester.kanKaartKopen(o));
+	}
+	@Test
+	void testKanKaartKopen_spelerNetTeWeinigFiches_returnFalse() {
+		//arrange
+		Ontwikkelingskaart o = new Ontwikkelingskaart(1, 0, Kleur.WIT, "src\\img\\cards\\level1\\mine_diamond.jpg", new int[] {0, 0, 4, 0, 0});
+		Speler s = spelMethodeTester.getSpelerAanBeurt();
+		//speler heeft 4 fiches nodig, maar heeft 3 fiches
+		for (int i = 0; i < 3; i++) s.voegEdelsteenficheToeAanHand(Kleur.BLAUW);
+		//act & assert
+		Assertions.assertFalse(spelMethodeTester.kanKaartKopen(o));
+	}
+	@Test
+	void testKanKaartKopen_ontwikkelingsKaartNull_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.kanKaartKopen(null));
+	}
+	@Test
+	void testKanKaartKopen_spelerNetGenoegFiches_returnTrue() {
+		//arrange een witte ontwikkelingskaart die 4 blauwe fiches kost om te kopen
+		Ontwikkelingskaart o = new Ontwikkelingskaart(1, 0, Kleur.WIT, "src\\img\\cards\\level1\\mine_diamond.jpg", new int[] {0, 0, 4, 0, 0});
+		Speler s = spelMethodeTester.getSpelerAanBeurt();
+		//speler heeft 4 fiches nodig, speler heeft net 4 fiches
+		for (int i = 0; i < 4; i++) s.voegEdelsteenficheToeAanHand(Kleur.BLAUW);
+		//act & assert
+		Assertions.assertTrue(spelMethodeTester.kanKaartKopen(o));
+	}
+	@Test
+	void testKanKaartKopen_spelerNetTeWeinigFichesMaarMetOntwikkelingsKaartKleurBonusKortingWelGenoegOmTeKopen_returnTrue () {
+		//arrange
+		//een witte ontwikkelingskaart die de speler wilt kopen:
+		Ontwikkelingskaart wilSpelerKopen = new Ontwikkelingskaart(1, 0, Kleur.WIT, "src\\img\\cards\\level1\\mine_diamond.jpg", new int[] {0, 0, 4, 0, 0});
+		//een blauwe ontwikkelingskaart in bezig van de speler:
+		Ontwikkelingskaart bezitSpeler = new Ontwikkelingskaart(1, 0, Kleur.BLAUW, "src\\img\\cards\\level1\\mine_sapphire.jpg", new int[] {0, 4, 0, 0, 0});
+		Speler s = spelMethodeTester.getSpelerAanBeurt();
+		s.voegOntwikkelingskaartToeAanHand(bezitSpeler);
+		//speler heeft 4 fiches nodig, maar heeft 3 fiches + kleurbonus van zijn ontwikkelingskaart in bezit
+		for (int i = 0; i < 3; i++) s.voegEdelsteenficheToeAanHand(Kleur.BLAUW);
+		//act & assert
+		Assertions.assertTrue(spelMethodeTester.kanKaartKopen(wilSpelerKopen));
+	}
+	/**
+	 * method: Spel.somAantalPerKleurInBezit() -> return int[]
+	 * test op juiste return waardes
+	 */
+	@Test
+	void testSomAantalPerKleurInBezit_spelerBezitOntwikkelingsKaartenEnFiches_returnsJuisteWaarden() {
+		//arrange: speler bezit 10 fiches: [3, 2, 0, 2, 3] + 1 witte en 1 rode Ontwikkelingskaart: [1, 1, 0, 0, 0]
+		//som kleuren in bezit expected value = [3, 2, 0, 2, 3] + [1, 1, 0, 0, 0] = [4, 3, 0, 2, 3]
+		Speler s = spelMethodeTester.getSpelerAanBeurt();
+		//1 witte kaart
+		Ontwikkelingskaart witteKaart = new Ontwikkelingskaart(1, 0, Kleur.WIT, "src\\img\\cards\\level1\\mine_diamond.jpg", new int[] {0, 0, 4, 0, 0});
+		//1 rode kaart
+		Ontwikkelingskaart rodeKaart = new Ontwikkelingskaart(1, 0, Kleur.ROOD, "src\\img\\cards\\level1\\mine_ruby.jpg", new int[] {4, 0, 0, 0, 0});
+		//act
+		for (int i = 0; i < 3; i++) s.voegEdelsteenficheToeAanHand(Kleur.WIT);
+		for (int i = 0; i < 2; i++) s.voegEdelsteenficheToeAanHand(Kleur.ROOD);
+		// 0 blauwe
+		for (int i = 0; i < 2; i++) s.voegEdelsteenficheToeAanHand(Kleur.GROEN);
+		for (int i = 0; i < 3; i++) s.voegEdelsteenficheToeAanHand(Kleur.ZWART);
+		
+		s.voegOntwikkelingskaartToeAanHand(witteKaart);
+		s.voegOntwikkelingskaartToeAanHand(rodeKaart);
+		
+		int[] correctValues = {4, 3, 0, 2, 3};
+		int[] somPerKleurInBezit = spelMethodeTester.somAantalPerKleurInBezit();
+		//assert
+		for (int i = 0; i < correctValues.length; i++) {
+			Assertions.assertEquals(correctValues[i], somPerKleurInBezit[i]);
+		}
+	}
+	/**
+	 * Spel.totaalAantalfiches() -> int
+	 * spel met 4 spelers heeft [7, 7, 7, 7, 7] fiches = 35
+	 * TODO: geef speler een aantal fiches en roep deze methode opnieuw aan
+	 */
+	@Test
+	void testTotaalAantalfiches_nieuwSpel_returnJuisteWaarde() {
+		Assertions.assertEquals(35, spelMethodeTester.totaalAantalfiches());
+	}
+	/**
+	 * Spel.vulKaartenBij() -> zie spel constructor tests
+	 */
+	
+	//TODO : Spel.neemDrieFiches(Kleur[] kleuren) / Spel.neemTweeFiches(Kleur kleur) / Spel.aantalStapelsMeerDanNul()
+	//Spel.bestaatStapelMeerDan4() / Spel.plaatsTerugInStapel(int stapelKeuze) / Spel.toonFiches() / Spel.krijgEdele() / Spel.bepaalWinnaar()
 }
