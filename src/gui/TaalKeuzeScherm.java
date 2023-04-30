@@ -3,6 +3,7 @@ package gui;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import domein.DomeinController;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,7 +19,9 @@ import javafx.stage.Stage;
 import resources.Taal;
 
 public class TaalKeuzeScherm extends VBox {
-	public TaalKeuzeScherm() {
+private final DomeinController dc;
+	public TaalKeuzeScherm(DomeinController dc) {
+		this.dc=dc;
 		buildGui();
 	}
 
@@ -79,9 +82,12 @@ public class TaalKeuzeScherm extends VBox {
 		ResourceBundle r = ResourceBundle.getBundle("resources/resource", l);
 		Taal.setResource(r);
 
-		SpelersToevoegenScherm spelersToevoegen = new SpelersToevoegenScherm();
-		Scene scene = new Scene(spelersToevoegen, 800, 600);
+		
+	
+		HoofdSchermSpelers hoofdScherm = new HoofdSchermSpelers(dc);
+		Scene scene = new Scene(hoofdScherm);
 		Stage stage = (Stage) this.getScene().getWindow();
+		stage.setTitle("Spelers selecteren");
 		stage.setScene(scene);
 		stage.show();
 	}
