@@ -135,11 +135,19 @@ public class Spel {
 	public Speler getSpelerAanBeurt() {
 		return spelerAanBeurt;
 	}
-
 	public boolean isEindeSpel() {
 		return this.eindeSpel;
 	}
-
+	public Ontwikkelingskaart[] getNiveau1Zichtbaar () {
+		return this.niveau1Zichtbaar;
+	}
+	public Ontwikkelingskaart[] getNiveau2Zichtbaar () {
+		return this.niveau2Zichtbaar;
+	}
+	public Ontwikkelingskaart[] getNiveau3Zichtbaar () {
+		return this.niveau3Zichtbaar;
+	}
+	
 	public void volgendeSpeler() {
 		// potentieel om huidigespeler == aan de beurt te vervangen door nieuwe speler
 		// die ook == aan de beurt
