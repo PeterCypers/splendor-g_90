@@ -20,11 +20,12 @@ import javafx.stage.Stage;
 import resources.Taal;
 
 public class TaalKeuzeScherm extends VBox {
-private final DomeinController dc;
+	private final DomeinController dc;
 
 	public TaalKeuzeScherm(DomeinController dc) {
 		this.dc=dc;
 		buildGui();
+
 	}
 
 	private void buildGui() {
@@ -84,8 +85,8 @@ private final DomeinController dc;
 		ResourceBundle r = ResourceBundle.getBundle("resources/resource", l);
 		Taal.setResource(r);
 
-		
-	
+
+
 		HoofdSchermSpelers hoofdScherm = new HoofdSchermSpelers(dc);
 		Scene scene = new Scene(hoofdScherm,800,600);
 		Stage stage = (Stage) this.getScene().getWindow();
