@@ -19,8 +19,6 @@ import resources.Taal;
 
 public class DetailSpelers extends GridPane {
 
-
-
 	private final DomeinController dc;
 
 	private TextField txfGebruikersnaam;
@@ -37,11 +35,11 @@ public class DetailSpelers extends GridPane {
 		this.setVgap(10);
 		this.setPadding(new Insets(20));
 
-		Label lblAantalSpelers = new Label(Taal.getString("amountOfPlayers") +0);
-		
+		Label lblAantalSpelers = new Label(String.format("%s: %d", Taal.getString("numberOfPlayers"), dc.geefAantalSpelers()));
+
 		Label lblGebruikersnaam = new Label(String.format("%s:", Taal.getString("username")));
 		Label lblGeboortejaar = new Label(String.format("%s:", Taal.getString("birthyear")));
-		Label lblGegevens = new Label("Gegevens:");
+		Label lblGegevens = new Label(String.format("%s:", Taal.getString("data")));
 
 		lblGegevens.setFont(Font.font("Helvetica", FontWeight.BOLD, 25));
 		lblAantalSpelers.setFont(Font.font("Helvetica"));
@@ -49,25 +47,21 @@ public class DetailSpelers extends GridPane {
 		lblGeboortejaar.setFont(Font.font("Helvetica"));
 
 		Button btnAdd = new Button(Taal.getString("addPlayer"));
-		Button btnStartSpel = new Button(Taal.getString("startGame"));
+		Button btnStartSpel = new Button(Taal.getString("playGame"));
 		Button btnKeerTerug = new Button(Taal.getString("goBack"));
-		Button btnClear1 = new Button("X");
-		Button btnClear2 = new Button("X");
+		Button btnClear1 = new Button("X"), btnClear2 = new Button("X");
 
+		btnClear1.setOnAction(e -> txfGebruikersnaam.clear());
 		btnClear1.setFont(Font.font("Helvetica"));
-		btnClear1.setOnAction(e ->{
-			txfGebruikersnaam.clear();
-		});
+
+		btnClear2.setOnAction(e -> txfGeboortejaar.clear());
 		btnClear2.setFont(Font.font("Helvetica"));
-		btnClear2.setOnAction(e ->{
-			txfGeboortejaar.clear();
-		});
 
 
 		btnAdd.setFont(Font.font("Helvetica"));
 		btnStartSpel.setFont(Font.font("Helvetica"));
 		btnStartSpel.setDisable(true);
-		//		btnStartSpel.setOnAction(this::drukStartSpel); // spel starten met gekozen spelers
+		btnStartSpel.setOnAction(this::drukStartSpel); // spel starten met gekozen spelers
 		btnKeerTerug.setFont(Font.font("Helvetica"));
 		btnKeerTerug.setOnAction(this::drukKeerTerug);
 
@@ -90,10 +84,15 @@ public class DetailSpelers extends GridPane {
 		btnAdd.setOnAction(e -> {
 			try {
 				if (txfGebruikersnaam.getText().isEmpty() || txfGeboortejaar.getText().isEmpty()) {// lege velden
-					return;
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setTitle("Alert");
+					alert.setHeaderText("Foute gegevens");
+					alert.setContentText("Alle velden moeten ingevuld zijn");
+					alert.showAndWait();
+					return ;
 				}
 				dc.voegSpelerToe(txfGebruikersnaam.getText(), Integer.parseInt(txfGeboortejaar.getText()));
-				lblAantalSpelers.setText(Taal.getString("amountOfPlayers") + dc.geefAantalSpelers());
+				lblAantalSpelers.setText((String.format("%s: %d", Taal.getString("numberOfPlayers"), dc.geefAantalSpelers())));
 				if (dc.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS) // max spelers,
 					btnAdd.setDisable(true);
 
@@ -116,9 +115,6 @@ public class DetailSpelers extends GridPane {
 				// velden legen
 			}
 		});
-
-
-
 	}
 
 	private void drukKeerTerug(ActionEvent event) {
@@ -130,18 +126,7 @@ public class DetailSpelers extends GridPane {
 	}
 
 	private void drukStartSpel(ActionEvent event) {
+		//TODO: naar scherm speelSpel gaan
 		dc.startNieuwSpel();
-	}
-
-	// Deze methode wordt aangeroepen door het OverzichtPaneel 
-	// wanneer er een andere user geselecteerd werd  
-	public void update()
-	{
-		//		List<Speler> spelersInRepository = SpelerRepository.getSpelers();
-		//		RekeningDTO infoVanHuidigeRekening = alleInfoVanRekeningen[indexVanDeRekening];
-
-		txfGebruikersnaam.setText(null);
-		txfGeboortejaar.setText(null);
-
 	}
 }

@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -20,6 +21,7 @@ import resources.Taal;
 
 public class TaalKeuzeScherm extends VBox {
 private final DomeinController dc;
+
 	public TaalKeuzeScherm(DomeinController dc) {
 		this.dc=dc;
 		buildGui();
@@ -37,21 +39,21 @@ private final DomeinController dc;
 		Button btnNederlands = new Button("NL");
 		btnNederlands.setFont(Font.font("Helvetica", 16));
 		btnNederlands.setPrefSize(100, 50);
-		btnNederlands.setOnAction(this::buttonPushed);
+		btnNederlands.setOnAction(this::drukOpTaalKnop);
 		btnNederlands.setTooltip(new Tooltip("Nederlands"));
 
 		// knop EN
 		Button btnEngels = new Button("EN");
 		btnEngels.setFont(Font.font("Helvetica", 16));
 		btnEngels.setPrefSize(100, 50);
-		btnEngels.setOnAction(this::buttonPushed);
+		btnEngels.setOnAction(this::drukOpTaalKnop);
 		btnNederlands.setTooltip(new Tooltip("English"));
 
 		// knop FR
 		Button btnFrans = new Button("FR");
 		btnFrans.setFont(Font.font("Helvetica", 16));
 		btnFrans.setPrefSize(100, 50);
-		btnFrans.setOnAction(this::buttonPushed);
+		btnFrans.setOnAction(this::drukOpTaalKnop);
 		btnNederlands.setTooltip(new Tooltip("Francais"));
 
 		// wrap knoppen in HBox
@@ -64,7 +66,7 @@ private final DomeinController dc;
 
 	}
 
-	private void buttonPushed(ActionEvent event) {
+	private void drukOpTaalKnop(ActionEvent event) {
 		Button button = (Button) event.getTarget();
 		String language = button.getText();
 		String country = "";
@@ -85,7 +87,7 @@ private final DomeinController dc;
 		
 	
 		HoofdSchermSpelers hoofdScherm = new HoofdSchermSpelers(dc);
-		Scene scene = new Scene(hoofdScherm);
+		Scene scene = new Scene(hoofdScherm,800,600);
 		Stage stage = (Stage) this.getScene().getWindow();
 		stage.setTitle("Spelers selecteren");
 		stage.setScene(scene);

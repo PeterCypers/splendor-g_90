@@ -1,11 +1,6 @@
 package gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import domein.DomeinController;
-import domein.SpelerRepository;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -13,6 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import resources.Taal;
 
 public class OverzichtSpelers extends VBox {
 
@@ -35,13 +31,12 @@ public class OverzichtSpelers extends VBox {
 		this.setAlignment(Pos.CENTER);
 		this.setSpacing(20);
 
-		
-		Label lblOverzicht = new Label("Spelers:");
+		Label lblOverzicht = new Label(String.format("%s: ", Taal.getString("players")));
 		lblOverzicht.setFont(Font.font("Helvetica", FontWeight.BOLD, 25));
 		this.getChildren().add(lblOverzicht);
 
 		lijst = new ListView<>();
-		
-	
+
+
 	}
 }

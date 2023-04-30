@@ -20,10 +20,9 @@ public class HoofdSchermSpelers extends BorderPane {
 	private void buildGui()
 	{
 		Pane top = new Pane();
-		top.setPrefHeight(USE_COMPUTED_SIZE);
+		top.setPrefHeight(100);
 		Label titleLabel = new Label("SPLENDOR");
 		titleLabel.setFont(Font.font("Helvetica", FontWeight.EXTRA_BOLD, 75));
-		titleLabel.setAlignment(Pos.CENTER);
 		top.getChildren().add(titleLabel);
 		this.setTop(top);
 
