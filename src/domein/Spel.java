@@ -135,19 +135,23 @@ public class Spel {
 	public Speler getSpelerAanBeurt() {
 		return spelerAanBeurt;
 	}
+
 	public boolean isEindeSpel() {
 		return this.eindeSpel;
 	}
-	public Ontwikkelingskaart[] getNiveau1Zichtbaar () {
+
+	public Ontwikkelingskaart[] getNiveau1Zichtbaar() {
 		return this.niveau1Zichtbaar;
 	}
-	public Ontwikkelingskaart[] getNiveau2Zichtbaar () {
+
+	public Ontwikkelingskaart[] getNiveau2Zichtbaar() {
 		return this.niveau2Zichtbaar;
 	}
-	public Ontwikkelingskaart[] getNiveau3Zichtbaar () {
+
+	public Ontwikkelingskaart[] getNiveau3Zichtbaar() {
 		return this.niveau3Zichtbaar;
 	}
-	
+
 	public void volgendeSpeler() {
 		// potentieel om huidigespeler == aan de beurt te vervangen door nieuwe speler
 		// die ook == aan de beurt
@@ -224,7 +228,7 @@ public class Spel {
 	}
 
 	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
-		if(gekozenOntwikkelingskaart == null)
+		if (gekozenOntwikkelingskaart == null)
 			throw new IllegalArgumentException("Ontwikkelingskaart is null in Spel.kanKaartKopen");
 		int[] somAantalPerKleurInBezit = somAantalPerKleurInBezit();
 
@@ -370,6 +374,11 @@ public class Spel {
 		if (kleur == null)
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: nullobject passed in neemTweeFiches", this.getClass()));
+
+		// controleren of de gekozen stapel om van te nemen nog bestaat
+		if (ficheStapels.get(kleur) == null) {
+			throw new IllegalArgumentException("\nDe stapel die u gekozen heeft is leeg.\n");
+		}
 
 		// controleren of het mogelijk is om 2 te verwijderen uit gekozen kleur stapel
 		if (ficheStapels.get(kleur) < 4) {
