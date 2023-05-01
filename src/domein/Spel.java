@@ -565,7 +565,7 @@ public class Spel {
 		}
 
 	}
-
+	// [TEST]
 	public void testMaaktWinnaarAan() {
 		Random random = new Random();
 
