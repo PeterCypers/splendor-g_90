@@ -144,5 +144,7 @@ public class DetailSpelers extends GridPane {
 		stage.setScene(scene);
 		stage.show();
 		dc.startNieuwSpel();
+		
+		
 	}
 }
