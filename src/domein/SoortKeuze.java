@@ -5,7 +5,7 @@ public enum SoortKeuze {
 
 	private final int KEUZE;
 
-	SoortKeuze(int keuze) {
+	private SoortKeuze(int keuze) {
 		this.KEUZE = keuze;
 	}
 
