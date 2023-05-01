@@ -61,7 +61,7 @@ public class DetailSpelers extends GridPane {
 
 		btnAdd.setFont(Font.font("Helvetica"));
 		btnStartSpel.setFont(Font.font("Helvetica"));
-		//btnStartSpel.setDisable(true); voor gebruiksgemak even uitgezet
+		btnStartSpel.setDisable(true);
 		btnStartSpel.setOnAction(this::drukStartSpel); // spel starten met gekozen spelers
 		btnKeerTerug.setFont(Font.font("Helvetica"));
 		btnKeerTerug.setOnAction(this::drukKeerTerug);
@@ -125,6 +125,16 @@ public class DetailSpelers extends GridPane {
 		Stage stage = (Stage) this.getScene().getWindow();
 		stage.setScene(scene);
 		stage.show();
+	}
+	
+	
+
+	public TextField getTxfGebruikersnaam() {
+		return txfGebruikersnaam;
+	}
+
+	public TextField getTxfGeboortejaar() {
+		return txfGeboortejaar;
 	}
 
 	private void drukStartSpel(ActionEvent event) {

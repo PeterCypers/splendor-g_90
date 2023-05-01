@@ -15,29 +15,38 @@ public class SpeelSpelScherm extends BorderPane {
 	}
 	private void buildGui() {
 
-		//center
+		Pane center = new Pane();
 		Label lblCenter = new Label("CENTER");
-		this.setCenter(new Pane(lblCenter));
+		center.getChildren().add(lblCenter);
+		this.setCenter(lblCenter);
 
 		//top
+		Pane top = new Pane();
 		Label lblTop = new Label("TOP");
-		this.setTop(new Pane(lblTop));
+		top.getChildren().add(lblTop);
 		BorderPane.setAlignment(lblTop, Pos.CENTER);
+		this.setTop(top);
 
 		//bot
+		Pane bot = new Pane();
 		Label lblBot = new Label("BOT");
-		this.setBottom(new Pane(lblBot));
+		bot.getChildren().add(lblBot);
 		BorderPane.setAlignment(lblBot, Pos.CENTER);
+		this.setBottom(lblBot);
 
 		//left
+		Pane left = new Pane();
 		Label lblLeft = new Label("LEFT");
-		this.setLeft(new Pane(lblLeft));
+		left.getChildren().add(lblLeft);
 		BorderPane.setAlignment(lblLeft, Pos.CENTER);
+		this.setLeft(lblLeft);
 
 		//right
+		Pane right = new Pane();
 		Label lblRight = new Label("RIGHT");
-		this.setRight(new Pane(lblRight));
+		right.getChildren().add(lblRight);
 		BorderPane.setAlignment(lblRight, Pos.CENTER);
+		this.setRight(lblRight);
 
 	}
 
