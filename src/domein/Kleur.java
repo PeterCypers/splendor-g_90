@@ -5,7 +5,7 @@ public enum Kleur {
 
 	private final int KLEUR;
 
-	Kleur(int kleur) {
+	private Kleur(int kleur) {
 		this.KLEUR = kleur;
 	}
 
