@@ -428,7 +428,7 @@ public class Spel {
 		return false;
 	}
 
-	public Integer getAantalSpelers() {
+	public int getAantalSpelers() {
 		return aangemeldeSpelers.size();
 	}
 
