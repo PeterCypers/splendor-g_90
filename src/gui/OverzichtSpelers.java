@@ -35,8 +35,5 @@ public class OverzichtSpelers extends VBox {
 		lblOverzicht.setFont(Font.font("Helvetica", FontWeight.BOLD, 25));
 		this.getChildren().add(lblOverzicht);
 
-		lijst = new ListView<>();
-
-
 	}
 }
