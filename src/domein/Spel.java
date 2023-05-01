@@ -345,7 +345,7 @@ public class Spel {
 			throw new IllegalArgumentException(
 					String.format("Fout in %s: nullobject passed in neemDrieFiches", this.getClass()));
 
-		if (kleuren[1] == kleuren[2] || kleuren[2] == kleuren[3] || kleuren[1] == kleuren[3]) {
+		if (kleuren[0] == kleuren[1] || kleuren[1] == kleuren[2] || kleuren[0] == kleuren[2]) {
 			throw new IllegalArgumentException(String.format(
 					"\nU probeert edelsteenfiches te nemen van dezelfde stapel.\nU moet edelsteenfiches nemen van 3 verschillende stapels\n"));
 		}
