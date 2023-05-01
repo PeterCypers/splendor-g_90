@@ -546,6 +546,96 @@ class SpelTest {
 	 * Spel.vulKaartenBij() -> zie spel constructor tests
 	 */
 	
+	/**
+	 * Spel.neemDrieFiches(Kleur[] kleuren)
+	 * stapels worden met de juiste aantal fiches verminderd, speler bezit de genomen fiches
+	 * je mag niet 2x van dezelfde fiche stapen een fiche nemen
+	 * je kan geen fiche nemen van een stapel die geen fiches bevat
+	 * als speler een ongeldige stapel kiest verminderen de stapels niet, een spel met 4 spelers heeft 35 fiches
+	 */
+	@Test
+	void testNeemDrieFiches_eenStapelBevat0Fiches_werptException() {
+		//arrange
+		Kleur[] legeStapels = {Kleur.WIT, Kleur.ROOD, Kleur.BLAUW};
+		Kleur[] teNemenKleuren = {Kleur.WIT, Kleur.GROEN, Kleur.ZWART}; // 1 lege stapel
+		//7x een fiche van deze 3 stapels nemen, dan bevatten deze stapels 0 fiches (spel behoud nog 14 fiches (35-(3x7))
+		for (int i = 0; i < 7; i++) spelMethodeTester.neemDrieFiches(legeStapels);
+		//act & assert
+		Assertions.assertThrows(RuntimeException.class, () -> spelMethodeTester.neemDrieFiches(teNemenKleuren));
+		Assertions.assertEquals(14, spelMethodeTester.totaalAantalfiches());
+	}
+	@Test
+	void testNeemDrieFiches_tweeStapelsBevatten0Fiches_werptException() {
+		//arrange
+		Kleur[] legeStapels = {Kleur.WIT, Kleur.ROOD, Kleur.BLAUW};
+		Kleur[] teNemenKleuren = {Kleur.WIT, Kleur.ROOD, Kleur.ZWART}; // 2 lege stapels
+		//7x een fiche van deze 3 stapels nemen, dan bevatten deze stapels 0 fiches (spel behoud nog 14 fiches (35-(3x7))
+		for (int i = 0; i < 7; i++) spelMethodeTester.neemDrieFiches(legeStapels);
+		//act & assert
+		Assertions.assertThrows(RuntimeException.class, () -> spelMethodeTester.neemDrieFiches(teNemenKleuren));
+		Assertions.assertEquals(14, spelMethodeTester.totaalAantalfiches());
+	}
+	@Test
+	void testNeemDrieFiches_drieStapelsBevatten0Fiches_werptException() {
+		//arrange
+		Kleur[] legeStapels = {Kleur.WIT, Kleur.ROOD, Kleur.BLAUW};
+		Kleur[] teNemenKleuren = {Kleur.WIT, Kleur.ROOD, Kleur.BLAUW}; // 3 lege stapels
+		//7x een fiche van deze 3 stapels nemen, dan bevatten deze stapels 0 fiches (spel behoud nog 14 fiches (35-(3x7))
+		for (int i = 0; i < 7; i++) spelMethodeTester.neemDrieFiches(legeStapels);
+		//act & assert
+		Assertions.assertThrows(RuntimeException.class, () -> spelMethodeTester.neemDrieFiches(teNemenKleuren));
+		Assertions.assertEquals(14, spelMethodeTester.totaalAantalfiches());
+	}
+	@Test
+	void testNeemDrieFiches_tweeMaalDezelfdeStapelEenFicheProberenNemen_werptException() {
+		//arrange
+		Kleur[] teNemenKleuren = {Kleur.WIT, Kleur.WIT, Kleur.BLAUW};
+		Kleur[] teNemenKleuren2 = {Kleur.WIT, Kleur.ROOD, Kleur.ROOD};
+		//act & assert
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.neemDrieFiches(teNemenKleuren));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.neemDrieFiches(teNemenKleuren2));
+		Assertions.assertEquals(35, spelMethodeTester.totaalAantalfiches());
+	}
+	@Test
+	void testNeemDrieFiches_drieMaalDezelfdeStapelEenFicheProberenNemen_werptException() {
+		//arrange
+		Kleur[] teNemenKleuren = {Kleur.ZWART, Kleur.ZWART, Kleur.ZWART};
+		Kleur[] teNemenKleuren2 = {Kleur.WIT, Kleur.WIT, Kleur.WIT};
+		//act & assert
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.neemDrieFiches(teNemenKleuren));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.neemDrieFiches(teNemenKleuren2));
+		Assertions.assertEquals(35, spelMethodeTester.totaalAantalfiches());
+	}
+	@Test
+	void testNeemDrieFiches_nullParameter_werptException() {
+		//arrange
+		Kleur[] nullPos1 = {null, Kleur.ROOD, Kleur.BLAUW};
+		Kleur[] nullPos2 = {Kleur.WIT, null, Kleur.BLAUW};
+		Kleur[] nullPos3 = {Kleur.WIT, Kleur.ROOD, null};
+		Kleur[] nullList = null;
+		//act & assert
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.neemDrieFiches(nullPos1));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.neemDrieFiches(nullPos2));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.neemDrieFiches(nullPos3));
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.neemDrieFiches(nullList));
+		Assertions.assertEquals(35, spelMethodeTester.totaalAantalfiches());
+	}
+	@Test
+	void testNeemDrieFiches_geldigeGekozenStapels_spelerAanBeurtKrijgtFiches() {
+		//arrange (spel heeft 35 fiches in de fiche stapels, na het nemen van deze 3 -> nog 32)
+		Kleur[] teNemenKleuren = {Kleur.WIT, Kleur.ROOD, Kleur.BLAUW};
+		//act & assert
+		spelMethodeTester.neemDrieFiches(teNemenKleuren);
+		//totaalAantalfiches expect 32 / somaantalperkleurinbezit expect [1, 1, 1, 0, 0]
+		int aantalFichesResterendInSpelFicheStapels = spelMethodeTester.totaalAantalfiches(); // 32 
+		int[] fichesPerKleurInBezitSpelerAandeBeurt = spelMethodeTester.somAantalPerKleurInBezit(); // [1, 1, 1, 0, 0]
+		Assertions.assertEquals(32, aantalFichesResterendInSpelFicheStapels);
+		Assertions.assertEquals(1, fichesPerKleurInBezitSpelerAandeBeurt[0]);
+		Assertions.assertEquals(1, fichesPerKleurInBezitSpelerAandeBeurt[1]);
+		Assertions.assertEquals(1, fichesPerKleurInBezitSpelerAandeBeurt[2]);
+		Assertions.assertEquals(0, fichesPerKleurInBezitSpelerAandeBeurt[3]);
+		Assertions.assertEquals(0, fichesPerKleurInBezitSpelerAandeBeurt[4]);
+	}
 	//TODO : Spel.neemDrieFiches(Kleur[] kleuren) / Spel.neemTweeFiches(Kleur kleur) / Spel.aantalStapelsMeerDanNul()
 	//Spel.bestaatStapelMeerDan4() / Spel.plaatsTerugInStapel(int stapelKeuze) / Spel.toonFiches() / Spel.krijgEdele() / Spel.bepaalWinnaar()
 }
