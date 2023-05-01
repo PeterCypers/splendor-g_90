@@ -8,7 +8,7 @@ import java.util.List;
 
 import dto.SpelVoorwerpDTO;
 
-public class DomeinController implements SpelVoorwerp {
+public class DomeinController { 
 	private Spel spel;
 	private final List<Speler> aangemeldeSpelers;
 
@@ -197,10 +197,6 @@ public class DomeinController implements SpelVoorwerp {
 		}
 
 		return returnStr.isBlank() ? "Er zijn nog geen deelnemers" : returnStr;
-	}
-
-	public String toonSpelerAanBeurtZijnFiches() {
-		return spel.getSpelerAanBeurt().toonAantalFiches();
 	}
 
 	public String toonAantalFichesVanSpelerAanBeurt() {
