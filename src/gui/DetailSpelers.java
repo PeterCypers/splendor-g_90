@@ -23,6 +23,7 @@ public class DetailSpelers extends GridPane {
 
 	private TextField txfGebruikersnaam;
 	private TextField txfGeboortejaar;
+
 	public DetailSpelers(DomeinController dc) {
 		this.dc = dc;
 		buildGui();
@@ -60,7 +61,7 @@ public class DetailSpelers extends GridPane {
 
 		btnAdd.setFont(Font.font("Helvetica"));
 		btnStartSpel.setFont(Font.font("Helvetica"));
-		btnStartSpel.setDisable(true);
+		//btnStartSpel.setDisable(true); voor gebruiksgemak even uitgezet
 		btnStartSpel.setOnAction(this::drukStartSpel); // spel starten met gekozen spelers
 		btnKeerTerug.setFont(Font.font("Helvetica"));
 		btnKeerTerug.setOnAction(this::drukKeerTerug);
@@ -93,6 +94,7 @@ public class DetailSpelers extends GridPane {
 				}
 				dc.voegSpelerToe(txfGebruikersnaam.getText(), Integer.parseInt(txfGeboortejaar.getText()));
 				lblAantalSpelers.setText((String.format("%s: %d", Taal.getString("numberOfPlayers"), dc.geefAantalSpelers())));
+				
 				if (dc.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS) // max spelers,
 					btnAdd.setDisable(true);
 
@@ -119,14 +121,18 @@ public class DetailSpelers extends GridPane {
 
 	private void drukKeerTerug(ActionEvent event) {
 		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
-		Scene scene = new Scene(taalKeuze);
+		Scene scene = new Scene(taalKeuze,800,600);
 		Stage stage = (Stage) this.getScene().getWindow();
 		stage.setScene(scene);
 		stage.show();
 	}
 
 	private void drukStartSpel(ActionEvent event) {
-		//TODO: naar scherm speelSpel gaan
+		SpeelSpelScherm spelBord = new SpeelSpelScherm(dc);
+		Scene scene = new Scene(spelBord,800,600);
+		Stage stage = (Stage) this.getScene().getWindow();
+		stage.setScene(scene);
+		stage.show();
 		dc.startNieuwSpel();
 	}
 }
