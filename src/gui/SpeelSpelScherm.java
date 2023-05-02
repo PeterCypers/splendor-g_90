@@ -88,8 +88,8 @@ public class SpeelSpelScherm extends BorderPane {
 			Image backgroundImage = new Image(backgroundOntwikkelingskaartFotoFile.toURI().toString());
 			backgroundImageView = new ImageView(backgroundImage);
 
-			backgroundImageView.setFitWidth(100);
-			backgroundImageView.setFitHeight(300);
+			backgroundImageView.setFitWidth(128);
+			backgroundImageView.setFitHeight(256);
 
 			// Load color bonus image
 			File kleurBonusFotoFile = new File("src/resources/img/costs/circle_diamond.png");
@@ -98,7 +98,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 			colorBonusImageView.setFitWidth(40);
 			colorBonusImageView.setFitHeight(40);
-			StackPane.setAlignment(colorBonusImageView, Pos.TOP_RIGHT);
+			StackPane.setAlignment(colorBonusImageView, Pos.BOTTOM_LEFT);
 
 			// Load cost texts
 			costTexts = new Text[kaart.getKosten().length];
