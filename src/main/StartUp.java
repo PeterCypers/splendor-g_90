@@ -3,8 +3,6 @@ package main;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import cui.SplendorApplicatie;
-import domein.DomeinController;
 import javafx.application.Application;
 
 public abstract class StartUp extends Application {
@@ -29,8 +27,13 @@ public abstract class StartUp extends Application {
 
 			// CUI opstarten
 			if (keuze == 2) {
-				new SplendorApplicatie(new DomeinController()).startSpel();
-				System.exit(0);
+				try {
+					launchCui(args);
+					// new SplendorApplicatie(new DomeinController()).startSpel();
+					System.exit(0);
+				} catch (Error e) {
+					System.exit(1);
+				}
 			}
 			// GUI opstarten
 			if (keuze == 1) {
@@ -45,5 +48,9 @@ public abstract class StartUp extends Application {
 
 	private static void launchGui(String[] args) {
 		Application.launch(StartUpGui.class, args);
+	}
+
+	private static void launchCui(String[] args) {
+		Application.launch(StartUpCui.class, args);
 	}
 }

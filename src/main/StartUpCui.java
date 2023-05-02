@@ -7,13 +7,13 @@ import javafx.stage.Stage;
 
 public class StartUpCui extends Application {
 
-	public static void main(String[] args) {
+	@Override
+	public void start(Stage primaryStage) {
 		new SplendorApplicatie(new DomeinController()).startSpel();
 	}
 
-	@Override
-	public void start(Stage primaryStage) {
-		// Leave this method empty
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 }
