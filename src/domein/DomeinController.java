@@ -299,11 +299,11 @@ public class DomeinController {
 		return spel.getNiveau1Zichtbaar();
 	}
 
-	public void getNiveau2Zichtbaar() {
-		spel.getNiveau2Zichtbaar();
+	public Ontwikkelingskaart[] getNiveau2Zichtbaar() {
+		return spel.getNiveau2Zichtbaar();
 	}
 
-	public void getNiveau3Zichtbaar() {
-		spel.getNiveau3Zichtbaar();
+	public Ontwikkelingskaart[] getNiveau3Zichtbaar() {
+		return spel.getNiveau3Zichtbaar();
 	}
 }

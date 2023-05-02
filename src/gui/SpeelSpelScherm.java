@@ -3,14 +3,17 @@ package gui;
 import java.io.File;
 
 import domein.DomeinController;
+import domein.Kleur;
 import domein.Ontwikkelingskaart;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -42,7 +45,7 @@ public class SpeelSpelScherm extends BorderPane {
 //		devCardPane.setLayoutX(50); // adjust x-position as needed
 //		devCardPane.setLayoutY(50); // adjust y-position as needed
 //		center.getChildren().add(devCardPane);
-		Ontwikkelingskaart[] niveau1Zichtbaar = dc.getNiveau1Zichtbaar();
+		Ontwikkelingskaart[] niveau1Zichtbaar = dc.getNiveau3Zichtbaar();
 		DevelopmentCardNode devCardNode = new DevelopmentCardNode(niveau1Zichtbaar[0]);
 		center.getChildren().add(devCardNode);
 
@@ -77,47 +80,53 @@ public class SpeelSpelScherm extends BorderPane {
 	}
 
 	public class DevelopmentCardNode extends StackPane {
-
-		private ImageView backgroundImageView;
-		private ImageView colorBonusImageView;
-		private Text[] costTexts;
-
 		public DevelopmentCardNode(Ontwikkelingskaart ontwikkelingskaart) {
-			// Load background image
-			File backgroundOntwikkelingskaartFotoFile = new File(ontwikkelingskaart.getFotoOntwikkelingskaart());
-			Image backgroundImage = new Image(backgroundOntwikkelingskaartFotoFile.toURI().toString());
-			backgroundImageView = new ImageView(backgroundImage);
-
+			// Load background image for development card
+			File backgroundFile = new File(ontwikkelingskaart.getFotoOntwikkelingskaart());
+			Image backgroundImage = new Image(backgroundFile.toURI().toString());
+			ImageView backgroundImageView = new ImageView(backgroundImage);
 			backgroundImageView.setFitWidth(128);
 			backgroundImageView.setFitHeight(256);
 
-			// Laad de kleur bonus in
-			File kleurBonusFotoFile = new File(
+			// Load color bonus image
+			File colorBonusFile = new File(
 					String.format("src/resources/img/gems/%s.png", ontwikkelingskaart.getKleurBonus().kind()));
-			Image colorBonusImage = new Image(kleurBonusFotoFile.toURI().toString());
-			colorBonusImageView = new ImageView(colorBonusImage);
-
+			Image colorBonusImage = new Image(colorBonusFile.toURI().toString());
+			ImageView colorBonusImageView = new ImageView(colorBonusImage);
 			colorBonusImageView.setFitWidth(40);
 			colorBonusImageView.setFitHeight(40);
 			StackPane.setAlignment(colorBonusImageView, Pos.TOP_RIGHT);
 
-			// Laad de values in van de kosten
-			costTexts = new Text[ontwikkelingskaart.getKosten().length];
-			for (int i = 0; i < costTexts.length; i++) {
+			// ----------------------------------------------------------------------------------
+
+			// -----------------------------------------------------------------------------------
+			// Load cost images and texts
+			HBox costBox = new HBox();
+			costBox.setAlignment(Pos.BOTTOM_CENTER);
+			for (int i = 0; i < ontwikkelingskaart.getKosten().length; i++) {
+				Kleur kleur = Kleur.valueOf(i);
+				File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
+				Image costImage = new Image(costFile.toURI().toString());
+				ImageView costImageView = new ImageView(costImage);
+				costImageView.setFitWidth(30);
+				costImageView.setFitHeight(30);
+
 				String cost = Integer.toString(ontwikkelingskaart.getKosten()[i]);
-				costTexts[i] = new Text(cost);
-				costTexts[i].setFont(Font.font("Arial", FontWeight.BOLD, 18));
-//				costTexts[i].setFill(KleurWHITE);
-//				costTexts[i].setStroke(Kleur.ZWART);
-				costTexts[i].setStrokeWidth(1);
-				StackPane.setAlignment(costTexts[i], Pos.BOTTOM_LEFT);
+				Text costText = new Text(cost);
+				costText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+				costText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
+				costText.setStrokeWidth(1);
+				StackPane.setAlignment(costText, Pos.BOTTOM_CENTER);
+
+				VBox costVBox = new VBox(costImageView, costText);
+				costVBox.setAlignment(Pos.BOTTOM_CENTER);
+				costVBox.setSpacing(5);
+				costBox.getChildren().add(costVBox);
 			}
 
 			// Add child nodes
-			getChildren().addAll(backgroundImageView, colorBonusImageView);
-			getChildren().addAll(costTexts);
+			getChildren().addAll(backgroundImageView, colorBonusImageView, costBox);
 			setPrefSize(backgroundImageView.getFitWidth(), backgroundImageView.getFitHeight());
 		}
 	}
-
 }
