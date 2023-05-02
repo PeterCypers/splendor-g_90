@@ -82,32 +82,33 @@ public class SpeelSpelScherm extends BorderPane {
 		private ImageView colorBonusImageView;
 		private Text[] costTexts;
 
-		public DevelopmentCardNode(Ontwikkelingskaart kaart) {
+		public DevelopmentCardNode(Ontwikkelingskaart ontwikkelingskaart) {
 			// Load background image
-			File backgroundOntwikkelingskaartFotoFile = new File(kaart.getFotoOntwikkelingskaart());
+			File backgroundOntwikkelingskaartFotoFile = new File(ontwikkelingskaart.getFotoOntwikkelingskaart());
 			Image backgroundImage = new Image(backgroundOntwikkelingskaartFotoFile.toURI().toString());
 			backgroundImageView = new ImageView(backgroundImage);
 
 			backgroundImageView.setFitWidth(128);
 			backgroundImageView.setFitHeight(256);
 
-			// Load color bonus image
-			File kleurBonusFotoFile = new File("src/resources/img/costs/circle_diamond.png");
+			// Laad de kleur bonus in
+			File kleurBonusFotoFile = new File(
+					String.format("src/resources/img/gems/%s.png", ontwikkelingskaart.getKleurBonus().kind()));
 			Image colorBonusImage = new Image(kleurBonusFotoFile.toURI().toString());
 			colorBonusImageView = new ImageView(colorBonusImage);
 
 			colorBonusImageView.setFitWidth(40);
 			colorBonusImageView.setFitHeight(40);
-			StackPane.setAlignment(colorBonusImageView, Pos.BOTTOM_LEFT);
+			StackPane.setAlignment(colorBonusImageView, Pos.TOP_RIGHT);
 
-			// Load cost texts
-			costTexts = new Text[kaart.getKosten().length];
+			// Laad de values in van de kosten
+			costTexts = new Text[ontwikkelingskaart.getKosten().length];
 			for (int i = 0; i < costTexts.length; i++) {
-				String cost = Integer.toString(kaart.getKosten()[i]);
+				String cost = Integer.toString(ontwikkelingskaart.getKosten()[i]);
 				costTexts[i] = new Text(cost);
 				costTexts[i].setFont(Font.font("Arial", FontWeight.BOLD, 18));
-				// costTexts[i].setFill(Kleur.WHITE);
-				// costTexts[i].setStroke(Kleur.ZWART);
+//				costTexts[i].setFill(KleurWHITE);
+//				costTexts[i].setStroke(Kleur.ZWART);
 				costTexts[i].setStrokeWidth(1);
 				StackPane.setAlignment(costTexts[i], Pos.BOTTOM_LEFT);
 			}
