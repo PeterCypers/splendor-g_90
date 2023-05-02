@@ -76,20 +76,6 @@ public class SpeelSpelScherm extends BorderPane {
 
 	}
 
-//	public class DevelopmentCardPane extends Pane {
-//
-//		public DevelopmentCardPane() {
-//			Ontwikkelingskaart[] niveau1Zichtbaar = dc.getNiveau1Zichtbaar();
-//			List<Node> nodes = new ArrayList<>();
-//			Ontwikkelingskaart kaart = niveau1Zichtbaar[0];
-//			Label label11 = new Label(kaart.toString());
-//			nodes.add(label11);
-//			getChildren().addAll(nodes);
-//
-//		}
-//
-//	}
-
 	public class DevelopmentCardNode extends StackPane {
 
 		private ImageView backgroundImageView;
@@ -98,12 +84,16 @@ public class SpeelSpelScherm extends BorderPane {
 
 		public DevelopmentCardNode(Ontwikkelingskaart kaart) {
 			// Load background image
-			// backgroundImageView = new ImageView();
-			// backgroundImageView.setImage(new Image(kaart.getFotoOntwikkelingskaart()));
+			File backgroundOntwikkelingskaartFotoFile = new File(kaart.getFotoOntwikkelingskaart());
+			Image backgroundImage = new Image(backgroundOntwikkelingskaartFotoFile.toURI().toString());
+			backgroundImageView = new ImageView(backgroundImage);
+
+			backgroundImageView.setFitWidth(100);
+			backgroundImageView.setFitHeight(300);
 
 			// Load color bonus image
-			File file = new File("src/resources/img/card_stacks/level1.png");
-			Image colorBonusImage = new Image(file.toURI().toString());
+			File kleurBonusFotoFile = new File("src/resources/img/costs/circle_diamond.png");
+			Image colorBonusImage = new Image(kleurBonusFotoFile.toURI().toString());
 			colorBonusImageView = new ImageView(colorBonusImage);
 
 			colorBonusImageView.setFitWidth(40);
@@ -123,12 +113,9 @@ public class SpeelSpelScherm extends BorderPane {
 			}
 
 			// Add child nodes
-			getChildren().addAll(
-					// backgroundImageView,
-					colorBonusImageView);
+			getChildren().addAll(backgroundImageView, colorBonusImageView);
 			getChildren().addAll(costTexts);
-			// setPrefSize(backgroundImageView.getFitWidth(),
-			// backgroundImageView.getFitHeight());
+			setPrefSize(backgroundImageView.getFitWidth(), backgroundImageView.getFitHeight());
 		}
 	}
 
