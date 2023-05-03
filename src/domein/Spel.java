@@ -151,10 +151,16 @@ public class Spel {
 	public Ontwikkelingskaart[] getNiveau3Zichtbaar() {
 		return this.niveau3Zichtbaar;
 	}
-	//nodig voor test:
-	public HashMap<Kleur, Integer> getFicheStapels(){
+
+	public List<Edele> getEdelen() {
+		return this.edelen;
+	}
+
+	// nodig voor test:
+	public HashMap<Kleur, Integer> getFicheStapels() {
 		return this.ficheStapels;
 	}
+
 	public void volgendeSpeler() {
 		// potentieel om huidigespeler == aan de beurt te vervangen door nieuwe speler
 		// die ook == aan de beurt
@@ -568,6 +574,7 @@ public class Spel {
 		}
 
 	}
+
 	// [TEST]
 	public void testMaaktWinnaarAan() {
 		Random random = new Random();

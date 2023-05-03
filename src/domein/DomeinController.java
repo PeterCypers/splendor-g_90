@@ -306,4 +306,8 @@ public class DomeinController {
 	public Ontwikkelingskaart[] getNiveau3Zichtbaar() {
 		return spel.getNiveau3Zichtbaar();
 	}
+
+	public List<Edele> getEdelen() {
+		return spel.getEdelen();
+	}
 }
