@@ -222,6 +222,11 @@ class SpelTest {
 	void maakSpel_stapelTekleinVoorSpelMetDrieSpelers_werptException() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> new Spel(spelersLijstMetMidAantalSpelers_3, ontwikkelingsKaarten_goedeLijsten, edelenVoor3Spelers, ficheStapel_2_spelers));
 	}
+	/**
+	* alle geldige parameters: maakt object(controleer op jongste speler -> "speler1" is in deze klasse de jongste)
+	* er is reeds een spelMethodeTester spel gemaakt die van dezelfde lijsten 4 kaarten genomen heeft
+	* dus verwachte waarden resterende kaarten in de n1/n2/n3 lijsten = 40-4-4(32) / 30-4-4(22) / 20-4-4(12)
+	*/
 	//alle geldige parameters: maakt object(controleer op jongste speler -> "speler1" is in deze klasse de jongste)
 	@Test
 	void maakSpel_geldigeParameters_maaktSpel() {
@@ -231,10 +236,10 @@ class SpelTest {
 		Assertions.assertFalse(spelMetGeldigeParameters.isEindeSpel());
 		Assertions.assertTrue(spelMetGeldigeParameters.getSpelerAanBeurt().isAanDeBeurt());
 		Assertions.assertTrue(spelMetGeldigeParameters.getSpelerAanBeurt().isStartSpeler());
-//		Assertions.assertEquals("[36, 26, 16]", Arrays.toString(spelMetGeldigeParameters.aantalKaartenResterend()));
-		Assertions.assertEquals(36, spelMetGeldigeParameters.aantalKaartenResterend()[0]);
-		Assertions.assertEquals(26, spelMetGeldigeParameters.aantalKaartenResterend()[1]);
-		Assertions.assertEquals(16, spelMetGeldigeParameters.aantalKaartenResterend()[2]);
+//		Assertions.assertEquals("[32, 22, 12]", Arrays.toString(spelMetGeldigeParameters.aantalKaartenResterend()));
+		Assertions.assertEquals(32, spelMetGeldigeParameters.aantalKaartenResterend()[0]);
+		Assertions.assertEquals(22, spelMetGeldigeParameters.aantalKaartenResterend()[1]);
+		Assertions.assertEquals(12, spelMetGeldigeParameters.aantalKaartenResterend()[2]);
 		//juist aantal zichtbare kaarten: 4 + 4 + 4 = 12
 		List<SpelVoorwerp> spelvoorwerpen = spelMetGeldigeParameters.geefSpelVoorwerpen();
 		for (SpelVoorwerp sv : spelvoorwerpen)
@@ -690,6 +695,106 @@ class SpelTest {
 		Assertions.assertEquals(0, fichesPerKleurInBezitSpelerAandeBeurt[4]);
 		
 	}
-	//TODO : Spel.aantalStapelsMeerDanNul() / Spel.bestaatStapelMeerDan4() / Spel.plaatsTerugInStapel(int stapelKeuze)
-	//Spel.toonFiches() / Spel.krijgEdele() / Spel.bepaalWinnaar()
+	/**
+	 * Spel.aantalStapelsMeerDanNul()
+	 * een nieuw spel heeft 5 stapels meer dan 0 -> return == 5
+	 * als alle stapels leeg zijn -> return == 0
+	 * ficheStapels.remove(Kleur) : implementatie van private void Spel.verwijderFiche(Kleur kleur)
+	 */
+	@Test
+	void testAantalStapelsMeerDanNul_alleStapelsMeerDanNul_returnCorrectValue() {
+		Assertions.assertEquals(5, spelMethodeTester.aantalStapelsMeerDanNul());
+	}
+	@Test
+	void testAantalStapelsMeerDanNul_meerdereStapelsMeerDanNul_returnCorrectValue() {
+		HashMap<Kleur, Integer> ficheStapels = spelMethodeTester.getFicheStapels();
+		ficheStapels.remove(Kleur.WIT);
+		ficheStapels.remove(Kleur.ROOD);
+		ficheStapels.remove(Kleur.BLAUW);
+		Assertions.assertEquals(2, spelMethodeTester.aantalStapelsMeerDanNul());
+	}
+	@Test
+	void testAantalStapelsMeerDanNul_alleStapelsZijnLeeg_returnCorrectValue() {
+		HashMap<Kleur, Integer> ficheStapels = spelMethodeTester.getFicheStapels();
+		ficheStapels.remove(Kleur.WIT);
+		ficheStapels.remove(Kleur.ROOD);
+		ficheStapels.remove(Kleur.BLAUW);
+		ficheStapels.remove(Kleur.GROEN);
+		ficheStapels.remove(Kleur.ZWART);
+		Assertions.assertEquals(0, spelMethodeTester.aantalStapelsMeerDanNul());
+	}
+	/**
+	 * returns true vanaf dat minstens 1 van de 5 stapels 4 fiches of meer bevat
+	 * een nieuw spel heeft minimum 5 stapels van 4 fiches
+	 */
+	@Test
+	void testBestaatStapelMeerDan4_nieuwSpel_returnsTrue() {
+		Assertions.assertTrue(spelMethodeTester.bestaatStapelMeerDan4());
+	}
+	@Test
+	void testBestaatStapelMeerDan4_netEenStapelVanVier_returnsTrue() {
+		HashMap<Kleur, Integer> ficheStapels = spelMethodeTester.getFicheStapels();
+		ficheStapels.put(Kleur.WIT, 3);
+		ficheStapels.put(Kleur.ROOD, 3);
+		ficheStapels.put(Kleur.BLAUW, 3);
+		ficheStapels.put(Kleur.GROEN, 3);
+		ficheStapels.put(Kleur.ZWART, 4);
+		Assertions.assertTrue(spelMethodeTester.bestaatStapelMeerDan4());
+	}
+	@Test
+	void testBestaatStapelMeerDan4_alleStapelsBevattenDrieFiches_returnsFalse() {
+		HashMap<Kleur, Integer> ficheStapels = spelMethodeTester.getFicheStapels();
+		ficheStapels.put(Kleur.WIT, 3);
+		ficheStapels.put(Kleur.ROOD, 3);
+		ficheStapels.put(Kleur.BLAUW, 3);
+		ficheStapels.put(Kleur.GROEN, 3);
+		ficheStapels.put(Kleur.ZWART, 3);
+		Assertions.assertFalse(spelMethodeTester.bestaatStapelMeerDan4());
+	}
+	@Test
+	void testBestaatStapelMeerDan4_alleStapelsLeeg_returnsFalse() {
+		HashMap<Kleur, Integer> ficheStapels = spelMethodeTester.getFicheStapels();
+		ficheStapels.remove(Kleur.WIT);
+		ficheStapels.remove(Kleur.ROOD);
+		ficheStapels.remove(Kleur.BLAUW);
+		ficheStapels.remove(Kleur.GROEN);
+		ficheStapels.remove(Kleur.ZWART);
+		Assertions.assertFalse(spelMethodeTester.bestaatStapelMeerDan4());
+	}
+	/**
+	 * Spel.plaatsTerugInStapel(int stapelKeuze) [0-4] verwachte parameter bounds
+	 * speler moet een fiche bezitten om ze terug te kunnen plaatsen
+	 */
+	@Test
+	void testPlaatsTerugInStapel_indexTeKlein_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.plaatsTerugInStapel(-1));
+	}
+	@Test
+	void testPlaatsTerugInStapel_indexTeGroot_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.plaatsTerugInStapel(5));
+	}
+	@Test
+	void testPlaatsTerugInStapel_geldigeIndex_plaatstFicheTerugInStapel() {
+		//speler neemt 2 fiches, plaatst 1 terug, spel heeft in stapel blauw nog 6, speler heeft 1
+		spelMethodeTester.neemTweeFiches(Kleur.BLAUW);
+		spelMethodeTester.plaatsTerugInStapel(2);
+		HashMap<Kleur, Integer> stapelsFichesInHand = spelMethodeTester.getSpelerAanBeurt().getEdelsteenfichesInHand();
+		HashMap<Kleur, Integer> stapelsFichesInSpel = spelMethodeTester.getFicheStapels();
+		int fichesInHand = stapelsFichesInHand.get(Kleur.BLAUW);
+		int fichesInSpel = stapelsFichesInSpel.get(Kleur.BLAUW);
+		//assert
+		Assertions.assertEquals(1, fichesInHand);
+		Assertions.assertEquals(6, fichesInSpel);
+	}
+	@Test
+	void testPlaatsTerugInStapel_spelerPlaatstTerugVerkeerdeStapel_werptException() {
+		spelMethodeTester.neemTweeFiches(Kleur.BLAUW);
+		//assert speler plaatst fiche terug in witte stapel
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.plaatsTerugInStapel(0));
+	}
+	@Test
+	void testPlaatsTerugInStapel_spelerHeeftGeenFicheOmTerugTePlaatsen_werptException() {
+		Assertions.assertThrows(IllegalArgumentException.class, () -> spelMethodeTester.plaatsTerugInStapel(0));
+	}
+	//TODO : Spel.toonFiches() / Spel.krijgEdele() / Spel.bepaalWinnaar()
 }

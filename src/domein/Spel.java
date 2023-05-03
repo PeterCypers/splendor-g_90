@@ -152,7 +152,7 @@ public class Spel {
 		return this.niveau3Zichtbaar;
 	}
 	//nodig voor test:
-	public HashMap<Kleur, Integer> getFicheStapels (){
+	public HashMap<Kleur, Integer> getFicheStapels(){
 		return this.ficheStapels;
 	}
 	public void volgendeSpeler() {
