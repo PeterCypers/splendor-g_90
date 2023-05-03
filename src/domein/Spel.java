@@ -151,7 +151,10 @@ public class Spel {
 	public Ontwikkelingskaart[] getNiveau3Zichtbaar() {
 		return this.niveau3Zichtbaar;
 	}
-
+	//nodig voor test:
+	public HashMap<Kleur, Integer> getFicheStapels (){
+		return this.ficheStapels;
+	}
 	public void volgendeSpeler() {
 		// potentieel om huidigespeler == aan de beurt te vervangen door nieuwe speler
 		// die ook == aan de beurt
