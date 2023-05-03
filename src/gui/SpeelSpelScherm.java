@@ -151,6 +151,8 @@ public class SpeelSpelScherm extends BorderPane {
 	public class NobleNode extends StackPane {
 		private static final int NOBLE_WIDTH = 128;
 		private static final int NOBLE_HEIGHT = 128;
+		private static final int NOBLE_SIZE = 40;
+		private static final int NOBLE_FONTSIZE = 28;
 
 		public NobleNode(Edele edele) {
 			// Load the image of the noble
@@ -158,12 +160,60 @@ public class SpeelSpelScherm extends BorderPane {
 			Image backgroundImage = new Image(backgroundFile.toURI().toString());
 			ImageView nobleImage = new ImageView(backgroundImage);
 
+			// Adds the prestigepoints to the development card
+			Text prestigePointsText = new Text(Integer.toString(edele.getPrestigepunten()));
+			prestigePointsText.setFont(Font.font("Arial", FontWeight.BOLD, NOBLE_FONTSIZE));
+			prestigePointsText.setStyle("-fx-fill: black; -fx-stroke: white; -fx-stroke-width: 1;");
+			StackPane.setAlignment(prestigePointsText, Pos.TOP_LEFT);
+			StackPane.setMargin(prestigePointsText, new Insets(4));
+
 			// Create an ImageView to display the noble image
 			nobleImage.setFitWidth(NOBLE_WIDTH);
 			nobleImage.setFitHeight(NOBLE_HEIGHT);
 
-			// Add the ImageView to this StackPane
-			getChildren().addAll(nobleImage);
+			// Adds the costs with the costs images behind it at the bottom
+			HBox costBox = new HBox();
+			costBox.setAlignment(Pos.BOTTOM_LEFT);
+
+			VBox firstThreeCostsBox = new VBox();
+			firstThreeCostsBox.setAlignment(Pos.BOTTOM_LEFT);
+
+			VBox remainingTwoCostsBox = new VBox();
+			remainingTwoCostsBox.setAlignment(Pos.BOTTOM_LEFT);
+
+			// Load the costs and images for those costs of the noble
+			for (int i = 0; i < edele.getKosten().length; i++) {
+				if (!(edele.getKosten()[i] == 0)) {
+					Kleur kleur = Kleur.valueOf(i);
+					File costFile = new File(
+							String.format("src/resources/img/requirements/rectangle_%s.png", kleur.kind()));
+					Image costImage = new Image(costFile.toURI().toString());
+					ImageView costImageView = new ImageView(costImage);
+					costImageView.setFitWidth(NOBLE_SIZE);
+					costImageView.setFitHeight(NOBLE_SIZE);
+
+					String cost = Integer.toString(edele.getKosten()[i]);
+					Text costText = new Text(cost);
+					costText.setFont(Font.font("Arial", FontWeight.BOLD, NOBLE_FONTSIZE / 1.25));
+					costText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
+					costText.setStrokeWidth(1);
+
+					StackPane costStackPane = new StackPane(costImageView, costText);
+					costStackPane.setAlignment(Pos.CENTER);
+					costStackPane.setPrefSize(NOBLE_SIZE, NOBLE_SIZE);
+				}
+			}
+
+			// Adds a white background for the prestigepoints and the colorBonus
+			Rectangle whiteBackground = new Rectangle(NOBLE_WIDTH, NOBLE_SIZE);
+			whiteBackground.setFill(Color.WHITE);
+			whiteBackground.setOpacity(0.75);
+			StackPane.setAlignment(whiteBackground, Pos.TOP_CENTER);
+
+			costBox.getChildren().addAll(firstThreeCostsBox, remainingTwoCostsBox);
+
+			// Add child nodes
+			getChildren().addAll(nobleImage, whiteBackground, prestigePointsText, costBox);
 		}
 	}
 
