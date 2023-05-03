@@ -14,6 +14,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -43,17 +44,33 @@ public class SpeelSpelScherm extends BorderPane {
 		this.setCenter(lblCenter);
 
 		// Center pane
-		center.setStyle("-fx-background-color: #008080;"); // optional: set background color for testing purposes
+		center.setStyle("-fx-background-color: #008080;");
 		this.setCenter(center);
 
 		// Add development cards
-//		DevelopmentCardPane devCardPane = new DevelopmentCardPane();
-//		devCardPane.setLayoutX(50); // adjust x-position as needed
-//		devCardPane.setLayoutY(50); // adjust y-position as needed
-//		center.getChildren().add(devCardPane);
-		Ontwikkelingskaart[] niveau1Zichtbaar = dc.getNiveau3Zichtbaar();
-		DevelopmentCardNode devCardNode = new DevelopmentCardNode(niveau1Zichtbaar[0]);
-		center.getChildren().add(devCardNode);
+		Ontwikkelingskaart[][] niveaus = { dc.getNiveau3Zichtbaar(), dc.getNiveau2Zichtbaar(),
+				dc.getNiveau1Zichtbaar() };
+
+		GridPane gridPane = new GridPane();
+		center.getChildren().add(gridPane);
+
+		// Define the number of columns and rows in the grid
+		int numColumns = 4;
+		int numRows = 3;
+
+		// Add DevelopmentCardNodes to the grid
+		for (int i = 0; i < numRows * numColumns; i++) {
+			int row = i / numColumns;
+			int col = i % numColumns;
+			Ontwikkelingskaart[] niveau = niveaus[row];
+			DevelopmentCardNode devCardNode = new DevelopmentCardNode(niveau[col]);
+			gridPane.add(devCardNode, col, row);
+		}
+
+		// Set some padding and gaps between cells in the grid
+		gridPane.setPadding(new Insets(10));
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
 
 		// top
 		Pane top = new Pane();
