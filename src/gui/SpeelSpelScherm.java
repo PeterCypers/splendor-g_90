@@ -14,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -97,35 +99,121 @@ public class SpeelSpelScherm extends BorderPane {
 			colorBonusImageView.setFitHeight(40);
 			StackPane.setAlignment(colorBonusImageView, Pos.TOP_RIGHT);
 
-			// ----------------------------------------------------------------------------------
+			// Adds the prestigepoints to the development card
+			Text prestigePointsText = new Text(Integer.toString(ontwikkelingskaart.getPrestigepunten()));
+			prestigePointsText.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+			prestigePointsText.setStyle("-fx-fill: black; -fx-stroke: white; -fx-stroke-width: 1;");
+			StackPane.setAlignment(prestigePointsText, Pos.TOP_LEFT);
 
-			// -----------------------------------------------------------------------------------
-			// Load cost images and texts
+			// Adds a white background for the prestigepoints and the colorBonus
+			Rectangle colorBonusBackground = new Rectangle(128, 40);
+			colorBonusBackground.setFill(Color.WHITE);
+			colorBonusBackground.setOpacity(0.75);
+			StackPane.setAlignment(colorBonusBackground, Pos.TOP_CENTER);
+//			StackPane.setMargin(colorBonusBackground, new Insets(2, 2, 0, 4));
+
+			// Adds the costs with the costs images behind it at the bottom
+//			HBox costBox = new HBox();
+//			costBox.setAlignment(Pos.BOTTOM_CENTER);
+//			for (int i = 0; i < ontwikkelingskaart.getKosten().length; i++) {
+//				Kleur kleur = Kleur.valueOf(i);
+//				File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
+//				Image costImage = new Image(costFile.toURI().toString());
+//				ImageView costImageView = new ImageView(costImage);
+//				costImageView.setFitWidth(25);
+//				costImageView.setFitHeight(25);
+//
+//				String cost = Integer.toString(ontwikkelingskaart.getKosten()[i]);
+//				Text costText = new Text(cost);
+//				costText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+//				costText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
+//				costText.setStrokeWidth(1);
+//
+//				StackPane costStackPane = new StackPane(costImageView, costText);
+//				costStackPane.setAlignment(Pos.BOTTOM_CENTER);
+//				costStackPane.setPrefSize(30, 30);
+//
+//				costBox.getChildren().add(costStackPane);
+//			}
+			// ---------------------------------------------------------------------------------------------
 			HBox costBox = new HBox();
-			costBox.setAlignment(Pos.BOTTOM_CENTER);
+			costBox.setAlignment(Pos.BOTTOM_LEFT);
+
+			VBox firstThreeCostsBox = new VBox();
+			firstThreeCostsBox.setAlignment(Pos.BOTTOM_LEFT);
+
+			VBox remainingTwoCostsBox = new VBox();
+			remainingTwoCostsBox.setAlignment(Pos.BOTTOM_LEFT);
+
 			for (int i = 0; i < ontwikkelingskaart.getKosten().length; i++) {
 				Kleur kleur = Kleur.valueOf(i);
 				File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
 				Image costImage = new Image(costFile.toURI().toString());
 				ImageView costImageView = new ImageView(costImage);
-				costImageView.setFitWidth(30);
-				costImageView.setFitHeight(30);
+				costImageView.setFitWidth(25);
+				costImageView.setFitHeight(25);
 
 				String cost = Integer.toString(ontwikkelingskaart.getKosten()[i]);
 				Text costText = new Text(cost);
 				costText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 				costText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
 				costText.setStrokeWidth(1);
-				StackPane.setAlignment(costText, Pos.BOTTOM_CENTER);
 
-				VBox costVBox = new VBox(costImageView, costText);
-				costVBox.setAlignment(Pos.BOTTOM_CENTER);
-				costVBox.setSpacing(5);
-				costBox.getChildren().add(costVBox);
+				StackPane costStackPane = new StackPane(costImageView, costText);
+				costStackPane.setAlignment(Pos.BOTTOM_CENTER);
+				costStackPane.setPrefSize(30, 30);
+
+				if (i < 3) {
+					firstThreeCostsBox.getChildren().add(costStackPane);
+				} else {
+					remainingTwoCostsBox.getChildren().add(costStackPane);
+				}
 			}
 
+			costBox.getChildren().addAll(firstThreeCostsBox, remainingTwoCostsBox);
+
+			// ---------------------------------------------------------------------------------------------
+			VBox costBox2 = new VBox();
+			costBox2.setAlignment(Pos.BOTTOM_CENTER);
+			HBox bottomRow = new HBox();
+			bottomRow.setAlignment(Pos.CENTER);
+			HBox topRow = new HBox();
+			topRow.setAlignment(Pos.CENTER);
+
+			for (int i = 0; i < ontwikkelingskaart.getKosten().length; i++) {
+				Kleur kleur = Kleur.valueOf(i);
+				File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
+				Image costImage = new Image(costFile.toURI().toString());
+				ImageView costImageView = new ImageView(costImage);
+				costImageView.setFitWidth(25);
+				costImageView.setFitHeight(25);
+
+				String cost = Integer.toString(ontwikkelingskaart.getKosten()[i]);
+				Text costText = new Text(cost);
+				costText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+				costText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
+				costText.setStrokeWidth(1);
+
+				StackPane costStackPane = new StackPane(costImageView, costText);
+				costStackPane.setAlignment(Pos.BOTTOM_CENTER);
+				costStackPane.setPrefSize(30, 30);
+
+				if (i < 2) {
+					topRow.getChildren().add(costStackPane);
+				} else {
+					bottomRow.getChildren().add(costStackPane);
+				}
+			}
+
+			costBox2.getChildren().addAll(topRow, bottomRow);
+
+			// -------------------------------------------------------------------------------------------------
+
 			// Add child nodes
-			getChildren().addAll(backgroundImageView, colorBonusImageView, costBox);
+			getChildren().addAll(backgroundImageView, colorBonusBackground, prestigePointsText, costBox,
+					colorBonusImageView);
+
+			// Add child nodes
 			setPrefSize(backgroundImageView.getFitWidth(), backgroundImageView.getFitHeight());
 		}
 	}
