@@ -55,7 +55,12 @@ public class SpeelSpelScherm extends BorderPane {
 		}
 
 		noblesBox.setSpacing(10);
-		noblesBox.setPadding(new Insets(10));
+
+		if (edelen.size() < 5) {
+			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 28));
+		} else {
+			noblesBox.setPadding(new Insets(10));
+		}
 
 		center.setTop(noblesBox);
 
