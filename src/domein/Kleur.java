@@ -28,6 +28,12 @@ public enum Kleur {
 		return soort[this.getKleur()];
 	}
 
+	public String kind() {
+		String[] kind = { "diamond", "ruby", "sapphire", "emerald", "onyx" };
+
+		return kind[this.getKleur()];
+	}
+
 	@Override
 	public String toString() {
 		return this.name().toLowerCase();

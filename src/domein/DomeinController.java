@@ -8,7 +8,7 @@ import java.util.List;
 
 import dto.SpelVoorwerpDTO;
 
-public class DomeinController { 
+public class DomeinController {
 	private Spel spel;
 	private final List<Speler> aangemeldeSpelers;
 
@@ -295,4 +295,15 @@ public class DomeinController {
 
 	}
 
+	public Ontwikkelingskaart[] getNiveau1Zichtbaar() {
+		return spel.getNiveau1Zichtbaar();
+	}
+
+	public Ontwikkelingskaart[] getNiveau2Zichtbaar() {
+		return spel.getNiveau2Zichtbaar();
+	}
+
+	public Ontwikkelingskaart[] getNiveau3Zichtbaar() {
+		return spel.getNiveau3Zichtbaar();
+	}
 }
