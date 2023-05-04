@@ -1,6 +1,7 @@
 package gui;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import domein.DomeinController;
@@ -12,17 +13,13 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -50,8 +47,8 @@ public class SpeelSpelScherm extends BorderPane {
 
 		// loop through the nobles and create a NobleNode for each one
 		for (Edele edele : edelen) {
-			NobleNode nobleNode = new NobleNode(edele);
-			noblesBox.getChildren().add(nobleNode);
+			EdeleNode edeleNode = new EdeleNode(edele);
+			noblesBox.getChildren().add(edeleNode);
 		}
 
 		noblesBox.setSpacing(10);
@@ -98,29 +95,71 @@ public class SpeelSpelScherm extends BorderPane {
 		Ontwikkelingskaart[][] niveaus = { dc.getNiveau3Zichtbaar(), dc.getNiveau2Zichtbaar(),
 				dc.getNiveau1Zichtbaar() };
 
-		GridPane gridPane = new GridPane();
+		GridPane ontwikkelingskaartGridPane = new GridPane();
 
 		// Define the number of columns and rows in the grid
 		int numColumns = 4;
 		int numRows = 3;
 
-		// Add DevelopmentCardNodes to the grid
+		// Add OntwikkelingskaartNodes to the grid
 		for (int i = 0; i < numRows * numColumns; i++) {
 			int row = i / numColumns;
 			int col = i % numColumns;
 			Ontwikkelingskaart[] niveau = niveaus[row];
-			DevelopmentCardNode devCardNode = new DevelopmentCardNode(niveau[col]);
-			gridPane.add(devCardNode, col, row);
+			OntwikkelingskaartNode devCardNode = new OntwikkelingskaartNode(niveau[col]);
+			ontwikkelingskaartGridPane.add(devCardNode, col, row);
 		}
 
 		// Set some padding and gaps between cells in the grid
-		gridPane.setPadding(new Insets(10));
-		gridPane.setHgap(10);
-		gridPane.setVgap(10);
+		ontwikkelingskaartGridPane.setPadding(new Insets(10));
+		ontwikkelingskaartGridPane.setHgap(10);
+		ontwikkelingskaartGridPane.setVgap(10);
 
-		center.setCenter(gridPane);
+		center.setCenter(ontwikkelingskaartGridPane);
 
 		/*------------------------------------------GEMS------------------------------------------*/
+		VBox gemsBox = new VBox();
+
+		HashMap<Kleur, Integer> fichestapels = dc.getFicheStapels();
+
+		int GEMS_WIDTH_AND_HEIGHT = 128;
+		int GEMS_FONTSIZE = 56;
+		int GEMS_STROKE = 2;
+
+		for (Kleur kleur : Kleur.values()) {
+			// Create a new gem image view
+			File gemFile = new File(String.format("src/resources/img/tokens/token_%s.png", kleur.kind()));
+			Image gemImage = new Image(gemFile.toURI().toString());
+			ImageView gemImageView = new ImageView(gemImage);
+
+			int amount = fichestapels.get(kleur);
+
+			if (amount > 0) {
+				// Set the size of the gem image view
+				gemImageView.setFitWidth(GEMS_WIDTH_AND_HEIGHT);
+				gemImageView.setFitHeight(GEMS_WIDTH_AND_HEIGHT);
+
+				// Create a new VBox to contain the gem image view and the amount text
+				StackPane gemBox = new StackPane();
+				gemBox.setAlignment(Pos.CENTER);
+
+				// Create the amount text and style it
+				Text amountText = new Text(Integer.toString(amount));
+				amountText.setFont(Font.font("Arial", FontWeight.BOLD, GEMS_FONTSIZE));
+				amountText.setFill(Color.BLACK);
+				amountText.setStroke(Color.WHITE);
+				amountText.setStrokeWidth(GEMS_STROKE);
+
+				// Add the gem image view and the amount text to the VBox
+				gemBox.getChildren().addAll(gemImageView, amountText);
+
+				// Add the VBox containing the gem to the gemsBox
+				gemsBox.getChildren().add(gemBox);
+			}
+		}
+
+		// Display the gemsBox to the left of the development cards
+		center.setRight(gemsBox);
 
 		/*------------------------------------------PLAYER INFO------------------------------------------*/
 		// top
@@ -153,157 +192,4 @@ public class SpeelSpelScherm extends BorderPane {
 
 	}
 
-	public class NobleNode extends StackPane {
-		private static final int NOBLE_WIDTH = 128;
-		private static final int NOBLE_HEIGHT = 128;
-		private static final int NOBLE_SIZE = 40;
-		private static final int NOBLE_FONTSIZE = 28;
-
-		public NobleNode(Edele edele) {
-			// Load the image of the noble
-			File backgroundFile = new File(edele.getEdeleFoto());
-			Image backgroundImage = new Image(backgroundFile.toURI().toString());
-			ImageView nobleImage = new ImageView(backgroundImage);
-
-			// Adds a white background for the prestigepoints and the colorBonus
-			Rectangle whiteBackground = new Rectangle(NOBLE_SIZE / 1.5, NOBLE_WIDTH);
-			whiteBackground.setFill(Color.WHITE);
-			whiteBackground.setOpacity(0.75);
-			StackPane.setAlignment(whiteBackground, Pos.CENTER_LEFT);
-
-			// Adds the prestigepoints to the development card
-			Text prestigePointsText = new Text(Integer.toString(edele.getPrestigepunten()));
-			prestigePointsText.setFont(Font.font("Arial", FontWeight.BOLD, NOBLE_FONTSIZE));
-			prestigePointsText.setStyle("-fx-fill: black; -fx-stroke: white; -fx-stroke-width: 1;");
-			StackPane.setAlignment(prestigePointsText, Pos.TOP_LEFT);
-			StackPane.setMargin(prestigePointsText, new Insets(4));
-
-			// Create an ImageView to display the noble image
-			nobleImage.setFitWidth(NOBLE_WIDTH);
-			nobleImage.setFitHeight(NOBLE_HEIGHT);
-
-			// Adds the costs with the costs images behind it at the bottom
-			VBox costBox = new VBox();
-			costBox.setSpacing(-8);
-			costBox.setAlignment(Pos.BOTTOM_LEFT);
-
-			// Load the costs and images for those costs of the noble
-			for (int i = 0; i < edele.getKosten().length; i++) {
-				if (edele.getKosten()[i] != 0) {
-					Kleur kleur = Kleur.valueOf(i);
-					File costFile = new File("src/resources/img/requirements/rectangle_" + kleur.kind() + ".png");
-					Image costImage = new Image(costFile.toURI().toString());
-					ImageView costImageView = new ImageView(costImage);
-					costImageView.setFitWidth(NOBLE_SIZE / 1.5);
-					costImageView.setFitHeight(NOBLE_SIZE / 1.5);
-
-					Text costText = new Text(Integer.toString(edele.getKosten()[i]));
-					costText.setFont(Font.font("Arial", FontWeight.BOLD, NOBLE_FONTSIZE / 1.5));
-					costText.setFill(Color.WHITE);
-					costText.setStroke(Color.BLACK);
-					costText.setStrokeWidth(1);
-
-					StackPane costStackPane = new StackPane(costImageView, costText);
-					costStackPane.setAlignment(Pos.BOTTOM_LEFT);
-					StackPane.setMargin(costText, new Insets(0, 0, 0, 8));
-					costStackPane.setPrefSize(NOBLE_SIZE, NOBLE_SIZE);
-					costBox.getChildren().add(costStackPane);
-				}
-			}
-
-			// Add child nodes
-			getChildren().addAll(nobleImage, whiteBackground, prestigePointsText, costBox);
-		}
-	}
-
-	public class DevelopmentCardNode extends StackPane {
-		private final int DEV_CARD_WIDTH = 128;
-		private final int DEV_CARD_HEIGHT = 256;
-		private final int DEV_CARD_SIZE = 40;
-		private final int DEV_CARD_FONTSIZE = 28;
-
-		public DevelopmentCardNode(Ontwikkelingskaart ontwikkelingskaart) {
-			// Load background image for development card
-			File backgroundFile = new File(ontwikkelingskaart.getFotoOntwikkelingskaart());
-			Image backgroundImage = new Image(backgroundFile.toURI().toString());
-			ImageView backgroundImageView = new ImageView(backgroundImage);
-			backgroundImageView.setFitWidth(DEV_CARD_WIDTH);
-			backgroundImageView.setFitHeight(DEV_CARD_HEIGHT);
-
-			// Load color bonus image
-			File colorBonusFile = new File(
-					String.format("src/resources/img/gems/%s.png", ontwikkelingskaart.getKleurBonus().kind()));
-			Image colorBonusImage = new Image(colorBonusFile.toURI().toString());
-			ImageView colorBonusImageView = new ImageView(colorBonusImage);
-			colorBonusImageView.setFitWidth(DEV_CARD_SIZE);
-			colorBonusImageView.setFitHeight(DEV_CARD_SIZE);
-			StackPane.setAlignment(colorBonusImageView, Pos.TOP_RIGHT);
-
-			// Adds the prestigepoints to the development card
-			Text prestigePointsText = new Text(Integer.toString(ontwikkelingskaart.getPrestigepunten()));
-			prestigePointsText.setFont(Font.font("Arial", FontWeight.BOLD, DEV_CARD_FONTSIZE));
-			prestigePointsText.setStyle("-fx-fill: black; -fx-stroke: white; -fx-stroke-width: 1;");
-			StackPane.setAlignment(prestigePointsText, Pos.TOP_LEFT);
-			StackPane.setMargin(prestigePointsText, new Insets(4));
-
-			// Adds a white background for the prestigepoints and the colorBonus
-			Rectangle colorBonusBackground = new Rectangle(DEV_CARD_WIDTH, DEV_CARD_SIZE);
-			colorBonusBackground.setFill(Color.WHITE);
-			colorBonusBackground.setOpacity(0.75);
-			StackPane.setAlignment(colorBonusBackground, Pos.TOP_CENTER);
-
-			// Adds the costs with the costs images behind it at the bottom
-			HBox costBox = new HBox();
-			costBox.setAlignment(Pos.BOTTOM_LEFT);
-
-			VBox firstThreeCostsBox = new VBox();
-			firstThreeCostsBox.setAlignment(Pos.BOTTOM_LEFT);
-
-			VBox remainingTwoCostsBox = new VBox();
-			remainingTwoCostsBox.setAlignment(Pos.BOTTOM_LEFT);
-
-			for (int i = 0; i < ontwikkelingskaart.getKosten().length; i++) {
-				Kleur kleur = Kleur.valueOf(i);
-				File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
-				Image costImage = new Image(costFile.toURI().toString());
-				ImageView costImageView = new ImageView(costImage);
-				costImageView.setFitWidth(DEV_CARD_SIZE);
-				costImageView.setFitHeight(DEV_CARD_SIZE);
-
-				String cost = Integer.toString(ontwikkelingskaart.getKosten()[i]);
-				Text costText = new Text(cost);
-				costText.setFont(Font.font("Arial", FontWeight.BOLD, DEV_CARD_FONTSIZE / 1.25));
-				costText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
-				costText.setStrokeWidth(1);
-
-				StackPane costStackPane = new StackPane(costImageView, costText);
-				costStackPane.setAlignment(Pos.CENTER);
-				costStackPane.setPrefSize(DEV_CARD_SIZE, DEV_CARD_SIZE);
-
-				if (i < 3) {
-					firstThreeCostsBox.getChildren().add(costStackPane);
-				} else {
-					remainingTwoCostsBox.getChildren().add(costStackPane);
-				}
-			}
-
-			costBox.getChildren().addAll(firstThreeCostsBox, remainingTwoCostsBox);
-
-			// Add child nodes
-			getChildren().addAll(backgroundImageView, colorBonusBackground, prestigePointsText, costBox,
-					colorBonusImageView);
-
-			// Add child nodes
-			setPrefSize(backgroundImageView.getFitWidth(), backgroundImageView.getFitHeight());
-
-			// Create a rectangle with rounded corners as a clip
-			Rectangle clip = new Rectangle(DEV_CARD_WIDTH, DEV_CARD_HEIGHT);
-			clip.setArcWidth(20);
-			clip.setArcHeight(20);
-			setClip(clip);
-
-			// Set the background of the stack pane to white
-			setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-		}
-	}
 }
