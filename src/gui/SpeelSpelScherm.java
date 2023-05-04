@@ -29,8 +29,6 @@ public class SpeelSpelScherm extends BorderPane {
 
 	public SpeelSpelScherm(DomeinController dc) {
 		this.dc = dc;
-//		dc.voegSpelerToe("user1", 2002);
-//		dc.voegSpelerToe("user2", 2000);
 		dc.startNieuwSpel();
 		buildGui();
 	}
@@ -40,6 +38,8 @@ public class SpeelSpelScherm extends BorderPane {
 		BorderPane center = new BorderPane();
 		center.setStyle("-fx-background-color: #008080;");
 		this.setCenter(center);
+		center.setMaxWidth(875);
+		center.setMaxHeight(900);
 
 		/*------------------------------------------NOBLE------------------------------------------*/
 		List<Edele> edelen = dc.getEdelen();
@@ -54,7 +54,7 @@ public class SpeelSpelScherm extends BorderPane {
 		noblesBox.setSpacing(10);
 
 		if (edelen.size() < 5) {
-			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 28));
+			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
 		} else {
 			noblesBox.setPadding(new Insets(10));
 		}
@@ -115,6 +115,8 @@ public class SpeelSpelScherm extends BorderPane {
 		ontwikkelingskaartGridPane.setHgap(10);
 		ontwikkelingskaartGridPane.setVgap(10);
 
+		ontwikkelingskaartGridPane.setAlignment(Pos.CENTER);
+
 		center.setCenter(ontwikkelingskaartGridPane);
 
 		/*------------------------------------------GEMS------------------------------------------*/
@@ -157,6 +159,8 @@ public class SpeelSpelScherm extends BorderPane {
 				gemsBox.getChildren().add(gemBox);
 			}
 		}
+
+		gemsBox.setPadding(new Insets(10));
 
 		// Display the gemsBox to the left of the development cards
 		center.setRight(gemsBox);
