@@ -19,7 +19,7 @@ public class StartUpGui extends Application {
 
 		DomeinController dc = new DomeinController();
 		SpeelSpelScherm speelSpelScherm = new SpeelSpelScherm(dc);
-		Scene scene = new Scene(speelSpelScherm, 1600, 900);
+		Scene scene = new Scene(speelSpelScherm, 1200, 1000);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Spel");
 		primaryStage.show();
