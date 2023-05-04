@@ -44,7 +44,7 @@ public class SplendorApplicatie {
 				System.out.println(voegSpelerToe());
 			}
 
-			// [TEST]
+			// [TEST] tijdelijke keuzes
 			switch (keuze) {
 			case 3 -> {
 				dc.voegSpelerToe("user1", 2002);
