@@ -93,7 +93,6 @@ public class DomeinController {
 	}
 
 	public void pasBeurt() {
-		// TODO controleer of methode kan leiden tot verkeerde object status
 		spel.getSpelerAanBeurt().setAanDeBeurt(false);
 	}
 
