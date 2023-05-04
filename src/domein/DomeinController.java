@@ -310,4 +310,8 @@ public class DomeinController {
 	public List<Edele> getEdelen() {
 		return spel.getEdelen();
 	}
+
+	public HashMap<Kleur, Integer> getFicheStapels() {
+		return spel.getFicheStapels();
+	}
 }

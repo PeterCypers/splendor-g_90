@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import domein.DomeinController;
@@ -124,6 +125,48 @@ public class SpeelSpelScherm extends BorderPane {
 		center.setCenter(gridPane);
 
 		/*------------------------------------------GEMS------------------------------------------*/
+		VBox gemsBox = new VBox();
+
+		HashMap<Kleur, Integer> fichestapels = dc.getFicheStapels();
+
+		int GEMS_WIDTH_AND_HEIGHT = 128;
+		int GEMS_FONTSIZE = 56;
+		int GEMS_STROKE = 2;
+
+		for (Kleur kleur : Kleur.values()) {
+			// Create a new gem image view
+			File gemFile = new File(String.format("src/resources/img/tokens/token_%s.png", kleur.kind()));
+			Image gemImage = new Image(gemFile.toURI().toString());
+			ImageView gemImageView = new ImageView(gemImage);
+
+			int amount = fichestapels.get(kleur);
+
+			if (amount > 0) {
+				// Set the size of the gem image view
+				gemImageView.setFitWidth(GEMS_WIDTH_AND_HEIGHT);
+				gemImageView.setFitHeight(GEMS_WIDTH_AND_HEIGHT);
+
+				// Create a new VBox to contain the gem image view and the amount text
+				StackPane gemBox = new StackPane();
+				gemBox.setAlignment(Pos.CENTER);
+
+				// Create the amount text and style it
+				Text amountText = new Text(Integer.toString(amount));
+				amountText.setFont(Font.font("Arial", FontWeight.BOLD, GEMS_FONTSIZE));
+				amountText.setFill(Color.BLACK);
+				amountText.setStroke(Color.WHITE);
+				amountText.setStrokeWidth(GEMS_STROKE);
+
+				// Add the gem image view and the amount text to the VBox
+				gemBox.getChildren().addAll(gemImageView, amountText);
+
+				// Add the VBox containing the gem to the gemsBox
+				gemsBox.getChildren().add(gemBox);
+			}
+		}
+
+		// Display the gemsBox to the left of the development cards
+		center.setRight(gemsBox);
 
 		/*------------------------------------------PLAYER INFO------------------------------------------*/
 		// top
@@ -228,11 +271,6 @@ public class SpeelSpelScherm extends BorderPane {
 
 		public DevelopmentCardNode(Ontwikkelingskaart ontwikkelingskaart) {
 			// Load background image for development card
-//			File backgroundFile = new File(ontwikkelingskaart.getFotoOntwikkelingskaart());
-//			Image backgroundImage = new Image(backgroundFile.toURI().toString());
-//			ImageView backgroundImageView = new ImageView(backgroundImage);
-//			backgroundImageView.setFitWidth(DEV_CARD_WIDTH);
-//			backgroundImageView.setFitHeight(DEV_CARD_HEIGHT);
 			ImageView backgroundImageView = new ImageView();
 			File backgroundFile = new File(ontwikkelingskaart.getFotoOntwikkelingskaart());
 			if (backgroundFile.exists()) {
@@ -340,4 +378,5 @@ public class SpeelSpelScherm extends BorderPane {
 			setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 		}
 	}
+
 }
