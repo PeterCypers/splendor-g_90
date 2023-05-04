@@ -1,6 +1,9 @@
 package gui;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import domein.DomeinController;
@@ -205,7 +208,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 					StackPane costStackPane = new StackPane(costImageView, costText);
 					costStackPane.setAlignment(Pos.BOTTOM_LEFT);
-					StackPane.setMargin(costText, new Insets(0, 0, 0, 8));
+					StackPane.setMargin(costText, new Insets(0, 0, 4, 8));
 					costStackPane.setPrefSize(NOBLE_SIZE, NOBLE_SIZE);
 					costBox.getChildren().add(costStackPane);
 				}
@@ -221,30 +224,56 @@ public class SpeelSpelScherm extends BorderPane {
 		private final int DEV_CARD_HEIGHT = 256;
 		private final int DEV_CARD_SIZE = 40;
 		private final int DEV_CARD_FONTSIZE = 28;
+		private final int DEV_CARD_MARGIN = 4;
 
 		public DevelopmentCardNode(Ontwikkelingskaart ontwikkelingskaart) {
 			// Load background image for development card
+//			File backgroundFile = new File(ontwikkelingskaart.getFotoOntwikkelingskaart());
+//			Image backgroundImage = new Image(backgroundFile.toURI().toString());
+//			ImageView backgroundImageView = new ImageView(backgroundImage);
+//			backgroundImageView.setFitWidth(DEV_CARD_WIDTH);
+//			backgroundImageView.setFitHeight(DEV_CARD_HEIGHT);
+			ImageView backgroundImageView = new ImageView();
 			File backgroundFile = new File(ontwikkelingskaart.getFotoOntwikkelingskaart());
-			Image backgroundImage = new Image(backgroundFile.toURI().toString());
-			ImageView backgroundImageView = new ImageView(backgroundImage);
-			backgroundImageView.setFitWidth(DEV_CARD_WIDTH);
-			backgroundImageView.setFitHeight(DEV_CARD_HEIGHT);
+			if (backgroundFile.exists()) {
+				try (InputStream inputStream = new FileInputStream(backgroundFile)) {
+					Image backgroundImage = new Image(inputStream);
+					backgroundImageView = new ImageView(backgroundImage);
+					backgroundImageView.setFitWidth(DEV_CARD_WIDTH);
+					backgroundImageView.setFitHeight(DEV_CARD_HEIGHT);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				System.err.println("Background image file of development card does not exist: "
+						+ backgroundFile.getAbsolutePath());
+			}
 
 			// Load color bonus image
+			ImageView colorBonusImageView = new ImageView();
 			File colorBonusFile = new File(
 					String.format("src/resources/img/gems/%s.png", ontwikkelingskaart.getKleurBonus().kind()));
-			Image colorBonusImage = new Image(colorBonusFile.toURI().toString());
-			ImageView colorBonusImageView = new ImageView(colorBonusImage);
-			colorBonusImageView.setFitWidth(DEV_CARD_SIZE);
-			colorBonusImageView.setFitHeight(DEV_CARD_SIZE);
-			StackPane.setAlignment(colorBonusImageView, Pos.TOP_RIGHT);
+			if (colorBonusFile.exists()) {
+				try (InputStream is = new FileInputStream(colorBonusFile)) {
+					Image colorBonusImage = new Image(is);
+					colorBonusImageView = new ImageView(colorBonusImage);
+					colorBonusImageView.setFitWidth(DEV_CARD_SIZE);
+					colorBonusImageView.setFitHeight(DEV_CARD_SIZE);
+					StackPane.setAlignment(colorBonusImageView, Pos.TOP_RIGHT);
+				} catch (IOException e) {
+					System.err.println("Error loading color bonus image: " + e.getMessage());
+				}
+			} else {
+				System.err.println("Color bonus image file not found: " + colorBonusFile.getPath());
+			}
 
 			// Adds the prestigepoints to the development card
-			Text prestigePointsText = new Text(Integer.toString(ontwikkelingskaart.getPrestigepunten()));
+			Text prestigePointsText = new Text(String.format("%d", ontwikkelingskaart.getPrestigepunten()));
+			// prestigePointsText.getStyleClass().add("prestige-points-text");
 			prestigePointsText.setFont(Font.font("Arial", FontWeight.BOLD, DEV_CARD_FONTSIZE));
 			prestigePointsText.setStyle("-fx-fill: black; -fx-stroke: white; -fx-stroke-width: 1;");
 			StackPane.setAlignment(prestigePointsText, Pos.TOP_LEFT);
-			StackPane.setMargin(prestigePointsText, new Insets(4));
+			StackPane.setMargin(prestigePointsText, new Insets(DEV_CARD_MARGIN));
 
 			// Adds a white background for the prestigepoints and the colorBonus
 			Rectangle colorBonusBackground = new Rectangle(DEV_CARD_WIDTH, DEV_CARD_SIZE);
@@ -262,28 +291,33 @@ public class SpeelSpelScherm extends BorderPane {
 			VBox remainingTwoCostsBox = new VBox();
 			remainingTwoCostsBox.setAlignment(Pos.BOTTOM_LEFT);
 
+			int firstThreeCostsCount = 0;
 			for (int i = 0; i < ontwikkelingskaart.getKosten().length; i++) {
-				Kleur kleur = Kleur.valueOf(i);
-				File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
-				Image costImage = new Image(costFile.toURI().toString());
-				ImageView costImageView = new ImageView(costImage);
-				costImageView.setFitWidth(DEV_CARD_SIZE);
-				costImageView.setFitHeight(DEV_CARD_SIZE);
+				int costValue = ontwikkelingskaart.getKosten()[i];
+				if (costValue > 0) {
+					Kleur kleur = Kleur.valueOf(i);
+					File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
+					Image costImage = new Image(costFile.toURI().toString());
+					ImageView costImageView = new ImageView(costImage);
+					costImageView.setFitWidth(DEV_CARD_SIZE);
+					costImageView.setFitHeight(DEV_CARD_SIZE);
 
-				String cost = Integer.toString(ontwikkelingskaart.getKosten()[i]);
-				Text costText = new Text(cost);
-				costText.setFont(Font.font("Arial", FontWeight.BOLD, DEV_CARD_FONTSIZE / 1.25));
-				costText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
-				costText.setStrokeWidth(1);
+					String cost = Integer.toString(costValue);
+					Text costText = new Text(cost);
+					costText.setFont(Font.font("Arial", FontWeight.BOLD, DEV_CARD_FONTSIZE / 1.25));
+					costText.setStyle("-fx-fill: white; -fx-stroke: black; -fx-stroke-width: 1;");
+					costText.setStrokeWidth(1);
 
-				StackPane costStackPane = new StackPane(costImageView, costText);
-				costStackPane.setAlignment(Pos.CENTER);
-				costStackPane.setPrefSize(DEV_CARD_SIZE, DEV_CARD_SIZE);
+					StackPane costStackPane = new StackPane(costImageView, costText);
+					costStackPane.setAlignment(Pos.CENTER);
+					costStackPane.setPrefSize(DEV_CARD_SIZE, DEV_CARD_SIZE);
 
-				if (i < 3) {
-					firstThreeCostsBox.getChildren().add(costStackPane);
-				} else {
-					remainingTwoCostsBox.getChildren().add(costStackPane);
+					if (firstThreeCostsCount < 3) {
+						firstThreeCostsBox.getChildren().add(costStackPane);
+						firstThreeCostsCount++;
+					} else {
+						remainingTwoCostsBox.getChildren().add(costStackPane);
+					}
 				}
 			}
 
