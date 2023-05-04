@@ -1,7 +1,6 @@
 package main;
 
 import domein.DomeinController;
-import gui.SpeelSpelScherm;
 import gui.TaalKeuzeScherm;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -13,19 +12,15 @@ public class StartUpGui extends Application {
 	public void start(Stage primaryStage) {
 		DomeinController dc = new DomeinController();
 
-//		SpeelSpelScherm speelSpelScherm = new SpeelSpelScherm(dc);
-//		Scene scene = new Scene(speelSpelScherm, 1200, 1000);
-
-//		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
-//		Scene scene = new Scene(taalKeuze, 800, 600);
-
+		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
+		Scene scene = new Scene(taalKeuze, 800, 600);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Taalkeuze");
 		primaryStage.show();
 
 //		DomeinController dc = new DomeinController();
 //		SpeelSpelScherm speelSpelScherm = new SpeelSpelScherm(dc);
-//		Scene scene = new Scene(speelSpelScherm, 1600, 900);
+//		Scene scene = new Scene(speelSpelScherm, 1200, 1000);
 //		primaryStage.setScene(scene);
 //		primaryStage.setTitle("Spel");
 //		primaryStage.show();
