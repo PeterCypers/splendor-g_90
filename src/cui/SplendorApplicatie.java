@@ -29,9 +29,6 @@ public class SplendorApplicatie {
 		// [TEST] connectie db:
 		System.out.printf("%s", dc.toonAlleSpelers());
 
-		// [TEST]
-		boolean keuzeIs6Of7Geweest = false;
-
 		while (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS || keuze != 2) {
 			if (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && keuze == 2) {
 				System.out.println("Je hebt nog niet genoeg spelers gekozen om een spel te starten.\n");
@@ -70,30 +67,16 @@ public class SplendorApplicatie {
 			case 6 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
-				// print de ASCII art "testen" af
-				System.out
-						.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
-								+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
-								+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
-
 				dc.startNieuwSpel();
 				dc.testGeeftVeelEdelsteenfichesAanSpelers();
 				keuze = 2;
-				keuzeIs6Of7Geweest = true;
 			}
 			case 7 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
-				// print de ASCII art "testen" af
-				System.out
-						.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
-								+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
-								+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
-
 				dc.startNieuwSpel();
 				dc.testMaaktWinnaarAan();
 				keuze = 2;
-				keuzeIs6Of7Geweest = true;
 			}
 			}
 		}
@@ -103,17 +86,7 @@ public class SplendorApplicatie {
 		// dc.toonAangemeldeSpelers());
 
 		if (keuze == 2) {
-
-			// TODO deze if moet weg na het verwijderen van de tijdelijke keuzes
-			if (!keuzeIs6Of7Geweest) {
-				// print de ASCII art "testen" af
-				System.out
-						.println("\n\r\n" + "  _____         _             \r\n" + " |_   _|__  ___| |_ ___ _ __  \r\n"
-								+ "   | |/ _ \\/ __| __/ _ \\ '_ \\ \r\n" + "   | |  __/\\__ \\ ||  __/ | | |\r\n"
-								+ "   |_|\\___||___/\\__\\___|_| |_|\r\n" + "                              ");
-
-				dc.startNieuwSpel();
-			}
+			dc.startNieuwSpel();
 
 			System.out.print(spelGestartFeedback());
 		}

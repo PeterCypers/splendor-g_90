@@ -2,7 +2,6 @@ package domein;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -110,19 +109,10 @@ public class DomeinController {
 	}
 
 	private List<Edele> haalEdelenUitRepo(int aantalSpelers) {
-		// [TEST]
-		testPrintLijstMetEdelen(edeleRepo.geefEdelen(aantalSpelers));
-
-		// einde [TEST]
 		return edeleRepo.geefEdelen(aantalSpelers);
 	}
 
 	private HashMap<Kleur, Integer> haalEdelsteenficheStapelsUitRepo() {
-		// [TEST]
-		// testPrintLijstMetEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
-		testPrintStapelsEdelsteenFiches(edelsteenRepo.geefEdelsteenficheStapels());
-
-		// einde test
 		return edelsteenRepo.geefEdelsteenficheStapels();
 	}
 
@@ -245,35 +235,6 @@ public class DomeinController {
 
 	public int geefAantalSpelers() {
 		return aangemeldeSpelers.size();
-	}
-
-	// [TEST] om te zien of de edelen-lijst goed opgevuld is
-	private void testPrintLijstMetEdelen(List<Edele> edelen) {
-		System.out.println();
-		System.out.println("*****DC test LijstMetEdelen goed opgevuld met EdelenKaarten****************");
-		System.out.printf("Aantal Spelers: %d%nGrootte vd lijst: %d%n", this.geefAantalSpelers(), edelen.size());
-		System.out.println(edelen);
-
-		for (Edele e : edelen) {
-			System.out.printf("prestige: %d%nfoto: %s%nkosten: %s%n", e.getPrestigepunten(), e.getEdeleFoto(),
-					Arrays.toString(e.getKosten()));
-		}
-
-		System.out.println("***************************************************************************");
-	}
-
-	// [TEST]
-	private void testPrintStapelsEdelsteenFiches(HashMap<Kleur, Integer> alleFicheStapels) {
-		// adres, kleur, aantalfiches op attribuut + op lengte van lijst, naam van foto
-		// (%d(i), %s,%s,%d,%d,%s)
-		System.out.println();
-		System.out.println("*****DC test op de 5 FicheStapels******************************************");
-
-		for (Kleur kleur : Kleur.values()) {
-			System.out.printf("Kleur %s: aantal %d%n", kleur, alleFicheStapels.get(kleur));
-		}
-
-		System.out.println("***************************************************************************");
 	}
 
 	public void krijgEdele() {
