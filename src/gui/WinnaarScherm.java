@@ -26,22 +26,10 @@ public class WinnaarScherm extends VBox {
 
 
 
-//		// Create a ListView to display the players and their points
-//		ListView<String> listView = new ListView<>();
-//		for (Speler speler : dc.aangemeldeSpelers) {
-//			listView.getItems().add(speler.getNaam() + " - " + speler.getPoints());
-//		}
-//
-//		// Create a Label to display the number of players
-//		Label countLabel = new Label("Number of players: " + dc.aangemeldeSpelers.size());
-//		countLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
-//
-//		// Add the ListView and Label to the VBox
-//		getChildren().addAll(listView, countLabel);
-//	}
 
 
-	//         Label winnaarLabel = new Label(String.format("%s:", Taal.getString("victory")));
+
+	//      Label winnaarLabel = new Label(String.format("%s:", Taal.getString("victory")));
 	//		Label lblWinnaarTitel = new Label(String.format("WINNAAR%s:", dc.bepaalWinnaar().size()>1?"S":""));
 	//		lblWinnaarTitel.setFont(Font.font("Helvetica", FontWeight.BOLD, 50));
 	//		getChildren().add(lblWinnaarTitel);
