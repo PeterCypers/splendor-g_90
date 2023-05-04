@@ -115,7 +115,7 @@ public class DetailSpelers extends GridPane {
 				txfGebruikersnaam.clear();
 				txfGeboortejaar.clear();
 				// velden legen
-			}
+			} 
 		});
 	}
 
