@@ -105,6 +105,7 @@ public class DomeinController {
 
 		// [TEST]
 		// testPrintLijstMetO_Kaarten(alleKaartenPerNiveau);
+
 		return alleKaartenPerNiveau;
 	}
 
