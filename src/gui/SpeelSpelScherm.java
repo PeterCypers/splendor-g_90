@@ -32,8 +32,8 @@ public class SpeelSpelScherm extends BorderPane {
 
 	public SpeelSpelScherm(DomeinController dc) {
 		this.dc = dc;
-		dc.voegSpelerToe("user1", 2002);
-		dc.voegSpelerToe("user2", 2000);
+//		dc.voegSpelerToe("user1", 2002);
+//		dc.voegSpelerToe("user2", 2000);
 		dc.startNieuwSpel();
 		buildGui();
 	}
