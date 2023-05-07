@@ -109,10 +109,11 @@ public class TaalKeuzeScherm extends StackPane {
 		Taal.setResource(r);
 
 		HoofdSchermSpelers hoofdScherm = new HoofdSchermSpelers(dc);
-		Scene scene = new Scene(hoofdScherm, 800, 600);
 		Stage stage = (Stage) this.getScene().getWindow();
+
+		Scene scene = new Scene(hoofdScherm, stage.getWidth(), stage.getHeight());
 		stage.setTitle("Spelers selecteren");
 		stage.setScene(scene);
-		stage.show();
+
 	}
 }

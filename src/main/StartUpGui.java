@@ -9,13 +9,14 @@ import javafx.stage.Stage;
 public class StartUpGui extends Application {
 
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage stage) {
 		DomeinController dc = new DomeinController();
 		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
-		Scene scene = new Scene(taalKeuze, 960, 600);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Taalkeuze");
-		primaryStage.show();
+		Scene scene = new Scene(taalKeuze);
+		stage.setMaximized(true);
+		stage.setScene(scene);
+		stage.setTitle("Taalkeuze");
+		stage.show();
 
 //		DomeinController dc = new DomeinController();
 //		SpeelSpelScherm speelSpelScherm = new SpeelSpelScherm(dc);
