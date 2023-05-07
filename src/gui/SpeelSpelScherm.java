@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -172,16 +173,47 @@ public class SpeelSpelScherm extends BorderPane {
 		List<SpelerDTO> aangemeldeSpelers = dc.getAangemeldeSpelers();
 
 		// Create a VBox to hold the player information labels
-		VBox playerInfoBox = new VBox();
+		VBox playerBoxes = new VBox();
 
 		// Loop through the list of players and create a label for each one
 		for (SpelerDTO speler : aangemeldeSpelers) {
-			Label playerLabel = new Label(speler.gebruikersnaam() + " - " + speler.geboortejaar());
+			// create a stack pane to hold the player info box
+			StackPane playerInfoBox = new StackPane();
+			playerInfoBox.setStyle("-fx-background-color: white;");
 
-			playerInfoBox.getChildren().add(playerLabel);
+			// create a rectangle with curved edges
+			Rectangle playerInfoBackground = new Rectangle(256, 128);
+			playerInfoBackground.setArcWidth(20);
+			playerInfoBackground.setArcHeight(20);
+			playerInfoBackground.setFill(Color.GREEN);
+
+			// create a label with the player's name
+			Label playerNameLabel = new Label(speler.gebruikersnaam());
+			playerNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;");
+			playerNameLabel.setAlignment(Pos.CENTER);
+
+			// add the label to the stack pane at the top center
+			playerInfoBox.getChildren().addAll(playerInfoBackground, playerNameLabel);
+			StackPane.setAlignment(playerNameLabel, Pos.TOP_CENTER);
+
+			// -----------------------
+//			Label playerLabel = new Label(speler.gebruikersnaam() + " - " + speler.geboortejaar());
+//			Label prestigeLabel = new Label("Prestige punten: " + speler.aantalPrestigepunten());
+//			Label aanDeBeurtLabel = new Label("Aan de beurt: " + speler.aanDeBeurt());
+//			Label startSpelerLabel = new Label("Start speler: " + speler.startSpeler());
+//			Label ontwikkelingskaartenLabel = new Label("Ontwikkelingskaarten: " + speler.ontwikkelingskaartenInHand());
+//			Label edelenLabel = new Label("Edelen: " + speler.edelenInHand());
+//			Label edelsteenfichesLabel = new Label("Edelsteenfiches: " + speler.edelsteenfichesInHand());
+			// -----------------------
+
+			playerBoxes.getChildren().addAll(playerInfoBox);
+			/*
+			 * , playerLabel, prestigeLabel, aanDeBeurtLabel, startSpelerLabel,
+			 * ontwikkelingskaartenLabel, edelenLabel, edelsteenfichesLabel
+			 */
 		}
 
-		this.setLeft(playerInfoBox);
+		this.setLeft(playerBoxes);
 
 		/*------------------------------------------OTHER------------------------------------------*/
 		// top
