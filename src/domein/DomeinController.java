@@ -341,9 +341,6 @@ public class DomeinController {
 					s.getStartSpeler(), s.getOntwikkelingskaartenInHand(), s.getEdelenInHand(),
 					s.getEdelsteenfichesInHand()));
 		}
-		// this('S', gebruikersnaam, geboortejaar, aantalPrestigepunten, aanDeBeurt,
-		// startSpeler,
-		// ontwikkelingskaartenInHand, edelenInHand, edelsteenfichesInHand);
 
 		return dtos;
 	}

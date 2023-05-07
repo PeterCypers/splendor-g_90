@@ -41,11 +41,11 @@ public class Speler {
 		if (gebruikersnaam == null || gebruikersnaam.isBlank()) {
 			throw new IllegalArgumentException("Gebruikersnaam moet ingevuld zijn.");
 		}
-	
+
 		String geldigeTekens = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZéèö0123456789 _";
 		String alphabet = geldigeTekens.substring(0, geldigeTekens.indexOf("0"));
 		boolean bevatOngeldigeTeken = false;
-	
+
 		for (int i = 0; i < gebruikersnaam.length(); i++) {
 			if (geldigeTekens.indexOf(gebruikersnaam.charAt(i)) == -1)
 				bevatOngeldigeTeken = true;
@@ -55,7 +55,7 @@ public class Speler {
 			throw new IllegalArgumentException(
 					"Gebruikersnaam mag enkel letters en cijfers en spaties en underscores('_') bevatten.");
 		}
-	
+
 		// naam moet starten met een letter:
 		if (alphabet.indexOf(gebruikersnaam.charAt(0)) == -1) {
 			throw new IllegalArgumentException("GebruikersNaam moet starten met een letter.");
@@ -100,9 +100,8 @@ public class Speler {
 		return ontwikkelingskaartenInHand;
 	}
 
-	public List<String> getEdelenInHand() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Edele> getEdelenInHand() {
+		return edelenInHand;
 	}
 
 	public HashMap<Kleur, Integer> getEdelsteenfichesInHand() {
