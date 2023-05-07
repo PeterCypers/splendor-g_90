@@ -86,7 +86,7 @@ public class DomeinController {
 	}
 
 	public boolean spelerIsAanBeurt() {
-		return this.spel.getSpelerAanBeurt().isAanDeBeurt();
+		return this.spel.getSpelerAanBeurt().getAanDeBeurt();
 	}
 
 	public void volgendeSpeler() {
@@ -337,8 +337,13 @@ public class DomeinController {
 		List<SpelerDTO> dtos = new ArrayList<>();
 
 		for (Speler s : aangemeldeSpelers) {
-			dtos.add(new SpelerDTO(s.getGebruikersnaam(), s.getGeboortejaar()));
+			dtos.add(new SpelerDTO(s.getGebruikersnaam(), s.getGeboortejaar(), s.getPrestigepunten(), s.getAanDeBeurt(),
+					s.getStartSpeler(), s.getOntwikkelingskaartenInHand(), s.getEdelenInHand(),
+					s.getEdelsteenfichesInHand()));
 		}
+		// this('S', gebruikersnaam, geboortejaar, aantalPrestigepunten, aanDeBeurt,
+		// startSpeler,
+		// ontwikkelingskaartenInHand, edelenInHand, edelsteenfichesInHand);
 
 		return dtos;
 	}

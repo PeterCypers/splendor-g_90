@@ -1,9 +1,22 @@
 package dto;
 
-public record SpelerDTO(char type, String gebruikersnaam, int geboortejaar) {
+import java.util.List;
+import java.util.Map;
 
-	public SpelerDTO(String gebruikersnaam, int geboortejaar) {
-		this('S', gebruikersnaam, geboortejaar);
+import domein.Kleur;
+import domein.Ontwikkelingskaart;
+
+public record SpelerDTO(char type, String gebruikersnaam, int geboortejaar, int aantalPrestigepunten,
+		boolean aanDeBeurt, boolean startSpeler, List<Ontwikkelingskaart> ontwikkelingskaartenInHand,
+		List<String> edelenInHand, Map<Kleur, Integer> edelsteenfichesInHand) {
+
+	public SpelerDTO(String gebruikersnaam, int geboortejaar, int aantalPrestigepunten, boolean aanDeBeurt,
+			boolean startSpeler, List<Ontwikkelingskaart> ontwikkelingskaartenInHand, List<String> edelenInHand,
+			Map<Kleur, Integer> edelsteenfichesInHand) {
+
+		this('S', gebruikersnaam, geboortejaar, aantalPrestigepunten, aanDeBeurt, startSpeler,
+				ontwikkelingskaartenInHand, edelenInHand, edelsteenfichesInHand);
+
 	}
 
 }

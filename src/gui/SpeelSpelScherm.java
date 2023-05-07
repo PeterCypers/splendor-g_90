@@ -171,11 +171,17 @@ public class SpeelSpelScherm extends BorderPane {
 
 		List<SpelerDTO> aangemeldeSpelers = dc.getAangemeldeSpelers();
 
-		Pane left = new Pane();
-		Label lblLeft = new Label("LEFT");
-		left.getChildren().add(lblLeft);
-		BorderPane.setAlignment(lblLeft, Pos.CENTER);
-		this.setLeft(lblLeft);
+		// Create a VBox to hold the player information labels
+		VBox playerInfoBox = new VBox();
+
+		// Loop through the list of players and create a label for each one
+		for (SpelerDTO speler : aangemeldeSpelers) {
+			Label playerLabel = new Label(speler.gebruikersnaam() + " - " + speler.geboortejaar());
+
+			playerInfoBox.getChildren().add(playerLabel);
+		}
+
+		this.setLeft(playerInfoBox);
 
 		/*------------------------------------------OTHER------------------------------------------*/
 		// top

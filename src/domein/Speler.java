@@ -29,7 +29,56 @@ public class Speler {
 		edelsteenfichesInHand = new HashMap<Kleur, Integer>();
 	}
 
-	public boolean isAanDeBeurt() {
+	public static int getMaxEdelsteenfichesInVoorraad() {
+		return MAX_EDELSTEENFICHES_IN_VOORRAAD;
+	}
+
+	public String getGebruikersnaam() {
+		return this.gebruikersnaam;
+	}
+
+	private void setGebruikersnaam(String gebruikersnaam) {
+		if (gebruikersnaam == null || gebruikersnaam.isBlank()) {
+			throw new IllegalArgumentException("Gebruikersnaam moet ingevuld zijn.");
+		}
+	
+		String geldigeTekens = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZéèö0123456789 _";
+		String alphabet = geldigeTekens.substring(0, geldigeTekens.indexOf("0"));
+		boolean bevatOngeldigeTeken = false;
+	
+		for (int i = 0; i < gebruikersnaam.length(); i++) {
+			if (geldigeTekens.indexOf(gebruikersnaam.charAt(i)) == -1)
+				bevatOngeldigeTeken = true;
+		}
+		// naam mag geen ongeldige tekens bevatten:
+		if (bevatOngeldigeTeken) {
+			throw new IllegalArgumentException(
+					"Gebruikersnaam mag enkel letters en cijfers en spaties en underscores('_') bevatten.");
+		}
+	
+		// naam moet starten met een letter:
+		if (alphabet.indexOf(gebruikersnaam.charAt(0)) == -1) {
+			throw new IllegalArgumentException("GebruikersNaam moet starten met een letter.");
+		}
+		this.gebruikersnaam = gebruikersnaam;
+	}
+
+	public int getGeboortejaar() {
+		return this.geboortejaar;
+	}
+
+	private void setGeboortejaar(int geboortejaar) {
+		if (geboortejaar > 2016) {
+			throw new IllegalArgumentException("Je moet minstens 6 jaar oud zijn om dit spel te spelen.");
+		}
+		this.geboortejaar = geboortejaar;
+	}
+
+	public int getPrestigepunten() {
+		return aantalPrestigepunten;
+	}
+
+	public boolean getAanDeBeurt() {
 		return aanDeBeurt;
 	}
 
@@ -37,7 +86,7 @@ public class Speler {
 		aanDeBeurt = nieuweWaarde;
 	}
 
-	public boolean isStartSpeler() {
+	public boolean getStartSpeler() {
 		return startSpeler;
 	}
 
@@ -45,6 +94,19 @@ public class Speler {
 	// stellen
 	public final void setStartSpeler() {
 		startSpeler = true;
+	}
+
+	public List<Ontwikkelingskaart> getOntwikkelingskaartenInHand() {
+		return ontwikkelingskaartenInHand;
+	}
+
+	public List<String> getEdelenInHand() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public HashMap<Kleur, Integer> getEdelsteenfichesInHand() {
+		return edelsteenfichesInHand;
 	}
 
 	// voeg toe aan hand methodes
@@ -87,63 +149,6 @@ public class Speler {
 		} else {
 			edelsteenfichesInHand.remove(kleur);
 		}
-	}
-
-	public static int getMaxEdelsteenfichesInVoorraad() {
-		return MAX_EDELSTEENFICHES_IN_VOORRAAD;
-	}
-
-	public String getGebruikersnaam() {
-		return this.gebruikersnaam;
-	}
-
-	private void setGebruikersnaam(String gebruikersnaam) {
-		if (gebruikersnaam == null || gebruikersnaam.isBlank()) {
-			throw new IllegalArgumentException("Gebruikersnaam moet ingevuld zijn.");
-		}
-
-		String geldigeTekens = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZéèö0123456789 _";
-		String alphabet = geldigeTekens.substring(0, geldigeTekens.indexOf("0"));
-		boolean bevatOngeldigeTeken = false;
-
-		for (int i = 0; i < gebruikersnaam.length(); i++) {
-			if (geldigeTekens.indexOf(gebruikersnaam.charAt(i)) == -1)
-				bevatOngeldigeTeken = true;
-		}
-		// naam mag geen ongeldige tekens bevatten:
-		if (bevatOngeldigeTeken) {
-			throw new IllegalArgumentException(
-					"Gebruikersnaam mag enkel letters en cijfers en spaties en underscores('_') bevatten.");
-		}
-
-		// naam moet starten met een letter:
-		if (alphabet.indexOf(gebruikersnaam.charAt(0)) == -1) {
-			throw new IllegalArgumentException("GebruikersNaam moet starten met een letter.");
-		}
-		this.gebruikersnaam = gebruikersnaam;
-	}
-
-	public int getGeboortejaar() {
-		return this.geboortejaar;
-	}
-
-	private void setGeboortejaar(int geboortejaar) {
-		if (geboortejaar > 2016) {
-			throw new IllegalArgumentException("Je moet minstens 6 jaar oud zijn om dit spel te spelen.");
-		}
-		this.geboortejaar = geboortejaar;
-	}
-
-	public int getPrestigepunten() {
-		return aantalPrestigepunten;
-	}
-
-	public List<Ontwikkelingskaart> getOntwikkelingskaartenInHand() {
-		return ontwikkelingskaartenInHand;
-	}
-
-	public HashMap<Kleur, Integer> getEdelsteenfichesInHand() {
-		return edelsteenfichesInHand;
 	}
 
 	public boolean buitenVoorraad() {
@@ -214,7 +219,7 @@ public class Speler {
 						+ "Ontwikkelingskaarten in bezit:%n" + "%s" + "Edelsteenfiches in bezit:%n" + "%s"
 						+ "Edelen in bezit:%n" + "%s" + "%n",
 				getClass().getSimpleName(), gebruikersnaam, leeftijdInJaar, aantalPrestigepunten,
-				isAanDeBeurt() ? "Is" : "Is niet", isStartSpeler() ? "Is" : "Is niet", ontwikkelingskaartenInBezit,
+				getAanDeBeurt() ? "Is" : "Is niet", getStartSpeler() ? "Is" : "Is niet", ontwikkelingskaartenInBezit,
 				edelSteenFichesInBezit, edelenInBezit);
 
 	}
