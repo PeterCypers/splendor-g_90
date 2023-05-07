@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import domein.DomeinController;
-import domein.Edele;
 import domein.Kleur;
-import domein.Ontwikkelingskaart;
+import dto.SpelVoorwerpDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -42,11 +41,11 @@ public class SpeelSpelScherm extends BorderPane {
 		center.setMaxHeight(800);
 
 		/*------------------------------------------NOBLE------------------------------------------*/
-		List<Edele> edelen = dc.getEdelen();
+		List<SpelVoorwerpDTO> edelen = dc.getEdelen();
 		HBox noblesBox = new HBox();
 
 		// loop through the nobles and create a NobleNode for each one
-		for (Edele edele : edelen) {
+		for (SpelVoorwerpDTO edele : edelen) {
 			EdeleNode edeleNode = new EdeleNode(edele);
 			noblesBox.getChildren().add(edeleNode);
 		}
@@ -95,8 +94,7 @@ public class SpeelSpelScherm extends BorderPane {
 		center.setLeft(stapelFotosBox);
 		/*------------------------------------------DEVELOPMENT CARD------------------------------------------*/
 		// Add development cards
-		Ontwikkelingskaart[][] niveaus = { dc.getNiveau3Zichtbaar(), dc.getNiveau2Zichtbaar(),
-				dc.getNiveau1Zichtbaar() };
+		SpelVoorwerpDTO[][] niveaus = { dc.getNiveau3Zichtbaar(), dc.getNiveau2Zichtbaar(), dc.getNiveau1Zichtbaar() };
 
 		GridPane ontwikkelingskaartGridPane = new GridPane();
 
@@ -108,7 +106,7 @@ public class SpeelSpelScherm extends BorderPane {
 		for (int i = 0; i < numRows * numColumns; i++) {
 			int row = i / numColumns;
 			int col = i % numColumns;
-			Ontwikkelingskaart[] niveau = niveaus[row];
+			SpelVoorwerpDTO[] niveau = niveaus[row];
 			OntwikkelingskaartNode devCardNode = new OntwikkelingskaartNode(niveau[col]);
 			ontwikkelingskaartGridPane.add(devCardNode, col, row);
 		}
