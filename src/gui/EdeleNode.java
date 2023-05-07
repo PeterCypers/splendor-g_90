@@ -2,8 +2,8 @@ package gui;
 
 import java.io.File;
 
-import domein.Edele;
 import domein.Kleur;
+import dto.SpelVoorwerpDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -22,9 +22,9 @@ public class EdeleNode extends StackPane {
 	private static final int NOBLE_SIZE = 40;
 	private static final int NOBLE_FONTSIZE = 28;
 
-	public EdeleNode(Edele edele) {
+	public EdeleNode(SpelVoorwerpDTO edele) {
 		// Load the image of the noble
-		File backgroundFile = new File(edele.getEdeleFoto());
+		File backgroundFile = new File(edele.foto());
 		Image backgroundImage = new Image(backgroundFile.toURI().toString());
 		ImageView nobleImage = new ImageView(backgroundImage);
 
@@ -35,7 +35,7 @@ public class EdeleNode extends StackPane {
 		StackPane.setAlignment(whiteBackground, Pos.CENTER_LEFT);
 
 		// Adds the prestigepoints to the development card
-		Text prestigePointsText = new Text(Integer.toString(edele.getPrestigepunten()));
+		Text prestigePointsText = new Text(Integer.toString(edele.prestigepunten()));
 		prestigePointsText.setFont(Font.font("Arial", FontWeight.BOLD, NOBLE_FONTSIZE));
 		prestigePointsText.setStyle("-fx-fill: black; -fx-stroke: white; -fx-stroke-width: 1;");
 		StackPane.setAlignment(prestigePointsText, Pos.TOP_LEFT);
@@ -51,8 +51,8 @@ public class EdeleNode extends StackPane {
 		costBox.setAlignment(Pos.BOTTOM_LEFT);
 
 		// Load the costs and images for those costs of the noble
-		for (int i = 0; i < edele.getKosten().length; i++) {
-			if (edele.getKosten()[i] != 0) {
+		for (int i = 0; i < edele.kosten().length; i++) {
+			if (edele.kosten()[i] != 0) {
 				Kleur kleur = Kleur.valueOf(i);
 				File costFile = new File("src/resources/img/requirements/rectangle_" + kleur.kind() + ".png");
 				Image costImage = new Image(costFile.toURI().toString());
@@ -60,7 +60,7 @@ public class EdeleNode extends StackPane {
 				costImageView.setFitWidth(NOBLE_SIZE / 1.5);
 				costImageView.setFitHeight(NOBLE_SIZE / 1.5);
 
-				Text costText = new Text(Integer.toString(edele.getKosten()[i]));
+				Text costText = new Text(Integer.toString(edele.kosten()[i]));
 				costText.setFont(Font.font("Arial", FontWeight.BOLD, NOBLE_FONTSIZE / 1.5));
 				costText.setFill(Color.WHITE);
 				costText.setStroke(Color.BLACK);

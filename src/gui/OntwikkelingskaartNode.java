@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import domein.Kleur;
-import domein.Ontwikkelingskaart;
+import dto.SpelVoorwerpDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -31,10 +31,10 @@ public class OntwikkelingskaartNode extends StackPane {
 	private final int DEV_CARD_FONTSIZE = 28;
 	private final int DEV_CARD_MARGIN = 4;
 
-	public OntwikkelingskaartNode(Ontwikkelingskaart ontwikkelingskaart) {
+	public OntwikkelingskaartNode(SpelVoorwerpDTO niveau) {
 		// Load background image for development card
 		ImageView backgroundImageView = new ImageView();
-		File backgroundFile = new File(ontwikkelingskaart.getFotoOntwikkelingskaart());
+		File backgroundFile = new File(niveau.foto());
 		if (backgroundFile.exists()) {
 			try (InputStream inputStream = new FileInputStream(backgroundFile)) {
 				Image backgroundImage = new Image(inputStream);
@@ -51,8 +51,7 @@ public class OntwikkelingskaartNode extends StackPane {
 
 		// Load color bonus image
 		ImageView colorBonusImageView = new ImageView();
-		File colorBonusFile = new File(
-				String.format("src/resources/img/gems/%s.png", ontwikkelingskaart.getKleurBonus().kind()));
+		File colorBonusFile = new File(String.format("src/resources/img/gems/%s.png", niveau.kleur().kind()));
 		if (colorBonusFile.exists()) {
 			try (InputStream is = new FileInputStream(colorBonusFile)) {
 				Image colorBonusImage = new Image(is);
@@ -68,7 +67,7 @@ public class OntwikkelingskaartNode extends StackPane {
 		}
 
 		// Adds the prestigepoints to the development card
-		Text prestigePointsText = new Text(String.format("%d", ontwikkelingskaart.getPrestigepunten()));
+		Text prestigePointsText = new Text(String.format("%d", niveau.prestigepunten()));
 		// prestigePointsText.getStyleClass().add("prestige-points-text");
 		prestigePointsText.setFont(Font.font("Arial", FontWeight.BOLD, DEV_CARD_FONTSIZE));
 		prestigePointsText.setStyle("-fx-fill: black; -fx-stroke: white; -fx-stroke-width: 1;");
@@ -92,8 +91,8 @@ public class OntwikkelingskaartNode extends StackPane {
 		remainingTwoCostsBox.setAlignment(Pos.BOTTOM_LEFT);
 
 		int firstThreeCostsCount = 0;
-		for (int i = 0; i < ontwikkelingskaart.getKosten().length; i++) {
-			int costValue = ontwikkelingskaart.getKosten()[i];
+		for (int i = 0; i < niveau.kosten().length; i++) {
+			int costValue = niveau.kosten()[i];
 			if (costValue > 0) {
 				Kleur kleur = Kleur.valueOf(i);
 				File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
