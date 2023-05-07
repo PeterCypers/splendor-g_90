@@ -1,7 +1,7 @@
 package main;
 
 import domein.DomeinController;
-import gui.TaalKeuzeScherm;
+import gui.SpeelSpelScherm;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -10,20 +10,23 @@ public class StartUpGui extends Application {
 
 	@Override
 	public void start(Stage stage) {
+//		DomeinController dc = new DomeinController();
+//		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
+//		Scene scene = new Scene(taalKeuze);
+//		stage.setMaximized(true);
+//		stage.setScene(scene);
+//		stage.setTitle("Taalkeuze");
+//		stage.show();
+
 		DomeinController dc = new DomeinController();
-		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
-		Scene scene = new Scene(taalKeuze);
+		dc.voegSpelerToe("user1", 2002);
+		dc.voegSpelerToe("user2", 2000);
+		SpeelSpelScherm speelSpelScherm = new SpeelSpelScherm(dc);
+		Scene scene = new Scene(speelSpelScherm);
 		stage.setMaximized(true);
 		stage.setScene(scene);
-		stage.setTitle("Taalkeuze");
+		stage.setTitle("Spel");
 		stage.show();
-
-//		DomeinController dc = new DomeinController();
-//		SpeelSpelScherm speelSpelScherm = new SpeelSpelScherm(dc);
-//		Scene scene = new Scene(speelSpelScherm, 1200, 1000);
-//		primaryStage.setScene(scene);
-//		primaryStage.setTitle("Spel");
-//		primaryStage.show();
 
 		// WinnaarScherm victory = new WinnaarScherm(dc);
 		// Scene scene = new Scene (victory,800,600);

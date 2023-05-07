@@ -177,48 +177,30 @@ public class SpeelSpelScherm extends BorderPane {
 
 		// Loop through the list of players and create a label for each one
 		for (SpelerDTO speler : aangemeldeSpelers) {
-//			// create a stack pane to hold the player info box
-//			StackPane playerInfoBox = new StackPane();
-//			playerInfoBox.setStyle("-fx-background-color: white;");
-//
-//			// create a rectangle with curved edges
-//			Rectangle playerInfoBackground = new Rectangle(256, 128);
-//			playerInfoBackground.setArcWidth(20);
-//			playerInfoBackground.setArcHeight(20);
-//			playerInfoBackground.setFill(Color.GREEN);
-//
-//			// create a label with the player's name
-//			Label playerNameLabel = new Label(speler.gebruikersnaam());
-//			playerNameLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;");
-//			playerNameLabel.setAlignment(Pos.CENTER);
-//
-//			// add the label to the stack pane at the top center
-//			playerInfoBox.getChildren().addAll(playerInfoBackground, playerNameLabel);
-//			StackPane.setAlignment(playerNameLabel, Pos.TOP_CENTER);
-
-			// create a rectangle with curved edges
 			Rectangle playerInfoBackground = new Rectangle(256, 128);
 			playerInfoBackground.setArcWidth(20);
 			playerInfoBackground.setArcHeight(20);
-			playerInfoBackground.setFill(Color.GREEN);
+			playerInfoBackground.setFill(Color.web("#bf9e8e"));
+			if (speler.aanDeBeurt()) {
+				playerInfoBackground.setStyle("-fx-stroke: #d13111;");
+			} else {
+				playerInfoBackground.setStyle("-fx-stroke: #00162b;");
+			}
+			playerInfoBackground.setStrokeWidth(15);
 
 			// create a label with the player's name
-			Label playerNameLabel = new Label(speler.gebruikersnaam());
+			Label playerNameLabel = new Label(speler.gebruikersnaam() + " - " + speler.geboortejaar());
+			playerNameLabel.setPadding(new Insets(0, 20, 0, 20));
 			playerNameLabel.setStyle(
-					"-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: #00162b; -fx-text-fill: white;");
-			playerNameLabel.setPrefWidth(playerInfoBackground.getWidth());
-
-			// add the label to the top center of the stack pane
+					"-fx-font-size: 20px; -fx-font-weight: bold; -fx-background-color: #00162b; -fx-text-fill: white;"
+							+ "-fx-background-radius:  0 0 10 10;");
 			StackPane.setAlignment(playerNameLabel, Pos.TOP_CENTER);
-			StackPane.setMargin(playerNameLabel, new Insets(10));
 
 			// create a stack pane to hold the player info box and label
 			StackPane playerInfoBox = new StackPane();
-			playerInfoBox.setStyle("-fx-background-color: #332118;");
+			// playerInfoBox.setStyle("-fx-background-color: #332118;");
 			playerInfoBox.getChildren().addAll(playerInfoBackground, playerNameLabel);
 
-			// -----------------------
-//			Label playerLabel = new Label(speler.gebruikersnaam() + " - " + speler.geboortejaar());
 //			Label prestigeLabel = new Label("Prestige punten: " + speler.aantalPrestigepunten());
 //			Label aanDeBeurtLabel = new Label("Aan de beurt: " + speler.aanDeBeurt());
 //			Label startSpelerLabel = new Label("Start speler: " + speler.startSpeler());
