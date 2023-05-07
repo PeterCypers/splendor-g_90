@@ -34,11 +34,11 @@ public class SpeelSpelScherm extends BorderPane {
 
 	private void buildGui() {
 		/*------------------------------------------CREATE THE CENTER------------------------------------------*/
-		BorderPane center = new BorderPane();
-		center.setStyle("-fx-background-color: #008080;");
-		this.setCenter(center);
-		center.setMaxWidth(875);
-		center.setMaxHeight(800);
+		BorderPane spelbord = new BorderPane();
+		spelbord.setStyle("-fx-background-color: #008080;");
+		this.setCenter(spelbord);
+		spelbord.setMaxWidth(875);
+		spelbord.setMaxHeight(800);
 
 		/*------------------------------------------NOBLE------------------------------------------*/
 		List<SpelVoorwerpDTO> edelen = dc.getEdelen();
@@ -58,7 +58,7 @@ public class SpeelSpelScherm extends BorderPane {
 			noblesBox.setPadding(new Insets(10));
 		}
 
-		center.setTop(noblesBox);
+		spelbord.setTop(noblesBox);
 
 		/*------------------------------------------DECK CARDS------------------------------------------*/
 		VBox stapelFotosBox = new VBox();
@@ -91,7 +91,7 @@ public class SpeelSpelScherm extends BorderPane {
 		stapelFotosBox.setSpacing(10);
 		stapelFotosBox.setPadding(new Insets(10));
 
-		center.setLeft(stapelFotosBox);
+		spelbord.setLeft(stapelFotosBox);
 		/*------------------------------------------DEVELOPMENT CARD------------------------------------------*/
 		// Add development cards
 		SpelVoorwerpDTO[][] niveaus = { dc.getNiveau3Zichtbaar(), dc.getNiveau2Zichtbaar(), dc.getNiveau1Zichtbaar() };
@@ -118,7 +118,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 		ontwikkelingskaartGridPane.setAlignment(Pos.TOP_CENTER);
 
-		center.setCenter(ontwikkelingskaartGridPane);
+		spelbord.setCenter(ontwikkelingskaartGridPane);
 
 		/*------------------------------------------GEMS------------------------------------------*/
 		VBox gemsBox = new VBox();
@@ -164,7 +164,7 @@ public class SpeelSpelScherm extends BorderPane {
 		gemsBox.setPadding(new Insets(10));
 
 		// Display the gemsBox to the left of the development cards
-		center.setRight(gemsBox);
+		spelbord.setRight(gemsBox);
 
 		/*------------------------------------------PLAYER INFO------------------------------------------*/
 		// top
