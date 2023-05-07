@@ -338,8 +338,7 @@ public class DomeinController {
 
 		for (Speler s : aangemeldeSpelers) {
 			dtos.add(new SpelerDTO(s.getGebruikersnaam(), s.getGeboortejaar(), s.getPrestigepunten(), s.getAanDeBeurt(),
-					s.getStartSpeler(), s.getOntwikkelingskaartenInHand(), s.getEdelenInHand(),
-					s.getEdelsteenfichesInHand()));
+					s.getOntwikkelingskaartenInHand(), s.getEdelenInHand(), s.getEdelsteenfichesInHand()));
 		}
 
 		return dtos;
