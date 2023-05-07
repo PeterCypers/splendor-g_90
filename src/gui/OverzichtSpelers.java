@@ -1,7 +1,5 @@
 package gui;
 
-
-
 import domein.DomeinController;
 import domein.Speler;
 import domein.SpelerRepository;
@@ -29,7 +27,6 @@ public class OverzichtSpelers extends VBox {
 	// Een ListView is een component die een lijst kan tonen.
 	private ListView<String> lijst;
 
-
 	// Een OverzichtPaneel heeft zowel een controller als een DetailPaneel nodig
 	// Deze komen binnen als argumenten in de constructor
 	public OverzichtSpelers(DomeinController dc, DetailSpelers details) {
@@ -39,8 +36,6 @@ public class OverzichtSpelers extends VBox {
 		toonSpelers();
 
 	}
-
-
 
 	private void buildGui() {
 		this.setPadding(new Insets(20, 10, 50, 10));
@@ -54,7 +49,6 @@ public class OverzichtSpelers extends VBox {
 
 		lijst = new ListView<>();
 		this.getChildren().add(lijst);
-
 
 	}
 
@@ -79,4 +73,3 @@ public class OverzichtSpelers extends VBox {
 		});
 	}
 }
-

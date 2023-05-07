@@ -36,7 +36,8 @@ public class DetailSpelers extends GridPane {
 		this.setVgap(10);
 		this.setPadding(new Insets(20));
 
-		Label lblAantalSpelers = new Label(String.format("%s: %d", Taal.getString("numberOfPlayers"), dc.geefAantalSpelers()));
+		Label lblAantalSpelers = new Label(
+				String.format("%s: %d", Taal.getString("numberOfPlayers"), dc.geefAantalSpelers()));
 
 		Label lblGebruikersnaam = new Label(String.format("%s:", Taal.getString("username")));
 		Label lblGeboortejaar = new Label(String.format("%s:", Taal.getString("birthyear")));
@@ -58,7 +59,6 @@ public class DetailSpelers extends GridPane {
 		btnClear2.setOnAction(e -> txfGeboortejaar.clear());
 		btnClear2.setFont(Font.font("Helvetica"));
 
-
 		btnAdd.setFont(Font.font("Helvetica"));
 		btnStartSpel.setFont(Font.font("Helvetica"));
 		btnStartSpel.setDisable(true);
@@ -69,16 +69,15 @@ public class DetailSpelers extends GridPane {
 		txfGebruikersnaam = new TextField();
 		txfGeboortejaar = new TextField();
 
-
-		//this.add(btnKeerTerug, 0, 0);
+		// this.add(btnKeerTerug, 0, 0);
 		this.add(lblGegevens, 0, 0, 2, 1);
 		this.add(lblAantalSpelers, 0, 4);
 		this.add(lblGebruikersnaam, 0, 2);
 		this.add(txfGebruikersnaam, 1, 2);
-		this.add(btnClear1, 2, 2,1,1);
+		this.add(btnClear1, 2, 2, 1, 1);
 		this.add(lblGeboortejaar, 0, 3);
 		this.add(txfGeboortejaar, 1, 3);
-		this.add(btnClear2, 2, 3,1,1);
+		this.add(btnClear2, 2, 3, 1, 1);
 		this.add(btnAdd, 1, 4, 2, 1);
 		this.add(btnStartSpel, 1, 5, 2, 1);
 
@@ -90,11 +89,12 @@ public class DetailSpelers extends GridPane {
 					alert.setHeaderText("Foute gegevens");
 					alert.setContentText("Alle velden moeten ingevuld zijn");
 					alert.showAndWait();
-					return ;
+					return;
 				}
 				dc.voegSpelerToe(txfGebruikersnaam.getText(), Integer.parseInt(txfGeboortejaar.getText()));
-				lblAantalSpelers.setText((String.format("%s: %d", Taal.getString("numberOfPlayers"), dc.geefAantalSpelers())));
-				
+				lblAantalSpelers
+						.setText((String.format("%s: %d", Taal.getString("numberOfPlayers"), dc.geefAantalSpelers())));
+
 				if (dc.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS) // max spelers,
 					btnAdd.setDisable(true);
 
@@ -115,19 +115,16 @@ public class DetailSpelers extends GridPane {
 				txfGebruikersnaam.clear();
 				txfGeboortejaar.clear();
 				// velden legen
-			} 
+			}
 		});
 	}
 
 	private void drukKeerTerug(ActionEvent event) {
 		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
-		Scene scene = new Scene(taalKeuze,800,600);
 		Stage stage = (Stage) this.getScene().getWindow();
+		Scene scene = new Scene(taalKeuze, stage.getWidth(), stage.getHeight());
 		stage.setScene(scene);
-		stage.show();
 	}
-	
-	
 
 	public TextField getTxfGebruikersnaam() {
 		return txfGebruikersnaam;
@@ -138,13 +135,10 @@ public class DetailSpelers extends GridPane {
 	}
 
 	private void drukStartSpel(ActionEvent event) {
-		SpeelSpelScherm spelBord = new SpeelSpelScherm(dc);
-		Scene scene = new Scene(spelBord,800,600);
+		SpeelSpelScherm spelbord = new SpeelSpelScherm(dc);
 		Stage stage = (Stage) this.getScene().getWindow();
+		Scene scene = new Scene(spelbord, stage.getWidth(), stage.getHeight());
 		stage.setScene(scene);
-		stage.show();
-		
-		
-		
+
 	}
 }

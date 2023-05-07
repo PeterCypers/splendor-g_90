@@ -7,6 +7,7 @@ import java.util.List;
 import domein.DomeinController;
 import domein.Kleur;
 import dto.SpelVoorwerpDTO;
+import dto.SpelerDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -33,7 +34,7 @@ public class SpeelSpelScherm extends BorderPane {
 	}
 
 	private void buildGui() {
-		/*------------------------------------------CREATE THE CENTER------------------------------------------*/
+		/*------------------------------------------CREATE THE BORD------------------------------------------*/
 		BorderPane spelbord = new BorderPane();
 		spelbord.setStyle("-fx-background-color: #008080;");
 		this.setCenter(spelbord);
@@ -167,6 +168,22 @@ public class SpeelSpelScherm extends BorderPane {
 		spelbord.setRight(gemsBox);
 
 		/*------------------------------------------PLAYER INFO------------------------------------------*/
+
+		List<SpelerDTO> aangemeldeSpelers = dc.getAangemeldeSpelers();
+
+		// Create a VBox to hold the player information labels
+		VBox playerBoxes = new VBox();
+		playerBoxes.setSpacing(10);
+
+		// Loop through the list of players and create a label for each one
+		for (SpelerDTO speler : aangemeldeSpelers) {
+			// add the player info box to the player boxes
+			playerBoxes.getChildren().add(new SpelerNode(speler));
+		}
+
+		this.setLeft(playerBoxes);
+
+		/*------------------------------------------OTHER------------------------------------------*/
 		// top
 		Pane top = new Pane();
 		Label lblTop = new Label("TOP");
@@ -180,13 +197,6 @@ public class SpeelSpelScherm extends BorderPane {
 		bot.getChildren().add(lblBot);
 		BorderPane.setAlignment(lblBot, Pos.CENTER);
 		this.setBottom(lblBot);
-
-		// left
-		Pane left = new Pane();
-		Label lblLeft = new Label("LEFT");
-		left.getChildren().add(lblLeft);
-		BorderPane.setAlignment(lblLeft, Pos.CENTER);
-		this.setLeft(lblLeft);
 
 		// right
 		Pane right = new Pane();

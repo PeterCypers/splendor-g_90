@@ -164,7 +164,7 @@ public class Spel {
 	public void volgendeSpeler() {
 		// potentieel om huidigespeler == aan de beurt te vervangen door nieuwe speler
 		// die ook == aan de beurt
-		if (spelerAanBeurt.isAanDeBeurt())
+		if (spelerAanBeurt.getAanDeBeurt())
 			spelerAanBeurt.setAanDeBeurt(false);
 
 		int indexHuidigeSpeler = aangemeldeSpelers.indexOf(spelerAanBeurt);

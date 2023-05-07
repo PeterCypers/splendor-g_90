@@ -29,66 +29,6 @@ public class Speler {
 		edelsteenfichesInHand = new HashMap<Kleur, Integer>();
 	}
 
-	public boolean isAanDeBeurt() {
-		return aanDeBeurt;
-	}
-
-	public final void setAanDeBeurt(boolean nieuweWaarde) {
-		aanDeBeurt = nieuweWaarde;
-	}
-
-	public boolean isStartSpeler() {
-		return startSpeler;
-	}
-
-	// zal 1x gebruikt worden door Spel om de jongstespeler als startspeler in te
-	// stellen
-	public final void setStartSpeler() {
-		startSpeler = true;
-	}
-
-	// voeg toe aan hand methodes
-	public void voegOntwikkelingskaartToeAanHand(Ontwikkelingskaart ok) {
-		if (ok == null)
-			throw new IllegalArgumentException(
-					String.format("Fout in %s: Ontwikkelingskaart is null", this.getClass()));
-		ontwikkelingskaartenInHand.add(ok);
-	}
-
-	public void voegEdelsteenficheToeAanHand(Kleur kleur) {
-		if (kleur == null)
-			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
-
-		Integer currentValue = edelsteenfichesInHand.get(kleur);
-		if (currentValue != null) {
-			edelsteenfichesInHand.put(kleur, currentValue + 1);
-		} else {
-			edelsteenfichesInHand.put(kleur, 1);
-		}
-	}
-
-	public void voegEdeleToeAanHand(Edele e) {
-		if (e == null)
-			throw new IllegalArgumentException(String.format("Fout in %s: Edele is null", this.getClass()));
-		this.edelenInHand.add(e);
-	}
-
-	public void voegPuntenToe(int prestigepunten) {
-		this.aantalPrestigepunten += prestigepunten;
-	}
-
-	public void verwijderEdelsteenfiche(Kleur kleur) {
-		if (kleur == null)
-			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
-
-		int currentValue = edelsteenfichesInHand.get(kleur);
-		if (currentValue - 1 > 0) {
-			edelsteenfichesInHand.put(kleur, currentValue - 1);
-		} else {
-			edelsteenfichesInHand.remove(kleur);
-		}
-	}
-
 	public static int getMaxEdelsteenfichesInVoorraad() {
 		return MAX_EDELSTEENFICHES_IN_VOORRAAD;
 	}
@@ -138,12 +78,76 @@ public class Speler {
 		return aantalPrestigepunten;
 	}
 
+	public boolean getAanDeBeurt() {
+		return aanDeBeurt;
+	}
+
+	public final void setAanDeBeurt(boolean nieuweWaarde) {
+		aanDeBeurt = nieuweWaarde;
+	}
+
+	public boolean getStartSpeler() {
+		return startSpeler;
+	}
+
+	// zal 1x gebruikt worden door Spel om de jongstespeler als startspeler in te
+	// stellen
+	public final void setStartSpeler() {
+		startSpeler = true;
+	}
+
 	public List<Ontwikkelingskaart> getOntwikkelingskaartenInHand() {
 		return ontwikkelingskaartenInHand;
 	}
 
+	public List<Edele> getEdelenInHand() {
+		return edelenInHand;
+	}
+
 	public HashMap<Kleur, Integer> getEdelsteenfichesInHand() {
 		return edelsteenfichesInHand;
+	}
+
+	// voeg toe aan hand methodes
+	public void voegOntwikkelingskaartToeAanHand(Ontwikkelingskaart ok) {
+		if (ok == null)
+			throw new IllegalArgumentException(
+					String.format("Fout in %s: Ontwikkelingskaart is null", this.getClass()));
+		ontwikkelingskaartenInHand.add(ok);
+	}
+
+	public void voegEdelsteenficheToeAanHand(Kleur kleur) {
+		if (kleur == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
+
+		Integer currentValue = edelsteenfichesInHand.get(kleur);
+		if (currentValue != null) {
+			edelsteenfichesInHand.put(kleur, currentValue + 1);
+		} else {
+			edelsteenfichesInHand.put(kleur, 1);
+		}
+	}
+
+	public void voegEdeleToeAanHand(Edele e) {
+		if (e == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Edele is null", this.getClass()));
+		this.edelenInHand.add(e);
+	}
+
+	public void voegPuntenToe(int prestigepunten) {
+		this.aantalPrestigepunten += prestigepunten;
+	}
+
+	public void verwijderEdelsteenfiche(Kleur kleur) {
+		if (kleur == null)
+			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
+
+		int currentValue = edelsteenfichesInHand.get(kleur);
+		if (currentValue - 1 > 0) {
+			edelsteenfichesInHand.put(kleur, currentValue - 1);
+		} else {
+			edelsteenfichesInHand.remove(kleur);
+		}
 	}
 
 	public boolean buitenVoorraad() {
@@ -214,7 +218,7 @@ public class Speler {
 						+ "Ontwikkelingskaarten in bezit:%n" + "%s" + "Edelsteenfiches in bezit:%n" + "%s"
 						+ "Edelen in bezit:%n" + "%s" + "%n",
 				getClass().getSimpleName(), gebruikersnaam, leeftijdInJaar, aantalPrestigepunten,
-				isAanDeBeurt() ? "Is" : "Is niet", isStartSpeler() ? "Is" : "Is niet", ontwikkelingskaartenInBezit,
+				getAanDeBeurt() ? "Is" : "Is niet", getStartSpeler() ? "Is" : "Is niet", ontwikkelingskaartenInBezit,
 				edelSteenFichesInBezit, edelenInBezit);
 
 	}
