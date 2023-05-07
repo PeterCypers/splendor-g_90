@@ -25,7 +25,8 @@ import javafx.scene.text.Text;
 
 public class OntwikkelingskaartNode extends StackPane {
 	private final int DEV_CARD_WIDTH = 128;
-	private final int DEV_CARD_HEIGHT = 256;
+//	private final int DEV_CARD_HEIGHT = 256;
+	private final int DEV_CARD_HEIGHT = 200;
 	private final int DEV_CARD_SIZE = 40;
 	private final int DEV_CARD_FONTSIZE = 28;
 	private final int DEV_CARD_MARGIN = 4;

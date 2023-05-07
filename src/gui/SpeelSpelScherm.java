@@ -39,7 +39,7 @@ public class SpeelSpelScherm extends BorderPane {
 		center.setStyle("-fx-background-color: #008080;");
 		this.setCenter(center);
 		center.setMaxWidth(875);
-		center.setMaxHeight(900);
+		center.setMaxHeight(800);
 
 		/*------------------------------------------NOBLE------------------------------------------*/
 		List<Edele> edelen = dc.getEdelen();
@@ -75,14 +75,17 @@ public class SpeelSpelScherm extends BorderPane {
 		Image backgroundImage3 = new Image(backgroundFile3.toURI().toString());
 		ImageView stapel3 = new ImageView(backgroundImage3);
 
-		stapel1.setFitWidth(128);
-		stapel1.setFitHeight(256);
+		int stapelWidth = 128;
+		int stapelHeight = 200;
 
-		stapel2.setFitWidth(128);
-		stapel2.setFitHeight(256);
+		stapel1.setFitWidth(stapelWidth);
+		stapel1.setFitHeight(stapelHeight);
 
-		stapel3.setFitWidth(128);
-		stapel3.setFitHeight(256);
+		stapel2.setFitWidth(stapelWidth);
+		stapel2.setFitHeight(stapelHeight);
+
+		stapel3.setFitWidth(stapelWidth);
+		stapel3.setFitHeight(stapelHeight);
 
 		stapelFotosBox.getChildren().addAll(stapel3, stapel2, stapel1);
 
@@ -115,7 +118,7 @@ public class SpeelSpelScherm extends BorderPane {
 		ontwikkelingskaartGridPane.setHgap(10);
 		ontwikkelingskaartGridPane.setVgap(10);
 
-		ontwikkelingskaartGridPane.setAlignment(Pos.CENTER);
+		ontwikkelingskaartGridPane.setAlignment(Pos.TOP_CENTER);
 
 		center.setCenter(ontwikkelingskaartGridPane);
 
