@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import dto.SpelVoorwerpDTO;
+import dto.SpelerDTO;
 
 public class DomeinController {
 	private Spel spel;
@@ -255,65 +256,90 @@ public class DomeinController {
 		spel.testMaaktWinnaarAan();
 
 	}
+
 	/**
-	 * SpelVoorwerpDTO constructor (Ontwikkelingskaart):
-	 * SpelVoorwerpDTO(int niveau, int prestigepunten, Kleur kleurBonus, String fotoOntwikkelingskaart,
-			int[] kosten)
+	 * SpelVoorwerpDTO constructor (Ontwikkelingskaart): SpelVoorwerpDTO(int niveau,
+	 * int prestigepunten, Kleur kleurBonus, String fotoOntwikkelingskaart, int[]
+	 * kosten)
+	 * 
 	 * @return SpelVoorwerpDTO[] length = 4
 	 */
 	public SpelVoorwerpDTO[] getNiveau1Zichtbaar() {
 		Ontwikkelingskaart[] n1Kaarten = spel.getNiveau1Zichtbaar();
 		SpelVoorwerpDTO[] dtos = new SpelVoorwerpDTO[n1Kaarten.length];
+
 		for (int i = 0; i < n1Kaarten.length; i++) {
 			Ontwikkelingskaart o = n1Kaarten[i];
 			dtos[i] = new SpelVoorwerpDTO(o.getNiveau(), o.getPrestigepunten(), o.getKleurBonus(),
 					o.getFotoOntwikkelingskaart(), o.getKosten());
 		}
+
 		return dtos;
 	}
+
 	/**
 	 * 
-	 * @return SpelVoorwerpDTO[]  length = 4
+	 * @return SpelVoorwerpDTO[] length = 4
 	 */
 	public SpelVoorwerpDTO[] getNiveau2Zichtbaar() {
 		Ontwikkelingskaart[] n2Kaarten = spel.getNiveau2Zichtbaar();
 		SpelVoorwerpDTO[] dtos = new SpelVoorwerpDTO[n2Kaarten.length];
+
 		for (int i = 0; i < n2Kaarten.length; i++) {
 			Ontwikkelingskaart o = n2Kaarten[i];
 			dtos[i] = new SpelVoorwerpDTO(o.getNiveau(), o.getPrestigepunten(), o.getKleurBonus(),
 					o.getFotoOntwikkelingskaart(), o.getKosten());
 		}
+
 		return dtos;
 	}
+
 	/**
 	 * 
-	 * @return SpelVoorwerpDTO[]  length = 4
+	 * @return SpelVoorwerpDTO[] length = 4
 	 */
 	public SpelVoorwerpDTO[] getNiveau3Zichtbaar() {
 		Ontwikkelingskaart[] n3Kaarten = spel.getNiveau3Zichtbaar();
 		SpelVoorwerpDTO[] dtos = new SpelVoorwerpDTO[n3Kaarten.length];
+
 		for (int i = 0; i < n3Kaarten.length; i++) {
 			Ontwikkelingskaart o = n3Kaarten[i];
 			dtos[i] = new SpelVoorwerpDTO(o.getNiveau(), o.getPrestigepunten(), o.getKleurBonus(),
 					o.getFotoOntwikkelingskaart(), o.getKosten());
 		}
+
 		return dtos;
 	}
+
 	/**
-	 * SpelVoorwerpDTO constructor(Edele): 
-	 * public SpelVoorwerpDTO(int prestigepunten, String edeleFoto, int[] kosten) 
+	 * SpelVoorwerpDTO constructor(Edele): public SpelVoorwerpDTO(int
+	 * prestigepunten, String edeleFoto, int[] kosten)
+	 * 
 	 * @return List<SpelVoorwerpDTO>
 	 */
 	public List<SpelVoorwerpDTO> getEdelen() {
 		List<Edele> edelen = spel.getEdelen();
 		List<SpelVoorwerpDTO> dtos = new ArrayList<>();
+
 		for (Edele e : edelen) {
 			dtos.add(new SpelVoorwerpDTO(e.getPrestigepunten(), e.getEdeleFoto(), e.getKosten()));
 		}
+
 		return dtos;
 	}
 
 	public HashMap<Kleur, Integer> getFicheStapels() {
 		return spel.getFicheStapels();
+	}
+
+	public List<SpelerDTO> getAangemeldeSpelers() {
+		List<Speler> aangemeldeSpelers = spel.getAangemeldeSpelers();
+		List<SpelerDTO> dtos = new ArrayList<>();
+
+		for (Speler s : aangemeldeSpelers) {
+			dtos.add(new SpelerDTO(s.getGebruikersnaam(), s.getGeboortejaar()));
+		}
+
+		return dtos;
 	}
 }
