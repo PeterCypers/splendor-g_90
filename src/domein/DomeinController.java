@@ -191,7 +191,7 @@ public class DomeinController {
 			}
 		}
 
-		return returnStr.isBlank() ? "Er zijn nog geen deelnemers" : returnStr;
+		return returnStr.isBlank() ? Taal.getString("dcToonAangemeldeSpelersZeroPlayersMsg") : returnStr;
 	}
 
 	public String toonAantalFichesVanSpelerAanBeurt() {
