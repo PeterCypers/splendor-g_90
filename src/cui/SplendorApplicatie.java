@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -13,6 +15,7 @@ import domein.SoortKeuze;
 import domein.Spel;
 import domein.Speler;
 import dto.SpelVoorwerpDTO;
+import resources.Taal;
 
 public class SplendorApplicatie {
 
@@ -25,19 +28,21 @@ public class SplendorApplicatie {
 
 	public void startSpel() {
 		int keuze = -1;
+		taalKeuze();
+//		System.out.printf("%s: ", Taal.getString("players"));
 
 		// [TEST] connectie db:
 		System.out.printf("%s", dc.toonAlleSpelers());
 
 		while (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS || keuze != 2) {
 			if (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && keuze == 2) {
-				System.out.println("Je hebt nog niet genoeg spelers gekozen om een spel te starten.\n");
+				System.out.printf("%s%n%n", Taal.getString("playerCountErrorMsg"));
 			}
 
 			do {
 				keuze = keuzeMenu();
 				if (keuze < 1 || keuze > 7)
-					System.out.println("Kies 1 of 2");
+					System.out.printf("%s%n%n", Taal.getString("numberChoiceRangeSevenErrorMsg"));
 			} while (keuze < 1 || keuze > 7);
 
 			if (keuze == 1) {
@@ -145,7 +150,7 @@ public class SplendorApplicatie {
 
 	private String voegSpelerToe() {
 		if (dc.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS)
-			return "Maximum aantal spelers bereikt";
+			return String.format("%s", Taal.getString("maxPlayerErrorMsg"));
 		else {
 			String naam = null;
 			int geboorteJaar;
@@ -153,12 +158,12 @@ public class SplendorApplicatie {
 
 			do {
 				try {
-					System.out.print("Kies een naam: ");
+					System.out.printf("%s: ", Taal.getString("chooseName"));
 					naam = input.next();
 
 					input.nextLine(); // buffer leegmaken
 
-					System.out.print("Geef geboortejaar in: ");
+					System.out.printf("%s: ", Taal.getString("chooseBirthyear"));
 					geboorteJaar = input.nextInt();
 
 					dc.voegSpelerToe(naam, geboorteJaar);
@@ -166,7 +171,7 @@ public class SplendorApplicatie {
 					loop = false;
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
-					System.out.println("Het ingevoerde geboortejaar moet een geheel getal zijn\n");
+					System.out.printf("%s%n%n", Taal.getString("inputMisMatchWholeNumberErrorMsg"));
 				} catch (IllegalArgumentException e) {
 					System.out.println(e.getMessage());
 					System.out.println();
@@ -175,7 +180,7 @@ public class SplendorApplicatie {
 			} while (loop);
 		}
 
-		return "Je hebt een speler toegevoegd!\n";
+		return String.format("%s%n%n", Taal.getString("playerAddedFeedbackMsg"));
 	}
 
 	private int keuzeMenu() {
@@ -184,28 +189,32 @@ public class SplendorApplicatie {
 
 		do {
 			try {
-				System.out.println("Maak een keuze:");
+				System.out.printf("%s:%n", Taal.getString("choose"));
 
 				if (dc.geefAantalSpelers() != Spel.MAX_AANTAL_SPELERS) {
-					System.out.println("1. Speler toevoegen");
+					System.out.printf("1. %s%n", Taal.getString("addPlayer"));
 				}
 
 				if (dc.geefAantalSpelers() >= Spel.MIN_AANTAL_SPELERS) {
-					System.out.println("2. Spel starten");
+					System.out.printf("2. %s%n", Taal.getString("playGame"));
 				}
 
-				System.out.println("\nTijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
-						+ "3. Spel starten met 2 juiste spelers\n" + "4. Spel starten met 3 juiste spelers\n"
-						+ "5. Spel starten met 4 juiste spelers\n"
-						+ "6. Zal het spel starten met 2 spelers en veel edelsteenfiches toekennen\n"
-						+ "7. Zal het spel starten met 2 spelers die al een aantal prestigepunten hebben om te winnen "
-						+ "(15 + random waarde van 1 tot 3)\n");
-				System.out.print("Keuze: ");
+//				System.out.println("\nTijdelijke keuzes (om andere dingen sneller te bereiken en te testen):\n"
+//						+ "3. Spel starten met 2 juiste spelers\n" + "4. Spel starten met 3 juiste spelers\n"
+//						+ "5. Spel starten met 4 juiste spelers\n"
+//						+ "6. Zal het spel starten met 2 spelers en veel edelsteenfiches toekennen\n"
+//						+ "7. Zal het spel starten met 2 spelers die al een aantal prestigepunten hebben om te winnen "
+//						+ "(15 + random waarde van 1 tot 3)\n");
+				System.out.printf("%n%s:%n3. %s 2 %s%n4. %s 3 %s%n5. %s 4 %s%n6. %s%n7. %s%n%n", Taal.getString("temporaryChoices"), Taal.getString("startGameWith"),
+						Taal.getString("correctPlayers"), Taal.getString("startGameWith"), Taal.getString("correctPlayers"),
+						Taal.getString("startGameWith"), Taal.getString("correctPlayers"),
+						Taal.getString("choiceSix"), Taal.getString("choiceSeven"));
+				System.out.printf("%s: ", Taal.getString("choice"));
 				keuze = input.nextInt();
 				loop = false;
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn\n");
+				System.out.printf("%s%n%n", Taal.getString("inputMisMatchWholeNumberErrorMsg"));
 			}
 		} while (loop);
 
@@ -511,5 +520,41 @@ public class SplendorApplicatie {
 			}
 		}
 
+	}
+	
+	private void taalKeuze() {
+		int taalKeuze = -1;
+		String country= "BE";
+		String language= "nl";
+		System.out.println("Choose Language:\n1. NL\n2. EN\n3. FR");
+		do {
+			try {
+				taalKeuze = input.nextInt();
+				if (taalKeuze < 1 || taalKeuze > 3)
+					throw new IllegalArgumentException("Choose: 1, 2 or 3");
+			} catch (InputMismatchException e) {
+				input.nextLine(); // buffer leegmaken
+				System.out.println("Input must be a whole number");
+			} catch (IllegalArgumentException e) {
+				input.nextLine(); // buffer leegmaken
+				System.out.println(e.getMessage());
+			}
+		} while (taalKeuze < 1 || taalKeuze > 3);
+		
+		switch (taalKeuze) {
+		case 1 -> {
+			country = "BE";
+			language = "nl";
+		} case 2 -> {
+			country = "UK";
+			language = "en";
+		} case 3 -> {
+			country = "BE";
+			language = "fr";
+		}
+		}
+		Locale l = new Locale(language, country);
+		ResourceBundle r = ResourceBundle.getBundle("resources/resource", l);
+		Taal.setResource(r);
 	}
 }

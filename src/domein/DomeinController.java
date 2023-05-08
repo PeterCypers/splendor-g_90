@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import resources.Taal;
 
 import dto.SpelVoorwerpDTO;
 import dto.SpelerDTO;
@@ -165,11 +166,12 @@ public class DomeinController {
 	// alle spelers uit de database opgehaald
 	public String toonAlleSpelers() {
 		List<Speler> spelers = spelerRepo.getSpelers();
-		String alleSpelers = String.format("***DB-Spelers***%n");
+		String alleSpelers = String.format("***DB-%s***%n", Taal.getString("players"));
 
 		for (Speler s : spelers) {
-			alleSpelers += String.format("Naam: %6s  | leeftijd: %3d jaar | geboortejaar: %d%n", s.getGebruikersnaam(),
-					LocalDate.now().getYear() - s.getGeboortejaar(), s.getGeboortejaar());
+			alleSpelers += String.format("%s: %6s  | %s: %3d jaar | %s: %d%n",Taal.getString("username"), s.getGebruikersnaam(),
+					Taal.getString("age").toLowerCase(),
+					LocalDate.now().getYear() - s.getGeboortejaar(), Taal.getString("birthyear").toLowerCase(), s.getGeboortejaar());
 		}
 
 		alleSpelers += String.format("*******************************************************%n");
