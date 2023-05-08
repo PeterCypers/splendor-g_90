@@ -34,6 +34,12 @@ public enum Kleur {
 		return kind[this.getKleur()];
 	}
 
+	public String type() {
+		String[] type = {"diamant", "rubis", "saphir", "émeraude", "onyx"};
+		
+		return type[this.getKleur()];
+	}
+
 	@Override
 	public String toString() {
 		return this.name().toLowerCase();
