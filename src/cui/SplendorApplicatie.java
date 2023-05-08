@@ -556,7 +556,6 @@ public class SplendorApplicatie {
 		}
 		Locale l = new Locale(language, country);
 		ResourceBundle r = ResourceBundle.getBundle("resources/resource", l);
-//		Taal.setLocale(l);
 		Taal.setResource(r);
 	}
 }
