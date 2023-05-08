@@ -1,5 +1,7 @@
 package domein;
 
+import resources.Taal;
+
 public class Edele implements SpelVoorwerp{
 	public static final int EDELEN_PRESTIGE = 3;
 	private int prestigepunten;
@@ -18,7 +20,9 @@ public class Edele implements SpelVoorwerp{
 
 	private void setPrestigePunten(int prestigePunten) {
 		if(prestigePunten != EDELEN_PRESTIGE)
-			throw new IllegalArgumentException(String.format("Alle edelen moeten %d prestigepunten hebben", EDELEN_PRESTIGE));
+		    throw new IllegalArgumentException(String.format("%s %d %s", 
+				    Taal.getString("edeleSetPrestigePuntenExceptionMsgPart1"), EDELEN_PRESTIGE,
+				    Taal.getString("edeleSetPrestigePuntenExceptionMsgPart1")));
 		this.prestigepunten = prestigePunten;
 	}
 
@@ -28,7 +32,7 @@ public class Edele implements SpelVoorwerp{
 
 	private void setEdeleFoto(String edeleFoto) {
 		if(edeleFoto == null || edeleFoto.isBlank())
-			throw new IllegalArgumentException("Edele foto is null of is leeg");
+			throw new IllegalArgumentException(String.format("%s", Taal.getString("edeleSetEdeleFotoExceptionMsg")));
 		this.edeleFoto = edeleFoto;
 	}
 
@@ -38,9 +42,9 @@ public class Edele implements SpelVoorwerp{
 
 	private void setKosten(int[] kosten) {
 		if(kosten == null)
-			throw new IllegalArgumentException("Kosten-array is null");
+			throw new IllegalArgumentException(String.format("%s", Taal.getString("edeleSetKostenNullExceptionMsg")));
 		if(kosten.length != 5)
-			throw new IllegalArgumentException("Lengte van de kosten-array is niet exact 5");
+			throw new IllegalArgumentException(String.format("%s", Taal.getString("edeleSetKostenArrayLengthExceptionMsg")));
 		this.kosten = kosten;
 	}
 
