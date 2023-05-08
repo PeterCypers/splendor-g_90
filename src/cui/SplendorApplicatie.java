@@ -28,8 +28,9 @@ public class SplendorApplicatie {
 
 	public void startSpel() {
 		int keuze = -1;
+		System.out.println(Locale.getDefault().getCountry());
 		taalKeuze();
-//		System.out.printf("%s: ", Taal.getString("players"));
+		System.out.println(Taal.getResource().getLocale().getLanguage());
 
 		// [TEST] connectie db:
 		System.out.printf("%s", dc.toonAlleSpelers());
@@ -555,6 +556,7 @@ public class SplendorApplicatie {
 		}
 		Locale l = new Locale(language, country);
 		ResourceBundle r = ResourceBundle.getBundle("resources/resource", l);
+//		Taal.setLocale(l);
 		Taal.setResource(r);
 	}
 }
