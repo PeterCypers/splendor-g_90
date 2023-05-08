@@ -136,7 +136,7 @@ public class DomeinController {
 		for (SpelVoorwerp vw : spelvoorwerpen) {
 			if (vw instanceof Ontwikkelingskaart ok) {
 				dto = new SpelVoorwerpDTO(ok.getNiveau(), ok.getPrestigepunten(), ok.getKleurBonus(),
-						ok.getFotoOntwikkelingskaart(), ok.getKosten());
+						ok.getFotoOntwikkelingskaart(), ok.getKosten(), ok.toString());
 			} else if (vw instanceof Edele e) {
 				dto = new SpelVoorwerpDTO(e.getPrestigepunten(), e.getEdeleFoto(), e.getKosten());
 			}
@@ -275,7 +275,7 @@ public class DomeinController {
 		for (int i = 0; i < n1Kaarten.length; i++) {
 			Ontwikkelingskaart o = n1Kaarten[i];
 			dtos[i] = new SpelVoorwerpDTO(o.getNiveau(), o.getPrestigepunten(), o.getKleurBonus(),
-					o.getFotoOntwikkelingskaart(), o.getKosten());
+					o.getFotoOntwikkelingskaart(), o.getKosten(), o.toString());
 		}
 
 		return dtos;
@@ -292,7 +292,7 @@ public class DomeinController {
 		for (int i = 0; i < n2Kaarten.length; i++) {
 			Ontwikkelingskaart o = n2Kaarten[i];
 			dtos[i] = new SpelVoorwerpDTO(o.getNiveau(), o.getPrestigepunten(), o.getKleurBonus(),
-					o.getFotoOntwikkelingskaart(), o.getKosten());
+					o.getFotoOntwikkelingskaart(), o.getKosten(), o.toString());
 		}
 
 		return dtos;
@@ -309,7 +309,7 @@ public class DomeinController {
 		for (int i = 0; i < n3Kaarten.length; i++) {
 			Ontwikkelingskaart o = n3Kaarten[i];
 			dtos[i] = new SpelVoorwerpDTO(o.getNiveau(), o.getPrestigepunten(), o.getKleurBonus(),
-					o.getFotoOntwikkelingskaart(), o.getKosten());
+					o.getFotoOntwikkelingskaart(), o.getKosten(), o.toString());
 		}
 
 		return dtos;

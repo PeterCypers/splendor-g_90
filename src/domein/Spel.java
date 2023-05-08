@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import resources.Taal;
+
 public class Spel {
 	public static final int MIN_AANTAL_SPELERS = 2;
 	public static final int MAX_AANTAL_SPELERS = 4;
@@ -486,7 +488,7 @@ public class Spel {
 		if (ficheStapels.size() > 0) {
 			for (Kleur kleur : Kleur.values()) {
 				Integer aantalFiches = ficheStapels.get(kleur);
-				representatieFiches += String.format("%s: %d%n", kleur, aantalFiches != null ? aantalFiches : 0);
+				representatieFiches += String.format("%-6s %d%n",Taal.getString(kleur.toString()) + ":", aantalFiches != null ? aantalFiches : 0);
 			}
 		}
 

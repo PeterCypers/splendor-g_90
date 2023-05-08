@@ -253,9 +253,10 @@ public class SplendorApplicatie {
 			for (SpelVoorwerpDTO dto : dtos) {
 
 				if (dto.type() == 'O' && dto.niveau() == niveau) {
-					System.out.printf("Ontwikkelingskaart Niv.%d, Foto#%s, Kleur: %s, prestige: %d%nKosten: %s%n",
-							dto.niveau(), dto.foto(), dto.kleur().toString(), dto.prestigepunten(),
-							Arrays.toString(dto.kosten()));
+//					System.out.printf("Ontwikkelingskaart Niv.%d, Foto#%s, Kleur: %s, prestige: %d%nKosten: %s%n",
+//							dto.niveau(), dto.foto(), dto.kleur().toString(), dto.prestigepunten(),
+//							Arrays.toString(dto.kosten()));
+					System.out.println(dto.repr());
 				}
 			}
 		}

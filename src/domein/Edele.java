@@ -32,7 +32,7 @@ public class Edele implements SpelVoorwerp{
 
 	private void setEdeleFoto(String edeleFoto) {
 		if(edeleFoto == null || edeleFoto.isBlank())
-			throw new IllegalArgumentException(String.format("%s", Taal.getString("edeleSetEdeleFotoExceptionMsg")));
+			throw new IllegalArgumentException(Taal.getString("edeleSetEdeleFotoExceptionMsg"));
 		this.edeleFoto = edeleFoto;
 	}
 
@@ -42,9 +42,9 @@ public class Edele implements SpelVoorwerp{
 
 	private void setKosten(int[] kosten) {
 		if(kosten == null)
-			throw new IllegalArgumentException(String.format("%s", Taal.getString("edeleSetKostenNullExceptionMsg")));
+			throw new IllegalArgumentException(Taal.getString("setKostenNullExceptionMsg"));
 		if(kosten.length != 5)
-			throw new IllegalArgumentException(String.format("%s", Taal.getString("edeleSetKostenArrayLengthExceptionMsg")));
+			throw new IllegalArgumentException(Taal.getString("setKostenArrayLengthExceptionMsg"));
 		this.kosten = kosten;
 	}
 
