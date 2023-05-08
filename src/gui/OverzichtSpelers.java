@@ -3,6 +3,7 @@ package gui;
 import domein.DomeinController;
 import domein.Speler;
 import domein.SpelerRepository;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

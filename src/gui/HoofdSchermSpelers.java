@@ -1,6 +1,7 @@
 package gui;
 
 import domein.DomeinController;
+
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -21,6 +22,7 @@ public class HoofdSchermSpelers extends BorderPane {
 		Pane top = new Pane();
 		top.setPrefHeight(100);
 		Label titleLabel = new Label("SPLENDOR");
+		
 		titleLabel.setFont(Font.font("Helvetica", FontWeight.EXTRA_BOLD, 75));
 		top.getChildren().add(titleLabel);
 		this.setTop(top);

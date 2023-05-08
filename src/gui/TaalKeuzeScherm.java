@@ -1,10 +1,10 @@
 package gui;
 
+import domein.DomeinController;
+
 import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
-import domein.DomeinController;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+
 import resources.Taal;
 
 public class TaalKeuzeScherm extends StackPane {
