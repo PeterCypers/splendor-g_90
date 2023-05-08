@@ -1,5 +1,7 @@
 package domein;
 
+import resources.Taal;
+
 public enum SoortKeuze {
 	NEEM_DRIE(1), NEEM_TWEE(2), KOOP_KAART(3), PAS_BEURT(4);
 
@@ -19,6 +21,6 @@ public enum SoortKeuze {
 				return sk;
 			}
 		}
-		throw new IllegalArgumentException("Invalid keuze: " + keuze);
+		throw new IllegalArgumentException(String.format("%s: %s", Taal.getString("soortKeuzeExceptionMsg"), keuze));
 	}
 }
