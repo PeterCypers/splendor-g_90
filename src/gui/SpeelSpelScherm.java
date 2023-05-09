@@ -178,6 +178,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 			if (succesvol) {
 				if (dc.buitenVoorraad()) {
+					System.out.println("BUITEN VOORRAAD");
 					geefFichesTerug();
 				}
 
@@ -187,17 +188,41 @@ public class SpeelSpelScherm extends BorderPane {
 				playerInfo();
 			}
 		} catch (Exception e) {
-			Alert alert = new Alert(Alert.AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText("An error has occurred");
-			alert.setContentText("The following exception was thrown:\n\n" + e.getMessage());
-			alert.showAndWait();
-			kleurKeuze.clear();
+			errorAlert(e);
 		}
 
 	}
 
 	private void geefFichesTerug() {
+		// TODO moet een popup geven en moet ervoor zorgen dat het ander scherm niet
+		// geklikt kan worden, tot het probleem van buiten voorraad is opgelost
+
+		// toon overzicht van edelsteenfiches in speler zijn voorraad
+		playerInfo();
+
+		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
+		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
+
+		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
+			boolean isTerugGelegd = true;
+
+			while (isTerugGelegd) {
+				try {
+					/*
+					 * System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
+					 * 
+					 * int stapelKeuze = input.nextInt();
+					 * 
+					 * dc.plaatsTerugInStapel(stapelKeuze - 1);
+					 */
+					isTerugGelegd = false;
+				} catch (RuntimeException e) {
+					System.out.println("\nU probeert fiches terug te plaatsen van een lege stapel.\n");
+					isTerugGelegd = true;
+				}
+
+			}
+		}
 
 	}
 
@@ -281,11 +306,7 @@ public class SpeelSpelScherm extends BorderPane {
 					dc.kiesOntwikkelingskaart(row + 1, col + 1);
 					// kleurKeuze.clear();
 				} catch (Exception e) {
-					Alert alert = new Alert(Alert.AlertType.ERROR);
-					alert.setTitle("Error");
-					alert.setHeaderText("An error has occurred");
-					alert.setContentText("The following exception was thrown:\n\n" + e.getMessage());
-					alert.showAndWait();
+					errorAlert(e);
 				}
 			});
 
@@ -301,5 +322,14 @@ public class SpeelSpelScherm extends BorderPane {
 		ontwikkelingskaartGridPane.setAlignment(Pos.TOP_CENTER);
 
 		spelbord.setCenter(ontwikkelingskaartGridPane);
+	}
+
+	private void errorAlert(Exception e) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle(Taal.getString("error"));
+		alert.setHeaderText(Taal.getString("errorOccured"));
+		alert.setContentText(String.format("%s:%n%n", Taal.getString("exceptionThrown")) + e.getMessage());
+		alert.showAndWait();
+		kleurKeuze.clear();
 	}
 }
