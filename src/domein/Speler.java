@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import resources.Taal;
+
 public class Speler {
 	private static final int MAX_EDELSTEENFICHES_IN_VOORRAAD = 10;
 
@@ -39,7 +41,7 @@ public class Speler {
 
 	private void setGebruikersnaam(String gebruikersnaam) {
 		if (gebruikersnaam == null || gebruikersnaam.isBlank()) {
-			throw new IllegalArgumentException("Gebruikersnaam moet ingevuld zijn.");
+			throw new IllegalArgumentException(Taal.getString("spelerSetGebruikersnaamNullOrEmptyExceptionMsg"));
 		}
 
 		String geldigeTekens = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZéèö0123456789 _";
@@ -52,13 +54,12 @@ public class Speler {
 		}
 		// naam mag geen ongeldige tekens bevatten:
 		if (bevatOngeldigeTeken) {
-			throw new IllegalArgumentException(
-					"Gebruikersnaam mag enkel letters en cijfers en spaties en underscores('_') bevatten.");
+			throw new IllegalArgumentException(Taal.getString("spelerSetGebruikersnaamInvalidCharacterExceptionMsg"));
 		}
 
 		// naam moet starten met een letter:
 		if (alphabet.indexOf(gebruikersnaam.charAt(0)) == -1) {
-			throw new IllegalArgumentException("GebruikersNaam moet starten met een letter.");
+			throw new IllegalArgumentException(Taal.getString("spelerSetGebruikersnaamNotStartsWithLetterExceptionMsg"));
 		}
 		this.gebruikersnaam = gebruikersnaam;
 	}
@@ -69,7 +70,7 @@ public class Speler {
 
 	private void setGeboortejaar(int geboortejaar) {
 		if (geboortejaar > 2016) {
-			throw new IllegalArgumentException("Je moet minstens 6 jaar oud zijn om dit spel te spelen.");
+			throw new IllegalArgumentException(Taal.getString("spelerSetGeboortejaarUserAgeExceptionMsg"));
 		}
 		this.geboortejaar = geboortejaar;
 	}
@@ -112,13 +113,15 @@ public class Speler {
 	public void voegOntwikkelingskaartToeAanHand(Ontwikkelingskaart ok) {
 		if (ok == null)
 			throw new IllegalArgumentException(
-					String.format("Fout in %s: Ontwikkelingskaart is null", this.getClass()));
+					String.format("%s %s: %s", Taal.getString("errorIn"), this.getClass(), Taal.getString("developmentCardNullExceptionMsg")));
 		ontwikkelingskaartenInHand.add(ok);
 	}
 
 	public void voegEdelsteenficheToeAanHand(Kleur kleur) {
 		if (kleur == null)
-			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
+			throw new IllegalArgumentException(String.format
+					("%s %s: %s", Taal.getString("errorIn"), this.getClass(),
+							Taal.getString("gemTokenNullExceptionMsg")));
 
 		Integer currentValue = edelsteenfichesInHand.get(kleur);
 		if (currentValue != null) {
@@ -130,7 +133,9 @@ public class Speler {
 
 	public void voegEdeleToeAanHand(Edele e) {
 		if (e == null)
-			throw new IllegalArgumentException(String.format("Fout in %s: Edele is null", this.getClass()));
+			throw new IllegalArgumentException
+			(String.format("%s %s: %s", Taal.getString("errorIn"), this.getClass(),
+					Taal.getString("nobleNullExceptionMsg")));
 		this.edelenInHand.add(e);
 	}
 
@@ -140,7 +145,9 @@ public class Speler {
 
 	public void verwijderEdelsteenfiche(Kleur kleur) {
 		if (kleur == null)
-			throw new IllegalArgumentException(String.format("Fout in %s: Edelsteenfiche is null", this.getClass()));
+			throw new IllegalArgumentException
+			(String.format("%s %s: %s", Taal.getString("errorIn"), this.getClass(),
+					Taal.getString("gemTokenNullExceptionMsg")));
 
 		int currentValue = edelsteenfichesInHand.get(kleur);
 		if (currentValue - 1 > 0) {
@@ -165,10 +172,10 @@ public class Speler {
 		if (edelsteenfichesInHand.size() > 0) {
 			for (Kleur kleur : Kleur.values()) {
 				Integer aantalFiches = edelsteenfichesInHand.get(kleur);
-				representatieFiches += String.format("%s: %d%n", kleur, aantalFiches != null ? aantalFiches : 0);
+				representatieFiches += String.format("%-6s %d%n", Taal.getString(kleur.toString()) + ":", aantalFiches != null ? aantalFiches : 0);
 			}
 		} else {
-			representatieFiches += "De speler heeft momenteel geen edelsteenfiches in bezit.\n";
+			representatieFiches += String.format("%s%n", Taal.getString("spelerToonAantalFichesNoGemTokensMsg"));
 		}
 
 		return representatieFiches;
@@ -194,7 +201,7 @@ public class Speler {
 				ontwikkelingskaartenInBezit += String.format("%s%n", ok.toString());
 			}
 		} else {
-			ontwikkelingskaartenInBezit = "Je hebt momenteel geen ontwikkelingskaarten in je bezit\n";
+			ontwikkelingskaartenInBezit = Taal.getString("spelerNoDevelopmentCardsInPossessionMsg") + "\n";
 		}
 
 		// Fiches /*WIT,ROOD,BLAUW,GROEN,ZWART;*/
@@ -210,16 +217,37 @@ public class Speler {
 			}
 		}
 
-		edelenInBezit += String.format("Je hebt %d edelen in bezit met een totale prestigewaarde van %d%n",
-				edelenInHand.size(), edelPrestigeTotaal);
-
-		return String.format(
-				"%s: %s --- leeftijd: %d%n" + "Prestigepunten: %d %n%s aan de beurt%n" + "%s de start speler%n"
-						+ "Ontwikkelingskaarten in bezit:%n" + "%s" + "Edelsteenfiches in bezit:%n" + "%s"
-						+ "Edelen in bezit:%n" + "%s" + "%n",
-				getClass().getSimpleName(), gebruikersnaam, leeftijdInJaar, aantalPrestigepunten,
-				getAanDeBeurt() ? "Is" : "Is niet", getStartSpeler() ? "Is" : "Is niet", ontwikkelingskaartenInBezit,
-				edelSteenFichesInBezit, edelenInBezit);
+		edelenInBezit += String.format("%s %d %s %d%n",
+				Taal.getString("spelerNoblesInPossessionMsg1"), edelenInHand.size(), Taal.getString("spelerNoblesInPossessionMsg2"), edelPrestigeTotaal);
+		//vertaald
+//		return String.format(
+//				"%s: %s --- leeftijd: %d%n" + "Prestigepunten: %d %n%s aan de beurt%n" + "%s de start speler%n"
+//						+ "Ontwikkelingskaarten in bezit:%n" + "%s" + "Edelsteenfiches in bezit:%n" + "%s"
+//						+ "Edelen in bezit:%n" + "%s" + "%n",
+//				getClass().getSimpleName(), gebruikersnaam, leeftijdInJaar, aantalPrestigepunten,
+//				getAanDeBeurt() ? "Is" : "Is niet", getStartSpeler() ? "Is" : "Is niet", ontwikkelingskaartenInBezit,
+//				edelSteenFichesInBezit, edelenInBezit);
+		return String.format("%s: %s --- %s: %d%n" 		//4
+				+ "%s: %d %n" 							//2
+				+ "%s %n"								//1
+				+ "%s %s %n"							//2
+				+ "%s %s: %n"							//2
+				+ "%s"									//1
+				+ "%s %s: %n"							//2
+				+ "%s"									//1
+				+ "%s %s: %n"							//2
+				+ "%s"									//1
+				+ "%n",
+				Taal.getString("player"), gebruikersnaam, Taal.getString("age").toLowerCase(), leeftijdInJaar,
+				Taal.getString("prestigePoints"), aantalPrestigepunten,
+				getAanDeBeurt() ? Taal.getString("turnYes") : Taal.getString("turnNo"),
+				getStartSpeler() ? Taal.getString("is") : Taal.getString("isNot"), Taal.getString("startingPlayer").toLowerCase(),
+				Taal.getString("developmentCards"), Taal.getString("inPossession").toLowerCase(),
+				ontwikkelingskaartenInBezit,
+				Taal.getString("gemTokens"), Taal.getString("inPossession").toLowerCase(),
+				edelSteenFichesInBezit,
+				Taal.getString("nobles"), Taal.getString("inPossession").toLowerCase(),
+				edelenInBezit);
 
 	}
 
