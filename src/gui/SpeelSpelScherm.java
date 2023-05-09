@@ -304,8 +304,8 @@ public class SpeelSpelScherm extends BorderPane {
 			devCardNode.setOnMouseClicked(event -> {
 				try {
 					// TODO dit moet werken, maar werkt nog niet
-//					dc.kiesOntwikkelingskaart(row + 1, col + 1);
-					dc.kiesOntwikkelingskaart(row, col);
+					dc.kiesOntwikkelingskaart(row + 1, col + 1);
+
 					// kleurKeuze.clear();
 				} catch (Exception e) {
 					errorAlert(e);
