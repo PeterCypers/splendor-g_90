@@ -23,16 +23,16 @@ public class OverzichtSpelers extends VBox {
 	private final DomeinController dc;
 
 	// Dit DetailPaneel wordt verwittigd wanneer de selectie wijzigt
-	private final DetailSpelers details;
+	private DetailSpelers details;
 
 	// Een ListView is een component die een lijst kan tonen.
 	private ListView<String> lijst;
 
 	// Een OverzichtPaneel heeft zowel een controller als een DetailPaneel nodig
 	// Deze komen binnen als argumenten in de constructor
-	public OverzichtSpelers(DomeinController dc, DetailSpelers details) {
+	public OverzichtSpelers(DomeinController dc, DetailSpelers ds) {
 		this.dc = dc;
-		this.details = details;
+		this.details = ds;
 		buildGui();
 		toonSpelers();
 

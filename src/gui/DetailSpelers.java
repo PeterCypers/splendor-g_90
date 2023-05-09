@@ -72,7 +72,7 @@ public class DetailSpelers extends GridPane {
 		txfGeboortejaar = new TextField();
 
 		// this.add(btnKeerTerug, 0, 0);
-		this.add(lblGegevens, 0, 0, 2, 1);
+		this.add(lblGegevens, 1, 0, 2, 1);
 		this.add(lblAantalSpelers, 0, 4);
 		this.add(lblGebruikersnaam, 0, 2);
 		this.add(txfGebruikersnaam, 1, 2);
