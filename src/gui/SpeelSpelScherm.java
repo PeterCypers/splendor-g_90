@@ -64,7 +64,7 @@ public class SpeelSpelScherm extends BorderPane {
 		HBox bottomGameElements = new HBox();
 		bottomGameElements.setAlignment(Pos.CENTER);
 
-		Button pasBeurt = new Button(Taal.getString("cancelTurn"));
+		Button pasBeurt = new Button(Taal.getString("skipTurn"));
 		pasBeurt.setStyle(
 				"-fx-background-color: #ab4333; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;");
 		pasBeurt.setAlignment(Pos.CENTER);
@@ -304,7 +304,8 @@ public class SpeelSpelScherm extends BorderPane {
 			devCardNode.setOnMouseClicked(event -> {
 				try {
 					// TODO dit moet werken, maar werkt nog niet
-					dc.kiesOntwikkelingskaart(row + 1, col + 1);
+//					dc.kiesOntwikkelingskaart(row + 1, col + 1);
+					dc.kiesOntwikkelingskaart(row, col);
 					// kleurKeuze.clear();
 				} catch (Exception e) {
 					errorAlert(e);

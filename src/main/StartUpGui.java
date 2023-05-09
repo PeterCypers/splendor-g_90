@@ -1,15 +1,10 @@
 package main;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import domein.DomeinController;
-import gui.SpeelSpelScherm;
 import gui.TaalKeuzeScherm;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import resources.Taal;
 
 public class StartUpGui extends Application {
 
