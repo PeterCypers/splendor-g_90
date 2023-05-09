@@ -303,6 +303,7 @@ public class SpeelSpelScherm extends BorderPane {
 			// Add mouse click event handler to the node
 			devCardNode.setOnMouseClicked(event -> {
 				try {
+					// TODO dit moet werken, maar werkt nog niet
 					dc.kiesOntwikkelingskaart(row + 1, col + 1);
 					// kleurKeuze.clear();
 				} catch (Exception e) {
