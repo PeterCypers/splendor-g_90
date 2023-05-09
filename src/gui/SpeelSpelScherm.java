@@ -10,118 +10,95 @@ import dto.SpelVoorwerpDTO;
 import dto.SpelerDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import resources.Taal;
 
 public class SpeelSpelScherm extends BorderPane {
 	private final DomeinController dc;
+	private BorderPane spelbord;
 
 	public SpeelSpelScherm(DomeinController dc) {
 		this.dc = dc;
+		this.spelbord = new BorderPane();
+
 		dc.startNieuwSpel();
 		buildGui();
 	}
 
 	private void buildGui() {
-		/*------------------------------------------CREATE THE BORD------------------------------------------*/
-		BorderPane spelbord = new BorderPane();
+		this.setStyle("-fx-background-color: #000000;");
+
+		/*--------------CREATE THE BORD--------------*/
+
 		spelbord.setStyle("-fx-background-color: #008080;");
-		this.setCenter(spelbord);
+
+		setAlignment(spelbord, Pos.CENTER);
 		spelbord.setMaxWidth(875);
 		spelbord.setMaxHeight(800);
+		this.setCenter(spelbord);
 
-		/*------------------------------------------NOBLE------------------------------------------*/
-		List<SpelVoorwerpDTO> edelen = dc.getEdelen();
-		HBox noblesBox = new HBox();
+		playerInfo();
+		nobles();
+		deckCards();
+		developmentCards();
+		gems();
 
-		// loop through the nobles and create a NobleNode for each one
-		for (SpelVoorwerpDTO edele : edelen) {
-			EdeleNode edeleNode = new EdeleNode(edele);
-			noblesBox.getChildren().add(edeleNode);
+		/*--------------PLAYER TURN OPTIONS--------------*/
+		StackPane bottomOfGameBorderPane = new StackPane();
+		BorderPane.setAlignment(bottomOfGameBorderPane, Pos.CENTER);
+
+		HBox bottomGameElements = new HBox();
+		bottomGameElements.setAlignment(Pos.CENTER);
+
+		Button pasBeurt = new Button(Taal.getString("cancelTurn"));
+		pasBeurt.setStyle(
+				"-fx-background-color: #ab4333; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;");
+		pasBeurt.setAlignment(Pos.CENTER);
+
+		pasBeurt.setOnAction(e -> {
+			dc.volgendeSpeler();
+			playerInfo();
+		});
+
+		bottomGameElements.getChildren().add(pasBeurt);
+		bottomOfGameBorderPane.getChildren().add(bottomGameElements);
+
+		bottomOfGameBorderPane.setStyle("-fx-background-color: #4a2610;");
+		this.setBottom(bottomOfGameBorderPane);
+
+	}
+
+	private void playerInfo() {
+		List<SpelerDTO> aangemeldeSpelers = dc.getAangemeldeSpelers();
+
+		// Create a VBox to hold the player information labels
+		VBox playerBoxes = new VBox();
+		playerBoxes.setSpacing(10);
+
+		// Loop through the list of players and create a label for each one
+		for (SpelerDTO speler : aangemeldeSpelers) {
+			// add the player info box to the player boxes
+			playerBoxes.getChildren().add(new SpelerNode(speler));
 		}
 
-		noblesBox.setSpacing(10);
+		playerBoxes.setAlignment(Pos.CENTER_RIGHT);
+		playerBoxes.setStyle("-fx-background-color: #704e38;");
+		this.setLeft(playerBoxes);
+	}
 
-		if (edelen.size() < 5) {
-			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
-		} else {
-			noblesBox.setPadding(new Insets(10));
-		}
-
-		spelbord.setTop(noblesBox);
-
-		/*------------------------------------------DECK CARDS------------------------------------------*/
-		VBox stapelFotosBox = new VBox();
-
-		// Load the image of the deck
-		File backgroundFile1 = new File("src/resources/img/card_stacks/level1.png");
-		Image backgroundImage1 = new Image(backgroundFile1.toURI().toString());
-		ImageView stapel1 = new ImageView(backgroundImage1);
-		File backgroundFile2 = new File("src/resources/img/card_stacks/level2.png");
-		Image backgroundImage2 = new Image(backgroundFile2.toURI().toString());
-		ImageView stapel2 = new ImageView(backgroundImage2);
-		File backgroundFile3 = new File("src/resources/img/card_stacks/level3.png");
-		Image backgroundImage3 = new Image(backgroundFile3.toURI().toString());
-		ImageView stapel3 = new ImageView(backgroundImage3);
-
-		int stapelWidth = 128;
-		int stapelHeight = 200;
-
-		stapel1.setFitWidth(stapelWidth);
-		stapel1.setFitHeight(stapelHeight);
-
-		stapel2.setFitWidth(stapelWidth);
-		stapel2.setFitHeight(stapelHeight);
-
-		stapel3.setFitWidth(stapelWidth);
-		stapel3.setFitHeight(stapelHeight);
-
-		stapelFotosBox.getChildren().addAll(stapel3, stapel2, stapel1);
-
-		stapelFotosBox.setSpacing(10);
-		stapelFotosBox.setPadding(new Insets(10));
-
-		spelbord.setLeft(stapelFotosBox);
-		/*------------------------------------------DEVELOPMENT CARD------------------------------------------*/
-		// Add development cards
-		SpelVoorwerpDTO[][] niveaus = { dc.getNiveau3Zichtbaar(), dc.getNiveau2Zichtbaar(), dc.getNiveau1Zichtbaar() };
-
-		GridPane ontwikkelingskaartGridPane = new GridPane();
-
-		// Define the number of columns and rows in the grid
-		int numColumns = 4;
-		int numRows = 3;
-
-		// Add OntwikkelingskaartNodes to the grid
-		for (int i = 0; i < numRows * numColumns; i++) {
-			int row = i / numColumns;
-			int col = i % numColumns;
-			SpelVoorwerpDTO[] niveau = niveaus[row];
-			OntwikkelingskaartNode devCardNode = new OntwikkelingskaartNode(niveau[col]);
-			ontwikkelingskaartGridPane.add(devCardNode, col, row);
-		}
-
-		// Set some padding and gaps between cells in the grid
-		ontwikkelingskaartGridPane.setPadding(new Insets(10));
-		ontwikkelingskaartGridPane.setHgap(10);
-		ontwikkelingskaartGridPane.setVgap(10);
-
-		ontwikkelingskaartGridPane.setAlignment(Pos.TOP_CENTER);
-
-		spelbord.setCenter(ontwikkelingskaartGridPane);
-
-		/*------------------------------------------GEMS------------------------------------------*/
+	private void gems() {
 		VBox gemsBox = new VBox();
 
 		HashMap<Kleur, Integer> fichestapels = dc.getFicheStapels();
@@ -166,45 +143,107 @@ public class SpeelSpelScherm extends BorderPane {
 
 		// Display the gemsBox to the left of the development cards
 		spelbord.setRight(gemsBox);
-
-		/*------------------------------------------PLAYER INFO------------------------------------------*/
-
-		List<SpelerDTO> aangemeldeSpelers = dc.getAangemeldeSpelers();
-
-		// Create a VBox to hold the player information labels
-		VBox playerBoxes = new VBox();
-		playerBoxes.setSpacing(10);
-
-		// Loop through the list of players and create a label for each one
-		for (SpelerDTO speler : aangemeldeSpelers) {
-			// add the player info box to the player boxes
-			playerBoxes.getChildren().add(new SpelerNode(speler));
-		}
-
-		this.setLeft(playerBoxes);
-
-		/*------------------------------------------OTHER------------------------------------------*/
-		// top
-		Pane top = new Pane();
-		Label lblTop = new Label("TOP");
-		top.getChildren().add(lblTop);
-		BorderPane.setAlignment(lblTop, Pos.CENTER);
-		this.setTop(top);
-
-		// bottom
-		Pane bot = new Pane();
-		Label lblBot = new Label("BOT");
-		bot.getChildren().add(lblBot);
-		BorderPane.setAlignment(lblBot, Pos.CENTER);
-		this.setBottom(lblBot);
-
-		// right
-		Pane right = new Pane();
-		Label lblRight = new Label("RIGHT");
-		right.getChildren().add(lblRight);
-		BorderPane.setAlignment(lblRight, Pos.CENTER);
-		this.setRight(lblRight);
-
 	}
 
+	private void nobles() {
+		List<SpelVoorwerpDTO> edelen = dc.getEdelen();
+		HBox noblesBox = new HBox();
+
+		// loop through the nobles and create a NobleNode for each one
+		for (SpelVoorwerpDTO edele : edelen) {
+			EdeleNode edeleNode = new EdeleNode(edele);
+			noblesBox.getChildren().add(edeleNode);
+		}
+
+		noblesBox.setSpacing(10);
+
+		if (edelen.size() < 5) {
+			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
+		} else {
+			noblesBox.setPadding(new Insets(10));
+		}
+
+		spelbord.setTop(noblesBox);
+		noblesBox.setAlignment(Pos.TOP_CENTER);
+	}
+
+	private void deckCards() {
+
+		VBox stapelFotosBox = new VBox();
+
+		// Load the image of the deck
+		File backgroundFile1 = new File("src/resources/img/card_stacks/level1.png");
+		Image backgroundImage1 = new Image(backgroundFile1.toURI().toString());
+		ImageView stapel1 = new ImageView(backgroundImage1);
+		File backgroundFile2 = new File("src/resources/img/card_stacks/level2.png");
+		Image backgroundImage2 = new Image(backgroundFile2.toURI().toString());
+		ImageView stapel2 = new ImageView(backgroundImage2);
+		File backgroundFile3 = new File("src/resources/img/card_stacks/level3.png");
+		Image backgroundImage3 = new Image(backgroundFile3.toURI().toString());
+		ImageView stapel3 = new ImageView(backgroundImage3);
+
+		int stapelWidth = 128;
+		int stapelHeight = 200;
+
+		stapel1.setFitWidth(stapelWidth);
+		stapel1.setFitHeight(stapelHeight);
+
+		stapel2.setFitWidth(stapelWidth);
+		stapel2.setFitHeight(stapelHeight);
+
+		stapel3.setFitWidth(stapelWidth);
+		stapel3.setFitHeight(stapelHeight);
+
+		stapelFotosBox.getChildren().addAll(stapel3, stapel2, stapel1);
+
+		stapelFotosBox.setSpacing(10);
+		stapelFotosBox.setPadding(new Insets(10));
+
+		spelbord.setLeft(stapelFotosBox);
+	}
+
+	private void developmentCards() {
+		// Add development cards
+		SpelVoorwerpDTO[][] niveaus = { dc.getNiveau3Zichtbaar(), dc.getNiveau2Zichtbaar(), dc.getNiveau1Zichtbaar() };
+
+		GridPane ontwikkelingskaartGridPane = new GridPane();
+
+		// Define the number of columns and rows in the grid
+		int numColumns = 4;
+		int numRows = 3;
+
+		// Add OntwikkelingskaartNodes to the grid
+		for (int i = 0; i < numRows * numColumns; i++) {
+			int row = i / numColumns;
+			int col = i % numColumns;
+			SpelVoorwerpDTO[] niveau = niveaus[row];
+			OntwikkelingskaartNode devCardNode = new OntwikkelingskaartNode(niveau[col]);
+
+			// Add mouse click event handler to the node
+			devCardNode.setOnMouseClicked(event -> {
+				System.out.printf("%d%d%n", row, col);
+				try {
+					dc.kiesOntwikkelingskaart(row + 1, col + 1);
+				} catch (Exception e) {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Error");
+					alert.setHeaderText("An error has occurred");
+					alert.setContentText("The following exception was thrown:\n\n" + e.getMessage());
+					alert.showAndWait();
+				}
+			});
+
+			ontwikkelingskaartGridPane.add(devCardNode, col, row);
+
+		}
+
+		// Set some padding and gaps between cells in the grid
+		ontwikkelingskaartGridPane.setPadding(new Insets(10));
+		ontwikkelingskaartGridPane.setHgap(10);
+		ontwikkelingskaartGridPane.setVgap(10);
+
+		ontwikkelingskaartGridPane.setAlignment(Pos.TOP_CENTER);
+
+		spelbord.setCenter(ontwikkelingskaartGridPane);
+	}
 }
