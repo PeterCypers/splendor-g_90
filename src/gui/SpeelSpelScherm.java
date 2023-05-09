@@ -2,6 +2,7 @@ package gui;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import domein.DomeinController;
@@ -28,6 +29,7 @@ import resources.Taal;
 public class SpeelSpelScherm extends BorderPane {
 	private final DomeinController dc;
 	private BorderPane spelbord;
+	private HashSet<Kleur> kleurKeuze = new HashSet<>();
 
 	public SpeelSpelScherm(DomeinController dc) {
 		this.dc = dc;
@@ -69,6 +71,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 		pasBeurt.setOnAction(e -> {
 			dc.volgendeSpeler();
+			kleurKeuze.clear();
 			playerInfo();
 		});
 
@@ -113,9 +116,9 @@ public class SpeelSpelScherm extends BorderPane {
 			Image gemImage = new Image(gemFile.toURI().toString());
 			ImageView gemImageView = new ImageView(gemImage);
 
-			int amount = fichestapels.get(kleur);
+			Integer amount = fichestapels.get(kleur);
 
-			if (amount > 0) {
+			if (amount != null && amount > 0) {
 				// Set the size of the gem image view
 				gemImageView.setFitWidth(GEMS_WIDTH_AND_HEIGHT);
 				gemImageView.setFitHeight(GEMS_WIDTH_AND_HEIGHT);
@@ -134,6 +137,11 @@ public class SpeelSpelScherm extends BorderPane {
 				// Add the gem image view and the amount text to the VBox
 				gemBox.getChildren().addAll(gemImageView, amountText);
 
+				// Add mouse click event handler to the node
+				gemBox.setOnMouseClicked(event -> {
+					gemClicked(kleur, fichestapels);
+				});
+
 				// Add the VBox containing the gem to the gemsBox
 				gemsBox.getChildren().add(gemBox);
 			}
@@ -143,6 +151,79 @@ public class SpeelSpelScherm extends BorderPane {
 
 		// Display the gemsBox to the left of the development cards
 		spelbord.setRight(gemsBox);
+	}
+
+	private void gemClicked(Kleur kleur, HashMap<Kleur, Integer> fichestapels) {
+		int aantalFichesDieGenomenMogenWorden = Math.min(3, dc.geefAantalStapelsMeerDanNul());
+
+		boolean succesvol = false;
+		try {
+			System.out.printf("size voordien %d%n", kleurKeuze.size());
+			if (kleurKeuze.contains(kleur)) {
+				dc.neemTweeFiches(kleur);
+				succesvol = true;
+			}
+
+			if (fichestapels.get(kleur) != null && fichestapels.get(kleur) > 0)
+				kleurKeuze.add(kleur);
+
+			if (kleurKeuze.size() == aantalFichesDieGenomenMogenWorden) {
+				Kleur[] kleurenArray = new Kleur[aantalFichesDieGenomenMogenWorden];
+				kleurKeuze.toArray(kleurenArray);
+				dc.neemDrieFiches(kleurenArray);
+				succesvol = true;
+			}
+
+			System.out.printf("size nadien %d%n", kleurKeuze.size());
+
+			if (succesvol) {
+				if (dc.buitenVoorraad()) {
+					System.out.println("BUITEN VOORRAAD");
+					geefFichesTerug();
+				}
+
+				dc.volgendeSpeler();
+				kleurKeuze.clear();
+				gems();
+				playerInfo();
+			}
+		} catch (Exception e) {
+			errorAlert(e);
+		}
+
+	}
+
+	private void geefFichesTerug() {
+		// TODO moet een popup geven en moet ervoor zorgen dat het ander scherm niet
+		// geklikt kan worden, tot het probleem van buiten voorraad is opgelost
+
+		// toon overzicht van edelsteenfiches in speler zijn voorraad
+		playerInfo();
+
+		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
+		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
+
+		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
+			boolean isTerugGelegd = true;
+
+			while (isTerugGelegd) {
+				try {
+					/*
+					 * System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
+					 * 
+					 * int stapelKeuze = input.nextInt();
+					 * 
+					 * dc.plaatsTerugInStapel(stapelKeuze - 1);
+					 */
+					isTerugGelegd = false;
+				} catch (RuntimeException e) {
+					System.out.println("\nU probeert fiches terug te plaatsen van een lege stapel.\n");
+					isTerugGelegd = true;
+				}
+
+			}
+		}
+
 	}
 
 	private void nobles() {
@@ -221,15 +302,12 @@ public class SpeelSpelScherm extends BorderPane {
 
 			// Add mouse click event handler to the node
 			devCardNode.setOnMouseClicked(event -> {
-				System.out.printf("%d%d%n", row, col);
 				try {
+					// TODO dit moet werken, maar werkt nog niet
 					dc.kiesOntwikkelingskaart(row + 1, col + 1);
+					// kleurKeuze.clear();
 				} catch (Exception e) {
-					Alert alert = new Alert(Alert.AlertType.ERROR);
-					alert.setTitle("Error");
-					alert.setHeaderText("An error has occurred");
-					alert.setContentText("The following exception was thrown:\n\n" + e.getMessage());
-					alert.showAndWait();
+					errorAlert(e);
 				}
 			});
 
@@ -245,5 +323,14 @@ public class SpeelSpelScherm extends BorderPane {
 		ontwikkelingskaartGridPane.setAlignment(Pos.TOP_CENTER);
 
 		spelbord.setCenter(ontwikkelingskaartGridPane);
+	}
+
+	private void errorAlert(Exception e) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle(Taal.getString("error"));
+		alert.setHeaderText(Taal.getString("errorOccured"));
+		alert.setContentText(String.format("%s:%n%n", Taal.getString("exceptionThrown")) + e.getMessage());
+		alert.showAndWait();
+		kleurKeuze.clear();
 	}
 }
