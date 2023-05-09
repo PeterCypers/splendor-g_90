@@ -80,18 +80,18 @@ public class Spel {
 	private void controleerOntwikkelingsKaartLijsten(List<List<Ontwikkelingskaart>> ontwikkelingsKaarten) {
 		if (ontwikkelingsKaarten == null)
 			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelControleerOntwikkelingsKaartLijstenOuterListNullExceptionMsg")));
+					(Taal.getString("spelControleerOntwikkelingsKaartLijstenOuterListNullExceptionMsg")));
 		if (ontwikkelingsKaarten.size() != 3)
 			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelControleerOntwikkelingsKaartLijstenSize3ExceptionMsg")));
+					(Taal.getString("spelControleerOntwikkelingsKaartLijstenSize3ExceptionMsg")));
 		ontwikkelingsKaarten.forEach((lijst) -> {
 			if (lijst == null)
-				throw new IllegalArgumentException(foutBoodschap(
-						Taal.getString("spelControleerOntwikkelingsKaartLijstenInnerListNullExceptionMsg")));
+				throw new IllegalArgumentException(
+						(Taal.getString("spelControleerOntwikkelingsKaartLijstenInnerListNullExceptionMsg")));
 			lijst.forEach((kaart) -> {
 				if (kaart == null)
-					throw new IllegalArgumentException(foutBoodschap(
-							Taal.getString("spelControleerOntwikkelingsKaartLijstenCardNullExceptionMsg")));
+					throw new IllegalArgumentException(
+							(Taal.getString("spelControleerOntwikkelingsKaartLijstenCardNullExceptionMsg")));
 			});
 		});
 		// nieuwe conditie, controler op duplicate lijsten, gecontroleerd op unieke size
@@ -100,28 +100,24 @@ public class Spel {
 				|| ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(2).size()
 				|| ontwikkelingsKaarten.get(1).size() == ontwikkelingsKaarten.get(2).size())
 			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelControleerOntwikkelingsKaartLijstenDuplicateListExceptionMsg")));
+					(Taal.getString("spelControleerOntwikkelingsKaartLijstenDuplicateListExceptionMsg")));
 	}
 
 	private void controleerEdelenLijst(List<Edele> edelen) {
 		if (edelen == null)
-			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelControleerEdelenLijstNullExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelControleerEdelenLijstNullExceptionMsg")));
 		if (edelen.size() != this.getAantalSpelers() + 1)
-			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelControleerEdelenLijstSizeExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelControleerEdelenLijstSizeExceptionMsg")));
 	}
 
 	private void controleerFicheStapels(HashMap<Kleur, Integer> ficheStapels) {
 		int aantalFichesPerStapel;
 
 		if (ficheStapels == null)
-			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelControleerFicheStapelsStackListNullExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelControleerFicheStapelsStackListNullExceptionMsg")));
 
 		if (ficheStapels.size() != 5)
-			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelControleerFicheStapelsStackListSizeExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelControleerFicheStapelsStackListSizeExceptionMsg")));
 
 		switch (aangemeldeSpelers.size()) {
 		case 2 -> aantalFichesPerStapel = 4;
@@ -135,12 +131,12 @@ public class Spel {
 		ficheStapels.forEach((kleur, aantalFiches) -> {
 			if (aantalFiches == null || aantalFiches == 0) {
 				throw new IllegalArgumentException(
-						foutBoodschap(Taal.getString("spelControleerFicheStapelsNullOrEmptyStackExceptionMsg")));
+						(Taal.getString("spelControleerFicheStapelsNullOrEmptyStackExceptionMsg")));
 			}
 
 			if (aantalFiches != aantalFichesPerStapel) {
 				throw new IllegalArgumentException(
-						foutBoodschap(Taal.getString("spelControleerFicheStapelsInvalidStackSizeExceptionMsg")));
+						(Taal.getString("spelControleerFicheStapelsInvalidStackSizeExceptionMsg")));
 			}
 		});
 	}
@@ -203,26 +199,25 @@ public class Spel {
 	public void kiesOntwikkelingskaart(int niveau, int positie) {
 		if (positie < 1 || positie > 4)
 			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelKiesOntwikkelingskaartPositionOutOfBoundsExceptionMsg")));
+					(Taal.getString("spelKiesOntwikkelingskaartPositionOutOfBoundsExceptionMsg")));
 		if (niveau < 1 || niveau > 3)
 			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelKiesOntwikkelingskaartLevelOutOfBoundsExceptionMsg")));
+					(Taal.getString("spelKiesOntwikkelingskaartLevelOutOfBoundsExceptionMsg")));
 
 		Ontwikkelingskaart gekozenOntwikkelingskaart = null;
 		Ontwikkelingskaart[][] niveauZichtbaar = { niveau1Zichtbaar, niveau2Zichtbaar, niveau3Zichtbaar };
 		gekozenOntwikkelingskaart = niveauZichtbaar[niveau - 1][positie - 1];
 
 		if (gekozenOntwikkelingskaart == null) {
-			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelKiesOntwikkelingskaartCardNullExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelKiesOntwikkelingskaartCardNullExceptionMsg")));
 		}
 
 		// Kijken of de speler genoeg fiches en/of ontwikkelingskaarten reeds in hand
 		// heeft om deze kaart te kopen //TODO System.exit() code toevoegen? zie
 		// spelNeemDrieFichesEmptyStackExceptionMsg2
 		if (!kanKaartKopen(gekozenOntwikkelingskaart)) {
-			throw new RuntimeException(foutBoodschap(
-					String.format("%n%s.%n", Taal.getString("spelKiesOntwikkelingskaartFailCanBuyCheckExceptionMsg"))));
+			throw new RuntimeException((String.format("%n%s.%n",
+					Taal.getString("spelKiesOntwikkelingskaartFailCanBuyCheckExceptionMsg"))));
 		}
 
 		// [TEST]
@@ -255,7 +250,7 @@ public class Spel {
 
 	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
 		if (gekozenOntwikkelingskaart == null)
-			throw new IllegalArgumentException(foutBoodschap(Taal.getString("spelKanKaartKopenCardNullExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelKanKaartKopenCardNullExceptionMsg")));
 		int[] somAantalPerKleurInBezit = somAantalPerKleurInBezit();
 
 		int[] kosten = gekozenOntwikkelingskaart.getKosten();
@@ -319,7 +314,7 @@ public class Spel {
 
 	private void voegFicheToe(Kleur kleur) {
 		if (kleur == null)
-			throw new IllegalArgumentException(foutBoodschap(Taal.getString("spelFicheColourNullExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelFicheColourNullExceptionMsg")));
 
 		Integer currentValue = ficheStapels.get(kleur);
 		if (currentValue != null) {
@@ -331,7 +326,7 @@ public class Spel {
 
 	private void verwijderFiche(Kleur kleur) {
 		if (kleur == null)
-			throw new IllegalArgumentException(foutBoodschap(Taal.getString("spelFicheColourNullExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelFicheColourNullExceptionMsg")));
 
 		int currentValue = ficheStapels.get(kleur);
 		if (currentValue - 1 > 0) {
@@ -368,8 +363,7 @@ public class Spel {
 	 */
 	public void neemDrieFiches(Kleur[] kleuren) {
 		if (kleuren == null)
-			throw new IllegalArgumentException(
-					foutBoodschap(Taal.getString("spelNeemDrieFichesEmptyListItemExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelNeemDrieFichesEmptyListItemExceptionMsg")));
 
 		if (kleuren[0] == kleuren[1] || kleuren[1] == kleuren[2] || kleuren[0] == kleuren[2]) {
 			throw new IllegalArgumentException(
@@ -405,7 +399,7 @@ public class Spel {
 	 */
 	public void neemTweeFiches(Kleur kleur) {
 		if (kleur == null)
-			throw new IllegalArgumentException(foutBoodschap(Taal.getString("spelFicheColourNullExceptionMsg")));
+			throw new IllegalArgumentException((Taal.getString("spelFicheColourNullExceptionMsg")));
 
 		// controleren of de gekozen stapel om van te nemen nog bestaat
 		if (ficheStapels.get(kleur) == null) {
@@ -485,12 +479,6 @@ public class Spel {
 		rest[1] = n2.size();
 		rest[2] = n3.size();
 		return rest;
-	}
-
-	private String foutBoodschap(String specifiekBericht) {
-		// return String.format("%s %s: %s", Taal.getString("errorIn"), this.getClass(),
-		// specifiekBericht);
-		return specifiekBericht;
 	}
 
 	public void plaatsTerugInStapel(int stapelKeuze) {
