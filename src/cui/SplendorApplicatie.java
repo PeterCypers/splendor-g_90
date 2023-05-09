@@ -120,9 +120,6 @@ public class SplendorApplicatie {
 			// start een beurt
 			speelBeurt();
 
-			// bepaalt volgende speler
-			dc.volgendeSpeler();
-
 			// Winnaar wordt hier bepaalt en getoond, maar ook het tellen van de ronden
 			if (beurten == 0) {
 				beurten = dc.geefAantalSpelers();
@@ -205,10 +202,11 @@ public class SplendorApplicatie {
 //						+ "6. Zal het spel starten met 2 spelers en veel edelsteenfiches toekennen\n"
 //						+ "7. Zal het spel starten met 2 spelers die al een aantal prestigepunten hebben om te winnen "
 //						+ "(15 + random waarde van 1 tot 3)\n");
-				System.out.printf("%n%s:%n3. %s 2 %s%n4. %s 3 %s%n5. %s 4 %s%n6. %s%n7. %s%n%n", Taal.getString("temporaryChoices"), Taal.getString("startGameWith"),
-						Taal.getString("correctPlayers"), Taal.getString("startGameWith"), Taal.getString("correctPlayers"),
-						Taal.getString("startGameWith"), Taal.getString("correctPlayers"),
-						Taal.getString("choiceSix"), Taal.getString("choiceSeven"));
+				System.out.printf("%n%s:%n3. %s 2 %s%n4. %s 3 %s%n5. %s 4 %s%n6. %s%n7. %s%n%n",
+						Taal.getString("temporaryChoices"), Taal.getString("startGameWith"),
+						Taal.getString("correctPlayers"), Taal.getString("startGameWith"),
+						Taal.getString("correctPlayers"), Taal.getString("startGameWith"),
+						Taal.getString("correctPlayers"), Taal.getString("choiceSix"), Taal.getString("choiceSeven"));
 				System.out.printf("%s: ", Taal.getString("choice"));
 				keuze = input.nextInt();
 				loop = false;
@@ -300,6 +298,8 @@ public class SplendorApplicatie {
 			} catch (RuntimeException e) {
 				System.out.println(e.getMessage());
 			}
+
+			dc.volgendeSpeler();
 		}
 
 	}
@@ -522,14 +522,15 @@ public class SplendorApplicatie {
 		}
 
 	}
+
 	/**
-	 * user System set language: Locale.getDefault().getCountry()
-	 * ResourceBundle set language: Taal.getResource().getLocale().getLanguage()
+	 * user System set language: Locale.getDefault().getCountry() ResourceBundle set
+	 * language: Taal.getResource().getLocale().getLanguage()
 	 */
 	private void taalKeuze() {
 		int taalKeuze = -1;
-		String country= "BE";
-		String language= "nl";
+		String country = "BE";
+		String language = "nl";
 		System.out.println("Choose Language:\n1. NL\n2. EN\n3. FR");
 		do {
 			try {
@@ -544,15 +545,17 @@ public class SplendorApplicatie {
 				System.out.println(e.getMessage());
 			}
 		} while (taalKeuze < 1 || taalKeuze > 3);
-		
+
 		switch (taalKeuze) {
 		case 1 -> {
 			country = "BE";
 			language = "nl";
-		} case 2 -> {
+		}
+		case 2 -> {
 			country = "UK";
 			language = "en";
-		} case 3 -> {
+		}
+		case 3 -> {
 			country = "BE";
 			language = "fr";
 		}

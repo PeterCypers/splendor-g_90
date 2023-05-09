@@ -1,9 +1,12 @@
 package domein;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import resources.Taal;
 
@@ -243,9 +246,6 @@ public class Spel {
 
 		// zichtbare kaarten stapel worden bijgevuld
 		vulKaartenBij();
-
-		// speler zijn beurt wordt stopgezet
-		spelerAanBeurt.setAanDeBeurt(false);
 	}
 
 	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
@@ -365,7 +365,8 @@ public class Spel {
 		if (kleuren == null)
 			throw new IllegalArgumentException((Taal.getString("spelNeemDrieFichesEmptyListItemExceptionMsg")));
 
-		if (kleuren[0] == kleuren[1] || kleuren[1] == kleuren[2] || kleuren[0] == kleuren[2]) {
+		Set<Kleur> kleurenSet = new HashSet<>(Arrays.asList(kleuren));
+		if (kleurenSet.size() < kleuren.length) {
 			throw new IllegalArgumentException(
 					String.format("%n%s.%n%s%n", Taal.getString("spelNeemDrieFichesDuplicateStackExceptionMsgPart1"),
 							Taal.getString("spelNeemDrieFichesDuplicateStackExceptionMsgPart2")));
@@ -389,8 +390,6 @@ public class Spel {
 			spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
 		}
 
-		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
-		spelerAanBeurt.setAanDeBeurt(false);
 	}
 
 	/**
@@ -420,9 +419,6 @@ public class Spel {
 		// 2 toevoegen aan speler zijn stapel
 		spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
 		spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
-
-		// nadat alles goed uitgevoerd is, zal deze speler hun beurt voorbij zijn
-		spelerAanBeurt.setAanDeBeurt(false);
 	}
 
 	public int aantalStapelsMeerDanNul() {
