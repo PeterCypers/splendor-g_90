@@ -28,9 +28,8 @@ public class SplendorApplicatie {
 
 	public void startSpel() {
 		int keuze = -1;
-		System.out.println(Locale.getDefault().getCountry());
+
 		taalKeuze();
-		System.out.println(Taal.getResource().getLocale().getLanguage());
 
 		// [TEST] connectie db:
 		System.out.printf("%s", dc.toonAlleSpelers());
@@ -446,7 +445,7 @@ public class SplendorApplicatie {
 
 			System.out.printf(
 					"\nKies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n");
-
+//TODO kleur: aantal + kleur uitlijnen met 7spaces
 			for (Kleur k : Kleur.values()) {
 				System.out.printf("%s %d%n", k, k.getKleur() + 1);
 			}
@@ -523,7 +522,10 @@ public class SplendorApplicatie {
 		}
 
 	}
-	
+	/**
+	 * user System set language: Locale.getDefault().getCountry()
+	 * ResourceBundle set language: Taal.getResource().getLocale().getLanguage()
+	 */
 	private void taalKeuze() {
 		int taalKeuze = -1;
 		String country= "BE";

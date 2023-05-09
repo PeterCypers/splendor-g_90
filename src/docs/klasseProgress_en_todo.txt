@@ -42,3 +42,11 @@ https://patorjk.com/software/taag/#p=display&f=Standard&t=Ronde
 
 
 zie edelen -> benaming fotos -> geef ontw-kaarten ook een goeie naam voor hun fotos
+
+uitlijning representatie fiches:
+		if (ficheStapels.size() > 0) {
+			for (Kleur kleur : Kleur.values()) {
+				Integer aantalFiches = ficheStapels.get(kleur);
+				representatieFiches += String.format("%-6s %d%n",Taal.getString(kleur.toString()) + ":", aantalFiches != null ? aantalFiches : 0);
+			}
+		}
