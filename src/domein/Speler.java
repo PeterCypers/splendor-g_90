@@ -23,7 +23,7 @@ public class Speler {
 		setGebruikersnaam(gebruikersnaam);
 		setGeboortejaar(geboortejaar);
 		// defaultwaarden initializeren + lege lijsten aanmaken
-		aantalPrestigepunten = 0;//TODO commit comment ++
+		aantalPrestigepunten = 0;
 		aanDeBeurt = false;
 		startSpeler = false;
 		ontwikkelingskaartenInHand = new ArrayList<>();
