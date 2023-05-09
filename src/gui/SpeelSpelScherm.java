@@ -10,19 +10,19 @@ import dto.SpelVoorwerpDTO;
 import dto.SpelerDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import resources.Taal;
 
 public class SpeelSpelScherm extends BorderPane {
 	private final DomeinController dc;
@@ -38,6 +38,7 @@ public class SpeelSpelScherm extends BorderPane {
 		BorderPane spelbord = new BorderPane();
 		spelbord.setStyle("-fx-background-color: #008080;");
 		this.setCenter(spelbord);
+		setAlignment(spelbord, Pos.CENTER);
 		spelbord.setMaxWidth(875);
 		spelbord.setMaxHeight(800);
 
@@ -60,6 +61,7 @@ public class SpeelSpelScherm extends BorderPane {
 		}
 
 		spelbord.setTop(noblesBox);
+		noblesBox.setAlignment(Pos.TOP_CENTER);
 
 		/*------------------------------------------DECK CARDS------------------------------------------*/
 		VBox stapelFotosBox = new VBox();
@@ -181,29 +183,33 @@ public class SpeelSpelScherm extends BorderPane {
 			playerBoxes.getChildren().add(new SpelerNode(speler));
 		}
 
+		playerBoxes.setAlignment(Pos.CENTER_RIGHT);
+		playerBoxes.setStyle("-fx-background-color: #704e38;");
 		this.setLeft(playerBoxes);
 
-		/*------------------------------------------OTHER------------------------------------------*/
-		// top
-		Pane top = new Pane();
-		Label lblTop = new Label("TOP");
-		top.getChildren().add(lblTop);
-		BorderPane.setAlignment(lblTop, Pos.CENTER);
-		this.setTop(top);
+		/*------------------------------------------PLAYER TURN OPTIONS------------------------------------------*/
+		StackPane bottomOfGameBorderPane = new StackPane();
+		BorderPane.setAlignment(bottomOfGameBorderPane, Pos.CENTER);
 
-		// bottom
-		Pane bot = new Pane();
-		Label lblBot = new Label("BOT");
-		bot.getChildren().add(lblBot);
-		BorderPane.setAlignment(lblBot, Pos.CENTER);
-		this.setBottom(lblBot);
+		HBox bottomGameElements = new HBox();
+		bottomGameElements.setAlignment(Pos.CENTER);
 
-		// right
-		Pane right = new Pane();
-		Label lblRight = new Label("RIGHT");
-		right.getChildren().add(lblRight);
-		BorderPane.setAlignment(lblRight, Pos.CENTER);
-		this.setRight(lblRight);
+		Button pasBeurt = new Button(Taal.getString("cancelTurn"));
+		pasBeurt.setStyle(
+				"-fx-background-color: #ab4333; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold;");
+		pasBeurt.setAlignment(Pos.CENTER);
+
+		pasBeurt.setOnAction(e -> {
+			// dc.pasBeurt();
+			dc.volgendeSpeler();
+			buildGui();
+		});
+
+		bottomGameElements.getChildren().add(pasBeurt);
+		bottomOfGameBorderPane.getChildren().add(bottomGameElements);
+
+		bottomOfGameBorderPane.setStyle("-fx-background-color: #4a2610;");
+		this.setBottom(bottomOfGameBorderPane);
 
 	}
 
