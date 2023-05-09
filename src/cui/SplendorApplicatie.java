@@ -93,7 +93,7 @@ public class SplendorApplicatie {
 		if (keuze == 2) {
 			dc.startNieuwSpel();
 
-			System.out.print(spelGestartFeedback());
+			System.out.print(spelGestartFeedback()); 
 		}
 
 		int beurten = dc.geefAantalSpelers();
@@ -102,12 +102,10 @@ public class SplendorApplicatie {
 		while (!dc.isEindeSpel()) {
 			// print de ASCII art "ronde" elke keer er een nieuwe ronde is
 			if (beurten == dc.geefAantalSpelers()) {
-				System.out.println("                      _      \r\n" + "  _ __ ___  _ __   __| | ___ \r\n"
-						+ " | '__/ _ \\| '_ \\ / _` |/ _ \\\r\n" + " | | | (_) | | | | (_| |  __/\r\n"
-						+ " |_|  \\___/|_| |_|\\__,_|\\___|\r\n" + "                             ");
+				System.out.println(rondeAsciiArt(Taal.getResource().getLocale().getLanguage()));
 			}
 
-			System.out.printf("*****Het is nu ronde %d*****", ronde);
+			System.out.printf("*****%s %d*****", Taal.getString("splendorApplicatieRoundCountMsg"), ronde);
 
 			beurten--;
 
@@ -128,15 +126,11 @@ public class SplendorApplicatie {
 				List<Speler> winnaars = dc.bepaalWinnaar();
 
 				if (winnaars.size() > 0) {
-					System.out.println("           _                              \r\n"
-							+ " __      _(_)_ __  _ __   __ _  __ _ _ __ \r\n"
-							+ " \\ \\ /\\ / / | '_ \\| '_ \\ / _` |/ _` | '__|\r\n"
-							+ "  \\ V  V /| | | | | | | | (_| | (_| | |   \r\n"
-							+ "   \\_/\\_/ |_|_| |_|_| |_|\\__,_|\\__,_|_|   \r\n"
-							+ "                                          ");
-					System.out.printf("DE WINNAAR%s:%n", winnaars.size() == 1 ? " IS" : "S ZIJN");
+					System.out.println(winnaarAsciiArt(Taal.getResource().getLocale().getLanguage()));
+					
+					System.out.printf("%s:%n", winnaars.size() == 1 ? Taal.getString("winnerSingle") : Taal.getString("winnerPlural"));
 					for (Speler speler : winnaars) {
-						System.out.printf("Speler %s%n", speler.getGebruikersnaam());
+						System.out.printf("%s %s%n", Taal.getString("player"), speler.getGebruikersnaam());
 					}
 				}
 
@@ -170,7 +164,7 @@ public class SplendorApplicatie {
 					input.nextLine(); // buffer leegmaken
 					System.out.printf("%s%n%n", Taal.getString("inputMisMatchWholeNumberErrorMsg"));
 				} catch (IllegalArgumentException e) {
-					System.out.println(e.getMessage());
+					System.out.println(e.getMessage()); //TODO check all possible feedback strings, remove error origin klass
 					System.out.println();
 				}
 
@@ -226,24 +220,25 @@ public class SplendorApplicatie {
 				+ "  ___) | |_) | |  __/ | | | (_| | (_) | |   \r\n"
 				+ " |____/| .__/|_|\\___|_| |_|\\__,_|\\___/|_|   \r\n"
 				+ "       |_|                                  \r\n"
-				+ "\n*****Een nieuw spel is gestart*****\n\nDe jongste speler mag beginnen\n\n");
+				+ "\n" + Taal.getString("splendorApplicatieSpelGestartFeedbackMsgPart1") + "\n\n" 
+				+ Taal.getString("splendorApplicatieSpelGestartFeedbackMsgPart2") + "\n\n");
 	}
 
 	private void toonSpelSituatie() {
 		List<SpelVoorwerpDTO> dtos = dc.toonSpelSituatie();
 
-		System.out
-				.println("************************************ Spel Situatie: ************************************ \n");
-		System.out.println("Beschikbare edelen:");
+		System.out.println(Taal.getString("splendorApplicatieToonSpelSituatieGameSituationMsg") + "\n");
+		System.out.println(Taal.getString("splendorApplicatieToonSpelSituatieAvailableNoblesMsg"));
 
 		for (SpelVoorwerpDTO dto : dtos) {
 			if (dto.type() == 'E') {
-				System.out.printf("Edele: %s --- Prestigepunten: %d%nKost: %s%n", dto.foto(), dto.prestigepunten(),
-						Arrays.toString(dto.kosten()));
+				System.out.printf("%s: %s --- %s: %d%n"
+						+ "%s: %s%n", Taal.getString("noble"), dto.foto(), Taal.getString("prestigePoints"), dto.prestigepunten(),
+						Taal.getString("cost"), Arrays.toString(dto.kosten()));
 			}
 		}
 
-		System.out.println("\nBeschikbare ontwikkelingskaarten:"); // foto, niveau, kleur, prestige, \n kosten
+		System.out.println("\n" + Taal.getString("splendorApplicatieToonSpelSituatieAvailableDevelopmentCardsMsg")); // foto, niveau, kleur, prestige, \n kosten
 
 		for (int i = 1; i < 4; i++) {
 			int niveau = (i == 1) ? 1 : (i == 2) ? 2 : 3;
@@ -258,7 +253,7 @@ public class SplendorApplicatie {
 			}
 		}
 
-		System.out.println("\nBeschikbare fiches per stapel:");
+		System.out.println("\n" + Taal.getString("splendorApplicatieToonSpelSituatieAvailableGemTokensMsg"));
 		System.out.println(dc.toonSpelFiches());
 
 		System.out.println();
@@ -266,25 +261,30 @@ public class SplendorApplicatie {
 
 	private void speelBeurt() {
 		SoortKeuze keuze = null;
-		System.out.println(
-				"************************************ Speler Aan Beurt: ************************************ ");
-		System.out.printf("Speler aan beurt is: %s%n%n", dc.toonSpelerAanBeurtVerkort());
+		System.out.println("************************************ "+ Taal.getString("splendorApplicatieSpeelBeurtPlayerTurnMsg") +" ************************************");
+		
+		System.out.printf("%s %s%n%n", Taal.getString("splendorApplicatieSpeelBeurtPlayerTurnMsg"), dc.toonSpelerAanBeurtVerkort());
 
 		/*
 		 * zolang speler aan de beurt is => toon de verschillende opties => en laat hem
 		 * een optie kiezen
 		 */
 		while (dc.spelerIsAanBeurt()) {
-			System.out.print("Maak een keuze:\n" + "1. Neem 3 verschillende fiches\n" + "2. Neem 2 dezelfde fiches\n"
-					+ "3. Koop een ontwikkelingskaart\n" + "4. Pas uw beurt\nKeuze: ");
+			System.out.printf("%s%n%s%n%s%n%s%n%s%n%s ",
+					Taal.getString("splendorApplicatieSpeelBeurtMakeAChoiceMsg"),
+					Taal.getString("splendorApplicatieSpeelBeurtChoice1Msg"),
+					Taal.getString("splendorApplicatieSpeelBeurtChoice2Msg"),
+					Taal.getString("splendorApplicatieSpeelBeurtChoice3Msg"),
+					Taal.getString("splendorApplicatieSpeelBeurtChoice4Msg"),
+					Taal.getString("splendorApplicatieSpeelBeurtChooseMsg"));
 
 			try {
 				int keuzeGetal = input.nextInt();
 				keuze = SoortKeuze.valueOf(keuzeGetal);
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn\n");
-			} catch (IllegalArgumentException e) {
+				System.out.println(Taal.getString("splendorApplicatieSpeelBeurtInputMismatchExceptionMsg") + "\n");
+			} catch (IllegalArgumentException e) { //TODO check all possible feedback strings, remove error origin klass
 				System.out.println(e.getMessage());
 			}
 
@@ -295,7 +295,7 @@ public class SplendorApplicatie {
 				case KOOP_KAART -> koopOntwikkelingskaart();
 				case PAS_BEURT -> dc.pasBeurt();
 				}
-			} catch (RuntimeException e) {
+			} catch (RuntimeException e) { //TODO check all possible feedback strings, remove error origin klass
 				System.out.println(e.getMessage());
 			}
 
@@ -303,21 +303,21 @@ public class SplendorApplicatie {
 		}
 
 	}
-
+	//TODO
 	private void koopOntwikkelingskaart() {
 		int niveau = 0;
 		int positie = 0;
 
 		do {
-			System.out.print("\nKies niveau van kaart [1-3]: ");
+			System.out.printf("%n%s ", Taal.getString("splendorApplicatieKoopOntwikkelingskaartChooseLevelMsg"));
 
 			try {
 				niveau = input.nextInt();
 				if (niveau < 1 || niveau > 3)
-					throw new IllegalArgumentException("Gelieve een niveau van [1-3] te kiezen");
+					throw new IllegalArgumentException(Taal.getString("splendorApplicatieKoopOntwikkelingskaartChooseLevelBoundsExceptionMsg"));
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn tussen [1-3]\n");
+				System.out.printf("%s%n%n", Taal.getString("splendorApplicatieKoopOntwikkelingskaartChooseLevelInputMismatchMsg"));
 			} catch (IllegalArgumentException e) {
 				input.nextLine(); // buffer leegmaken
 				System.out.println(e.getMessage());
@@ -325,15 +325,15 @@ public class SplendorApplicatie {
 		} while (niveau < 1 || niveau > 3);
 
 		do {
-			System.out.print("Kies de positie van je kaart [1-4]: ");
+			System.out.printf("%s ", Taal.getString("splendorApplicatieKoopOntwikkelingskaartChoosePositionMsg"));
 
 			try {
 				positie = input.nextInt();
 				if (positie < 1 || positie > 4)
-					throw new IllegalArgumentException("Gelieve een positie van [1-4] te kiezen");
+					throw new IllegalArgumentException(Taal.getString("splendorApplicatieKoopOntwikkelingskaartChoosePositionBoundsExceptionMsg"));
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn tussen [1-4]\n");
+				System.out.printf("%s%n%n", Taal.getString("splendorApplicatieKoopOntwikkelingskaartChoosePositionInputMismatchMsg"));
 			} catch (IllegalArgumentException e) {
 				input.nextLine(); // buffer leegmaken
 				System.out.println(e.getMessage());
@@ -349,7 +349,7 @@ public class SplendorApplicatie {
 		try {
 			dc.krijgEdele();
 		} catch (RuntimeException e) {
-			System.out.printf("Er is iets fout gelopen in de krijgEdele methode");
+			System.out.print(Taal.getString("splendorApplicatieKoopOntwikkelingskaartGetNobleWentWrongMsg"));
 		}
 	}
 
@@ -360,10 +360,10 @@ public class SplendorApplicatie {
 		int aantalFichesDieGenomenMogenWorden = Math.min(3, dc.geefAantalStapelsMeerDanNul());
 
 		if (aantalFichesDieGenomenMogenWorden == 0) {
-			throw new RuntimeException("\nDeze actie kan niet gedaan worden omdat alle stapels leeg zijn.\n");
+			throw new RuntimeException(String.format("%n%s%n", Taal.getString("splendorApplicatieNeemDrieVerschillendeFichesZeroTokensExceptionMsg")));
 		}
 		if (dc.totaalAantalFichesVanSpelerAanBeurt() == 10) {
-			throw new RuntimeException("\nSpeler heeft reeds 10 edelsteenfiches in voorraad.\n");
+			throw new RuntimeException(String.format("%n%s%n", Taal.getString("splendorApplicatieNeemDrieVerschillendeFichesPlayerTenTokensExceptionMsg")));
 		}
 		/*
 		 * Een set heeft altijd unieke waarden => daardoor worden er 3 verschillende
@@ -371,40 +371,40 @@ public class SplendorApplicatie {
 		 */
 		Set<Integer> keuzeSet = new HashSet<Integer>();
 
-		System.out.printf(
-				"%nKies %d stapels om een fiche van te nemen, kies een getal die hoort bij je gekozen stapel.%n",
-				aantalFichesDieGenomenMogenWorden);
+		System.out.printf("%n%s %d %s%n", Taal.getString("splendorApplicatieNeemDrieVerschillendeFichesChoose1"), aantalFichesDieGenomenMogenWorden,
+				Taal.getString("splendorApplicatieNeemDrieVerschillendeFichesChoose2"));
+		//TODO check works
+		//System.out.println("---check---");
 		for (Kleur k : Kleur.values()) {
-			System.out.printf("%s %d%n", k, k.getKleur() + 1);
+			System.out.printf("%-6s %d%n", Taal.getString(k.toString()) + ":", k.getKleur() + 1);
 		}
 
 		do {
-			System.out.printf("Fiche %d: ", keuzeSet.size() + 1);
+			System.out.printf("%s %d: ", Taal.getString("splendorApplicatieNeemDrieVerschillendeFichesToken"), keuzeSet.size() + 1);
 
 			try {
 				int keuze = input.nextInt();
 
 				// kijk
 				if (keuze < 1 || keuze > 5) {
-					throw new IllegalArgumentException("Kies een stapel van [1-5]");
+					throw new IllegalArgumentException(Taal.getString("splendorApplicatieNeemDrieVerschillendeFichesBoundsExceptionMsg"));
 				}
 				if (keuzeSet.contains(keuze)) {
-					System.out.print("U heeft al gekozen voor volgende stapelnummers: ");
+					System.out.printf("%s ", Taal.getString("splendorApplicatieNeemDrieVerschillendeFichesStackChoiceMsg"));
 					for (Integer i : keuzeSet) {
 						System.out.print(i + " ");
 					}
 					System.out.println("\n");
 
-					throw new IllegalArgumentException(
-							String.format("U probeert 2 edelsteenfiches van dezelfde kleur te nemen."));
+					throw new IllegalArgumentException(Taal.getString("splendorApplicatieNeemDrieVerschillendeFichesDuplicateColourExceptionMsg"));
 				}
 
 				keuzeSet.add(keuze);
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
-				System.out.println("Je keuze moet een geheel getal zijn\n");
+				System.out.println(Taal.getString("splendorApplicatieSpeelBeurtInputMismatchExceptionMsg") + "\n");
 			} catch (IllegalArgumentException e) {
-				System.out.println(e.getMessage());
+				System.out.println(e.getMessage()); //TODO check
 			}
 		} while (aantalFichesDieGenomenMogenWorden != keuzeSet.size());
 
@@ -436,32 +436,30 @@ public class SplendorApplicatie {
 	private void neemTweeDezelfdeFiches() {
 
 		if (!dc.bestaatStapelMeerDan4()) {
-			throw new RuntimeException(
-					"\nDeze actie kan niet gedaan worden omdat er geen stapels zijn die 4 of meer fiches hebben\n");
+			throw new RuntimeException(String.format("%n%s%n", Taal.getString("splendorApplicatieNeemTweeDezelfdeFichesNoStackOfFourExceptionMsg")));
 		}
 
 		try {
 			int keuze = 0;
 
-			System.out.printf(
-					"\nKies een stapel om 2 dezelfde fiches van te nemen, kies een getal die hoort bij je gekozen stapel.%n");
-//TODO kleur: aantal + kleur uitlijnen met 7spaces
+			System.out.printf(String.format("%n%s%n", Taal.getString("splendorApplicatieNeemTweeDezelfdeFichesChooseStackMsg")));
+
 			for (Kleur k : Kleur.values()) {
-				System.out.printf("%s %d%n", k, k.getKleur() + 1);
+				System.out.printf("%-6s %d%n", Taal.getString(k.toString()) + ":", k.getKleur() + 1);
 			}
 
 			do {
-				System.out.print("Keuze: ");
+				System.out.print(Taal.getString("splendorApplicatieSpeelBeurtChooseMsg") + " ");
 
 				try {
 					keuze = input.nextInt();
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
-					System.out.println("Je keuze moet een geheel getal zijn\n");
+					System.out.println(Taal.getString("splendorApplicatieSpeelBeurtInputMismatchExceptionMsg") + "\n");
 				}
 
 				if (keuze < 1 || keuze > 5)
-					System.out.println("Kies een stapel van [1-5]");
+					System.out.println(Taal.getString("splendorApplicatieNeemDrieVerschillendeFichesBoundsExceptionMsg"));
 			} while (keuze < 1 || keuze > 5);
 
 			Kleur kleur = Kleur.valueOf(keuze - 1);
@@ -469,7 +467,7 @@ public class SplendorApplicatie {
 			dc.neemTweeFiches(kleur);
 
 		} catch (IllegalArgumentException e) {
-			System.out.println(e.getMessage());
+			System.out.println(e.getMessage()); //TODO check
 		}
 
 		if (dc.buitenVoorraad()) {
@@ -484,18 +482,19 @@ public class SplendorApplicatie {
 		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
 		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
 
-		System.out.printf(
-				"U heeft volgende edelsteenfiches in bezit (maar dit zijn er meer dan %d toegestane voorraad)%n",
-				Speler.getMaxEdelsteenfichesInVoorraad());
+		System.out.printf("%s %d %s%n", Taal.getString("splendorApplicatieGeefFichesTerugTooManyTokensMsgPart1"),
+				Speler.getMaxEdelsteenfichesInVoorraad(),
+				Taal.getString("splendorApplicatieGeefFichesTerugTooManyTokensMsgPart2"));
 
 		// toon speler aan de beurt zijn fiches na elke verwijdering
 		System.out.println(dc.toonAantalFichesVanSpelerAanBeurt());
 
-		System.out.printf("Geef %d fiches terug aan de spel stapels, kies een getal die hoort bij je gekozen stapel.%n",
-				aantalTerugTePlaatsen);
-
+		System.out.printf("%s %d %s%n", Taal.getString("splendorApplicatieGeefFichesTerugGiveBackMsgPart1"),
+				aantalTerugTePlaatsen, Taal.getString("splendorApplicatieGeefFichesTerugGiveBackMsgPart2"));
+		//TODO uitlijnen check of het werkt
+		//System.out.println("----check----");
 		for (Kleur k : Kleur.values()) {
-			System.out.printf("%s %d%n", k, k.getKleur() + 1);
+			System.out.printf("%-6s %d%n", Taal.getString(k.toString()) + ":", k.getKleur() + 1);
 		}
 
 		System.out.println("");
@@ -506,7 +505,7 @@ public class SplendorApplicatie {
 			while (isTerugGelegd) {
 
 				try {
-					System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
+					System.out.printf("%s ", Taal.getString("splendorApplicatieGeefFichesTerugOwnStackChoiceToReturnMsg"));
 
 					int stapelKeuze = input.nextInt();
 
@@ -514,7 +513,7 @@ public class SplendorApplicatie {
 
 					isTerugGelegd = false;
 				} catch (RuntimeException e) {
-					System.out.println("\nU probeert fiches terug te plaatsen van een lege stapel.\n");
+					System.out.printf("%n%s%n%n", Taal.getString("splendorApplicatieGeefFichesTerugEmptyOwnStackExceptionMsg"));
 					isTerugGelegd = true;
 				}
 
@@ -524,8 +523,74 @@ public class SplendorApplicatie {
 	}
 
 	/**
-	 * user System set language: Locale.getDefault().getCountry() ResourceBundle set
-	 * language: Taal.getResource().getLocale().getLanguage()
+	 *
+	 * @param taal expect Taal.getResource().getLocale().getLanguage()
+	 * @return Ascii Art of Ronde / Round / Partie
+	 */
+	private String rondeAsciiArt(String taal) {
+		String asciiSign = "";
+		if(taal == "nl") {
+			asciiSign += "                      _      \r\n"
+					+ "  _ __ ___  _ __   __| | ___ \r\n"
+					+ " | '__/ _ \\| '_ \\ / _` |/ _ \\\r\n" 
+					+ " | | | (_) | | | | (_| |  __/\r\n"
+					+ " |_|  \\___/|_| |_|\\__,_|\\___|\r\n" 
+					+ "                             ";
+		}
+		if(taal == "en") {
+			asciiSign += "                            _ \r\n" 
+					+ "  _ __ ___  _   _ _ __   __| |\r\n"
+					+ " | '__/ _ \\| | | | '_ \\ / _` |\r\n" 
+					+ " | | | (_) | |_| | | | | (_| |\r\n"
+					+ " |_|  \\___/ \\__,_|_| |_|\\__,_|\r\n" 
+					+ "                              ";
+		}
+		if(taal == "fr") {
+			asciiSign += "                   _   _      \r\n" 
+					+ "  _ __   __ _ _ __| |_(_) ___ \r\n"
+					+ " | '_ \\ / _` | '__| __| |/ _ \\\r\n" 
+					+ " | |_) | (_| | |  | |_| |  __/\r\n"
+					+ " | .__/ \\__,_|_|   \\__|_|\\___|\r\n" 
+					+ " |_|                          \n";
+		}
+		return asciiSign;
+	}
+	/**
+	 * @param taal expect Taal.getResource().getLocale().getLanguage()
+	 * @return Ascii Art of Winnaar / Winner / Gagnant
+	 */
+	private String winnaarAsciiArt(String taal) {
+		String asciiSign = "";
+		if(taal == "nl") {
+			asciiSign += "           _                              \r\n"
+					+ " __      _(_)_ __  _ __   __ _  __ _ _ __ \r\n"
+		            + " \\ \\ /\\ / / | '_ \\| '_ \\ / _` |/ _` | '__|\r\n"
+					+ "  \\ V  V /| | | | | | | | (_| | (_| | |   \r\n"
+					+ "   \\_/\\_/ |_|_| |_|_| |_|\\__,_|\\__,_|_|   \r\n"
+					+ "                                          \n";
+		}
+		if(taal == "en") {
+			asciiSign += "           _                       \r\n"
+					+ " __      _(_)_ __  _ __   ___ _ __ \r\n"
+					+ " \\ \\ /\\ / / | '_ \\| '_ \\ / _ \\ '__|\r\n"
+					+ "  \\ V  V /| | | | | | | |  __/ |   \r\n"
+					+ "   \\_/\\_/ |_|_| |_|_| |_|\\___|_|   \r\n"
+					+ "                                   \n";
+		}
+		if(taal == "fr") {
+			asciiSign += "                                      _   \r\n"
+					+ "   __ _  __ _  __ _ _ __   __ _ _ __ | |_ \r\n"
+					+ "  / _` |/ _` |/ _` | '_ \\ / _` | '_ \\| __|\r\n"
+					+ " | (_| | (_| | (_| | | | | (_| | | | | |_ \r\n"
+					+ "  \\__, |\\__,_|\\__, |_| |_|\\__,_|_| |_|\\__|\r\n"
+					+ "  |___/       |___/                       \n\n";
+		}
+		return asciiSign;
+	}
+	
+	/**
+	 * user System set language: Locale.getDefault().getCountry()
+	 * ResourceBundle set language: Taal.getResource().getLocale().getLanguage()
 	 */
 	private void taalKeuze() {
 		int taalKeuze = -1;

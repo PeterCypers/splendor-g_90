@@ -171,9 +171,9 @@ public class DomeinController {
 		String alleSpelers = String.format("***DB-%s***%n", Taal.getString("players"));
 
 		for (Speler s : spelers) {
-			alleSpelers += String.format("%s: %6s  | %s: %3d jaar | %s: %d%n",Taal.getString("username"), s.getGebruikersnaam(),
+			alleSpelers += String.format("%s: %6s  | %s: %3d %s | %s: %d%n",Taal.getString("username"), s.getGebruikersnaam(),
 					Taal.getString("age").toLowerCase(),
-					LocalDate.now().getYear() - s.getGeboortejaar(), Taal.getString("birthyear").toLowerCase(), s.getGeboortejaar());
+					LocalDate.now().getYear() - s.getGeboortejaar(), Taal.getString("dcToonAlleSpelersYear"), Taal.getString("birthyear").toLowerCase(), s.getGeboortejaar());
 		}
 
 		alleSpelers += String.format("*******************************************************%n");
