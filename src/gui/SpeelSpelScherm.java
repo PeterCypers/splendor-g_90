@@ -301,15 +301,25 @@ public class SpeelSpelScherm extends BorderPane {
 			OntwikkelingskaartNode devCardNode = new OntwikkelingskaartNode(niveau[col]);
 
 			// Add mouse click event handler to the node
-			devCardNode.setOnMouseClicked(event -> {
-				try {
-					// TODO dit moet werken, maar werkt nog niet
-					dc.kiesOntwikkelingskaart(row + 1, col + 1);
 
+			devCardNode.setOnMouseClicked(event -> {
+				boolean succesvol = false;
+				try {
+					dc.kiesOntwikkelingskaart(3 - row, col + 1);
+					succesvol = true;
 					// kleurKeuze.clear();
 				} catch (Exception e) {
 					errorAlert(e);
+					succesvol = false;
 				}
+
+				if (succesvol) {
+					dc.volgendeSpeler();
+					gems();
+					developmentCards();
+					playerInfo();
+				}
+
 			});
 
 			ontwikkelingskaartGridPane.add(devCardNode, col, row);

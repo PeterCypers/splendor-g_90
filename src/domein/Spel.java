@@ -208,12 +208,18 @@ public class Spel {
 					(Taal.getString("spelKiesOntwikkelingskaartLevelOutOfBoundsExceptionMsg")));
 
 		Ontwikkelingskaart gekozenOntwikkelingskaart = null;
+
 		Ontwikkelingskaart[][] niveauZichtbaar = { niveau1Zichtbaar, niveau2Zichtbaar, niveau3Zichtbaar };
 		gekozenOntwikkelingskaart = niveauZichtbaar[niveau - 1][positie - 1];
 
 		if (gekozenOntwikkelingskaart == null) {
 			throw new IllegalArgumentException((Taal.getString("spelKiesOntwikkelingskaartCardNullExceptionMsg")));
 		}
+
+		// TODO TEST prints wegdoen
+		System.out.println(gekozenOntwikkelingskaart.toString());
+		System.out.println(spelerAanBeurt.toonAantalFiches());
+		System.out.println(toonFiches());
 
 		// Kijken of de speler genoeg fiches en/of ontwikkelingskaarten reeds in hand
 		// heeft om deze kaart te kopen //TODO System.exit() code toevoegen? zie
@@ -251,8 +257,8 @@ public class Spel {
 	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
 		if (gekozenOntwikkelingskaart == null)
 			throw new IllegalArgumentException((Taal.getString("spelKanKaartKopenCardNullExceptionMsg")));
-		int[] somAantalPerKleurInBezit = somAantalPerKleurInBezit();
 
+		int[] somAantalPerKleurInBezit = somAantalPerKleurInBezit();
 		int[] kosten = gekozenOntwikkelingskaart.getKosten();
 
 		boolean kaartKoopbaar = false;
