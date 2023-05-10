@@ -19,6 +19,7 @@ public class StartUpGui extends Application {
 		stage.setTitle("Choose language");
 		stage.show();
 
+		// [TEST] SpeelSpelScherm
 //		String language = "EN";
 //		String country = "UK";
 //		Locale l = new Locale(language.toLowerCase(), country);
@@ -35,6 +36,7 @@ public class StartUpGui extends Application {
 //		stage.setTitle(Taal.getString("game"));
 //		stage.show();
 
+		// [TEST] WinnaarScherm
 		// WinnaarScherm victory = new WinnaarScherm(dc);
 		// Scene scene = new Scene (victory,960,600);
 		// primaryStage.setScene(scene);

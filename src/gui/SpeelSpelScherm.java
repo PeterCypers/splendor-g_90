@@ -61,7 +61,7 @@ public class SpeelSpelScherm extends BorderPane {
 		/*--------------RIGHT SIDE--------------*/
 		HBox spelerAanBeurtInfo = new HBox();
 		StackPane spacer = new StackPane();
-		spacer.setMinWidth(6900);
+		spacer.setMinWidth(256 + 32);
 		spelerAanBeurtInfo.getChildren().add(spacer);
 		this.setRight(spelerAanBeurtInfo);
 
