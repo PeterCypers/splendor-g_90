@@ -2,6 +2,7 @@ package domein;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,14 +31,29 @@ public class Spel {
 	private Ontwikkelingskaart[] niveau1Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau2Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau3Zichtbaar = { null, null, null, null };
+	//TODO remove code code
+	/**
+	 * Class constructor. <br>
+	 * - aantal deelnemende spelers wordt gecontroleerd volgens DR_SPEL_ AANTAL_SPELERS<br>
+	 * - de jongste <code>Speler</code> mag beginnen, bij meerdere jongste spelers zie methode <code>bepaalStartSpeler</code><br>
+	 * - -> de startSpeler wordt bepaald<br>
+	 * - -> de startSpeler wordt nu de eerste <code>spelerAanbeurt</code><br>
+	 * - alle lijsten worden gecontroleerd
+	 * - <code>n1</code>, <code>n2</code>, <code>n3</code> -> lijsten worden ingesteld op de uitgepakte <code>ontwikkelingsKaarten</code><br>
+	 * - de zichtbare lijsten van kaarten worden bijgevuld
+	 * @param aangemeldeSpelers lijst van deelnemende <code>Speler</code>s
+	 * @param ontwikkelingsKaarten de drie geshuffelde lijsten van <code>Ontwikkelingskaart</code> van niveau 1, 2 en 3
+	 * @param edelen geshuffelde <code>List</code> van <code>Edele</code>
+	 * @param ficheStapels een <code>HashMap</code> die de aantal fiches per kleur bijhoudt<br>
+	 * 
+	 */
 
 	public Spel(List<Speler> aangemeldeSpelers, List<List<Ontwikkelingskaart>> ontwikkelingsKaarten, List<Edele> edelen,
 			HashMap<Kleur, Integer> ficheStapels) {
 		controleerAantalSpelers(aangemeldeSpelers);
 		this.aangemeldeSpelers = aangemeldeSpelers;
-		// jongste speler wordt 1ste speler aanbeurt, jongste speler is startspeler en
-		// is aan de beurt
-		this.bepaalJongsteSpeler(aangemeldeSpelers);
+
+		this.bepaalStartSpeler(aangemeldeSpelers);
 		this.spelerAanBeurt.setStartSpeler();
 		this.spelerAanBeurt.setAanDeBeurt(true);
 
@@ -58,17 +74,15 @@ public class Spel {
 		// [TEST]
 		// testOntwikkelingsKaartStapels();
 	}
-
-	private void bepaalJongsteSpeler(List<Speler> aangemeldeSpelers) {
-		int jongste = Integer.MIN_VALUE;
-		Speler jongsteSpeler = null;
-		for (Speler speler : aangemeldeSpelers) {
-			if (speler.getGeboortejaar() > jongste) {
-				jongsteSpeler = speler;
-				jongste = speler.getGeboortejaar();
-			}
-		}
-		spelerAanBeurt = jongsteSpeler;
+	/**
+	 * @param aangemeldeSpelers de <code>List<Speler></code><br> van deelnemende spelers
+	 * - uit de lijst wordt de <code>Speler</code> met de recentste geboortedatum de eerste <code>spelerAanBeurt</code><br>
+	 * - bij gelijke geboortedatum wordt de <code>Speler</code> met de langste naam gekozen<br>
+	 * - bij gelijke 'geboortedatum' en 'naam lengte' wordt [Z-A] omgekeerd alphabetisch gekozen
+	 */
+	private void bepaalStartSpeler(List<Speler> aangemeldeSpelers) {
+		Collections.sort(aangemeldeSpelers, new SpelerComparator());
+		spelerAanBeurt = aangemeldeSpelers.get(0);
 	}
 
 	private void controleerAantalSpelers(List<Speler> aangemeldeSpelers) {
@@ -97,8 +111,7 @@ public class Spel {
 							(Taal.getString("spelControleerOntwikkelingsKaartLijstenCardNullExceptionMsg")));
 			});
 		});
-		// nieuwe conditie, controler op duplicate lijsten, gecontroleerd op unieke size
-		// van kaartlijsten
+		// check op duplicate lijsten -> N1/N2/N3 - lists hebben een unieke size()
 		if (ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(1).size()
 				|| ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(2).size()
 				|| ontwikkelingsKaarten.get(1).size() == ontwikkelingsKaarten.get(2).size())
@@ -217,8 +230,7 @@ public class Spel {
 		}
 
 		// Kijken of de speler genoeg fiches en/of ontwikkelingskaarten reeds in hand
-		// heeft om deze kaart te kopen //TODO System.exit() code toevoegen? zie
-		// spelNeemDrieFichesEmptyStackExceptionMsg2
+		// heeft om deze kaart te kopen 
 		if (!kanKaartKopen(gekozenOntwikkelingskaart)) {
 			throw new RuntimeException((String.format("%n%s.%n",
 					Taal.getString("spelKiesOntwikkelingskaartFailCanBuyCheckExceptionMsg"))));
