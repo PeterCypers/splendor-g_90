@@ -320,7 +320,6 @@ public class SplendorApplicatie {
 		}
 	}
 
-	// TODO
 	private void koopOntwikkelingskaart() {
 		int niveau = 0;
 		int positie = 0;
