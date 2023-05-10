@@ -57,31 +57,33 @@ public class TaalKeuzeScherm extends StackPane {
 		// Add the backgroundRegion and the backgroundImageView to a StackPane
 		StackPane stackPane = new StackPane(backgroundRegion);
 
-		// TODO: knoppen beetje lager
 
 		// knop NL
-		Button btnNederlands = new Button("NL");
-		btnNederlands.setFont(Font.font("Helvetica", FontWeight.BOLD, 16));
-		btnNederlands.setPrefSize(100, 50);
-		btnNederlands.setOnAction(this::drukOpTaalKnop);
-		btnNederlands.setTooltip(new Tooltip("Nederlands"));
+		
+		
+		
+		Button btnNL = new Button("NL");
+		btnNL.setFont(Font.font("Helvetica", FontWeight.BOLD, 16));
+		btnNL.setPrefSize(100, 50);
+		btnNL.setOnAction(this::drukOpTaalKnop);
+		btnNL.setTooltip(new Tooltip("Nederlands"));
 
 		// knop EN
-		Button btnEngels = new Button("EN");
-		btnEngels.setFont(Font.font("Helvetica", FontWeight.BOLD, 16));
-		btnEngels.setPrefSize(100, 50);
-		btnEngels.setOnAction(this::drukOpTaalKnop);
-		btnNederlands.setTooltip(new Tooltip("English"));
+		Button btnEN = new Button("EN");
+		btnEN.setFont(Font.font("Helvetica", FontWeight.BOLD, 16));
+		btnEN.setPrefSize(100, 50);
+		btnEN.setOnAction(this::drukOpTaalKnop);
+		btnEN.setTooltip(new Tooltip("English"));
 
 		// knop FR
-		Button btnFrans = new Button("FR");
-		btnFrans.setFont(Font.font("Helvetica", FontWeight.BOLD, 16));
-		btnFrans.setPrefSize(100, 50);
-		btnFrans.setOnAction(this::drukOpTaalKnop);
-		btnNederlands.setTooltip(new Tooltip("Francais"));
+		Button bntFR = new Button("FR");
+		bntFR.setFont(Font.font("Helvetica", FontWeight.BOLD, 16));
+		bntFR.setPrefSize(100, 50);
+		bntFR.setOnAction(this::drukOpTaalKnop);
+		bntFR.setTooltip(new Tooltip("Francais"));
 
 		// wrap knoppen in HBox
-		HBox btnBox = new HBox(btnNederlands, btnEngels, btnFrans);
+		HBox btnBox = new HBox(btnNL, btnEN, bntFR);
 		btnBox.setPadding(new Insets(50, 0, 0, 0));
 		btnBox.setAlignment(Pos.CENTER);
 		btnBox.setSpacing(10);

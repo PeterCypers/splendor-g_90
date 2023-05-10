@@ -1,6 +1,7 @@
 package gui;
 
 import domein.DomeinController;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import main.StartUpGui;
 import resources.Taal;
 
 public class HoofdSchermSpelers extends BorderPane {
@@ -49,7 +51,9 @@ public class HoofdSchermSpelers extends BorderPane {
 	    
 	}
 	private void drukKeerTerug(ActionEvent event) {
-		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
+
+		
+		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(new DomeinController());
 		Stage stage = (Stage) this.getScene().getWindow();
 		Scene scene = new Scene(taalKeuze, stage.getWidth(), stage.getHeight());
 		stage.setScene(scene);

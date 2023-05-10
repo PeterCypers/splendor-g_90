@@ -43,8 +43,9 @@ public class OverzichtSpelers extends VBox {
 		this.setAlignment(Pos.CENTER);
 		this.setSpacing(20);
 
-		Label lblOverzicht = new Label(String.format("%s: ", Taal.getString("players")));
-		lblOverzicht.setFont(Font.font("Helvetica", FontWeight.BOLD, 25));
+		Label lblOverzicht = new Label(String.format("%s", Taal.getString("players")));
+		lblOverzicht.setFont(Font.font("Helvetica", FontWeight.BOLD, 30));
+		lblOverzicht.setUnderline(true);
 		lblOverzicht.setAlignment(Pos.TOP_CENTER);
 		this.getChildren().add(lblOverzicht);
 
@@ -53,7 +54,7 @@ public class OverzichtSpelers extends VBox {
 
 	}
 
-	private void toonSpelers() {
+	public void toonSpelers() {
 		ObservableList<String> playerInfo = FXCollections.observableArrayList();
 
 		for (Speler speler : spelerRepo.getSpelers()) {
@@ -67,10 +68,15 @@ public class OverzichtSpelers extends VBox {
 
 		lijst.setItems(playerInfo);
 
-		lijst.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+		lijst.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
+		{
 			String[] parts = newValue.split(" - ");
 			details.getTxfGebruikersnaam().setText(parts[0]);
-			details.getTxfGeboortejaar().setText(parts[1]);
+			details.getTxfGeboortejaar().setText(parts[1]);		 
 		});
+		
+
 	}
+
+
 }
