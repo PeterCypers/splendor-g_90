@@ -36,7 +36,7 @@ public class StartUpGui extends Application {
 //		stage.show();
 
 		// WinnaarScherm victory = new WinnaarScherm(dc);
-		// Scene scene = new Scene (victory,800,600);
+		// Scene scene = new Scene (victory,960,600);
 		// primaryStage.setScene(scene);
 		// primaryStage.setTitle("victory");
 		// primaryStage.show();

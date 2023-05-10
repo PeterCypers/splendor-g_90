@@ -136,7 +136,7 @@ public class DetailSpelers extends GridPane {
 		return txfGeboortejaar;
 	}
 
-	private void drukStartSpel(ActionEvent event) {
+	private void drukStartSpel(ActionEvent event) { //naar volgende scherm
 		SpeelSpelScherm spelbord = new SpeelSpelScherm(dc);
 		Stage stage = (Stage) this.getScene().getWindow();
 		Scene scene = new Scene(spelbord, stage.getWidth(), stage.getHeight());
