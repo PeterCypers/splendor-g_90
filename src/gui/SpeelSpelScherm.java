@@ -15,15 +15,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -50,7 +44,6 @@ public class SpeelSpelScherm extends BorderPane {
 		this.setStyle("-fx-background-color: #000000;");
 
 		/*--------------CREATE THE BORD--------------*/
-
 
 		spelbord.setStyle("-fx-background-color: #012000;");
 
@@ -251,11 +244,11 @@ public class SpeelSpelScherm extends BorderPane {
 
 		noblesBox.setSpacing(10);
 
-		if (edelen.size() < 5) {
-			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
-		} else {
-			noblesBox.setPadding(new Insets(10));
-		}
+//		if (edelen.size() < 5) {
+//			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
+//		} else {
+		noblesBox.setPadding(new Insets(10));
+//		}
 
 		spelbord.setTop(noblesBox);
 		noblesBox.setAlignment(Pos.TOP_CENTER);
