@@ -25,7 +25,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class SpelerNode extends StackPane {
-	private static final int PLAYER_BOX_WIDTH = 256;
+	private static final int PLAYER_BOX_WIDTH = 256 + 32;
 	private static final int PLAYER_BOX_HEIGHT = 128;
 	private static final int PLAYER_BOX_ARC_WIDTH = 20;
 	private static final int PLAYER_BOX_ARC_HEIGHT = 20;

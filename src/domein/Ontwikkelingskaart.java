@@ -26,7 +26,7 @@ public class Ontwikkelingskaart implements SpelVoorwerp {
 	}
 
 	private void setNiveau(int niveau) {
-		if(niveau < 1 || niveau > 3)
+		if (niveau < 1 || niveau > 3)
 			throw new IllegalArgumentException(Taal.getString("ontwikkelingskaartSetNiveauExceptionMsg"));
 		this.niveau = niveau;
 	}
@@ -36,7 +36,7 @@ public class Ontwikkelingskaart implements SpelVoorwerp {
 	}
 
 	private void setKleurBonus(Kleur kleurBonus) {
-		if(kleurBonus == null)
+		if (kleurBonus == null)
 			throw new IllegalArgumentException(Taal.getString("ontwikkelingskaartSetKleurBonusExceptionMsg"));
 		this.kleurBonus = kleurBonus;
 	}
@@ -46,8 +46,9 @@ public class Ontwikkelingskaart implements SpelVoorwerp {
 	}
 
 	private void setFotoOntwikkelingskaart(String fotoOntwikkelingskaart) {
-		if(fotoOntwikkelingskaart == null || fotoOntwikkelingskaart.isBlank())
-			throw new IllegalArgumentException(Taal.getString("ontwikkelingskaartSetFotoOntwikkelingskaartExceptionMsg"));
+		if (fotoOntwikkelingskaart == null || fotoOntwikkelingskaart.isBlank())
+			throw new IllegalArgumentException(
+					Taal.getString("ontwikkelingskaartSetFotoOntwikkelingskaartExceptionMsg"));
 		this.fotoOntwikkelingskaart = fotoOntwikkelingskaart;
 	}
 
@@ -56,7 +57,7 @@ public class Ontwikkelingskaart implements SpelVoorwerp {
 	}
 
 	private void setPrestigepunten(int prestigepunten) {
-		if(prestigepunten < 0 || prestigepunten > 5)
+		if (prestigepunten < 0 || prestigepunten > 5)
 			throw new IllegalArgumentException(Taal.getString("ontwikkelingskaartSetPrestigepuntenExceptionMsg"));
 		this.prestigepunten = prestigepunten;
 	}
@@ -66,9 +67,9 @@ public class Ontwikkelingskaart implements SpelVoorwerp {
 	}
 
 	private void setKosten(int[] kosten) {
-		if(kosten == null)
+		if (kosten == null)
 			throw new IllegalArgumentException(Taal.getString("setKostenNullExceptionMsg"));
-		if(kosten.length != 5)
+		if (kosten.length != 5)
 			throw new IllegalArgumentException(Taal.getString("setKostenArrayLengthExceptionMsg"));
 		this.kosten = kosten;
 	}
@@ -77,16 +78,18 @@ public class Ontwikkelingskaart implements SpelVoorwerp {
 	public String toString() {
 
 		String kostenString = "";
-		//format Kleur: kost
-		//       Kleur: kost
+		// format Kleur: kost
+		// Kleur: kost
 //		for (int i = 0; i < Kleur.values().length; i++) {
 //			kostenString += String.format("%s: %d%n",Taal.getString(Kleur.values()[i].toString()), kosten[i]);
 //		}
 		kostenString = Arrays.toString(this.kosten);
-		String ontwikkelingsKaartAlsString = String.format("%s %s %d, %s %-5s %s %s %d%n%s: %s",
-				Taal.getString("developmentCard"), Taal.getString("level").toLowerCase(), getNiveau(), Taal.getString("colour").toLowerCase(), Taal.getString(getKleurBonus().toString()).toLowerCase(),
-				Taal.getString("and").toLowerCase(), Taal.getString("prestige").toLowerCase(), this.getPrestigepunten(), Taal.getString("cost"), kostenString);
-		
+		String ontwikkelingsKaartAlsString = String.format("%s - %s %d, %s %-5s %s %s %d%n%s: %s",
+				Taal.getString("developmentCard"), Taal.getString("level").toLowerCase(), getNiveau(),
+				Taal.getString("colour").toLowerCase(), Taal.getString(getKleurBonus().toString()).toLowerCase(),
+				Taal.getString("and").toLowerCase(), Taal.getString("prestige").toLowerCase(), this.getPrestigepunten(),
+				Taal.getString("cost"), kostenString);
+
 		return ontwikkelingsKaartAlsString;
 	}
 
