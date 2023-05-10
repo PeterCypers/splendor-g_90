@@ -57,6 +57,13 @@ public class SpeelSpelScherm extends BorderPane {
 		developmentCards();
 		gems();
 
+		/*--------------RIGHT SIDE--------------*/
+		HBox spelerAanBeurtInfo = new HBox();
+		StackPane spacer = new StackPane();
+		spacer.setMinWidth(6900);
+		spelerAanBeurtInfo.getChildren().add(spacer);
+		this.setRight(spelerAanBeurtInfo);
+
 		/*--------------PLAYER TURN OPTIONS--------------*/
 		StackPane bottomOfGameBorderPane = new StackPane();
 		BorderPane.setAlignment(bottomOfGameBorderPane, Pos.CENTER);
@@ -158,7 +165,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 		boolean succesvol = false;
 		try {
-			System.out.printf("size voordien %d%n", kleurKeuze.size());
+
 			if (kleurKeuze.contains(kleur)) {
 				dc.neemTweeFiches(kleur);
 				succesvol = true;
@@ -173,8 +180,6 @@ public class SpeelSpelScherm extends BorderPane {
 				dc.neemDrieFiches(kleurenArray);
 				succesvol = true;
 			}
-
-			System.out.printf("size nadien %d%n", kleurKeuze.size());
 
 			if (succesvol) {
 				if (dc.buitenVoorraad()) {

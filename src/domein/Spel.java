@@ -216,11 +216,6 @@ public class Spel {
 			throw new IllegalArgumentException((Taal.getString("spelKiesOntwikkelingskaartCardNullExceptionMsg")));
 		}
 
-		// TODO TEST prints wegdoen
-		System.out.println(gekozenOntwikkelingskaart.toString());
-		System.out.println(spelerAanBeurt.toonAantalFiches());
-		System.out.println(toonFiches());
-
 		// Kijken of de speler genoeg fiches en/of ontwikkelingskaarten reeds in hand
 		// heeft om deze kaart te kopen //TODO System.exit() code toevoegen? zie
 		// spelNeemDrieFichesEmptyStackExceptionMsg2

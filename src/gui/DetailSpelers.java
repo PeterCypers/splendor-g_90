@@ -2,7 +2,6 @@ package gui;
 
 import domein.DomeinController;
 import domein.Spel;
-
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,7 +15,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
 import resources.Taal;
 
 public class DetailSpelers extends GridPane {
@@ -95,7 +93,7 @@ public class DetailSpelers extends GridPane {
 				}
 				dc.voegSpelerToe(txfGebruikersnaam.getText(), Integer.parseInt(txfGeboortejaar.getText()));
 				lblAantalSpelers
-				.setText((String.format("%s: %d", Taal.getString("numberOfPlayers"), dc.geefAantalSpelers())));
+						.setText((String.format("%s: %d", Taal.getString("numberOfPlayers"), dc.geefAantalSpelers())));
 
 				if (dc.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS) // max spelers,
 					btnAdd.setDisable(true);
@@ -140,6 +138,7 @@ public class DetailSpelers extends GridPane {
 		SpeelSpelScherm spelbord = new SpeelSpelScherm(dc);
 		Stage stage = (Stage) this.getScene().getWindow();
 		Scene scene = new Scene(spelbord, stage.getWidth(), stage.getHeight());
+		stage.setTitle(Taal.getString("game"));
 		stage.setScene(scene);
 
 	}
