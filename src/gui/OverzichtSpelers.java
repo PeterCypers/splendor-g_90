@@ -22,6 +22,9 @@ public class OverzichtSpelers extends VBox {
 	SpelerRepository spelerRepo = new SpelerRepository();
 	private final DomeinController dc;
 
+	//observableList
+	ObservableList<String> playerInfo = FXCollections.observableArrayList();
+
 	// Dit DetailPaneel wordt verwittigd wanneer de selectie wijzigt
 	private DetailSpelers details;
 
@@ -30,6 +33,9 @@ public class OverzichtSpelers extends VBox {
 
 	// Een OverzichtPaneel heeft zowel een controller als een DetailPaneel nodig
 	// Deze komen binnen als argumenten in de constructor
+
+
+
 	public OverzichtSpelers(DomeinController dc, DetailSpelers ds) {
 		this.dc = dc;
 		this.details = ds;
@@ -55,7 +61,6 @@ public class OverzichtSpelers extends VBox {
 	}
 
 	public void toonSpelers() {
-		ObservableList<String> playerInfo = FXCollections.observableArrayList();
 
 		for (Speler speler : spelerRepo.getSpelers()) {
 			String gebruikersNaam = speler.getGebruikersnaam();
@@ -72,11 +77,14 @@ public class OverzichtSpelers extends VBox {
 		{
 			String[] parts = newValue.split(" - ");
 			details.getTxfGebruikersnaam().setText(parts[0]);
-			details.getTxfGeboortejaar().setText(parts[1]);		 
-		});
+			details.getTxfGeboortejaar().setText(parts[1]);		
+			
 		
+//		if(playerInfo.equals()) {
+//			playerInfo.remove(newValue);
+//		}
+		});
 
 	}
-
 
 }
