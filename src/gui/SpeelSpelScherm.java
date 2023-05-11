@@ -46,6 +46,7 @@ public class SpeelSpelScherm extends BorderPane {
 		/*--------------CREATE THE BORD--------------*/
 
 
+
 		spelbord.setStyle("-fx-background-color: #328dd8;");
 
 		setAlignment(spelbord, Pos.CENTER);
@@ -58,6 +59,13 @@ public class SpeelSpelScherm extends BorderPane {
 		deckCards();
 		developmentCards();
 		gems();
+
+		/*--------------RIGHT SIDE--------------*/
+		HBox spelerAanBeurtInfo = new HBox();
+		StackPane spacer = new StackPane();
+		spacer.setMinWidth(256 + 32);
+		spelerAanBeurtInfo.getChildren().add(spacer);
+		this.setRight(spelerAanBeurtInfo);
 
 		/*--------------PLAYER TURN OPTIONS--------------*/
 		StackPane bottomOfGameBorderPane = new StackPane();
@@ -160,7 +168,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 		boolean succesvol = false;
 		try {
-			System.out.printf("size voordien %d%n", kleurKeuze.size());
+
 			if (kleurKeuze.contains(kleur)) {
 				dc.neemTweeFiches(kleur);
 				succesvol = true;
@@ -175,8 +183,6 @@ public class SpeelSpelScherm extends BorderPane {
 				dc.neemDrieFiches(kleurenArray);
 				succesvol = true;
 			}
-
-			System.out.printf("size nadien %d%n", kleurKeuze.size());
 
 			if (succesvol) {
 				if (dc.buitenVoorraad()) {
@@ -240,11 +246,11 @@ public class SpeelSpelScherm extends BorderPane {
 
 		noblesBox.setSpacing(10);
 
-		if (edelen.size() < 5) {
-			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
-		} else {
-			noblesBox.setPadding(new Insets(10));
-		}
+//		if (edelen.size() < 5) {
+//			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
+//		} else {
+		noblesBox.setPadding(new Insets(10));
+//		}
 
 		spelbord.setTop(noblesBox);
 		noblesBox.setAlignment(Pos.TOP_CENTER);
@@ -303,15 +309,25 @@ public class SpeelSpelScherm extends BorderPane {
 			OntwikkelingskaartNode devCardNode = new OntwikkelingskaartNode(niveau[col]);
 
 			// Add mouse click event handler to the node
-			devCardNode.setOnMouseClicked(event -> {
-				try {
-					// TODO dit moet werken, maar werkt nog niet
-					dc.kiesOntwikkelingskaart(row + 1, col + 1);
 
+			devCardNode.setOnMouseClicked(event -> {
+				boolean succesvol = false;
+				try {
+					dc.kiesOntwikkelingskaart(3 - row, col + 1);
+					succesvol = true;
 					// kleurKeuze.clear();
 				} catch (Exception e) {
 					errorAlert(e);
+					succesvol = false;
 				}
+
+				if (succesvol) {
+					dc.volgendeSpeler();
+					gems();
+					developmentCards();
+					playerInfo();
+				}
+
 			});
 
 			ontwikkelingskaartGridPane.add(devCardNode, col, row);

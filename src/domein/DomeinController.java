@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import resources.Taal;
 
 import dto.SpelVoorwerpDTO;
 import dto.SpelerDTO;
+import resources.Taal;
 
 public class DomeinController {
 	private Spel spel;
@@ -57,7 +57,8 @@ public class DomeinController {
 			for (Speler speler : aangemeldeSpelers) {
 				if (speler.getGebruikersnaam().equals(gebruikersNaam))
 					throw new IllegalArgumentException(
-							String.format("%s %s %s.",Taal.getString("duplicatePlayerErrorMsgPart1"), gebruikersNaam, Taal.getString("duplicatePlayerErrorMsgPart2")));
+							String.format("%s %s %s.", Taal.getString("duplicatePlayerErrorMsgPart1"), gebruikersNaam,
+									Taal.getString("duplicatePlayerErrorMsgPart2")));
 			}
 		}
 
@@ -84,10 +85,6 @@ public class DomeinController {
 	private void controleerAantalSpelers() {
 		if (aangemeldeSpelers.size() == Spel.MAX_AANTAL_SPELERS)
 			throw new IllegalArgumentException(String.format("%s.", Taal.getString("maxPlayerCountErrorMsg")));
-	}
-
-	public boolean spelerIsAanBeurt() {
-		return this.spel.getSpelerAanBeurt().getAanDeBeurt();
 	}
 
 	public void volgendeSpeler() {
@@ -120,11 +117,14 @@ public class DomeinController {
 
 	public String toonSpelerAanBeurtVerkort() {
 		int leeftijdInJaar = LocalDate.now().getYear() - spel.getSpelerAanBeurt().getGeboortejaar();
-		return String.format("%s ---- %s: %d", spel.getSpelerAanBeurt().getGebruikersnaam(), Taal.getString("age").toLowerCase(), leeftijdInJaar);
+		return String.format("%s ---- %s: %d", spel.getSpelerAanBeurt().getGebruikersnaam(),
+				Taal.getString("age").toLowerCase(), leeftijdInJaar);
 	}
-	//TODO player.toString() -> vertaal Speler
+
+	// TODO player.toString() -> vertaal Speler
 	public String toonSpelerAanBeurtSituatie() {
-		return String.format("%n*** %s ***%n%s", Taal.getString("playerStatusAfterTurnMsg"), this.spel.getSpelerAanBeurt().toString());
+		return String.format("%n*** %s ***%n%s", Taal.getString("playerStatusAfterTurnMsg"),
+				this.spel.getSpelerAanBeurt().toString());
 	}
 
 	// maakt gebruik van Spel.geefSpelVoorwerpen()
@@ -146,17 +146,19 @@ public class DomeinController {
 
 		return lijstDTOs;
 	}
+
 	/**
 	 * 
 	 * @return String representatie van de speler situatie en BEURT ASCII
 	 */
-	public String toonSpelersSituatie() { //BEURT
+	public String toonSpelersSituatie() { // BEURT
 		String spelerSituatie = "";
 		spelerSituatie += beurtAsciiArt(Taal.getResource().getLocale().getLanguage());
-		spelerSituatie += 
-		String.format("%n************************************ %s: ************************************%n%n", Taal.getString("playerSituation"));
+		spelerSituatie += String.format(
+				"%n************************************ %s: ************************************%n%n",
+				Taal.getString("playerSituation"));
 		List<Speler> spelerInSpel = this.spel.getAangemeldeSpelers();
-		//TODO Speler.toString -> vertaal Speler
+		// TODO Speler.toString -> vertaal Speler
 		for (Speler s : spelerInSpel) {
 			spelerSituatie += String.format("%s%n", s.toString());
 		}
@@ -171,9 +173,10 @@ public class DomeinController {
 		String alleSpelers = String.format("***DB-%s***%n", Taal.getString("players"));
 
 		for (Speler s : spelers) {
-			alleSpelers += String.format("%s: %6s  | %s: %3d %s | %s: %d%n",Taal.getString("username"), s.getGebruikersnaam(),
-					Taal.getString("age").toLowerCase(),
-					LocalDate.now().getYear() - s.getGeboortejaar(), Taal.getString("dcToonAlleSpelersYear"), Taal.getString("birthyear").toLowerCase(), s.getGeboortejaar());
+			alleSpelers += String.format("%s: %6s  | %s: %3d %s | %s: %d%n", Taal.getString("username"),
+					s.getGebruikersnaam(), Taal.getString("age").toLowerCase(),
+					LocalDate.now().getYear() - s.getGeboortejaar(), Taal.getString("dcToonAlleSpelersYear"),
+					Taal.getString("birthyear").toLowerCase(), s.getGeboortejaar());
 		}
 
 		alleSpelers += String.format("*******************************************************%n");
@@ -197,7 +200,8 @@ public class DomeinController {
 	public String toonAantalFichesVanSpelerAanBeurt() {
 		return spel.getSpelerAanBeurt().toonAantalFiches();
 	}
-	//TODO spel.toonFiches() -> Spel vertalen
+
+	// TODO spel.toonFiches() -> Spel vertalen
 	public String toonSpelFiches() {
 		return this.spel.toonFiches();
 	}
@@ -251,7 +255,8 @@ public class DomeinController {
 		spel.testGeeftVeelEdelsteenfichesAanSpelers();
 
 	}
-	//TODO return List<spelerDTO>
+
+	// TODO return List<spelerDTO>
 	public List<Speler> bepaalWinnaar() {
 		return spel.bepaalWinnaar();
 	}
@@ -347,28 +352,29 @@ public class DomeinController {
 
 		return dtos;
 	}
+
 	/**
 	 * 
 	 * @param taal expect Taal.getResource().getLocale().getLanguage()
 	 * @return Ascii Art of beurt / turn / tour
 	 */
-	//nieuwe methode 8-05-2023
+	// nieuwe methode 8-05-2023
 	private String beurtAsciiArt(String taal) {
 		String asciiSign = "";
-		if(taal == "nl") {
+		if (taal == "nl") {
 			asciiSign += "\n" + "  _                     _   \r\n" + " | |__   ___ _   _ _ __| |_ \r\n"
-					+ " | '_ \\ / _ \\ | | | '__| __|\r\n" +  " | |_) |  __/ |_| | |  | |_ \r\n"
-					+ " |_.__/ \\___|\\__,_|_|   \\__|\r\n" + "                            " + "\n";                          
+					+ " | '_ \\ / _ \\ | | | '__| __|\r\n" + " | |_) |  __/ |_| | |  | |_ \r\n"
+					+ " |_.__/ \\___|\\__,_|_|   \\__|\r\n" + "                            " + "\n";
 		}
-		if(taal == "en") {
+		if (taal == "en") {
 			asciiSign += "\n" + "  _                    \r\n" + " | |_ _   _ _ __ _ __  \r\n"
-					+ " | __| | | | '__| '_ \\ \r\n"  + " | |_| |_| | |  | | | |\r\n"
-					+ "  \\__|\\__,_|_|  |_| |_|\r\n" + "                       " + "\n";   
+					+ " | __| | | | '__| '_ \\ \r\n" + " | |_| |_| | |  | | | |\r\n" + "  \\__|\\__,_|_|  |_| |_|\r\n"
+					+ "                       " + "\n";
 		}
-		if(taal == "fr") {
+		if (taal == "fr") {
 			asciiSign += "\n" + "  _                   \r\n" + " | |_ ___  _   _ _ __ \r\n"
-					+ " | __/ _ \\| | | | '__|\r\n" +  " | || (_) | |_| | |   \r\n"
-					+ "  \\__\\___/ \\__,_|_|   \r\n" + "                      " + "\n";
+					+ " | __/ _ \\| | | | '__|\r\n" + " | || (_) | |_| | |   \r\n" + "  \\__\\___/ \\__,_|_|   \r\n"
+					+ "                      " + "\n";
 		}
 		return asciiSign;
 	}

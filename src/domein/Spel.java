@@ -2,6 +2,7 @@ package domein;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -31,13 +32,31 @@ public class Spel {
 	private Ontwikkelingskaart[] niveau2Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau3Zichtbaar = { null, null, null, null };
 
+	/**
+	 * Class constructor. <br>
+	 * - aantal deelnemende spelers wordt gecontroleerd volgens DR_SPEL_ AANTAL_SPELERS<br>
+	 * - de jongste <code>Speler</code> mag beginnen, bij meerdere jongste spelers zie methode <code>bepaalStartSpeler()</code><br>
+	 * - -> de startSpeler wordt bepaald<br>
+	 * - -> de startSpeler wordt nu de eerste <code>spelerAanbeurt</code><br>
+	 * - alle lijsten worden gecontroleerd
+	 * - <code>n1</code>, <code>n2</code>, <code>n3</code> -> lijsten worden ingesteld op de uitgepakte <code>ontwikkelingsKaarten</code><br>
+	 * - de zichtbare lijsten van kaarten worden bijgevuld
+	 * @param aangemeldeSpelers lijst van deelnemende <code>Speler</code>s
+	 * @param ontwikkelingsKaarten de drie geshuffelde lijsten van <code>Ontwikkelingskaart</code> van niveau 1, 2 en 3
+	 * @param edelen geshuffelde <code>List</code> van <code>Edele</code>
+	 * @param ficheStapels een <code>HashMap</code> die de aantal fiches per kleur bijhoudt<br>
+	 * 
+	 * @throws IllegalArgumentException bij het controlleren van <code>controleerAantalSpelers()</code><br>
+	 * <code>controleerOntwikkelingsKaartLijsten()</code>, <code>controleerEdelenLijst()</code><br>
+	 * en <code>controleerFicheStapels()</code>
+	 */
+
 	public Spel(List<Speler> aangemeldeSpelers, List<List<Ontwikkelingskaart>> ontwikkelingsKaarten, List<Edele> edelen,
 			HashMap<Kleur, Integer> ficheStapels) {
 		controleerAantalSpelers(aangemeldeSpelers);
 		this.aangemeldeSpelers = aangemeldeSpelers;
-		// jongste speler wordt 1ste speler aanbeurt, jongste speler is startspeler en
-		// is aan de beurt
-		this.bepaalJongsteSpeler(aangemeldeSpelers);
+
+		this.bepaalStartSpeler(aangemeldeSpelers);
 		this.spelerAanBeurt.setStartSpeler();
 		this.spelerAanBeurt.setAanDeBeurt(true);
 
@@ -58,19 +77,22 @@ public class Spel {
 		// [TEST]
 		// testOntwikkelingsKaartStapels();
 	}
-
-	private void bepaalJongsteSpeler(List<Speler> aangemeldeSpelers) {
-		int jongste = Integer.MIN_VALUE;
-		Speler jongsteSpeler = null;
-		for (Speler speler : aangemeldeSpelers) {
-			if (speler.getGeboortejaar() > jongste) {
-				jongsteSpeler = speler;
-				jongste = speler.getGeboortejaar();
-			}
-		}
-		spelerAanBeurt = jongsteSpeler;
+	/**
+	 * @param aangemeldeSpelers de <code>List<Speler></code> van deelnemende spelers<br>
+	 * - uit de lijst wordt de <code>Speler</code> met de recentste geboortedatum de eerste <code>spelerAanBeurt</code><br>
+	 * - bij gelijke geboortedatum wordt de <code>Speler</code> met de langste naam gekozen<br>
+	 * - bij gelijke 'geboortedatum' en 'naam lengte' wordt [Z-A] omgekeerd alfabetisch gekozen
+	 */
+	private void bepaalStartSpeler(List<Speler> aangemeldeSpelers) {
+		Collections.sort(aangemeldeSpelers, new SpelerComparator());
+		spelerAanBeurt = aangemeldeSpelers.get(0);
 	}
-
+	/**
+	 * DR_SPEL_ AANTAL_SPELERS: aantal spelers [2-4]
+	 * @param aangemeldeSpelers de <code>List<Speler></code> van deelnemende spelers<br>
+	 * 
+	 * @throws IllegalArgumentException als de lijst <code>null</code> is, of als aantal spelers niet klopt
+	 */
 	private void controleerAantalSpelers(List<Speler> aangemeldeSpelers) {
 		if (aangemeldeSpelers == null)
 			throw new IllegalArgumentException(Taal.getString("spelControleerAantalSpelersNullExceptionMsg"));
@@ -79,7 +101,13 @@ public class Spel {
 					String.format("%s: %d", Taal.getString("spelControleerAantalSpelersInvalidPlayerCountExceptionMsg"),
 							aangemeldeSpelers.size()));
 	}
-
+	/**
+	 * 
+	 * @param ontwikkelingsKaarten de <code>List</code> van <code>Ontwikkelingskaart</code> lijsten van niveau1, niveau2 en niveau3
+	 * 
+	 * @throws IllegalArgumentException als de parameter null is, als één van de lijsten in de lijst in parameter null zijn <br>
+	 * of als een <code>Ontwikkelingskaart</code> null is, of als de aantal lijsten != 3, of als er een duplicate lijst is
+	 */
 	private void controleerOntwikkelingsKaartLijsten(List<List<Ontwikkelingskaart>> ontwikkelingsKaarten) {
 		if (ontwikkelingsKaarten == null)
 			throw new IllegalArgumentException(
@@ -97,22 +125,36 @@ public class Spel {
 							(Taal.getString("spelControleerOntwikkelingsKaartLijstenCardNullExceptionMsg")));
 			});
 		});
-		// nieuwe conditie, controler op duplicate lijsten, gecontroleerd op unieke size
-		// van kaartlijsten
+		// check op duplicate lijsten -> N1/N2/N3 - lists hebben een unieke size()
 		if (ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(1).size()
 				|| ontwikkelingsKaarten.get(0).size() == ontwikkelingsKaarten.get(2).size()
 				|| ontwikkelingsKaarten.get(1).size() == ontwikkelingsKaarten.get(2).size())
 			throw new IllegalArgumentException(
 					(Taal.getString("spelControleerOntwikkelingsKaartLijstenDuplicateListExceptionMsg")));
 	}
-
+	/**
+	 * DR_SPEL_NIEUW aantal edelen voor een spel = aantal spelers + 1
+	 * @param edelen de <code>List</code> van <code>Edelen</code>
+	 * 
+	 * @throws IllegalArgumentException als parameter = null of aantal edelen niet klopt
+	 */
 	private void controleerEdelenLijst(List<Edele> edelen) {
 		if (edelen == null)
 			throw new IllegalArgumentException((Taal.getString("spelControleerEdelenLijstNullExceptionMsg")));
 		if (edelen.size() != this.getAantalSpelers() + 1)
 			throw new IllegalArgumentException((Taal.getString("spelControleerEdelenLijstSizeExceptionMsg")));
 	}
-
+	/**
+	 * DR_SPEL_NIEUW aantal fiches per stapel: <br>
+	 * --> spel met 2 spelers heeft 4 fiches per stapel <br>
+	 * --> spel met 3 spelers heeft 5 fiches per stapel <br>
+	 * --> spel met 4 spelers heeft 7 fiches per stapel <br>
+	 * @param ficheStapels de <code>HashMap</code> die per <code>Kleur</code> het <code>aantal fiches</code> bij houd
+	 * 
+	 * @throws IllegalArgumentException als de <code>HashMap</code> = <code>null</code><br> als de size() van ficheStapels != 5 <br>
+	 * als de aantal fiches per stapel niet klopt <br>
+	 * of als een stapel = null, of als een stapel 0 fiches heeft
+	 */
 	private void controleerFicheStapels(HashMap<Kleur, Integer> ficheStapels) {
 		int aantalFichesPerStapel;
 
@@ -208,6 +250,7 @@ public class Spel {
 					(Taal.getString("spelKiesOntwikkelingskaartLevelOutOfBoundsExceptionMsg")));
 
 		Ontwikkelingskaart gekozenOntwikkelingskaart = null;
+
 		Ontwikkelingskaart[][] niveauZichtbaar = { niveau1Zichtbaar, niveau2Zichtbaar, niveau3Zichtbaar };
 		gekozenOntwikkelingskaart = niveauZichtbaar[niveau - 1][positie - 1];
 
@@ -216,8 +259,7 @@ public class Spel {
 		}
 
 		// Kijken of de speler genoeg fiches en/of ontwikkelingskaarten reeds in hand
-		// heeft om deze kaart te kopen //TODO System.exit() code toevoegen? zie
-		// spelNeemDrieFichesEmptyStackExceptionMsg2
+		// heeft om deze kaart te kopen 
 		if (!kanKaartKopen(gekozenOntwikkelingskaart)) {
 			throw new RuntimeException((String.format("%n%s.%n",
 					Taal.getString("spelKiesOntwikkelingskaartFailCanBuyCheckExceptionMsg"))));
@@ -251,8 +293,8 @@ public class Spel {
 	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
 		if (gekozenOntwikkelingskaart == null)
 			throw new IllegalArgumentException((Taal.getString("spelKanKaartKopenCardNullExceptionMsg")));
-		int[] somAantalPerKleurInBezit = somAantalPerKleurInBezit();
 
+		int[] somAantalPerKleurInBezit = somAantalPerKleurInBezit();
 		int[] kosten = gekozenOntwikkelingskaart.getKosten();
 
 		boolean kaartKoopbaar = false;
