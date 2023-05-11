@@ -25,11 +25,13 @@ public class OverzichtSpelers extends VBox {
 	//observableList
 	ObservableList<String> playerInfo = FXCollections.observableArrayList();
 
+
 	// Dit DetailPaneel wordt verwittigd wanneer de selectie wijzigt
-	private DetailSpelers details;
+	private DetailSpelers ds;
 
 	// Een ListView is een component die een lijst kan tonen.
 	private ListView<String> lijst;
+
 
 	// Een OverzichtPaneel heeft zowel een controller als een DetailPaneel nodig
 	// Deze komen binnen als argumenten in de constructor
@@ -37,8 +39,9 @@ public class OverzichtSpelers extends VBox {
 
 
 	public OverzichtSpelers(DomeinController dc, DetailSpelers ds) {
+
 		this.dc = dc;
-		this.details = ds;
+		this.ds = ds;
 		buildGui();
 		toonSpelers();
 
@@ -58,6 +61,7 @@ public class OverzichtSpelers extends VBox {
 		lijst = new ListView<>();
 		this.getChildren().add(lijst);
 
+		lijst.getSelectionModel().clearSelection();
 	}
 
 	public void toonSpelers() {
@@ -66,7 +70,6 @@ public class OverzichtSpelers extends VBox {
 			String gebruikersNaam = speler.getGebruikersnaam();
 			int geboorteJaar = speler.getGeboortejaar();
 			String playerString = String.format("%s - %d", gebruikersNaam, geboorteJaar);
-
 			playerInfo.add(playerString);
 
 		}
@@ -76,15 +79,23 @@ public class OverzichtSpelers extends VBox {
 		lijst.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
 		{
 			String[] parts = newValue.split(" - ");
-			details.getTxfGebruikersnaam().setText(parts[0]);
-			details.getTxfGeboortejaar().setText(parts[1]);		
-			
-		
-//		if(playerInfo.equals()) {
-//			playerInfo.remove(newValue);
-//		}
+			ds.getTxfGebruikersnaam().setText(parts[0]);
+			ds.getTxfGeboortejaar().setText(parts[1]);
+
+
 		});
 
 	}
 
+	// Method to remove the selected user from the ListView
+
+	//	public void removeSelectedUser() {
+	//        int selectedIndex = lijst.getSelectionModel().getSelectedIndex();
+	//        if (selectedIndex >= 0) {
+	//            String selectedUser = lijst.getSelectionModel().getSelectedItem();
+	//            playerInfo.remove(selectedUser);
+	//            lijst.getSelectionModel().clearSelection();
+	//        }
+	//		
+	//	}
 }

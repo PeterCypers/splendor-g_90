@@ -38,15 +38,13 @@ public class DetailSpelers extends GridPane
 
 	public DetailSpelers(DomeinController dc)
 	{
-
 		this.dc = dc;
 		buildGui();
-
 	}
 
 	private void buildGui()
 	{
-
+		
 		this.setAlignment(Pos.CENTER);
 		this.setHgap(10);
 		this.setVgap(10);
@@ -145,6 +143,11 @@ public class DetailSpelers extends GridPane
 				this.add(user, 0, 6+i);
 				i++; //index
 
+			
+				
+		
+
+				
 				if (dc.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS) // max spelers,
 					btnAdd.setDisable(true);
 
