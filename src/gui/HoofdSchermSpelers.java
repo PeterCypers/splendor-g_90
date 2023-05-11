@@ -30,10 +30,11 @@ public class HoofdSchermSpelers extends BorderPane {
 	    this.setTop(lblTitle);
 	    BorderPane.setAlignment(lblTitle, Pos.CENTER);
 	    
-	    Button btnKeerTerug = new Button(Taal.getString("goBack"));
+	    Button btnKeerTerug = new Button(String.format("< %s", Taal.getString("goBack")));
 	    btnKeerTerug.setOnAction(this::drukKeerTerug);
 	    this.setTop(btnKeerTerug);
 	    BorderPane.setAlignment(lblTitle, Pos.TOP_LEFT);
+	    
 	    
 	    
 	    DetailSpelers ds = new DetailSpelers(dc);
@@ -49,7 +50,9 @@ public class HoofdSchermSpelers extends BorderPane {
 	    
 	}
 	private void drukKeerTerug(ActionEvent event) {
-		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
+
+		
+		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(new DomeinController());
 		Stage stage = (Stage) this.getScene().getWindow();
 		Scene scene = new Scene(taalKeuze, stage.getWidth(), stage.getHeight());
 		stage.setScene(scene);

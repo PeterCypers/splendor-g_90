@@ -45,7 +45,9 @@ public class SpeelSpelScherm extends BorderPane {
 
 		/*--------------CREATE THE BORD--------------*/
 
-		spelbord.setStyle("-fx-background-color: #012000;");
+
+
+		spelbord.setStyle("-fx-background-color: #328dd8;");
 
 		setAlignment(spelbord, Pos.CENTER);
 		spelbord.setMaxWidth(875);
