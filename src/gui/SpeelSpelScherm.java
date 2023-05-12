@@ -251,7 +251,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 			if (succesvol) {
 				if (dc.buitenVoorraad()) {
-					System.out.println("BUITEN VOORRAAD");
+
 					int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
 					for (int i = 0; i < aantalTerugTePlaatsen; i++) {
 						geefFichesTerug();
@@ -433,7 +433,6 @@ public class SpeelSpelScherm extends BorderPane {
 	}
 
 	private void developmentCards() {
-		System.out.println("opnieuw!");
 		// Add development cards
 		SpelVoorwerpDTO[][] niveaus = { dc.getNiveau3Zichtbaar(), dc.getNiveau2Zichtbaar(), dc.getNiveau1Zichtbaar() };
 
@@ -453,7 +452,6 @@ public class SpeelSpelScherm extends BorderPane {
 			// Add mouse click event handler to the node
 
 			devCardNode.setOnMouseClicked(event -> {
-				System.out.printf("r:%d,c:%d%n", row, col);
 				boolean succesvol = false;
 				try {
 					dc.kiesOntwikkelingskaart(3 - row, col + 1);
