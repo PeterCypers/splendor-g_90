@@ -307,21 +307,20 @@ public class SpeelSpelScherm extends BorderPane {
 			if (amount != 0) {
 				gemStackPane = new StackPane(gemTokenImageView, amountText);
 				gemStackPane.setPrefSize(REQUIREMENTS_SIZE, REQUIREMENTS_SIZE);
+
+				gemStackPane.setOnMouseClicked(event -> {
+					dc.plaatsTerugInStapel(kleur.getKleur());
+					popupCloseFlag.set(true);
+				});
+
+				gemsInHand.getChildren().add(gemStackPane);
 			}
-
-			gemStackPane.setOnMouseClicked(event -> {
-				dc.plaatsTerugInStapel(kleur.getKleur());
-				popupCloseFlag.set(true);
-			});
-
-			gemsInHand.getChildren().add(gemStackPane);
-
 		}
 
 		Stage popup = new Stage();
 		popup.initModality(Modality.APPLICATION_MODAL);
 		popup.initStyle(StageStyle.UNDECORATED);
-		popup.setTitle("Teruggeven edelsteenfiches");
+		popup.setTitle(Taal.getString("giveBackTitle"));
 
 		geefFichesTerugElementen.getChildren().addAll(titel, subtitel, gemsInHand);
 
