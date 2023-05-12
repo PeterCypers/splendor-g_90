@@ -1,6 +1,8 @@
 package gui;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,9 +22,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -51,11 +59,32 @@ public class SpeelSpelScherm extends BorderPane {
 
 	private void buildGui() {
 
-		this.setStyle("-fx-background-color: #000000;");
+		Image backgroundImage = null;
+		File backgroundFile = new File("src/resources/img/background_misc/bg_wood.jpg");
+		if (backgroundFile.exists()) {
+			try (InputStream inputStream = new FileInputStream(backgroundFile)) {
+				backgroundImage = new Image(inputStream);
+			} catch (Exception e) {
+				System.out.println("Fout bij het inladen van de achtergrond foto van het spelbord");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+		} else {
+			System.err.println("Achtergrond van het spelbord bestaat niet: " + backgroundFile.getAbsolutePath());
+		}
+
+		Region backgroundRegion = new Region();
+		backgroundRegion.setBackground(new Background(
+				new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+						BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, false, false))));
+
+		this.setBackground(backgroundRegion.getBackground());
+
+		// this.getChildren().add(stackPane);
 
 		/*--------------CREATE THE BORD--------------*/
 
-		spelbord.setStyle("-fx-background-color: #363200;");
+		// spelbord.setStyle("-fx-background-color: #363200;");
 
 		setAlignment(spelbord, Pos.CENTER);
 		spelbord.setMaxWidth(875);
