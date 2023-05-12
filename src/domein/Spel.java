@@ -78,14 +78,23 @@ public class Spel {
 		// testOntwikkelingsKaartStapels();
 	}
 	/**
+	 * DR_SPEL_STARTER + DR_RONDE_BEURT<br>
+	 * bepaalt start speler en zet deze vooraan in de lijst van aangemelde spelers
+	 * 
 	 * @param aangemeldeSpelers de <code>List<Speler></code> van deelnemende spelers<br>
 	 * - uit de lijst wordt de <code>Speler</code> met de recentste geboortedatum de eerste <code>spelerAanBeurt</code><br>
 	 * - bij gelijke geboortedatum wordt de <code>Speler</code> met de langste naam gekozen<br>
 	 * - bij gelijke 'geboortedatum' en 'naam lengte' wordt [Z-A] omgekeerd alfabetisch gekozen
 	 */
 	private void bepaalStartSpeler(List<Speler> aangemeldeSpelers) {
-		Collections.sort(aangemeldeSpelers, new SpelerComparator());
-		spelerAanBeurt = aangemeldeSpelers.get(0);
+		List<Speler> copySorting = new ArrayList<>();
+		for(Speler s : aangemeldeSpelers)
+			copySorting.add(s);
+		Collections.sort(copySorting, new SpelerComparator());
+		spelerAanBeurt = copySorting.get(0);
+		int indexStartSpeler = aangemeldeSpelers.indexOf(spelerAanBeurt);
+		aangemeldeSpelers.add(0, aangemeldeSpelers.remove(indexStartSpeler));
+		
 	}
 	/**
 	 * DR_SPEL_ AANTAL_SPELERS: aantal spelers [2-4]
