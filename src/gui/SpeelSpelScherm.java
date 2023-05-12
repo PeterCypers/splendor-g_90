@@ -78,9 +78,9 @@ public class SpeelSpelScherm extends BorderPane {
 		pasBeurt.setAlignment(Pos.CENTER);
 
 		pasBeurt.setOnAction(e -> {
-			dc.volgendeSpeler();
 			kleurKeuze.clear();
 			playerInfo();
+			dc.volgendeSpeler();
 		});
 
 		bottomGameElements.getChildren().add(pasBeurt);
@@ -196,10 +196,10 @@ public class SpeelSpelScherm extends BorderPane {
 					geefFichesTerug();
 				}
 
-				dc.volgendeSpeler();
 				kleurKeuze.clear();
 				gems();
 				playerInfo();
+				dc.volgendeSpeler();
 			}
 		} catch (Exception e) {
 			errorAlert(e);
@@ -307,6 +307,7 @@ public class SpeelSpelScherm extends BorderPane {
 	}
 
 	private void developmentCards() {
+		System.out.println("opnieuw!");
 		// Add development cards
 		SpelVoorwerpDTO[][] niveaus = { dc.getNiveau3Zichtbaar(), dc.getNiveau2Zichtbaar(), dc.getNiveau1Zichtbaar() };
 
@@ -326,6 +327,7 @@ public class SpeelSpelScherm extends BorderPane {
 			// Add mouse click event handler to the node
 
 			devCardNode.setOnMouseClicked(event -> {
+				System.out.printf("r:%d,c:%d%n", row, col);
 				boolean succesvol = false;
 				try {
 					dc.kiesOntwikkelingskaart(3 - row, col + 1);
@@ -337,10 +339,10 @@ public class SpeelSpelScherm extends BorderPane {
 				}
 
 				if (succesvol) {
-					dc.volgendeSpeler();
 					gems();
 					developmentCards();
 					playerInfo();
+					dc.volgendeSpeler();
 				}
 
 			});
