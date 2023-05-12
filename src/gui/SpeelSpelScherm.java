@@ -11,8 +11,12 @@ import dto.SpelVoorwerpDTO;
 import dto.SpelerDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -24,6 +28,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import resources.Taal;
 
 public class SpeelSpelScherm extends BorderPane {
@@ -63,9 +69,30 @@ public class SpeelSpelScherm extends BorderPane {
 		StackPane spacer = new StackPane();
 		spacer.setMinWidth(256 + 32);
 		spelerAanBeurtInfo.getChildren().add(spacer);
+		spelerAanBeurtInfo.setStyle("-fx-background-color: #704e38");
 		this.setRight(spelerAanBeurtInfo);
 
-		/*--------------PLAYER TURN OPTIONS--------------*/
+		/*--------------TOP SIDE--------------*/
+
+		int rondeNummer = 0;
+
+		StackPane topOfGameBorderPane = new StackPane();
+		BorderPane.setAlignment(topOfGameBorderPane, Pos.CENTER);
+
+		HBox topGameElements = new HBox();
+		topGameElements.setAlignment(Pos.CENTER);
+
+		Label ronde = new Label(String.format("%s: %d", Taal.getString("round"), rondeNummer));
+		ronde.setStyle(" -fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
+		ronde.setAlignment(Pos.CENTER);
+		ronde.setPadding(new Insets(15));
+		topGameElements.getChildren().add(ronde);
+		topOfGameBorderPane.getChildren().add(topGameElements);
+
+		topOfGameBorderPane.setStyle("-fx-background-color: #4a2610;");
+		this.setTop(topOfGameBorderPane);
+
+		/*--------------BOTTOM SIDE--------------*/
 		StackPane bottomOfGameBorderPane = new StackPane();
 		BorderPane.setAlignment(bottomOfGameBorderPane, Pos.CENTER);
 
@@ -207,39 +234,89 @@ public class SpeelSpelScherm extends BorderPane {
 
 	}
 
-	private void geefFichesTerug() {
-		// TODO moet een popup geven en moet ervoor zorgen dat het ander scherm niet
-		// geklikt kan worden, tot het probleem van buiten voorraad is opgelost
+//	private void geefFichesTerug() {
+//		// TODO moet een popup geven en moet ervoor zorgen dat het ander scherm niet
+//		// geklikt kan worden, tot het probleem van buiten voorraad is opgelost
+//
+//		// toon overzicht van edelsteenfiches in speler zijn voorraad
+//		playerInfo();
+//
+//		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
+//		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
+//
+//		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
+//			boolean isTerugGelegd = true;
+//
+//			while (isTerugGelegd) {
+//				try {
+//
+//					System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
+//
+//					int stapelKeuze = input.nextInt();
+//
+//					dc.plaatsTerugInStapel(stapelKeuze - 1);
+//
+//					isTerugGelegd = false;
+//				} catch (RuntimeException e) {
+//					System.out.println("\nU probeert fiches terug te plaatsen van een lege stapel.\n");
+//					isTerugGelegd = true;
+//				}
+//
+//			}
+//		}
+//
+//	}
 
-		// toon overzicht van edelsteenfiches in speler zijn voorraad
-		playerInfo();
+	public void geefFichesTerug() {
+		TextField stapelKeuzeTextField = new TextField();
+		Label playerInfoLabel;
+		Button plaatsTerugButton;
 
-		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
+		Stage popup = new Stage();
+		popup.initModality(Modality.APPLICATION_MODAL);
+		popup.setTitle("Teruggeven edelsteenfiches");
+
+		// Show player info
+		playerInfoLabel = new Label();
+//			playerInfoLabel.setText(getPlayerInfo());
+
+		// Ask player to return gemstones
 		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
 
+		VBox root = new VBox(10);
+
 		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
-			boolean isTerugGelegd = true;
+			HBox hbox = new HBox(10);
 
-			while (isTerugGelegd) {
+			stapelKeuzeTextField.setPromptText("Stapelnummer");
+
+			plaatsTerugButton = new Button("Plaats terug");
+			plaatsTerugButton.setOnAction(e -> {
 				try {
-					/*
-					 * System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
-					 * 
-					 * int stapelKeuze = input.nextInt();
-					 * 
-					 * dc.plaatsTerugInStapel(stapelKeuze - 1);
-					 */
-					isTerugGelegd = false;
-				} catch (RuntimeException e) {
-					System.out.println("\nU probeert fiches terug te plaatsen van een lege stapel.\n");
-					isTerugGelegd = true;
+					int stapelKeuze = Integer.parseInt(stapelKeuzeTextField.getText());
+					// gameController.plaatsTerugInStapel(stapelKeuze - 1);
+					popup.close();
+				} catch (NumberFormatException ex) {
+					Alert alert = new Alert(AlertType.ERROR, "Voer een geldig stapelnummer in.");
+					alert.showAndWait();
+				} catch (RuntimeException ex) {
+					Alert alert = new Alert(AlertType.ERROR,
+							"U probeert fiches terug te plaatsen van een lege stapel.");
+					alert.showAndWait();
 				}
+			});
 
-			}
+			hbox.getChildren().addAll(stapelKeuzeTextField, plaatsTerugButton);
+			root.getChildren().add(hbox);
 		}
 
+		root.getChildren().add(playerInfoLabel);
+		Scene popupScene = new Scene(root, 300, 300);
+		popup.setScene(popupScene);
+		popup.showAndWait();
 	}
 
+	// ------------------------------------------------------------------------------------------------------------
 	private void nobles() {
 		List<SpelVoorwerpDTO> edelen = dc.getEdelen();
 		HBox noblesBox = new HBox();
