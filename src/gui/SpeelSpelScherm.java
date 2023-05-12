@@ -119,10 +119,18 @@ public class SpeelSpelScherm extends BorderPane {
 		int GEMS_STROKE = 2;
 
 		for (Kleur kleur : Kleur.values()) {
-			// Create a new gem image view
-			File gemFile = new File(String.format("src/resources/img/tokens/token_%s.png", kleur.kind()));
-			Image gemImage = new Image(gemFile.toURI().toString());
-			ImageView gemImageView = new ImageView(gemImage);
+
+			ImageView gemImageView = new ImageView();
+			try {
+				// Create a new gem image view
+				File gemFile = new File(String.format("src/resources/img/tokens/token_%s.png", kleur.kind()));
+				Image gemImage = new Image(gemFile.toURI().toString());
+				gemImageView = new ImageView(gemImage);
+			} catch (Exception e) {
+				System.out.println("Fout bij het laden van de achtergrond foto voor edelsteenfiches");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
 
 			Integer amount = fichestapels.get(kleur);
 
@@ -258,16 +266,25 @@ public class SpeelSpelScherm extends BorderPane {
 
 		VBox stapelFotosBox = new VBox();
 
-		// Load the image of the deck
-		File backgroundFile1 = new File("src/resources/img/card_stacks/level1.png");
-		Image backgroundImage1 = new Image(backgroundFile1.toURI().toString());
-		ImageView stapel1 = new ImageView(backgroundImage1);
-		File backgroundFile2 = new File("src/resources/img/card_stacks/level2.png");
-		Image backgroundImage2 = new Image(backgroundFile2.toURI().toString());
-		ImageView stapel2 = new ImageView(backgroundImage2);
-		File backgroundFile3 = new File("src/resources/img/card_stacks/level3.png");
-		Image backgroundImage3 = new Image(backgroundFile3.toURI().toString());
-		ImageView stapel3 = new ImageView(backgroundImage3);
+		ImageView stapel1 = new ImageView();
+		ImageView stapel2 = new ImageView();
+		ImageView stapel3 = new ImageView();
+		try {
+			// Load the image of the deck
+			File backgroundFile1 = new File("src/resources/img/card_stacks/level1.png");
+			Image backgroundImage1 = new Image(backgroundFile1.toURI().toString());
+			stapel1 = new ImageView(backgroundImage1);
+			File backgroundFile2 = new File("src/resources/img/card_stacks/level2.png");
+			Image backgroundImage2 = new Image(backgroundFile2.toURI().toString());
+			stapel2 = new ImageView(backgroundImage2);
+			File backgroundFile3 = new File("src/resources/img/card_stacks/level3.png");
+			Image backgroundImage3 = new Image(backgroundFile3.toURI().toString());
+			stapel3 = new ImageView(backgroundImage3);
+		} catch (Exception e) {
+			System.out.println("Fout bij het inladen van de fotos voor de stapels");
+			System.err.println("Unexpected error occurred: " + e.getMessage());
+			e.printStackTrace();
+		}
 
 		int stapelWidth = 128;
 		int stapelHeight = 200;
