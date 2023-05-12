@@ -266,7 +266,7 @@ public class SpeelSpelScherm extends BorderPane {
 		titel.setFill(Color.RED);
 		titel.setTextAlignment(TextAlignment.CENTER);
 
-		Text subtitel = new Text(String.format("%s%n%s%d.", Taal.getString("giveBackSubText"),
+		Text subtitel = new Text(String.format("%s%n%s %d.", Taal.getString("giveBackSubText"),
 				Taal.getString("giveBackSubText2"), Speler.getMaxEdelsteenfichesInVoorraad()));
 		subtitel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 		subtitel.setFill(Color.YELLOW);
