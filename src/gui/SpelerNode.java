@@ -2,7 +2,6 @@ package gui;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -74,12 +73,15 @@ public class SpelerNode extends StackPane {
 				starImageView = new ImageView(backgroundImage);
 				starImageView.setFitWidth(STAR_IMAGE_SIZE);
 				starImageView.setFitHeight(STAR_IMAGE_SIZE);
-			} catch (IOException e) {
+			} catch (Exception e) {
+				System.out.println(
+						"Fout bij het laden van de achtergrond foto van \nde ster voor prestigepunten van een edelsteenfiche");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
 				e.printStackTrace();
 			}
 		} else {
-			System.err
-					.println("Background image file of development card does not exist: " + starFile.getAbsolutePath());
+			System.err.println("Achtergrond afbeelding van ster voor prestigepunten van speler bestaat niet: "
+					+ starFile.getAbsolutePath());
 		}
 
 		StackPane.setAlignment(prestigepoints, Pos.CENTER_RIGHT);
@@ -101,9 +103,17 @@ public class SpelerNode extends StackPane {
 		// Load the costs and images for those costs of the noble
 		for (int i = 0; i < 5; i++) {
 			Kleur kleur = Kleur.valueOf(i);
-			File costFile = new File("src/resources/img/requirements/rectangle_" + kleur.kind() + ".png");
-			Image costImage = new Image(costFile.toURI().toString());
-			ImageView requirementsImageView = new ImageView(costImage);
+
+			ImageView requirementsImageView = new ImageView();
+			try {
+				File costFile = new File("src/resources/img/requirements/rectangle_" + kleur.kind() + ".png");
+				Image costImage = new Image(costFile.toURI().toString());
+				requirementsImageView = new ImageView(costImage);
+			} catch (Exception e) {
+				System.out.println("Fout bij het laden van de ontwikkelingskaart foto voor Speler");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
 			requirementsImageView.setFitWidth(REQUIREMENTS_SIZE / 1.5);
 			requirementsImageView.setFitHeight(REQUIREMENTS_SIZE / 1.5);
 
@@ -130,9 +140,17 @@ public class SpelerNode extends StackPane {
 		HashMap<Kleur, Integer> edelsteenfichesInHand = speler.edelsteenfichesInHand();
 
 		for (Kleur kleur : Kleur.values()) {
-			File gemTokenFile = new File("src/resources/img/tokens/token_" + kleur.kind() + ".png");
-			Image gemTokenImage = new Image(gemTokenFile.toURI().toString());
-			ImageView gemTokenImageView = new ImageView(gemTokenImage);
+			ImageView gemTokenImageView = new ImageView();
+			try {
+				File gemTokenFile = new File("src/resources/img/tokens/token_" + kleur.kind() + ".png");
+				Image gemTokenImage = new Image(gemTokenFile.toURI().toString());
+				gemTokenImageView = new ImageView(gemTokenImage);
+			} catch (Exception e) {
+				System.out.println("Fout bij het laden van de edelsteenfiche fotos voor Speler");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+
 			gemTokenImageView.setFitWidth(REQUIREMENTS_SIZE / 1.5);
 			gemTokenImageView.setFitHeight(REQUIREMENTS_SIZE / 1.5);
 

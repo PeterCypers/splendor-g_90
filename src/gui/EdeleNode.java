@@ -1,6 +1,7 @@
 package gui;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import domein.Kleur;
 import dto.SpelVoorwerpDTO;
@@ -23,10 +24,20 @@ public class EdeleNode extends StackPane {
 	private static final int NOBLE_FONTSIZE = 28;
 
 	public EdeleNode(SpelVoorwerpDTO edele) {
-		// Load the image of the noble
-		File backgroundFile = new File(edele.foto());
-		Image backgroundImage = new Image(backgroundFile.toURI().toString());
-		ImageView nobleImage = new ImageView(backgroundImage);
+
+		ImageView nobleImage = new ImageView();
+		try {
+			File backgroundFile = new File(edele.foto());
+			if (!backgroundFile.exists()) {
+				throw new FileNotFoundException("Image file not found: " + edele.foto());
+			}
+			Image backgroundImage = new Image(backgroundFile.toURI().toString());
+			nobleImage = new ImageView(backgroundImage);
+		} catch (Exception e) {
+			System.out.println("Probleem bij het inladen van achtergrond foto voor de edele");
+			System.err.println("Unexpected error occurred: " + e.getMessage());
+			e.printStackTrace();
+		}
 
 		// Adds a white background for the prestigepoints and the colorBonus
 		Rectangle whiteBackground = new Rectangle(NOBLE_SIZE / 1.5, NOBLE_WIDTH);
@@ -54,9 +65,21 @@ public class EdeleNode extends StackPane {
 		for (int i = 0; i < edele.kosten().length; i++) {
 			if (edele.kosten()[i] != 0) {
 				Kleur kleur = Kleur.valueOf(i);
-				File costFile = new File("src/resources/img/requirements/rectangle_" + kleur.kind() + ".png");
-				Image costImage = new Image(costFile.toURI().toString());
-				ImageView costImageView = new ImageView(costImage);
+
+				ImageView costImageView = new ImageView();
+				try {
+					File costFile = new File("src/resources/img/requirements/rectangle_" + kleur.kind() + ".png");
+					if (!costFile.exists()) {
+						throw new FileNotFoundException("Image file not found: " + edele.foto());
+					}
+					Image costImage = new Image(costFile.toURI().toString());
+					costImageView = new ImageView(costImage);
+				} catch (Exception e) {
+					System.out.println("");
+					System.err.println("Unexpected error occurred: " + e.getMessage());
+					e.printStackTrace();
+				}
+
 				costImageView.setFitWidth(NOBLE_SIZE / 1.5);
 				costImageView.setFitHeight(NOBLE_SIZE / 1.5);
 
