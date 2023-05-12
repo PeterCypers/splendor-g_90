@@ -7,16 +7,17 @@ import java.util.List;
 
 import domein.DomeinController;
 import domein.Kleur;
+import domein.Speler;
 import dto.SpelVoorwerpDTO;
 import dto.SpelerDTO;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -28,14 +29,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import resources.Taal;
 
 public class SpeelSpelScherm extends BorderPane {
 	private final DomeinController dc;
 	private BorderPane spelbord;
 	private HashSet<Kleur> kleurKeuze = new HashSet<>();
+	private int rondeNummer = 0;
 
 	public SpeelSpelScherm(DomeinController dc) {
 		this.dc = dc;
@@ -74,8 +78,6 @@ public class SpeelSpelScherm extends BorderPane {
 
 		/*--------------TOP SIDE--------------*/
 
-		int rondeNummer = 0;
-
 		StackPane topOfGameBorderPane = new StackPane();
 		BorderPane.setAlignment(topOfGameBorderPane, Pos.CENTER);
 
@@ -83,9 +85,10 @@ public class SpeelSpelScherm extends BorderPane {
 		topGameElements.setAlignment(Pos.CENTER);
 
 		Label ronde = new Label(String.format("%s: %d", Taal.getString("round"), rondeNummer));
-		ronde.setStyle(" -fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;");
+		ronde.setStyle(
+				" -fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold; -fx-font-family: \"Lucida Calligraphy\", cursive;");
 		ronde.setAlignment(Pos.CENTER);
-		ronde.setPadding(new Insets(15));
+		ronde.setPadding(new Insets(10));
 		topGameElements.getChildren().add(ronde);
 		topOfGameBorderPane.getChildren().add(topGameElements);
 
@@ -106,8 +109,8 @@ public class SpeelSpelScherm extends BorderPane {
 
 		pasBeurt.setOnAction(e -> {
 			kleurKeuze.clear();
-			playerInfo();
 			dc.volgendeSpeler();
+			playerInfo();
 		});
 
 		bottomGameElements.getChildren().add(pasBeurt);
@@ -220,13 +223,16 @@ public class SpeelSpelScherm extends BorderPane {
 			if (succesvol) {
 				if (dc.buitenVoorraad()) {
 					System.out.println("BUITEN VOORRAAD");
-					geefFichesTerug();
+					int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
+					for (int i = 0; i < aantalTerugTePlaatsen; i++) {
+						geefFichesTerug();
+					}
 				}
 
 				kleurKeuze.clear();
 				gems();
-				playerInfo();
 				dc.volgendeSpeler();
+				playerInfo();
 			}
 		} catch (Exception e) {
 			errorAlert(e);
@@ -234,85 +240,100 @@ public class SpeelSpelScherm extends BorderPane {
 
 	}
 
-//	private void geefFichesTerug() {
-//		// TODO moet een popup geven en moet ervoor zorgen dat het ander scherm niet
-//		// geklikt kan worden, tot het probleem van buiten voorraad is opgelost
-//
-//		// toon overzicht van edelsteenfiches in speler zijn voorraad
-//		playerInfo();
-//
-//		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
-//		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
-//
-//		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
-//			boolean isTerugGelegd = true;
-//
-//			while (isTerugGelegd) {
-//				try {
-//
-//					System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
-//
-//					int stapelKeuze = input.nextInt();
-//
-//					dc.plaatsTerugInStapel(stapelKeuze - 1);
-//
-//					isTerugGelegd = false;
-//				} catch (RuntimeException e) {
-//					System.out.println("\nU probeert fiches terug te plaatsen van een lege stapel.\n");
-//					isTerugGelegd = true;
-//				}
-//
-//			}
-//		}
-//
-//	}
+	private void geefFichesTerug() {
+		BooleanProperty popupCloseFlag = new SimpleBooleanProperty(false);
 
-	public void geefFichesTerug() {
-		TextField stapelKeuzeTextField = new TextField();
-		Label playerInfoLabel;
-		Button plaatsTerugButton;
+		int REQUIREMENTS_SIZE = 40 * 3;
+		int GEM_FONTSIZE = 28 * 3;
+
+		VBox geefFichesTerugElementen = new VBox();
+		geefFichesTerugElementen.setSpacing(10);
+		geefFichesTerugElementen.setAlignment(Pos.CENTER);
+		geefFichesTerugElementen.setStyle("-fx-background-color: #4a2610; ");
+		// -fx-background-radius: 20 20 20 20;
+
+		List<SpelerDTO> spelers = dc.getAangemeldeSpelers();
+		SpelerDTO speler = null;
+
+		for (SpelerDTO s : spelers) {
+			if (s.aanDeBeurt()) {
+				speler = s;
+			}
+		}
+
+		Text titel = new Text(Taal.getString("giveBack"));
+		titel.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+		titel.setFill(Color.RED);
+		titel.setTextAlignment(TextAlignment.CENTER);
+
+		Text subtitel = new Text(String.format("%s%n%s%d.", Taal.getString("giveBackSubText"),
+				Taal.getString("giveBackSubText2"), Speler.getMaxEdelsteenfichesInVoorraad()));
+		subtitel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		subtitel.setFill(Color.YELLOW);
+		subtitel.setTextAlignment(TextAlignment.CENTER);
+
+		HBox gemsInHand = new HBox();
+		StackPane.setAlignment(gemsInHand, Pos.CENTER);
+		HashMap<Kleur, Integer> edelsteenfichesInHand = speler.edelsteenfichesInHand();
+
+		for (Kleur kleur : Kleur.values()) {
+			ImageView gemTokenImageView = new ImageView();
+			try {
+				File gemTokenFile = new File("src/resources/img/tokens/token_" + kleur.kind() + ".png");
+				Image gemTokenImage = new Image(gemTokenFile.toURI().toString());
+				gemTokenImageView = new ImageView(gemTokenImage);
+			} catch (Exception e) {
+				System.out.println("Fout bij het laden van de edelsteenfiche fotos voor Speler");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+
+			gemTokenImageView.setFitWidth(REQUIREMENTS_SIZE / 1.5);
+			gemTokenImageView.setFitHeight(REQUIREMENTS_SIZE / 1.5);
+
+			Integer amount = edelsteenfichesInHand.get(kleur);
+			if (amount == null) {
+				amount = 0;
+			}
+
+			Text amountText = new Text(Integer.toString(amount));
+			amountText.setFont(Font.font("Arial", FontWeight.BOLD, GEM_FONTSIZE / 1.5));
+			amountText.setFill(Color.WHITE);
+			amountText.setStroke(Color.BLACK);
+			amountText.setStrokeWidth(1);
+
+			StackPane gemStackPane = null;
+
+			if (amount != 0) {
+				gemStackPane = new StackPane(gemTokenImageView, amountText);
+				gemStackPane.setPrefSize(REQUIREMENTS_SIZE, REQUIREMENTS_SIZE);
+			}
+
+			gemStackPane.setOnMouseClicked(event -> {
+				dc.plaatsTerugInStapel(kleur.getKleur());
+				popupCloseFlag.set(true);
+			});
+
+			gemsInHand.getChildren().add(gemStackPane);
+
+		}
 
 		Stage popup = new Stage();
 		popup.initModality(Modality.APPLICATION_MODAL);
+		popup.initStyle(StageStyle.UNDECORATED);
 		popup.setTitle("Teruggeven edelsteenfiches");
 
-		// Show player info
-		playerInfoLabel = new Label();
-//			playerInfoLabel.setText(getPlayerInfo());
+		geefFichesTerugElementen.getChildren().addAll(titel, subtitel, gemsInHand);
 
-		// Ask player to return gemstones
-		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
-
-		VBox root = new VBox(10);
-
-		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
-			HBox hbox = new HBox(10);
-
-			stapelKeuzeTextField.setPromptText("Stapelnummer");
-
-			plaatsTerugButton = new Button("Plaats terug");
-			plaatsTerugButton.setOnAction(e -> {
-				try {
-					int stapelKeuze = Integer.parseInt(stapelKeuzeTextField.getText());
-					// gameController.plaatsTerugInStapel(stapelKeuze - 1);
-					popup.close();
-				} catch (NumberFormatException ex) {
-					Alert alert = new Alert(AlertType.ERROR, "Voer een geldig stapelnummer in.");
-					alert.showAndWait();
-				} catch (RuntimeException ex) {
-					Alert alert = new Alert(AlertType.ERROR,
-							"U probeert fiches terug te plaatsen van een lege stapel.");
-					alert.showAndWait();
-				}
-			});
-
-			hbox.getChildren().addAll(stapelKeuzeTextField, plaatsTerugButton);
-			root.getChildren().add(hbox);
-		}
-
-		root.getChildren().add(playerInfoLabel);
-		Scene popupScene = new Scene(root, 300, 300);
+		Scene popupScene = new Scene(geefFichesTerugElementen, 512, 256);
 		popup.setScene(popupScene);
+
+		popupCloseFlag.addListener((observable, oldValue, newValue) -> {
+			if (newValue) {
+				popup.close();
+			}
+		});
+
 		popup.showAndWait();
 	}
 
@@ -418,8 +439,8 @@ public class SpeelSpelScherm extends BorderPane {
 				if (succesvol) {
 					gems();
 					developmentCards();
-					playerInfo();
 					dc.volgendeSpeler();
+					playerInfo();
 				}
 
 			});
