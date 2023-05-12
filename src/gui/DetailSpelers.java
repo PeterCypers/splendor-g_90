@@ -126,9 +126,9 @@ public class DetailSpelers extends GridPane
 				if (txfGebruikersnaam.getText().isEmpty() || txfGeboortejaar.getText().isEmpty())
 				{// lege velden
 					Alert alert = new Alert(AlertType.ERROR);
-					alert.setTitle("Alert");
-					alert.setHeaderText("Foute gegevens");
-					alert.setContentText("Alle velden moeten ingevuld zijn");
+					alert.setTitle(Taal.getString("alert"));
+					alert.setHeaderText(Taal.getString("wrongData"));
+					alert.setContentText(Taal.getString("allFieldsFilled"));
 					alert.showAndWait();
 					return;
 				}
@@ -160,8 +160,8 @@ public class DetailSpelers extends GridPane
 			catch (Exception e)
 			{
 				Alert alert = new Alert(AlertType.ERROR);
-				alert.setTitle("Alert");
-				alert.setHeaderText("Foute gegevens");
+				alert.setTitle(Taal.getString("alert"));
+				alert.setHeaderText(Taal.getString("wrongData"));
 				alert.setContentText(e.getMessage());
 				alert.showAndWait();
 
