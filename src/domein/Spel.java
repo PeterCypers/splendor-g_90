@@ -740,7 +740,7 @@ public class Spel {
 	 * bij gelijke ontwikkelingskaarten: meerdere winnaars
 	 * 
 	 * @return een <code>List</code> van <code>Spelers</code><br>
-	 * die voldoen aan Speler.getPrestigepunten() >= 15
+	 * die voldoen aan DR_SPEL_WINNAAR
 
 	 */
 	public List<Speler> bepaalWinnaar() {
