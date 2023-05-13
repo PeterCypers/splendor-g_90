@@ -96,18 +96,15 @@ public class SplendorApplicatie {
 			System.out.print(spelGestartFeedback());
 		}
 
-		int beurten = dc.geefAantalSpelers();
-		int ronde = 1;
+		int vorigeRonde = 0;
 
 		while (!dc.isEindeSpel()) {
 			// print de ASCII art "ronde" elke keer er een nieuwe ronde is
-			if (beurten == dc.geefAantalSpelers()) {
+			if (dc.getRonde() != vorigeRonde) {
 				System.out.println(rondeAsciiArt(Taal.getResource().getLocale().getLanguage()));
+				System.out.printf("*****%s %d*****", Taal.getString("splendorApplicatieRoundCountMsg"), dc.getRonde());
+				vorigeRonde = dc.getRonde();
 			}
-
-			System.out.printf("*****%s %d*****", Taal.getString("splendorApplicatieRoundCountMsg"), ronde);
-
-			beurten--;
 
 			// toont speler situatie
 			System.out.print(dc.toonSpelersSituatie());
@@ -123,10 +120,7 @@ public class SplendorApplicatie {
 			dc.volgendeSpeler();
 
 			// Winnaar wordt hier bepaalt en getoond, maar ook het tellen van de ronden
-			if (beurten == 0) {
-				beurten = dc.geefAantalSpelers();
-				ronde++;
-
+			if (dc.getRonde() != vorigeRonde) {
 				List<Speler> winnaars = dc.bepaalWinnaar();
 
 				if (winnaars.size() > 0) {
@@ -284,8 +278,8 @@ public class SplendorApplicatie {
 		 * zolang speler aan de beurt is => toon de verschillende opties => en laat hem
 		 * een optie kiezen
 		 */
-		boolean succesvol = false;
-		while (!succesvol) {
+		boolean succesvolleBeurt = false;
+		while (!succesvolleBeurt) {
 			System.out.printf("%s%n%s%n%s%n%s%n%s%n%s ", Taal.getString("splendorApplicatieSpeelBeurtMakeAChoiceMsg"),
 					Taal.getString("splendorApplicatieSpeelBeurtChoice1Msg"),
 					Taal.getString("splendorApplicatieSpeelBeurtChoice2Msg"),
@@ -311,12 +305,11 @@ public class SplendorApplicatie {
 				case KOOP_KAART -> koopOntwikkelingskaart();
 				case PAS_BEURT -> dc.pasBeurt();
 				}
-				succesvol = true;
+				succesvolleBeurt = true;
 			} catch (RuntimeException e) { // TODO check all possible feedback strings, remove error origin klass
 				System.out.println(e.getMessage());
-				succesvol = false;
+				succesvolleBeurt = false;
 			}
-
 		}
 	}
 
@@ -360,11 +353,7 @@ public class SplendorApplicatie {
 			}
 		} while (positie < 1 || positie > 4);
 
-		try {
-			dc.kiesOntwikkelingskaart(niveau, positie);
-		} catch (RuntimeException e) {
-			System.out.println(e.getMessage());
-		}
+		dc.kiesOntwikkelingskaart(niveau, positie);
 
 		try {
 			dc.krijgEdele();
