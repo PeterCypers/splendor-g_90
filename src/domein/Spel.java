@@ -940,12 +940,17 @@ public class Spel {
 	public void testGeeftOntwikkelingskaartenAanSpelerAanBeurt() {
 		Ontwikkelingskaart ontwikkelingskaart = null;
 		for (Kleur kleur : Kleur.values()) {
-			for (int i = 1; i <= 3; i++)
-				ontwikkelingskaart = new Ontwikkelingskaart(i, 0, kleur,
-						"src/resources/img/background_misc/splendor-icon.png", new int[] { 0, 0, 0, 0, 0 });
-			spelerAanBeurt.voegOntwikkelingskaartToeAanHand(ontwikkelingskaart);
-			spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+			for (int i = 1; i <= 10; i++) {
+				if (i <= 2) {
+					ontwikkelingskaart = new Ontwikkelingskaart(i, 0, kleur,
+							"src/resources/img/background_misc/splendor-icon.png", new int[] { 0, 0, 0, 0, 0 });
+					spelerAanBeurt.voegOntwikkelingskaartToeAanHand(ontwikkelingskaart);
+				}
+				spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+			}
+
 		}
+
 	}
 
 	/**
