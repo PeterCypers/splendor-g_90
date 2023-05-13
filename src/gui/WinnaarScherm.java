@@ -17,49 +17,44 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
 import resources.Taal;
 
-public class WinnaarScherm extends VBox
-{
+public class WinnaarScherm extends VBox {
 	private final DomeinController dc;
 	private List<SpelerDTO> spelerDTOs;
-	private GridPane gridWinnaars ;
-	private final  int WEIGHT = 22;
+	private GridPane gridWinnaars;
+	private final int WEIGHT = 22;
 
-	public WinnaarScherm(DomeinController dc)
-	{
+	public WinnaarScherm(DomeinController dc) {
 		this.dc = dc;
-		dc.startNieuwSpel();  //moet in commentaar
-		dc.testMaaktEenWinnaarAan(); //moet in commentaar
+		dc.startNieuwSpel();
+
+//		dc.testMaaktEenWinnaarAan(); 
+
 		buildGui();
 	}
 
-	private void buildGui()
-	{
+	private void buildGui() {
 
 		setSpacing(20);
 		setPadding(new Insets(40));
 		setAlignment(Pos.CENTER);
-		//titel
+		// titel
 		Label lblTitel = new Label(String.format("%s", Taal.getString("victory")));
 		lblTitel.setFont(Font.font("Helvetica", FontWeight.BOLD, 50));
 
-
-		//aangemelde speler DTOS ophalen
+		// aangemelde speler DTOS ophalen
 		spelerDTOs = dc.getAangemeldeSpelers();
 
-		//lijst storteren
-		Collections.sort(spelerDTOs, new Comparator<SpelerDTO>()
-		{
-			public int compare(SpelerDTO s1, SpelerDTO s2)
-			{
+		// lijst storteren
+		Collections.sort(spelerDTOs, new Comparator<SpelerDTO>() {
+			@Override
+			public int compare(SpelerDTO s1, SpelerDTO s2) {
 				return s2.aantalPrestigepunten() - s1.aantalPrestigepunten();
 			}
 		});
-	
 
-		//winnaars grid
+		// winnaars grid
 		gridWinnaars = new GridPane();
 		gridWinnaars.setAlignment(Pos.CENTER);
 		gridWinnaars.setHgap(10);
@@ -68,40 +63,34 @@ public class WinnaarScherm extends VBox
 
 		Text[] s = new Text[spelerDTOs.size()];
 
-		for (int i = 0; i < spelerDTOs.size(); i++)
-		{
+		for (int i = 0; i < spelerDTOs.size(); i++) {
 			s[i] = new Text(String.format("%d. %s:", i + 1, spelerDTOs.get(i).gebruikersnaam()));
 			gridWinnaars.add(s[i], 0, i);
 
 		}
 
 		Text[] p = new Text[spelerDTOs.size()];
-		for (int i = 0; i < spelerDTOs.size(); i++)
-		{
-			p[i] = new Text(String.format("%d points",  spelerDTOs.get(i).aantalPrestigepunten()));
+		for (int i = 0; i < spelerDTOs.size(); i++) {
+			p[i] = new Text(String.format("%d points", spelerDTOs.get(i).aantalPrestigepunten()));
 			gridWinnaars.add(p[i], 1, i);
-
 
 		}
 
 		Text[] w = new Text[spelerDTOs.size()];
-		for(int i=0;i<spelerDTOs.size();i++)
-		{
+		for (int i = 0; i < spelerDTOs.size(); i++) {
 			w[i] = new Text("");
 			gridWinnaars.add(w[i], 2, i);
-			for(Speler w2:dc.bepaalWinnaar())
-			{
-				if(spelerDTOs.get(i).gebruikersnaam().equals(w2.getGebruikersnaam())) {
+			for (Speler w2 : dc.bepaalWinnaar()) {
+				if (spelerDTOs.get(i).gebruikersnaam().equals(w2.getGebruikersnaam())) {
 					w[i].setText(String.format("!!! %s !!!", Taal.getString("winner").toUpperCase()));
 				}
 			}
 		}
 
-		for(int i=0;i<spelerDTOs.size();i++)
-		{
-			s[i].setFont(Font.font("Helvetica",WEIGHT-2*i));
-			p[i].setFont(Font.font("Helvetica",WEIGHT-2*i));
-			w[i].setFont(Font.font("Helvetica",FontWeight.BOLD,WEIGHT-2*i));
+		for (int i = 0; i < spelerDTOs.size(); i++) {
+			s[i].setFont(Font.font("Helvetica", WEIGHT - 2 * i));
+			p[i].setFont(Font.font("Helvetica", WEIGHT - 2 * i));
+			w[i].setFont(Font.font("Helvetica", FontWeight.BOLD, WEIGHT - 2 * i));
 
 		}
 
@@ -124,7 +113,7 @@ public class WinnaarScherm extends VBox
 		// Add the column constraints to the grid pane
 		gridWinnaars.getColumnConstraints().addAll(col1, col2, col3);
 
-		//toevoegen aan VBox
-		getChildren().addAll(lblTitel,gridWinnaars);
+		// toevoegen aan VBox
+		getChildren().addAll(lblTitel, gridWinnaars);
 	}
 }
