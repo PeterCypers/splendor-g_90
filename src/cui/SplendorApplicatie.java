@@ -27,61 +27,62 @@ public class SplendorApplicatie {
 	}
 
 	public void startSpel() {
-		int keuze = -1;
-
 		taalKeuze();
 
-		// [TEST] connectie db:
+		// toont alle spelers
 		System.out.printf("%s", dc.toonAlleSpelers());
 
-		while (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS || keuze != 2) {
-			if (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && keuze == 2) {
+		int maakNieuwSpelKeuze = -1;
+
+		while (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS || maakNieuwSpelKeuze != 2) {
+			if (dc.geefAantalSpelers() < Spel.MIN_AANTAL_SPELERS && maakNieuwSpelKeuze == 2) {
 				System.out.printf("%s%n%n", Taal.getString("playerCountErrorMsg"));
 			}
 
 			do {
-				keuze = keuzeMenu();
-				if (keuze < 1 || keuze > 7)
+				maakNieuwSpelKeuze = maakNieuwSpelKeuzeMenu();
+				if (maakNieuwSpelKeuze < 1 || maakNieuwSpelKeuze > 7) {
 					System.out.printf("%s%n%n", Taal.getString("numberChoiceRangeSevenErrorMsg"));
-			} while (keuze < 1 || keuze > 7);
+				}
+			} while (maakNieuwSpelKeuze < 1 || maakNieuwSpelKeuze > 7);
 
-			if (keuze == 1) {
+			if (maakNieuwSpelKeuze == 1) {
 				System.out.println(voegSpelerToe());
 			}
 
 			// [TEST] tijdelijke keuzes
-			switch (keuze) {
+			switch (maakNieuwSpelKeuze) {
 			case 3 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
-				keuze = 2;
+				maakNieuwSpelKeuze = 2;
 			}
 			case 4 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
 				dc.voegSpelerToe("user3", 2001);
-				keuze = 2;
+				maakNieuwSpelKeuze = 2;
 			}
 			case 5 -> {
 				dc.voegSpelerToe("user4", 1999);
 				dc.voegSpelerToe("user2", 2000);
 				dc.voegSpelerToe("user3", 2001);
 				dc.voegSpelerToe("user1", 2002);
-				keuze = 2;
+				maakNieuwSpelKeuze = 2;
 			}
 			case 6 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
 				dc.startNieuwSpel();
 				dc.testGeeftVeelEdelsteenfichesAanSpelers();
-				keuze = 2;
+				maakNieuwSpelKeuze = 2;
 			}
 			case 7 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
 				dc.startNieuwSpel();
 				dc.testMaaktWinnaarAan();
-				keuze = 2;
+				maakNieuwSpelKeuze = 2;
 			}
 			}
 		}
@@ -90,7 +91,7 @@ public class SplendorApplicatie {
 		// System.out.printf("aantal deelnemers: %d%n%s",dc.geefAantalSpelers(),
 		// dc.toonAangemeldeSpelers());
 
-		if (keuze == 2) {
+		if (maakNieuwSpelKeuze == 2) {
 			dc.startNieuwSpel();
 
 			System.out.print(spelGestartFeedback());
@@ -106,20 +107,15 @@ public class SplendorApplicatie {
 				vorigeRonde = dc.getRonde();
 			}
 
-			// toont speler situatie
 			System.out.print(dc.toonSpelersSituatie());
 
-			// toont spel situatie
 			toonSpelSituatie();
 
-			// start een beurt
 			speelBeurt();
 
-			// zet spelerAanBeurt zijn beurt op false en plaatst de volgende speler aan
-			// beurt
 			dc.volgendeSpeler();
 
-			// Winnaar wordt hier bepaalt en getoond, maar ook het tellen van de ronden
+			// winnaar wordt hier bepaalt en getoont
 			if (dc.getRonde() != vorigeRonde) {
 				List<Speler> winnaars = dc.bepaalWinnaar();
 
@@ -128,6 +124,7 @@ public class SplendorApplicatie {
 
 					System.out.printf("%s:%n",
 							winnaars.size() == 1 ? Taal.getString("winnerSingle") : Taal.getString("winnerPlural"));
+
 					for (Speler speler : winnaars) {
 						System.out.printf("%s %s%n", Taal.getString("player"), speler.getGebruikersnaam());
 					}
@@ -142,23 +139,24 @@ public class SplendorApplicatie {
 		if (dc.geefAantalSpelers() == Spel.MAX_AANTAL_SPELERS)
 			return String.format("%s", Taal.getString("maxPlayerErrorMsg"));
 		else {
-			String naam = null;
-			int geboorteJaar;
-			boolean loop = true;
+			String gebruikersnaam = null;
+			int geboortejaar;
+			boolean spelerNietToegevoegd = true;
 
 			do {
 				try {
 					System.out.printf("%s: ", Taal.getString("chooseName"));
-					naam = input.next();
+					gebruikersnaam = input.next();
 
 					input.nextLine(); // buffer leegmaken
 
 					System.out.printf("%s: ", Taal.getString("chooseBirthyear"));
-					geboorteJaar = input.nextInt();
+					geboortejaar = input.nextInt();
 
-					dc.voegSpelerToe(naam, geboorteJaar);
+					dc.voegSpelerToe(gebruikersnaam, geboortejaar);
 
-					loop = false;
+					spelerNietToegevoegd = false;
+
 				} catch (InputMismatchException e) {
 					input.nextLine(); // buffer leegmaken
 					System.out.printf("%s%n%n", Taal.getString("inputMisMatchWholeNumberErrorMsg"));
@@ -168,15 +166,15 @@ public class SplendorApplicatie {
 					System.out.println();
 				}
 
-			} while (loop);
+			} while (spelerNietToegevoegd);
 		}
 
 		return String.format("%s%n%n", Taal.getString("playerAddedFeedbackMsg"));
 	}
 
-	private int keuzeMenu() {
-		int keuze = -1;
-		boolean loop = true;
+	private int maakNieuwSpelKeuzeMenu() {
+		int maakNieuwSpelKeuze = -1;
+		boolean nietGeldigeKeuze = true;
 
 		do {
 			try {
@@ -202,15 +200,15 @@ public class SplendorApplicatie {
 						Taal.getString("correctPlayers"), Taal.getString("startGameWith"),
 						Taal.getString("correctPlayers"), Taal.getString("choiceSix"), Taal.getString("choiceSeven"));
 				System.out.printf("%s: ", Taal.getString("choice"));
-				keuze = input.nextInt();
-				loop = false;
+				maakNieuwSpelKeuze = input.nextInt();
+				nietGeldigeKeuze = false;
 			} catch (InputMismatchException e) {
 				input.nextLine(); // buffer leegmaken
 				System.out.printf("%s%n%n", Taal.getString("inputMisMatchWholeNumberErrorMsg"));
 			}
-		} while (loop);
+		} while (nietGeldigeKeuze);
 
-		return keuze;
+		return maakNieuwSpelKeuze;
 	}
 
 	private String spelGestartFeedback() {
@@ -317,6 +315,7 @@ public class SplendorApplicatie {
 		int niveau = 0;
 		int positie = 0;
 
+		// NIVEAU
 		do {
 			System.out.printf("%n%s ", Taal.getString("splendorApplicatieKoopOntwikkelingskaartChooseLevelMsg"));
 
@@ -333,8 +332,10 @@ public class SplendorApplicatie {
 				input.nextLine(); // buffer leegmaken
 				System.out.println(e.getMessage());
 			}
+
 		} while (niveau < 1 || niveau > 3);
 
+		// POSITIE
 		do {
 			System.out.printf("%s ", Taal.getString("splendorApplicatieKoopOntwikkelingskaartChoosePositionMsg"));
 
@@ -353,8 +354,10 @@ public class SplendorApplicatie {
 			}
 		} while (positie < 1 || positie > 4);
 
+		// kopen van ontwikkelingskaart na het bepalen van niveau en positie
 		dc.kiesOntwikkelingskaart(niveau, positie);
 
+		// bekijkt of er een edele moet gekregen worden
 		try {
 			dc.krijgEdele();
 		} catch (RuntimeException e) {
