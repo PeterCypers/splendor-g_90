@@ -112,8 +112,6 @@ public class SpeelSpelScherm extends BorderPane {
 			List<Speler> winnaars = dc.bepaalWinnaar();
 
 			if (winnaars.size() > 0) {
-				System.out.println("TOON VOLGEND SCHERM");
-
 				WinnaarScherm winnaarsScherm = new WinnaarScherm(dc);
 				Stage stage = (Stage) this.getScene().getWindow();
 				Scene scene = new Scene(winnaarsScherm, stage.getWidth(), stage.getHeight());
