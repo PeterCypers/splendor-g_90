@@ -734,7 +734,10 @@ public class Spel {
 	/**
 	 * DR_SPEL_WINNAAR<br>
 	 * deze lijst stelt de Winnaars van het spel voor:<br>
-	 * de spelers die meer dan 15 prestige-punten hebben<br>
+	 * de spelers met het hoogste aantal prestige punten(>=15)<br>
+	 * bij gelijke prestige: de speler met de laagste aantal<br>
+	 * ontwikkelingskaarten<br>
+	 * bij gelijke ontwikkelingskaarten: meerdere winnaars
 	 * 
 	 * @return een <code>List</code> van <code>Spelers</code><br>
 	 * die voldoen aan Speler.getPrestigepunten() >= 15
@@ -744,8 +747,10 @@ public class Spel {
 		List<Speler> potentieleWinnaars = new ArrayList<>();
 		List<Speler> winnaars = new ArrayList<>();
 
-		// Stap 1: Bepaal het hoogste aantal prestigepunten van de potiënle winnaars
+		// Stap 1: Bepaal het hoogste aantal prestigepunten van de potentiële winnaars
 		int hoogstePrestigepunten = 0;
+		//extra conditie(1)
+		int laagsteOntwKaartenCount = Integer.MAX_VALUE;
 
 		for (Speler speler : aangemeldeSpelers) {
 			int prestigepunten = speler.getPrestigepunten();
@@ -758,11 +763,18 @@ public class Spel {
 			if (prestigepunten > hoogstePrestigepunten) {
 				hoogstePrestigepunten = prestigepunten;
 			}
+			//extra conditie(2)
+			int aantalOKSpeler = speler.getOntwikkelingskaartenInHand().size();
+			if(aantalOKSpeler < laagsteOntwKaartenCount) {
+				laagsteOntwKaartenCount = aantalOKSpeler;
+			}
 		}
 
 		// Itereer over de winnaars lijst en voeg de spelers die er aan voldoen
+		//extra conditie(3)
 		for (Speler speler : potentieleWinnaars) {
-			if (speler.getPrestigepunten() == hoogstePrestigepunten) {
+			if (speler.getPrestigepunten() == hoogstePrestigepunten &&
+					speler.getOntwikkelingskaartenInHand().size() == laagsteOntwKaartenCount) {
 				winnaars.add(speler);
 			}
 		}
