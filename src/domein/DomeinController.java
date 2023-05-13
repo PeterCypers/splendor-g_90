@@ -378,4 +378,8 @@ public class DomeinController {
 		}
 		return asciiSign;
 	}
+
+	public int getRonde() {
+		return spel.getRonde();
+	}
 }

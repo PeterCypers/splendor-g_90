@@ -47,13 +47,14 @@ public class SpeelSpelScherm extends BorderPane {
 	private final DomeinController dc;
 	private BorderPane spelbord;
 	private HashSet<Kleur> kleurKeuze = new HashSet<>();
-	private int rondeNummer = 0;
+	private int vorigeRonde = 0;
 
 	public SpeelSpelScherm(DomeinController dc) {
 		this.dc = dc;
 		this.spelbord = new BorderPane();
 
 		dc.startNieuwSpel();
+
 		buildGui();
 	}
 
@@ -97,23 +98,42 @@ public class SpeelSpelScherm extends BorderPane {
 		developmentCards();
 		gems();
 
-		/*--------------RIGHT SIDE--------------*/
+		legeRechterkant();
+
+		ronde();
+
+		pasBeurt();
+	}
+
+	private void bepaalWinnaar() {
+		if (dc.getRonde() != vorigeRonde) {
+			vorigeRonde = dc.getRonde();
+			List<Speler> winnaars = dc.bepaalWinnaar();
+
+			if (winnaars.size() > 0) {
+				// TODO winnaar scherm
+				System.out.println("TOON VOLGEND SCHERM");
+			}
+		}
+	}
+
+	private void legeRechterkant() {
 		HBox spelerAanBeurtInfo = new HBox();
 		StackPane spacer = new StackPane();
 		spacer.setMinWidth(256 + 32);
 		spelerAanBeurtInfo.getChildren().add(spacer);
 		spelerAanBeurtInfo.setStyle("-fx-background-color: #704e38");
 		this.setRight(spelerAanBeurtInfo);
+	}
 
-		/*--------------TOP SIDE--------------*/
-
+	private void ronde() {
 		StackPane topOfGameBorderPane = new StackPane();
 		BorderPane.setAlignment(topOfGameBorderPane, Pos.CENTER);
 
 		HBox topGameElements = new HBox();
 		topGameElements.setAlignment(Pos.CENTER);
 
-		Label ronde = new Label(String.format("%s: %d", Taal.getString("round"), rondeNummer));
+		Label ronde = new Label(String.format("%s: %d", Taal.getString("round"), dc.getRonde()));
 		ronde.setStyle(
 				" -fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold; -fx-font-family: \"Lucida Calligraphy\", cursive;");
 		ronde.setAlignment(Pos.CENTER);
@@ -123,8 +143,9 @@ public class SpeelSpelScherm extends BorderPane {
 
 		topOfGameBorderPane.setStyle("-fx-background-color: #4a2610;");
 		this.setTop(topOfGameBorderPane);
+	}
 
-		/*--------------BOTTOM SIDE--------------*/
+	private void pasBeurt() {
 		StackPane bottomOfGameBorderPane = new StackPane();
 		BorderPane.setAlignment(bottomOfGameBorderPane, Pos.CENTER);
 
@@ -140,6 +161,7 @@ public class SpeelSpelScherm extends BorderPane {
 			kleurKeuze.clear();
 			dc.volgendeSpeler();
 			playerInfo();
+			ronde();
 		});
 
 		bottomGameElements.getChildren().add(pasBeurt);
@@ -147,7 +169,6 @@ public class SpeelSpelScherm extends BorderPane {
 
 		bottomOfGameBorderPane.setStyle("-fx-background-color: #4a2610;");
 		this.setBottom(bottomOfGameBorderPane);
-
 	}
 
 	private void playerInfo() {
@@ -262,6 +283,7 @@ public class SpeelSpelScherm extends BorderPane {
 				gems();
 				dc.volgendeSpeler();
 				playerInfo();
+				ronde();
 			}
 		} catch (Exception e) {
 			errorAlert(e);
@@ -467,6 +489,7 @@ public class SpeelSpelScherm extends BorderPane {
 					developmentCards();
 					dc.volgendeSpeler();
 					playerInfo();
+					ronde();
 				}
 
 			});
