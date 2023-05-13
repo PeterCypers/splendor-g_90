@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import domein.DomeinController;
 import gui.SpeelSpelScherm;
+import gui.TaalKeuzeScherm;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -16,7 +17,7 @@ public class StartUpGui extends Application {
 	public void start(Stage stage) {
 		DomeinController dc = new DomeinController();
 
-//		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
+		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
 //		Scene scene = new Scene(taalKeuze);
 //		stage.setMaximized(true);
 //		stage.setScene(scene);

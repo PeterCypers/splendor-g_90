@@ -54,7 +54,7 @@ public class SpeelSpelScherm extends BorderPane {
 		this.spelbord = new BorderPane();
 
 		dc.startNieuwSpel();
-		dc.testMaaktWinnaarAan();
+//		dc.testMaaktWinnaarAan();
 
 		buildGui();
 	}

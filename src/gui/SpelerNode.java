@@ -39,7 +39,7 @@ public class SpelerNode extends StackPane {
 		Rectangle playerInfoBackground = new Rectangle(PLAYER_BOX_WIDTH, PLAYER_BOX_HEIGHT);
 		playerInfoBackground.setArcWidth(PLAYER_BOX_ARC_WIDTH);
 		playerInfoBackground.setArcHeight(PLAYER_BOX_ARC_HEIGHT);
-		playerInfoBackground.setFill(Color.web("#bf9e8e"));
+		playerInfoBackground.setFill(Color.web("#4a2610"));
 		playerInfoBackground.setStrokeWidth(PLAYER_BOX_STROKE_WIDTH);
 		if (speler.aanDeBeurt()) {
 			playerInfoBackground.setStyle("-fx-stroke: #d13111;");
@@ -174,8 +174,7 @@ public class SpelerNode extends StackPane {
 		StackPane.setAlignment(gemsInHand, Pos.CENTER);
 
 		/*--------------------------NOBLES--------------------------*/
-		// shows nobles in hand
-		// TODO
+		// TODO show nobles in hand
 
 		/*--------------------------ADDING--------------------------*/
 		VBox playerInfoItems = new VBox();
