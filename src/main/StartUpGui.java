@@ -49,11 +49,11 @@ public class StartUpGui extends Application {
 		ResourceBundle r = ResourceBundle.getBundle("resources/resource", l);
 		Taal.setResource(r);
 
-		dc.voegSpelerToe("user1", 2002);
+		dc.voegSpelerToe("user7", 1995);
 		
-		dc.voegSpelerToe("user2", 2000);
-		dc.voegSpelerToe("user3", 2001);
-		dc.voegSpelerToe("user4", 1999);
+		dc.voegSpelerToe("user8", 2000);
+		dc.voegSpelerToe("user9", 2002);
+		dc.voegSpelerToe("user10", 2003);
 		WinnaarScherm victory = new WinnaarScherm(dc);
 		Scene scene = new Scene (victory);
 		stage.setScene(scene);

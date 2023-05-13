@@ -632,5 +632,17 @@ public class Spel {
 			speler.voegPuntenToe(15 + randomWaarde);
 		}
 	}
+	
+	//[TEST]
+	public void testMaaktEenWinnaarAan() {
+		Random rand = new Random();
+		for(int i=0;i<aangemeldeSpelers.size();i++) {
+			int randomWaarde1_15 = rand.nextInt(14)+1;
+			aangemeldeSpelers.get(i).voegPuntenToe(randomWaarde1_15);
+		}
+		int index = rand.nextInt(4);
+		aangemeldeSpelers.get(index).voegPuntenToe(4);
+	
+	}
 
 }

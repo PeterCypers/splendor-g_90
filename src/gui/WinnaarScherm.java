@@ -25,13 +25,13 @@ public class WinnaarScherm extends VBox
 	private final DomeinController dc;
 	private List<SpelerDTO> spelerDTOs;
 	private GridPane gridWinnaars ;
-	private final  int WEIGHT = 20;
+	private final  int WEIGHT = 22;
 
 	public WinnaarScherm(DomeinController dc)
 	{
 		this.dc = dc;
 		dc.startNieuwSpel();  //moet in commentaar
-		dc.testMaaktWinnaarAan(); //moet in commentaar
+		dc.testMaaktEenWinnaarAan(); //moet in commentaar
 		buildGui();
 	}
 
@@ -97,10 +97,11 @@ public class WinnaarScherm extends VBox
 			}
 		}
 
-		for(int i=0;i<spelerDTOs.size();i++) {
-			s[i].setFont(Font.font(WEIGHT-2*i));
-			p[i].setFont(Font.font(WEIGHT-2*i));
-			w[i].setFont(Font.font(WEIGHT-2*i));
+		for(int i=0;i<spelerDTOs.size();i++)
+		{
+			s[i].setFont(Font.font("Helvetica",WEIGHT-2*i));
+			p[i].setFont(Font.font("Helvetica",WEIGHT-2*i));
+			w[i].setFont(Font.font("Helvetica",FontWeight.BOLD,WEIGHT-2*i));
 
 		}
 
@@ -122,8 +123,6 @@ public class WinnaarScherm extends VBox
 
 		// Add the column constraints to the grid pane
 		gridWinnaars.getColumnConstraints().addAll(col1, col2, col3);
-
-	
 
 		//toevoegen aan VBox
 		getChildren().addAll(lblTitel,gridWinnaars);

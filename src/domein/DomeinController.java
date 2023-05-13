@@ -265,6 +265,9 @@ public class DomeinController {
 		spel.testMaaktWinnaarAan();
 
 	}
+	public void testMaaktEenWinnaarAan() {
+		spel.testMaaktEenWinnaarAan();
+	}
 
 	/**
 	 * SpelVoorwerpDTO constructor (Ontwikkelingskaart): SpelVoorwerpDTO(int niveau,
