@@ -2,7 +2,6 @@ package gui;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 import domein.Kleur;
@@ -41,7 +40,9 @@ public class OntwikkelingskaartNode extends StackPane {
 				backgroundImageView = new ImageView(backgroundImage);
 				backgroundImageView.setFitWidth(DEV_CARD_WIDTH);
 				backgroundImageView.setFitHeight(DEV_CARD_HEIGHT);
-			} catch (IOException e) {
+			} catch (Exception e) {
+				System.out.println("Fout bij het inladen van de achtergrond foto van de ontwikkelingskaart");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
 				e.printStackTrace();
 			}
 		} else {
@@ -59,10 +60,14 @@ public class OntwikkelingskaartNode extends StackPane {
 				colorBonusImageView.setFitWidth(DEV_CARD_SIZE);
 				colorBonusImageView.setFitHeight(DEV_CARD_SIZE);
 				StackPane.setAlignment(colorBonusImageView, Pos.TOP_RIGHT);
-			} catch (IOException e) {
-				System.err.println("Error loading color bonus image: " + e.getMessage());
+			} catch (Exception e) {
+				System.out.println("Fout bij het laden van de kleurBonus afbeelding van de ontwikkelingskaart");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
+				e.printStackTrace();
 			}
-		} else {
+		} else
+
+		{
 			System.err.println("Color bonus image file not found: " + colorBonusFile.getPath());
 		}
 
@@ -95,9 +100,18 @@ public class OntwikkelingskaartNode extends StackPane {
 			int costValue = niveau.kosten()[i];
 			if (costValue > 0) {
 				Kleur kleur = Kleur.valueOf(i);
-				File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
-				Image costImage = new Image(costFile.toURI().toString());
-				ImageView costImageView = new ImageView(costImage);
+
+				ImageView costImageView = new ImageView();
+				try {
+					File costFile = new File(String.format("src/resources/img/costs/circle_%s.png", kleur.kind()));
+					Image costImage = new Image(costFile.toURI().toString());
+					costImageView = new ImageView(costImage);
+				} catch (Exception e) {
+					System.out.println("Fout bij het inladen van een kost foto voor de ontwikkelingskaart");
+					System.err.println("Unexpected error occurred: " + e.getMessage());
+					e.printStackTrace();
+				}
+
 				costImageView.setFitWidth(DEV_CARD_SIZE);
 				costImageView.setFitHeight(DEV_CARD_SIZE);
 

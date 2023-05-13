@@ -32,23 +32,35 @@ public class Spel {
 	private Ontwikkelingskaart[] niveau2Zichtbaar = { null, null, null, null };
 	private Ontwikkelingskaart[] niveau3Zichtbaar = { null, null, null, null };
 
+	private int ronde = 0;
+
 	/**
 	 * Class constructor. <br>
-	 * - aantal deelnemende spelers wordt gecontroleerd volgens DR_SPEL_ AANTAL_SPELERS<br>
-	 * - de jongste <code>Speler</code> mag beginnen, bij meerdere jongste spelers zie methode <code>bepaalStartSpeler()</code><br>
+	 * - aantal deelnemende spelers wordt gecontroleerd volgens DR_SPEL_
+	 * AANTAL_SPELERS<br>
+	 * - de jongste <code>Speler</code> mag beginnen, bij meerdere jongste spelers
+	 * zie methode <code>bepaalStartSpeler()</code><br>
 	 * - -> de startSpeler wordt bepaald<br>
 	 * - -> de startSpeler wordt nu de eerste <code>spelerAanbeurt</code><br>
-	 * - alle lijsten worden gecontroleerd
-	 * - <code>n1</code>, <code>n2</code>, <code>n3</code> -> lijsten worden ingesteld op de uitgepakte <code>ontwikkelingsKaarten</code><br>
+	 * - alle lijsten worden gecontroleerd - <code>n1</code>, <code>n2</code>,
+	 * <code>n3</code> -> lijsten worden ingesteld op de uitgepakte
+	 * <code>ontwikkelingsKaarten</code><br>
 	 * - de zichtbare lijsten van kaarten worden bijgevuld
-	 * @param aangemeldeSpelers lijst van deelnemende <code>Speler</code>s
-	 * @param ontwikkelingsKaarten de drie geshuffelde lijsten van <code>Ontwikkelingskaart</code> van niveau 1, 2 en 3
-	 * @param edelen geshuffelde <code>List</code> van <code>Edele</code>
-	 * @param ficheStapels een <code>HashMap</code> die de aantal fiches per kleur bijhoudt<br>
 	 * 
-	 * @throws IllegalArgumentException bij het controlleren van <code>controleerAantalSpelers()</code><br>
-	 * <code>controleerOntwikkelingsKaartLijsten()</code>, <code>controleerEdelenLijst()</code><br>
-	 * en <code>controleerFicheStapels()</code>
+	 * @param aangemeldeSpelers    lijst van deelnemende <code>Speler</code>s
+	 * @param ontwikkelingsKaarten de drie geshuffelde lijsten van
+	 *                             <code>Ontwikkelingskaart</code> van niveau 1, 2
+	 *                             en 3
+	 * @param edelen               geshuffelde <code>List</code> van
+	 *                             <code>Edele</code>
+	 * @param ficheStapels         een <code>HashMap</code> die de aantal fiches per
+	 *                             kleur bijhoudt<br>
+	 * 
+	 * @throws IllegalArgumentException bij het controlleren van
+	 *                                  <code>controleerAantalSpelers()</code><br>
+	 *                                  <code>controleerOntwikkelingsKaartLijsten()</code>,
+	 *                                  <code>controleerEdelenLijst()</code><br>
+	 *                                  en <code>controleerFicheStapels()</code>
 	 */
 
 	public Spel(List<Speler> aangemeldeSpelers, List<List<Ontwikkelingskaart>> ontwikkelingsKaarten, List<Edele> edelen,
@@ -59,6 +71,8 @@ public class Spel {
 		this.bepaalStartSpeler(aangemeldeSpelers);
 		this.spelerAanBeurt.setStartSpeler();
 		this.spelerAanBeurt.setAanDeBeurt(true);
+
+		verhoogRonde();
 
 		controleerOntwikkelingsKaartLijsten(ontwikkelingsKaarten);
 
@@ -77,21 +91,47 @@ public class Spel {
 		// [TEST]
 		// testOntwikkelingsKaartStapels();
 	}
+
+	public int getRonde() {
+		return ronde;
+	}
+
+	private void verhoogRonde() {
+		this.ronde += 1;
+	}
+
 	/**
-	 * @param aangemeldeSpelers de <code>List<Speler></code> van deelnemende spelers<br>
-	 * - uit de lijst wordt de <code>Speler</code> met de recentste geboortedatum de eerste <code>spelerAanBeurt</code><br>
-	 * - bij gelijke geboortedatum wordt de <code>Speler</code> met de langste naam gekozen<br>
-	 * - bij gelijke 'geboortedatum' en 'naam lengte' wordt [Z-A] omgekeerd alfabetisch gekozen
+	 * DR_SPEL_STARTER + DR_RONDE_BEURT<br>
+	 * bepaalt start speler en zet deze vooraan in de lijst van aangemelde spelers
+	 * 
+	 * @param aangemeldeSpelers de <code>List<Speler></code> van deelnemende
+	 *                          spelers<br>
+	 *                          - uit de lijst wordt de <code>Speler</code> met de
+	 *                          recentste geboortedatum de eerste
+	 *                          <code>spelerAanBeurt</code><br>
+	 *                          - bij gelijke geboortedatum wordt de
+	 *                          <code>Speler</code> met de langste naam gekozen<br>
+	 *                          - bij gelijke 'geboortedatum' en 'naam lengte' wordt
+	 *                          [Z-A] omgekeerd alfabetisch gekozen
 	 */
 	private void bepaalStartSpeler(List<Speler> aangemeldeSpelers) {
-		Collections.sort(aangemeldeSpelers, new SpelerComparator());
-		spelerAanBeurt = aangemeldeSpelers.get(0);
+		List<Speler> copySorting = new ArrayList<>();
+		for (Speler s : aangemeldeSpelers)
+			copySorting.add(s);
+		Collections.sort(copySorting, new SpelerComparator());
+		spelerAanBeurt = copySorting.get(0);
+		int indexStartSpeler = aangemeldeSpelers.indexOf(spelerAanBeurt);
+		aangemeldeSpelers.add(0, aangemeldeSpelers.remove(indexStartSpeler));
 	}
+
 	/**
 	 * DR_SPEL_ AANTAL_SPELERS: aantal spelers [2-4]
-	 * @param aangemeldeSpelers de <code>List<Speler></code> van deelnemende spelers<br>
 	 * 
-	 * @throws IllegalArgumentException als de lijst <code>null</code> is, of als aantal spelers niet klopt
+	 * @param aangemeldeSpelers de <code>List<Speler></code> van deelnemende
+	 *                          spelers<br>
+	 * 
+	 * @throws IllegalArgumentException als de lijst <code>null</code> is, of als
+	 *                                  aantal spelers niet klopt
 	 */
 	private void controleerAantalSpelers(List<Speler> aangemeldeSpelers) {
 		if (aangemeldeSpelers == null)
@@ -101,12 +141,22 @@ public class Spel {
 					String.format("%s: %d", Taal.getString("spelControleerAantalSpelersInvalidPlayerCountExceptionMsg"),
 							aangemeldeSpelers.size()));
 	}
+
 	/**
+	 * controleert of de <code>Spel</code> <code>Constructor</code> een geldige
+	 * lijst<br>
+	 * van lijsten van ontwikkelingskaarten ontvangt<br>
 	 * 
-	 * @param ontwikkelingsKaarten de <code>List</code> van <code>Ontwikkelingskaart</code> lijsten van niveau1, niveau2 en niveau3
+	 * @param ontwikkelingsKaarten de <code>List</code> van
+	 *                             <code>Ontwikkelingskaart</code> lijsten van
+	 *                             niveau1, niveau2 en niveau3
 	 * 
-	 * @throws IllegalArgumentException als de parameter null is, als één van de lijsten in de lijst in parameter null zijn <br>
-	 * of als een <code>Ontwikkelingskaart</code> null is, of als de aantal lijsten != 3, of als er een duplicate lijst is
+	 * @throws IllegalArgumentException als de parameter null is, als één van de
+	 *                                  lijsten in de lijst in parameter null zijn
+	 *                                  <br>
+	 *                                  of als een <code>Ontwikkelingskaart</code>
+	 *                                  null is, of als de aantal lijsten != 3, of
+	 *                                  als er een duplicate lijst is
 	 */
 	private void controleerOntwikkelingsKaartLijsten(List<List<Ontwikkelingskaart>> ontwikkelingsKaarten) {
 		if (ontwikkelingsKaarten == null)
@@ -132,11 +182,14 @@ public class Spel {
 			throw new IllegalArgumentException(
 					(Taal.getString("spelControleerOntwikkelingsKaartLijstenDuplicateListExceptionMsg")));
 	}
+
 	/**
 	 * DR_SPEL_NIEUW aantal edelen voor een spel = aantal spelers + 1
+	 * 
 	 * @param edelen de <code>List</code> van <code>Edelen</code>
 	 * 
-	 * @throws IllegalArgumentException als parameter = null of aantal edelen niet klopt
+	 * @throws IllegalArgumentException als parameter = null of aantal edelen niet
+	 *                                  klopt
 	 */
 	private void controleerEdelenLijst(List<Edele> edelen) {
 		if (edelen == null)
@@ -144,16 +197,23 @@ public class Spel {
 		if (edelen.size() != this.getAantalSpelers() + 1)
 			throw new IllegalArgumentException((Taal.getString("spelControleerEdelenLijstSizeExceptionMsg")));
 	}
+
 	/**
 	 * DR_SPEL_NIEUW aantal fiches per stapel: <br>
 	 * --> spel met 2 spelers heeft 4 fiches per stapel <br>
 	 * --> spel met 3 spelers heeft 5 fiches per stapel <br>
 	 * --> spel met 4 spelers heeft 7 fiches per stapel <br>
-	 * @param ficheStapels de <code>HashMap</code> die per <code>Kleur</code> het <code>aantal fiches</code> bij houd
 	 * 
-	 * @throws IllegalArgumentException als de <code>HashMap</code> = <code>null</code><br> als de size() van ficheStapels != 5 <br>
-	 * als de aantal fiches per stapel niet klopt <br>
-	 * of als een stapel = null, of als een stapel 0 fiches heeft
+	 * @param ficheStapels de <code>HashMap</code> die per <code>Kleur</code> het
+	 *                     <code>aantal fiches</code> bij houd
+	 * 
+	 * @throws IllegalArgumentException als de <code>HashMap</code> =
+	 *                                  <code>null</code><br>
+	 *                                  als de size() van ficheStapels != 5 <br>
+	 *                                  als de aantal fiches per stapel niet klopt
+	 *                                  <br>
+	 *                                  of als een stapel = null, of als een stapel
+	 *                                  0 fiches heeft
 	 */
 	private void controleerFicheStapels(HashMap<Kleur, Integer> ficheStapels) {
 		int aantalFichesPerStapel;
@@ -186,35 +246,82 @@ public class Spel {
 		});
 	}
 
+	/**
+	 * geeft de huidige Speler terug die aan de beurt is
+	 * 
+	 * @return de <code>Speler</code> aan de beurt
+	 */
 	public Speler getSpelerAanBeurt() {
 		return spelerAanBeurt;
 	}
 
+	/**
+	 * DR_SPEL_EINDE: Een of meerdere Spelers heeft 15 of meer prestige punten
+	 * 
+	 * @return <code>eindeSpel</code> -> <code>true</code> als DR_SPEL_EINDE is
+	 *         bereikt, anders <code>false</code>
+	 */
 	public boolean isEindeSpel() {
 		return this.eindeSpel;
 	}
 
+	/**
+	 * geeft de array van zichtbare Ontwikkelingskaarten van Niveau 1
+	 * 
+	 * @return de <code>array</code> zichtbare Niveau 1 Ontwikkelingskaarten
+	 */
 	public Ontwikkelingskaart[] getNiveau1Zichtbaar() {
 		return this.niveau1Zichtbaar;
 	}
 
+	/**
+	 * geeft de array van zichtbare Ontwikkelingskaarten van Niveau 2
+	 * 
+	 * @return <code>array</code> zichtbare Niveau 2 Ontwikkelingskaarten
+	 */
 	public Ontwikkelingskaart[] getNiveau2Zichtbaar() {
 		return this.niveau2Zichtbaar;
 	}
 
+	/**
+	 * geeft de array van zichtbare Ontwikkelingskaarten van Niveau 3
+	 * 
+	 * @return <code>array</code> zichtbare Niveau 3 Ontwikkelingskaarten
+	 */
 	public Ontwikkelingskaart[] getNiveau3Zichtbaar() {
 		return this.niveau3Zichtbaar;
 	}
 
+	/**
+	 * geeft de lijst met Edelen terug
+	 * 
+	 * @return <code>List</code> van Edelen
+	 */
 	public List<Edele> getEdelen() {
 		return this.edelen;
 	}
 
-	// nodig voor test:
+	/**
+	 * geeft de EdelsteenFiche stapels in Spel terug als HashMap
+	 * 
+	 * @return <code>HashMap{@literal<}Kleur, Integer{@literal>}</code> die de fiche
+	 *         stapels voorstelt
+	 */
 	public HashMap<Kleur, Integer> getFicheStapels() {
 		return this.ficheStapels;
 	}
 
+	/**
+	 * 1. -<code>spelerAanBeurt</code>.aanDeBeurt wordt op <code>false</code> gezet
+	 * <br>
+	 * <br>
+	 * 2. -<code>spelerAanBeurt</code> wordt de volgende speler in de lijst<br>
+	 * of de 1ste speler in de lijst indien<br>
+	 * de <code>spelerAanBeurt</code> de laatste in de lijst was <br>
+	 * <br>
+	 * 3. -de volgende(nu huidige) <code>spelerAanBeurt</code>.aanDeBeurt wordt op
+	 * <code>true</code> gezet
+	 */
 	public void volgendeSpeler() {
 		// potentieel om huidigespeler == aan de beurt te vervangen door nieuwe speler
 		// die ook == aan de beurt
@@ -235,11 +342,42 @@ public class Spel {
 		// een speler aandebeurt wordt false, na successvolle afronden van
 		// spelmethodes(fiches/o-kaarten nemen)
 		spelerAanBeurt.setAanDeBeurt(true);
+
+		if (spelerAanBeurt.getStartSpeler())
+			verhoogRonde();
 	}
 
 	/**
-	 * @param niveau   : 1-3
-	 * @param positie: 1-4 (-1 voor index)
+	 * de <code>Speler</code> kiest een <code>Ontwikkelingskaart</code> om te
+	 * nemen<br>
+	 * indien aan de voorwaarden voldaan zijn:<br>
+	 * -> speler bezit genoeg edelsteenfiches en/of kleurbonussen<br>
+	 * -> gekozen parameters liggen in de verwachte range<br>
+	 * <br>
+	 * <code>Speler</code> betaalt de nodige edelsteenfiches, die worden weer aan
+	 * <code>Spel</code> toegevoegd <br>
+	 * <code>Speler</code> krijgt de gekozen <code>Ontwikkelingskaart</code><br>
+	 * <code>Speler</code> prestige punten worden verhoogt met de punten van de
+	 * gekozen <code>Ontwikkelingskaart</code><br>
+	 * <code>array</code> van zichtbare kaarten wordt bijgevuld -> zie methode:
+	 * <code>vulKaartenBij()</code>
+	 * 
+	 * @param niveau  : 1-3 (het niveau van Ontwikkelingskaart)
+	 * @param positie : 1-4 (de positie in de array van zichtbare kaarten)(-1 voor
+	 *                index) <br>
+	 * 
+	 * @throws IllegalArgumentException als <code>niveau</code> niet in range[1-3]
+	 *                                  ligt<br>
+	 *                                  of <code>positie</code> niet in range[1-4]
+	 *                                  ligt<br>
+	 *                                  of als gekozen
+	 *                                  <code>Ontwikkelingskaart</code> =
+	 *                                  <code>null</code><br>
+	 * @throws RuntimeException         als de speler niet genoeg <br>
+	 *                                  edelsteenfiches en/of kleurbonussen
+	 *                                  bezit<br>
+	 *                                  om de gekozen
+	 *                                  <code>Ontwikkelingskaart</code> te kopen
 	 */
 	public void kiesOntwikkelingskaart(int niveau, int positie) {
 		if (positie < 1 || positie > 4)
@@ -259,18 +397,11 @@ public class Spel {
 		}
 
 		// Kijken of de speler genoeg fiches en/of ontwikkelingskaarten reeds in hand
-		// heeft om deze kaart te kopen 
+		// heeft om deze kaart te kopen
 		if (!kanKaartKopen(gekozenOntwikkelingskaart)) {
 			throw new RuntimeException((String.format("%n%s.%n",
 					Taal.getString("spelKiesOntwikkelingskaartFailCanBuyCheckExceptionMsg"))));
 		}
-
-		// [TEST]
-		/*
-		 * int[] somAantalKleur = somAantalPerKleurInBezit(); System.out.
-		 * println("HIER ---------------------------------------------------------------------------------"
-		 * ); for (int i : somAantalKleur) { System.out.println(i); }
-		 */
 
 		// Verwijder fiches uit voorraad speler
 		// Terug toevoegen aan fichestapel
@@ -290,6 +421,18 @@ public class Spel {
 		vulKaartenBij();
 	}
 
+	/**
+	 * controleert of <code>spelerAanBeurt</code> gekozen
+	 * <code>Ontwikkelingskaart</code> kan kopen<br>
+	 * volgens DR_BEURT_KOOP_KAART<br>
+	 * 
+	 * @param gekozenOntwikkelingskaart gekozen kaart uit methode:
+	 *                                  <code>kiesOntwikkelingskaart(int niveau, int positie)</code>
+	 * @return <code>true</code> als <code>spelerAanBeurt</code> genoeg fiches en/of
+	 *         kleurbonussen <br>
+	 *         heeft om de gekozen <code>Ontwikkelingskaart</code> te kopen, anders
+	 *         <code>false</code>
+	 */
 	public boolean kanKaartKopen(Ontwikkelingskaart gekozenOntwikkelingskaart) {
 		if (gekozenOntwikkelingskaart == null)
 			throw new IllegalArgumentException((Taal.getString("spelKanKaartKopenCardNullExceptionMsg")));
@@ -311,6 +454,17 @@ public class Spel {
 		return kaartKoopbaar;
 	}
 
+	/**
+	 * punten per kleur van <code>spelerAanBeurt</code><br>
+	 * (punten: aantal fiches + kleurbonus)
+	 * 
+	 * @return <code>array</code> van <code>int</code> van lengte 5<br>
+	 *         op elke index de som van edelsteenfiches + kleurbonus van
+	 *         <code>spelerAanBeurt</code><br>
+	 *         <br>
+	 *         [witte-punten, rode-punten, blauwe-punten, groene-punten,
+	 *         zwarte-punten]
+	 */
 	public int[] somAantalPerKleurInBezit() {
 		int[] somAantalPerKleurInBezit = new int[5];
 		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
@@ -336,6 +490,15 @@ public class Spel {
 		return somAantalPerKleurInBezit;
 	}
 
+	/**
+	 * vermindert de voorraad edelsteenfiches van <code>spelerAanBeurt</code><br>
+	 * volgens de <code>kosten</code> van de gekozen
+	 * <code>Ontwikkelingskaart</code><br>
+	 * en voegt deze toe aan de voorraad edelsteenfiches van <code>Spel</code>
+	 * 
+	 * @param gekozenOntwikkelingskaart gekozen kaart uit methode:
+	 *                                  <code>kiesOntwikkelingskaart(int niveau, int positie)</code><br>
+	 */
 	private void verwijderFichesVanSpelerEnVoegToeAanSpel(Ontwikkelingskaart gekozenOntwikkelingskaart) {
 		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
 		int[] wegTeNemenFichesUitVoorraad = gekozenOntwikkelingskaart.getKosten();
@@ -354,6 +517,14 @@ public class Spel {
 		}
 	}
 
+	/**
+	 * verhoogt de waarde bij de gekozen <code>Kleur</code> in
+	 * <code>HashMap{@literal<}Kleur, Integer{@literal>}</code> <code>ficheStapels</code>
+	 * van <code>Spel</code>
+	 * 
+	 * @param kleur gekozen edelsteenfiche(Kleur)<br>
+	 * @throws IllegalArgumentException als parameter <code>kleur</code> = null
+	 */
 	private void voegFicheToe(Kleur kleur) {
 		if (kleur == null)
 			throw new IllegalArgumentException((Taal.getString("spelFicheColourNullExceptionMsg")));
@@ -366,6 +537,17 @@ public class Spel {
 		}
 	}
 
+	/**
+	 * vermindert de <code>value</code> van de <code>key</code> <code>Kleur</code>
+	 * in <br>
+	 * <code>HashMap{@literal<}Kleur, Integer{@literal>}</code> <code>ficheStapels</code><br>
+	 * van <code>Spel</code> met 1 als die groter is dan 1<br>
+	 * anders verwijdert de <code>key</code>-<code>value</code> paar uit de
+	 * <code>HashMap</code>
+	 * 
+	 * @param kleur gekozen edelsteenfiche(Kleur)<br>
+	 * @throws IllegalArgumentException als parameter <code>kleur</code> = null
+	 */
 	private void verwijderFiche(Kleur kleur) {
 		if (kleur == null)
 			throw new IllegalArgumentException((Taal.getString("spelFicheColourNullExceptionMsg")));
@@ -378,6 +560,11 @@ public class Spel {
 		}
 	}
 
+	/**
+	 * geeft de som van edelsteenfiches in spel terug
+	 * 
+	 * @return <code>int</code> totaal aantal fiches in <code>ficheStapels</code>
+	 */
 	public int totaalAantalfiches() {
 		int sum = 0;
 		for (int value : ficheStapels.values()) {
@@ -386,6 +573,19 @@ public class Spel {
 		return sum;
 	}
 
+	/**
+	 * overloopt de lijsten van zichtbare kaarten per niveau<br>
+	 * als de positie null is, neemt een kaart uit de trekstapel en voegt deze <br>
+	 * toe op de lege positie:<br>
+	 * <br>
+	 * 
+	 * <code>niveau1Zichtbaar</code> wordt bijgevuld uit de lijst
+	 * <code>n1</code><br>
+	 * <code>niveau2Zichtbaar</code> wordt bijgevuld uit de lijst
+	 * <code>n2</code><br>
+	 * <code>niveau3Zichtbaar</code> wordt bijgevuld uit de lijst
+	 * <code>n3</code><br>
+	 */
 	public void vulKaartenBij() {
 		// 1x itereren over 1 van de lijsten, ze zijn allemaal even lang
 		for (int i = 0; i < niveau1Zichtbaar.length; i++) {
@@ -401,7 +601,25 @@ public class Spel {
 	}
 
 	/**
-	 * @param kleuren [0-4, 0-4, 0-4]
+	 * DR_BEURT_ACTIE,<br>
+	 * DR_BEURT_AANTAL_FICHES : <code>Speler</code> neemt 3 fiches, elk van een
+	 * verschillend <code>Kleur</code><br>
+	 * <code>spelerAanBeurt</code> neemt 3 fiches:<br>
+	 * -> voegt de 3 fiches toe aan de fiches van <code>spelerAanBeurt</code><br>
+	 * -> vermindert de <code>ficheStapels</code> in <code>Spel</code>
+	 * 
+	 * @param kleuren <code>array</code> van 3 gekozen <code>Kleuren</code> <br>
+	 * @throws IllegalArgumentException als parameter <code>kleuren</code> =
+	 *                                  null<br>
+	 *                                  of als aantal unieke Kleuren != 3<br>
+	 *                                  of als een <code>Kleur</code> = null in de
+	 *                                  parameter <code>array</code>
+	 *                                  <code>kleuren</code><br>
+	 *                                  of als een van de <code>values</code> van
+	 *                                  <code>Kleuren</code> = 0<br>
+	 *                                  <br>
+	 * 
+	 *                                  (index [0-4, 0-4, 0-4])
 	 */
 	public void neemDrieFiches(Kleur[] kleuren) {
 		if (kleuren == null)
@@ -435,8 +653,23 @@ public class Spel {
 	}
 
 	/**
+	 * DR_BEURT_ACTIE,<br>
+	 * DR_BEURT_AANTAL_FICHES : <code>Speler</code> neemt 2 fiches, beiden moeten
+	 * van dezelfde <code>Kleur</code> zijn<br>
+	 * <code>spelerAanBeurt</code> neemt 2 fiches:<br>
+	 * -> voegt de 2 fiches toe aan de fiches van <code>spelerAanBeurt</code><br>
+	 * -> vermindert de <code>ficheStapels</code> in <code>Spel</code>
 	 * 
-	 * @param index 0-4
+	 * @param kleur de gekozen <code>Kleur</code><br>
+	 * @throws IllegalArgumentException als parameter <code>kleur</code> = null<br>
+	 *                                  of als <code>ficheStapel</code> van gekozen
+	 *                                  <code>Kleur</code> in <code>Spel</code><br>
+	 *                                  niet bestaat(een lege stapel)<br>
+	 *                                  of als in gekozen stapel het resterende
+	 *                                  aantal fiches {@literal<} 4<br>
+	 *                                  <br>
+	 * 
+	 *                                  (index 0-4)
 	 */
 	public void neemTweeFiches(Kleur kleur) {
 		if (kleur == null)
@@ -463,6 +696,11 @@ public class Spel {
 		spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
 	}
 
+	/**
+	 * geeft het aantal stapels terug die meer dan 0 fiches bevatten
+	 * 
+	 * @return <code>int</code> aantal stapels die meer dan 0 fiches bevatten
+	 */
 	public int aantalStapelsMeerDanNul() {
 		int aantalStapelsMeerDanNul = 0;
 
@@ -475,9 +713,11 @@ public class Spel {
 	}
 
 	/**
-	 * is er een stapel met meer dan 4 fiches
+	 * is er een stapel met 4 fiches of meer dan 4 fiches
 	 * 
-	 * @return boolean
+	 * @return <code>boolean </code> <code>true</code> als één of meer stapels <br>
+	 *         bestaan met aantalfiches >= 4, anders <code>false</code>
+	 * 
 	 */
 	public boolean bestaatStapelMeerDan4() {
 		for (Integer aantalFiches : ficheStapels.values()) {
@@ -488,14 +728,32 @@ public class Spel {
 		return false;
 	}
 
+	/**
+	 * geeft het aantal spelers
+	 * 
+	 * @return <code>int</code> aantal <code>Spelers</code><br>
+	 *         in de <code>List</code> van <code>aangemeldeSpelers</code>
+	 */
 	public int getAantalSpelers() {
 		return aangemeldeSpelers.size();
 	}
 
+	/**
+	 * geeft de lijst van aangemelde spelers
+	 * 
+	 * @return de <code>List</code> van <code>aangemeldeSpelers</code>
+	 */
 	public List<Speler> getAangemeldeSpelers() {
 		return aangemeldeSpelers;
 	}
 
+	/**
+	 * geeft een lijst van spelvoorwerpen terug, dit zijn: <code>Edele</code><br>
+	 * of <code>Ontwikkelingskaart</code> van <code>Tag Interface</code><br>
+	 * <code>Spelvoorwerp</code>
+	 * 
+	 * @return <code>List</code> van <code>Spelvoorwerpen</code>
+	 */
 	public List<SpelVoorwerp> geefSpelVoorwerpen() {
 		List<SpelVoorwerp> speelbord = new ArrayList<>();
 
@@ -511,6 +769,16 @@ public class Spel {
 		return speelbord;
 	}
 
+	/**
+	 * geeft een array met aantal kaarten resterend in de trekstapels per niveau<br>
+	 * - [0]: niveau1<br>
+	 * - [1]: niveau2<br>
+	 * - [2]: niveau3<br>
+	 * 
+	 * @return <code>int</code>{@literal []} de <code>array</code> representatie
+	 *         <br>
+	 *         van het aantal kaarten resterend per niveau
+	 */
 	public int[] aantalKaartenResterend() {
 		int[] rest = new int[3];
 		rest[0] = n1.size();
@@ -519,6 +787,15 @@ public class Spel {
 		return rest;
 	}
 
+	/**
+	 * de Speler kiest optie [1, 2, 3, 4, 5] die de gekozen Kleur-stapel<br>
+	 * voorstelt van de <code>ficheStapels</code><br>
+	 * 
+	 * @param stapelKeuze de index(zero based) van de <code>Kleur</code> in
+	 *                    <code>Kleur.values()</code><br>
+	 *                    verwacht: de Speler keuze van stapel - 1 (mapping
+	 *                    speler-keuze naar Kleur-index)
+	 */
 	public void plaatsTerugInStapel(int stapelKeuze) {
 		// verwijder fiche bij speler
 		spelerAanBeurt.verwijderEdelsteenfiche(Kleur.valueOf(stapelKeuze));
@@ -527,6 +804,12 @@ public class Spel {
 		voegFicheToe(Kleur.valueOf(stapelKeuze));
 	}
 
+	/**
+	 * geeft de textuele weergave van de fiche stapels die dan uitgeprint kunnen
+	 * worden
+	 * 
+	 * @return de <code>String</code> representatie van de fiches (voor CUI)
+	 */
 	public String toonFiches() {
 		String representatieFiches = "";
 
@@ -541,6 +824,11 @@ public class Spel {
 		return representatieFiches.isBlank() ? Taal.getString("spelToonFichesAllStacksEmptyMsg") : representatieFiches;
 	}
 
+	/**
+	 * DR_BEURT_SPECIALE_TEGEL: <br>
+	 * Als de <code>Speler</code> genoeg kleurbonussen heeft krijgt die automatisch
+	 * de <code>Edele</code>
+	 */
 	public void krijgEdele() {
 		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
 		int[] aantalOntwikkelingskaartKleurBonus = new int[Kleur.values().length];
@@ -575,12 +863,25 @@ public class Spel {
 		}
 	}
 
+	/**
+	 * DR_SPEL_WINNAAR<br>
+	 * deze lijst stelt de Winnaars van het spel voor:<br>
+	 * de spelers met het hoogste aantal prestige punten(>=15)<br>
+	 * bij gelijke prestige: de speler met de laagste aantal<br>
+	 * ontwikkelingskaarten<br>
+	 * bij gelijke ontwikkelingskaarten: meerdere winnaars
+	 * 
+	 * @return een <code>List</code> van <code>Spelers</code><br>
+	 * die voldoen aan DR_SPEL_WINNAAR
+	 */
 	public List<Speler> bepaalWinnaar() {
 		List<Speler> potentieleWinnaars = new ArrayList<>();
 		List<Speler> winnaars = new ArrayList<>();
 
-		// Stap 1: Bepaal het hoogste aantal prestigepunten van de potiënle winnaars
+		// Stap 1: Bepaal het hoogste aantal prestigepunten van de potentiële winnaars
 		int hoogstePrestigepunten = 0;
+		//extra conditie(1)
+		int laagsteOntwKaartenCount = Integer.MAX_VALUE;
 
 		for (Speler speler : aangemeldeSpelers) {
 			int prestigepunten = speler.getPrestigepunten();
@@ -593,11 +894,18 @@ public class Spel {
 			if (prestigepunten > hoogstePrestigepunten) {
 				hoogstePrestigepunten = prestigepunten;
 			}
+			//extra conditie(2)
+			int aantalOKSpeler = speler.getOntwikkelingskaartenInHand().size();
+			if(aantalOKSpeler < laagsteOntwKaartenCount) {
+				laagsteOntwKaartenCount = aantalOKSpeler;
+			}
 		}
 
 		// Itereer over de winnaars lijst en voeg de spelers die er aan voldoen
+		//extra conditie(3)
 		for (Speler speler : potentieleWinnaars) {
-			if (speler.getPrestigepunten() == hoogstePrestigepunten) {
+			if (speler.getPrestigepunten() == hoogstePrestigepunten &&
+					speler.getOntwikkelingskaartenInHand().size() == laagsteOntwKaartenCount) {
 				winnaars.add(speler);
 			}
 		}
@@ -605,7 +913,9 @@ public class Spel {
 		return winnaars;
 	}
 
-	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
+	/**
+	 * [TEST-METHODE] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
+	 */
 	private void testOntwikkelingskaartStapels() {
 		System.out.println(Taal.getString("spelTestOntwikkelingskaartStapelsCardStacksMsg"));
 		System.out.println(n1);
@@ -614,7 +924,11 @@ public class Spel {
 		System.out.println("***************************************************************************");
 	}
 
-	// [TEST]
+	/**
+	 * [DEMO-METHODE]<br>
+	 * vergemakkelijkt het tonen van verdere spel verlopen:<br>
+	 * vooral het kopen van Ontwikkelingskaarten
+	 */
 	public void testGeeftVeelEdelsteenfichesAanSpelers() {
 		for (Kleur kleur : Kleur.values()) {
 			for (int i = 0; i < 100; i++)
@@ -623,7 +937,10 @@ public class Spel {
 
 	}
 
-	// [TEST]
+	/**
+	 * [DEMO-METHODE]<br>
+	 * simulatie van een spel-einde
+	 */
 	public void testMaaktWinnaarAan() {
 		Random random = new Random();
 

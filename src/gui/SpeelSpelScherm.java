@@ -1,53 +1,92 @@
 package gui;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import domein.DomeinController;
 import domein.Kleur;
+import domein.Speler;
 import dto.SpelVoorwerpDTO;
 import dto.SpelerDTO;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import resources.Taal;
 
 public class SpeelSpelScherm extends BorderPane {
 	private final DomeinController dc;
 	private BorderPane spelbord;
 	private HashSet<Kleur> kleurKeuze = new HashSet<>();
+	private int vorigeRonde = 0;
 
 	public SpeelSpelScherm(DomeinController dc) {
 		this.dc = dc;
 		this.spelbord = new BorderPane();
 
 		dc.startNieuwSpel();
+//		dc.testMaaktWinnaarAan();
+
 		buildGui();
 	}
 
 	private void buildGui() {
 
-		this.setStyle("-fx-background-color: #000000;");
+		Image backgroundImage = null;
+		File backgroundFile = new File("src/resources/img/background_misc/bg_wood.jpg");
+		if (backgroundFile.exists()) {
+			try (InputStream inputStream = new FileInputStream(backgroundFile)) {
+				backgroundImage = new Image(inputStream);
+			} catch (Exception e) {
+				System.out.println("Fout bij het inladen van de achtergrond foto van het spelbord");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+		} else {
+			System.err.println("Achtergrond van het spelbord bestaat niet: " + backgroundFile.getAbsolutePath());
+		}
+
+		Region backgroundRegion = new Region();
+		backgroundRegion.setBackground(new Background(
+				new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+						BackgroundPosition.CENTER, new BackgroundSize(1.0, 1.0, true, true, false, false))));
+
+		this.setBackground(backgroundRegion.getBackground());
+
+		// this.getChildren().add(stackPane);
 
 		/*--------------CREATE THE BORD--------------*/
 
-
-
-		spelbord.setStyle("-fx-background-color: #328dd8;");
+		// spelbord.setStyle("-fx-background-color: #363200;");
 
 		setAlignment(spelbord, Pos.CENTER);
 		spelbord.setMaxWidth(875);
@@ -60,14 +99,57 @@ public class SpeelSpelScherm extends BorderPane {
 		developmentCards();
 		gems();
 
-		/*--------------RIGHT SIDE--------------*/
+		legeRechterkant();
+
+		ronde();
+
+		pasBeurt();
+	}
+
+	private void bepaalWinnaar() {
+		if (dc.getRonde() != vorigeRonde) {
+			vorigeRonde = dc.getRonde();
+			List<Speler> winnaars = dc.bepaalWinnaar();
+
+			if (winnaars.size() > 0) {
+				WinnaarScherm winnaarsScherm = new WinnaarScherm(dc);
+				Stage stage = (Stage) this.getScene().getWindow();
+				Scene scene = new Scene(winnaarsScherm, stage.getWidth(), stage.getHeight());
+				stage.setTitle(Taal.getString("winner"));
+				stage.setScene(scene);
+			}
+		}
+	}
+
+	private void legeRechterkant() {
 		HBox spelerAanBeurtInfo = new HBox();
 		StackPane spacer = new StackPane();
 		spacer.setMinWidth(256 + 32);
 		spelerAanBeurtInfo.getChildren().add(spacer);
+		spelerAanBeurtInfo.setStyle("-fx-background-color: #704e38");
 		this.setRight(spelerAanBeurtInfo);
+	}
 
-		/*--------------PLAYER TURN OPTIONS--------------*/
+	private void ronde() {
+		StackPane topOfGameBorderPane = new StackPane();
+		BorderPane.setAlignment(topOfGameBorderPane, Pos.CENTER);
+
+		HBox topGameElements = new HBox();
+		topGameElements.setAlignment(Pos.CENTER);
+
+		Label ronde = new Label(String.format("%s: %d", Taal.getString("round"), dc.getRonde()));
+		ronde.setStyle(
+				" -fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold; -fx-font-family: \"Lucida Calligraphy\", cursive;");
+		ronde.setAlignment(Pos.CENTER);
+		ronde.setPadding(new Insets(10));
+		topGameElements.getChildren().add(ronde);
+		topOfGameBorderPane.getChildren().add(topGameElements);
+
+		topOfGameBorderPane.setStyle("-fx-background-color: #4a2610;");
+		this.setTop(topOfGameBorderPane);
+	}
+
+	private void pasBeurt() {
 		StackPane bottomOfGameBorderPane = new StackPane();
 		BorderPane.setAlignment(bottomOfGameBorderPane, Pos.CENTER);
 
@@ -80,9 +162,11 @@ public class SpeelSpelScherm extends BorderPane {
 		pasBeurt.setAlignment(Pos.CENTER);
 
 		pasBeurt.setOnAction(e -> {
-			dc.volgendeSpeler();
 			kleurKeuze.clear();
+			dc.volgendeSpeler();
 			playerInfo();
+			ronde();
+			bepaalWinnaar();
 		});
 
 		bottomGameElements.getChildren().add(pasBeurt);
@@ -90,7 +174,6 @@ public class SpeelSpelScherm extends BorderPane {
 
 		bottomOfGameBorderPane.setStyle("-fx-background-color: #4a2610;");
 		this.setBottom(bottomOfGameBorderPane);
-
 	}
 
 	private void playerInfo() {
@@ -121,10 +204,18 @@ public class SpeelSpelScherm extends BorderPane {
 		int GEMS_STROKE = 2;
 
 		for (Kleur kleur : Kleur.values()) {
-			// Create a new gem image view
-			File gemFile = new File(String.format("src/resources/img/tokens/token_%s.png", kleur.kind()));
-			Image gemImage = new Image(gemFile.toURI().toString());
-			ImageView gemImageView = new ImageView(gemImage);
+
+			ImageView gemImageView = new ImageView();
+			try {
+				// Create a new gem image view
+				File gemFile = new File(String.format("src/resources/img/tokens/token_%s.png", kleur.kind()));
+				Image gemImage = new Image(gemFile.toURI().toString());
+				gemImageView = new ImageView(gemImage);
+			} catch (Exception e) {
+				System.out.println("Fout bij het laden van de achtergrond foto voor edelsteenfiches");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
 
 			Integer amount = fichestapels.get(kleur);
 
@@ -186,14 +277,19 @@ public class SpeelSpelScherm extends BorderPane {
 
 			if (succesvol) {
 				if (dc.buitenVoorraad()) {
-					System.out.println("BUITEN VOORRAAD");
-					geefFichesTerug();
+
+					int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
+					for (int i = 0; i < aantalTerugTePlaatsen; i++) {
+						geefFichesTerug();
+					}
 				}
 
-				dc.volgendeSpeler();
 				kleurKeuze.clear();
 				gems();
+				dc.volgendeSpeler();
 				playerInfo();
+				ronde();
+				bepaalWinnaar();
 			}
 		} catch (Exception e) {
 			errorAlert(e);
@@ -202,38 +298,102 @@ public class SpeelSpelScherm extends BorderPane {
 	}
 
 	private void geefFichesTerug() {
-		// TODO moet een popup geven en moet ervoor zorgen dat het ander scherm niet
-		// geklikt kan worden, tot het probleem van buiten voorraad is opgelost
+		BooleanProperty popupCloseFlag = new SimpleBooleanProperty(false);
 
-		// toon overzicht van edelsteenfiches in speler zijn voorraad
-		playerInfo();
+		int REQUIREMENTS_SIZE = 40 * 3;
+		int GEM_FONTSIZE = 28 * 3;
 
-		// vraag speler om edelsteenfiches terug te leggen naar spel voorraad
-		int aantalTerugTePlaatsen = dc.totaalAantalFichesVanSpelerAanBeurt() - 10;
+		VBox geefFichesTerugElementen = new VBox();
+		geefFichesTerugElementen.setSpacing(10);
+		geefFichesTerugElementen.setAlignment(Pos.CENTER);
+		geefFichesTerugElementen.setStyle("-fx-background-color: #4a2610; ");
+		// -fx-background-radius: 20 20 20 20;
 
-		for (int i = 0; i < aantalTerugTePlaatsen; i++) {
-			boolean isTerugGelegd = true;
+		List<SpelerDTO> spelers = dc.getAangemeldeSpelers();
+		SpelerDTO speler = null;
 
-			while (isTerugGelegd) {
-				try {
-					/*
-					 * System.out.printf("Plaats fiche terug uit eigen stapel (met nummer): ");
-					 * 
-					 * int stapelKeuze = input.nextInt();
-					 * 
-					 * dc.plaatsTerugInStapel(stapelKeuze - 1);
-					 */
-					isTerugGelegd = false;
-				} catch (RuntimeException e) {
-					System.out.println("\nU probeert fiches terug te plaatsen van een lege stapel.\n");
-					isTerugGelegd = true;
-				}
-
+		for (SpelerDTO s : spelers) {
+			if (s.aanDeBeurt()) {
+				speler = s;
 			}
 		}
 
+		Text titel = new Text(Taal.getString("giveBack"));
+		titel.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+		titel.setFill(Color.RED);
+		titel.setTextAlignment(TextAlignment.CENTER);
+
+		Text subtitel = new Text(String.format("%s%n%s %d.", Taal.getString("giveBackSubText"),
+				Taal.getString("giveBackSubText2"), Speler.getMaxEdelsteenfichesInVoorraad()));
+		subtitel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		subtitel.setFill(Color.YELLOW);
+		subtitel.setTextAlignment(TextAlignment.CENTER);
+
+		HBox gemsInHand = new HBox();
+		StackPane.setAlignment(gemsInHand, Pos.CENTER);
+		HashMap<Kleur, Integer> edelsteenfichesInHand = speler.edelsteenfichesInHand();
+
+		for (Kleur kleur : Kleur.values()) {
+			ImageView gemTokenImageView = new ImageView();
+			try {
+				File gemTokenFile = new File("src/resources/img/tokens/token_" + kleur.kind() + ".png");
+				Image gemTokenImage = new Image(gemTokenFile.toURI().toString());
+				gemTokenImageView = new ImageView(gemTokenImage);
+			} catch (Exception e) {
+				System.out.println("Fout bij het laden van de edelsteenfiche fotos voor Speler");
+				System.err.println("Unexpected error occurred: " + e.getMessage());
+				e.printStackTrace();
+			}
+
+			gemTokenImageView.setFitWidth(REQUIREMENTS_SIZE / 1.5);
+			gemTokenImageView.setFitHeight(REQUIREMENTS_SIZE / 1.5);
+
+			Integer amount = edelsteenfichesInHand.get(kleur);
+			if (amount == null) {
+				amount = 0;
+			}
+
+			Text amountText = new Text(Integer.toString(amount));
+			amountText.setFont(Font.font("Arial", FontWeight.BOLD, GEM_FONTSIZE / 1.5));
+			amountText.setFill(Color.WHITE);
+			amountText.setStroke(Color.BLACK);
+			amountText.setStrokeWidth(1);
+
+			StackPane gemStackPane = null;
+
+			if (amount != 0) {
+				gemStackPane = new StackPane(gemTokenImageView, amountText);
+				gemStackPane.setPrefSize(REQUIREMENTS_SIZE, REQUIREMENTS_SIZE);
+
+				gemStackPane.setOnMouseClicked(event -> {
+					dc.plaatsTerugInStapel(kleur.getKleur());
+					popupCloseFlag.set(true);
+				});
+
+				gemsInHand.getChildren().add(gemStackPane);
+			}
+		}
+
+		Stage popup = new Stage();
+		popup.initModality(Modality.APPLICATION_MODAL);
+		popup.initStyle(StageStyle.UNDECORATED);
+		popup.setTitle(Taal.getString("giveBackTitle"));
+
+		geefFichesTerugElementen.getChildren().addAll(titel, subtitel, gemsInHand);
+
+		Scene popupScene = new Scene(geefFichesTerugElementen, 512, 256);
+		popup.setScene(popupScene);
+
+		popupCloseFlag.addListener((observable, oldValue, newValue) -> {
+			if (newValue) {
+				popup.close();
+			}
+		});
+
+		popup.showAndWait();
 	}
 
+	// ------------------------------------------------------------------------------------------------------------
 	private void nobles() {
 		List<SpelVoorwerpDTO> edelen = dc.getEdelen();
 		HBox noblesBox = new HBox();
@@ -260,16 +420,25 @@ public class SpeelSpelScherm extends BorderPane {
 
 		VBox stapelFotosBox = new VBox();
 
-		// Load the image of the deck
-		File backgroundFile1 = new File("src/resources/img/card_stacks/level1.png");
-		Image backgroundImage1 = new Image(backgroundFile1.toURI().toString());
-		ImageView stapel1 = new ImageView(backgroundImage1);
-		File backgroundFile2 = new File("src/resources/img/card_stacks/level2.png");
-		Image backgroundImage2 = new Image(backgroundFile2.toURI().toString());
-		ImageView stapel2 = new ImageView(backgroundImage2);
-		File backgroundFile3 = new File("src/resources/img/card_stacks/level3.png");
-		Image backgroundImage3 = new Image(backgroundFile3.toURI().toString());
-		ImageView stapel3 = new ImageView(backgroundImage3);
+		ImageView stapel1 = new ImageView();
+		ImageView stapel2 = new ImageView();
+		ImageView stapel3 = new ImageView();
+		try {
+			// Load the image of the deck
+			File backgroundFile1 = new File("src/resources/img/card_stacks/level1.png");
+			Image backgroundImage1 = new Image(backgroundFile1.toURI().toString());
+			stapel1 = new ImageView(backgroundImage1);
+			File backgroundFile2 = new File("src/resources/img/card_stacks/level2.png");
+			Image backgroundImage2 = new Image(backgroundFile2.toURI().toString());
+			stapel2 = new ImageView(backgroundImage2);
+			File backgroundFile3 = new File("src/resources/img/card_stacks/level3.png");
+			Image backgroundImage3 = new Image(backgroundFile3.toURI().toString());
+			stapel3 = new ImageView(backgroundImage3);
+		} catch (Exception e) {
+			System.out.println("Fout bij het inladen van de fotos voor de stapels");
+			System.err.println("Unexpected error occurred: " + e.getMessage());
+			e.printStackTrace();
+		}
 
 		int stapelWidth = 128;
 		int stapelHeight = 200;
@@ -322,10 +491,12 @@ public class SpeelSpelScherm extends BorderPane {
 				}
 
 				if (succesvol) {
-					dc.volgendeSpeler();
 					gems();
 					developmentCards();
+					dc.volgendeSpeler();
 					playerInfo();
+					ronde();
+					bepaalWinnaar();
 				}
 
 			});

@@ -15,13 +15,13 @@ public abstract class StartUp extends Application {
 			do {
 				try {
 					do {
-						System.out.print("Gui?(1) of Cui?(2): ");
+						System.out.print("Gui?(1) or Cui?(2): ");
 						keuze = input.nextInt();
 					} while (keuze < 1 || keuze > 2);
 					errorExists = false;
 				} catch (InputMismatchException e) {
 					input.next();
-					System.out.println("Je keuze moet een geheel getal zijn.");
+					System.out.println("Your entered number must be a valid number.");
 				}
 			} while (errorExists);
 
