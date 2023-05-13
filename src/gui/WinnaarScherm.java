@@ -25,6 +25,8 @@ public class WinnaarScherm extends VBox {
 	private List<String> spelersRang;
 	private List<String> winnaarsLijst;
 	private boolean isWinnaar;
+	private Text user;
+	private Text winner;
 
 	public WinnaarScherm(DomeinController dc)
 	{
@@ -72,18 +74,40 @@ public class WinnaarScherm extends VBox {
 
 
 		//winnaars grid
-		//TEST
+		
+		//TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST
 		GridPane gridWinnaars = new GridPane();
 		gridWinnaars.setAlignment(Pos.CENTER);
 		gridWinnaars.setHgap(10);
 		gridWinnaars.setVgap(10);
 		gridWinnaars.setPadding(new Insets(20));
+
 		for(int i=0;i<=3;i++) {
-			Text user = new Text(String.format("%d: user%d", i+1,i+1));
-			Text winner = new Text("15: WINNER !!!");
-			gridWinnaars.add(user, 0, i);
-			gridWinnaars.add(winner, 1, 1);
+			user = new Text(String.format("%d. user%d :", i+1,i+1));
+			user.setFont(Font.font("Helvetica", 15));
+			
+			gridWinnaars.add(user, 0, i);			
 		}
+		
+		winner = new Text("15 points !!! WINNER !!!");
+		winner.setFont(Font.font("Helvetica",FontWeight.BOLD ,23));
+		
+		
+		Text notwinner1 = new Text("10 points");
+		notwinner1.setFont(Font.font("Helvetica",FontWeight.BOLD ,20));
+		
+		Text notwinner2 = new Text("8 points");
+		notwinner2.setFont(Font.font("Helvetica",FontWeight.BOLD ,17));
+		
+		Text notwinner3 = new Text("6 points");
+		notwinner3.setFont(Font.font("Helvetica",FontWeight.BOLD ,15));
+		
+		gridWinnaars.add(winner, 1, 0);
+		gridWinnaars.add(notwinner1, 1, 1);
+		gridWinnaars.add(notwinner2, 1, 2);
+		gridWinnaars.add(notwinner3, 1, 3);
+	
+		
 
 
 		//
