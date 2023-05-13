@@ -54,6 +54,7 @@ public class SpeelSpelScherm extends BorderPane {
 		this.spelbord = new BorderPane();
 
 		dc.startNieuwSpel();
+		dc.testMaaktWinnaarAan();
 
 		buildGui();
 	}
@@ -111,8 +112,13 @@ public class SpeelSpelScherm extends BorderPane {
 			List<Speler> winnaars = dc.bepaalWinnaar();
 
 			if (winnaars.size() > 0) {
-				// TODO winnaar scherm
 				System.out.println("TOON VOLGEND SCHERM");
+
+				WinnaarScherm winnaarsScherm = new WinnaarScherm(dc);
+				Stage stage = (Stage) this.getScene().getWindow();
+				Scene scene = new Scene(winnaarsScherm, stage.getWidth(), stage.getHeight());
+				stage.setTitle(Taal.getString("winner"));
+				stage.setScene(scene);
 			}
 		}
 	}
@@ -162,6 +168,7 @@ public class SpeelSpelScherm extends BorderPane {
 			dc.volgendeSpeler();
 			playerInfo();
 			ronde();
+			bepaalWinnaar();
 		});
 
 		bottomGameElements.getChildren().add(pasBeurt);
@@ -284,6 +291,7 @@ public class SpeelSpelScherm extends BorderPane {
 				dc.volgendeSpeler();
 				playerInfo();
 				ronde();
+				bepaalWinnaar();
 			}
 		} catch (Exception e) {
 			errorAlert(e);
@@ -490,6 +498,7 @@ public class SpeelSpelScherm extends BorderPane {
 					dc.volgendeSpeler();
 					playerInfo();
 					ronde();
+					bepaalWinnaar();
 				}
 
 			});
