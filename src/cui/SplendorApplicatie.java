@@ -41,10 +41,10 @@ public class SplendorApplicatie {
 
 			do {
 				maakNieuwSpelKeuze = maakNieuwSpelKeuzeMenu();
-				if (maakNieuwSpelKeuze < 1 || maakNieuwSpelKeuze > 7) {
+				if (maakNieuwSpelKeuze < 1 || maakNieuwSpelKeuze > 8) {
 					System.out.printf("%s%n%n", Taal.getString("numberChoiceRangeSevenErrorMsg"));
 				}
-			} while (maakNieuwSpelKeuze < 1 || maakNieuwSpelKeuze > 7);
+			} while (maakNieuwSpelKeuze < 1 || maakNieuwSpelKeuze > 8);
 
 			if (maakNieuwSpelKeuze == 1) {
 				System.out.println(voegSpelerToe());
@@ -78,6 +78,13 @@ public class SplendorApplicatie {
 				maakNieuwSpelKeuze = 2;
 			}
 			case 7 -> {
+				dc.voegSpelerToe("user1", 2002);
+				dc.voegSpelerToe("user2", 2000);
+				dc.startNieuwSpel();
+				dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
+				maakNieuwSpelKeuze = 2;
+			}
+			case 8 -> {
 				dc.voegSpelerToe("user1", 2002);
 				dc.voegSpelerToe("user2", 2000);
 				dc.startNieuwSpel();
@@ -194,11 +201,12 @@ public class SplendorApplicatie {
 //						+ "6. Zal het spel starten met 2 spelers en veel edelsteenfiches toekennen\n"
 //						+ "7. Zal het spel starten met 2 spelers die al een aantal prestigepunten hebben om te winnen "
 //						+ "(15 + random waarde van 1 tot 3)\n");
-				System.out.printf("%n%s:%n3. %s 2 %s%n4. %s 3 %s%n5. %s 4 %s%n6. %s%n7. %s%n%n",
+				System.out.printf("%n%s:%n3. %s 2 %s%n4. %s 3 %s%n5. %s 4 %s%n6. %s%n7. %s%n8. %s%n%n",
 						Taal.getString("temporaryChoices"), Taal.getString("startGameWith"),
 						Taal.getString("correctPlayers"), Taal.getString("startGameWith"),
 						Taal.getString("correctPlayers"), Taal.getString("startGameWith"),
-						Taal.getString("correctPlayers"), Taal.getString("choiceSix"), Taal.getString("choiceSeven"));
+						Taal.getString("correctPlayers"), Taal.getString("choiceSix"), Taal.getString("choiceSeven"),
+						Taal.getString("choiceEight"));
 				System.out.printf("%s: ", Taal.getString("choice"));
 				maakNieuwSpelKeuze = input.nextInt();
 				nietGeldigeKeuze = false;

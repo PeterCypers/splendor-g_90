@@ -250,9 +250,19 @@ public class DomeinController {
 		spel.krijgEdele();
 	}
 
-	// [TEST]
+	// [TEST] optie 6
 	public void testGeeftVeelEdelsteenfichesAanSpelers() {
 		spel.testGeeftVeelEdelsteenfichesAanSpelers();
+	}
+
+	// [TEST] optie 7
+	public void testGeeftOntwikkelingskaartenAanSpelerAanBeurt() {
+		spel.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
+	}
+
+	// [TEST] optie 8
+	public void testMaaktWinnaarAan() {
+		spel.testMaaktWinnaarAan();
 
 	}
 
@@ -261,10 +271,6 @@ public class DomeinController {
 		return spel.bepaalWinnaar();
 	}
 
-	public void testMaaktWinnaarAan() {
-		spel.testMaaktWinnaarAan();
-
-	}
 	public void testMaaktEenWinnaarAan() {
 		spel.testMaaktEenWinnaarAan();
 	}

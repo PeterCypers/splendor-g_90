@@ -872,7 +872,7 @@ public class Spel {
 	 * bij gelijke ontwikkelingskaarten: meerdere winnaars
 	 * 
 	 * @return een <code>List</code> van <code>Spelers</code><br>
-	 * die voldoen aan DR_SPEL_WINNAAR
+	 *         die voldoen aan DR_SPEL_WINNAAR
 	 */
 	public List<Speler> bepaalWinnaar() {
 		List<Speler> potentieleWinnaars = new ArrayList<>();
@@ -880,7 +880,7 @@ public class Spel {
 
 		// Stap 1: Bepaal het hoogste aantal prestigepunten van de potentiële winnaars
 		int hoogstePrestigepunten = 0;
-		//extra conditie(1)
+		// extra conditie(1)
 		int laagsteOntwKaartenCount = Integer.MAX_VALUE;
 
 		for (Speler speler : aangemeldeSpelers) {
@@ -894,18 +894,18 @@ public class Spel {
 			if (prestigepunten > hoogstePrestigepunten) {
 				hoogstePrestigepunten = prestigepunten;
 			}
-			//extra conditie(2)
+			// extra conditie(2)
 			int aantalOKSpeler = speler.getOntwikkelingskaartenInHand().size();
-			if(aantalOKSpeler < laagsteOntwKaartenCount) {
+			if (aantalOKSpeler < laagsteOntwKaartenCount) {
 				laagsteOntwKaartenCount = aantalOKSpeler;
 			}
 		}
 
 		// Itereer over de winnaars lijst en voeg de spelers die er aan voldoen
-		//extra conditie(3)
+		// extra conditie(3)
 		for (Speler speler : potentieleWinnaars) {
-			if (speler.getPrestigepunten() == hoogstePrestigepunten &&
-					speler.getOntwikkelingskaartenInHand().size() == laagsteOntwKaartenCount) {
+			if (speler.getPrestigepunten() == hoogstePrestigepunten
+					&& speler.getOntwikkelingskaartenInHand().size() == laagsteOntwKaartenCount) {
 				winnaars.add(speler);
 			}
 		}
@@ -934,7 +934,18 @@ public class Spel {
 			for (int i = 0; i < 100; i++)
 				spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
 		}
+	}
 
+	// [TEST] optie 7
+	public void testGeeftOntwikkelingskaartenAanSpelerAanBeurt() {
+		Ontwikkelingskaart ontwikkelingskaart = null;
+		for (Kleur kleur : Kleur.values()) {
+			for (int i = 1; i <= 3; i++)
+				ontwikkelingskaart = new Ontwikkelingskaart(i, 0, kleur,
+						"src/resources/img/background_misc/splendor-icon.png", new int[] { 0, 0, 0, 0, 0 });
+			spelerAanBeurt.voegOntwikkelingskaartToeAanHand(ontwikkelingskaart);
+			spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+		}
 	}
 
 	/**
@@ -949,17 +960,17 @@ public class Spel {
 			speler.voegPuntenToe(15 + randomWaarde);
 		}
 	}
-	
-	//[TEST]
+
+	// [TEST] optie 8
 	public void testMaaktEenWinnaarAan() {
 		Random rand = new Random();
-		for(int i=0;i<aangemeldeSpelers.size();i++) {
-			int randomWaarde1_15 = rand.nextInt(14)+1;
+		for (int i = 0; i < aangemeldeSpelers.size(); i++) {
+			int randomWaarde1_15 = rand.nextInt(14) + 1;
 			aangemeldeSpelers.get(i).voegPuntenToe(randomWaarde1_15);
 		}
 		int index = rand.nextInt(4);
 		aangemeldeSpelers.get(index).voegPuntenToe(4);
-	
+
 	}
 
 }
