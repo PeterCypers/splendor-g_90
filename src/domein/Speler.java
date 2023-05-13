@@ -158,12 +158,10 @@ public class Speler {
 	}
 
 	public boolean buitenVoorraad() {
-		// controleer of speler meer dan MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10)
-		// heeft
+		// controleer of speler meer dan MAX_EDELSTEENFICHES_IN_VOORRAAD (aantal: 10) heeft
 		int totaalAantalEdelsteenfiches = this.totaalAantalFiches();
 		return totaalAantalEdelsteenfiches > MAX_EDELSTEENFICHES_IN_VOORRAAD;
-		// String.format("Speler heeft een voorraad groter dan %d.",
-		// MAX_EDELSTEENFICHES_IN_VOORRAAD));
+
 	}
 
 	public String toonAantalFiches() {
@@ -219,14 +217,7 @@ public class Speler {
 
 		edelenInBezit += String.format("%s %d %s %d%n",
 				Taal.getString("spelerNoblesInPossessionMsg1"), edelenInHand.size(), Taal.getString("spelerNoblesInPossessionMsg2"), edelPrestigeTotaal);
-		//vertaald
-//		return String.format(
-//				"%s: %s --- leeftijd: %d%n" + "Prestigepunten: %d %n%s aan de beurt%n" + "%s de start speler%n"
-//						+ "Ontwikkelingskaarten in bezit:%n" + "%s" + "Edelsteenfiches in bezit:%n" + "%s"
-//						+ "Edelen in bezit:%n" + "%s" + "%n",
-//				getClass().getSimpleName(), gebruikersnaam, leeftijdInJaar, aantalPrestigepunten,
-//				getAanDeBeurt() ? "Is" : "Is niet", getStartSpeler() ? "Is" : "Is niet", ontwikkelingskaartenInBezit,
-//				edelSteenFichesInBezit, edelenInBezit);
+
 		return String.format("%s: %s --- %s: %d%n" 		//4
 				+ "%s: %d %n" 							//2
 				+ "%s %n"								//1

@@ -111,6 +111,8 @@ public class Spel {
 							aangemeldeSpelers.size()));
 	}
 	/**
+	 * controleert of de <code>Spel</code> <code>Constructor</code> een geldige lijst<br>
+	 * van lijsten van ontwikkelingskaarten ontvangt<br>
 	 * 
 	 * @param ontwikkelingsKaarten de <code>List</code> van <code>Ontwikkelingskaart</code> lijsten van niveau1, niveau2 en niveau3
 	 * 
@@ -195,36 +197,43 @@ public class Spel {
 		});
 	}
 	/**
+	 * geeft de huidige Speler terug die aan de beurt is
 	 * @return de <code>Speler</code> aan de beurt
 	 */
 	public Speler getSpelerAanBeurt() {
 		return spelerAanBeurt;
 	}
 	/**
+	 * DR_SPEL_EINDE: Een of meerdere Spelers heeft 15 of meer prestige punten
+	 * 
 	 * @return <code>eindeSpel</code> -> <code>true</code> als  DR_SPEL_EINDE is bereikt, anders <code>false</code>
 	 */
 	public boolean isEindeSpel() {
 		return this.eindeSpel;
 	}
 	/**
+	 * geeft de array van zichtbare Ontwikkelingskaarten van Niveau 1
 	 * @return de <code>array</code> zichtbare Niveau 1 Ontwikkelingskaarten
 	 */
 	public Ontwikkelingskaart[] getNiveau1Zichtbaar() {
 		return this.niveau1Zichtbaar;
 	}
 	/**
+	 * geeft de array van zichtbare Ontwikkelingskaarten van Niveau 2
 	 * @return <code>array</code> zichtbare Niveau 2 Ontwikkelingskaarten
 	 */
 	public Ontwikkelingskaart[] getNiveau2Zichtbaar() {
 		return this.niveau2Zichtbaar;
 	}
 	/**
+	 * geeft de array van zichtbare Ontwikkelingskaarten van Niveau 3
 	 * @return <code>array</code> zichtbare Niveau 3 Ontwikkelingskaarten
 	 */
 	public Ontwikkelingskaart[] getNiveau3Zichtbaar() {
 		return this.niveau3Zichtbaar;
 	}
 	/**
+	 * geeft de lijst met Edelen terug
 	 * @return <code>List</code> van Edelen
 	 */
 	public List<Edele> getEdelen() {
@@ -232,6 +241,7 @@ public class Spel {
 	}
 
 	/**
+	 * geeft de EdelsteenFiche stapels in Spel terug als HashMap
 	 * @return <code>HashMap{@literal<}Kleur, Integer{@literal>}</code> die de fiche stapels voorstelt
 	 */
 	public HashMap<Kleur, Integer> getFicheStapels() {
@@ -448,7 +458,7 @@ public class Spel {
 		}
 	}
 	/**
-	 * 
+	 * geeft de som van edelsteenfiches in spel terug
 	 * @return <code>int</code> totaal aantal fiches in <code>ficheStapels</code>
 	 */
 	public int totaalAantalfiches() {
@@ -482,7 +492,8 @@ public class Spel {
 	}
 
 	/**
-	 * DR_BEURT_ACTIE : <code>Speler</code> neemt 3 fiches, elk van een verschillend <code>Kleur</code><br>
+	 * DR_BEURT_ACTIE,<br>
+	 * DR_BEURT_AANTAL_FICHES : <code>Speler</code> neemt 3 fiches, elk van een verschillend <code>Kleur</code><br>
 	 * <code>spelerAanBeurt</code> neemt 3 fiches:<br>
 	 * -> voegt de 3 fiches toe aan de fiches van <code>spelerAanBeurt</code><br>
 	 * -> vermindert de <code>ficheStapels</code> in <code>Spel</code>
@@ -527,7 +538,8 @@ public class Spel {
 	}
 
 	/**
-	 * DR_BEURT_ACTIE : <code>Speler</code> neemt 2 fiches, beiden moeten van dezelfde <code>Kleur</code> zijn<br>
+	 * DR_BEURT_ACTIE,<br>
+	 * DR_BEURT_AANTAL_FICHES : <code>Speler</code> neemt 2 fiches, beiden moeten van dezelfde <code>Kleur</code> zijn<br>
 	 * <code>spelerAanBeurt</code> neemt 2 fiches:<br>
 	 * -> voegt de 2 fiches toe aan de fiches van <code>spelerAanBeurt</code><br>
 	 * -> vermindert de <code>ficheStapels</code> in <code>Spel</code>
@@ -564,7 +576,12 @@ public class Spel {
 		spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
 		spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
 	}
-	//TODO -> vanaf hier javadoc comments verder werken
+
+	/**
+	 * geeft het aantal stapels terug die meer dan 0 fiches bevatten
+	 * 
+	 * @return <code>int</code> aantal stapels die meer dan 0 fiches bevatten
+	 */
 	public int aantalStapelsMeerDanNul() {
 		int aantalStapelsMeerDanNul = 0;
 
@@ -577,9 +594,11 @@ public class Spel {
 	}
 
 	/**
-	 * is er een stapel met meer dan 4 fiches
+	 * is er een stapel met 4 fiches of meer dan 4 fiches
 	 * 
-	 * @return boolean
+	 * @return <code>boolean </code> <code>true</code> als één of meer stapels <br>
+	 * bestaan met aantalfiches >= 4, anders <code>false</code>
+	 * 
 	 */
 	public boolean bestaatStapelMeerDan4() {
 		for (Integer aantalFiches : ficheStapels.values()) {
@@ -589,15 +608,30 @@ public class Spel {
 
 		return false;
 	}
-
+	/**
+	 * geeft het aantal spelers
+	 * 
+	 * @return <code>int</code> aantal <code>Spelers</code><br>
+	 * in de <code>List</code> van <code>aangemeldeSpelers</code>
+	 */
 	public int getAantalSpelers() {
 		return aangemeldeSpelers.size();
 	}
-
+	/**
+	 * geeft de lijst van aangemelde spelers
+	 * 
+	 * @return de <code>List</code> van <code>aangemeldeSpelers</code>
+	 */
 	public List<Speler> getAangemeldeSpelers() {
 		return aangemeldeSpelers;
 	}
-
+	/**
+	 * geeft een lijst van spelvoorwerpen terug, dit zijn: <code>Edele</code><br>
+	 * of <code>Ontwikkelingskaart</code> van <code>Tag Interface</code><br>
+	 * <code>Spelvoorwerp</code>
+	 * 
+	 * @return <code>List</code> van <code>Spelvoorwerpen</code>
+	 */
 	public List<SpelVoorwerp> geefSpelVoorwerpen() {
 		List<SpelVoorwerp> speelbord = new ArrayList<>();
 
@@ -612,7 +646,15 @@ public class Spel {
 
 		return speelbord;
 	}
-
+	/**
+	 * geeft een array met aantal kaarten resterend in de trekstapels per niveau<br>
+	 * - [0]: niveau1<br>
+	 * - [1]: niveau2<br>
+	 * - [2]: niveau3<br>
+	 * 
+	 * @return <code>int</code>{@literal []} de <code>array</code> representatie <br>
+	 * van het aantal kaarten resterend per niveau
+	 */
 	public int[] aantalKaartenResterend() {
 		int[] rest = new int[3];
 		rest[0] = n1.size();
@@ -620,7 +662,13 @@ public class Spel {
 		rest[2] = n3.size();
 		return rest;
 	}
-
+	/**
+	 * de Speler kiest optie [1, 2, 3, 4, 5] die de gekozen Kleur-stapel<br>
+	 * voorstelt van de <code>ficheStapels</code><br>
+	 * 
+	 * @param stapelKeuze de index(zero based) van de <code>Kleur</code> in <code>Kleur.values()</code><br>
+	 * verwacht: de Speler keuze van stapel - 1 (mapping speler-keuze naar Kleur-index)
+	 */
 	public void plaatsTerugInStapel(int stapelKeuze) {
 		// verwijder fiche bij speler
 		spelerAanBeurt.verwijderEdelsteenfiche(Kleur.valueOf(stapelKeuze));
@@ -628,7 +676,11 @@ public class Spel {
 		// voeg fiche toe aan bord
 		voegFicheToe(Kleur.valueOf(stapelKeuze));
 	}
-
+	/**
+	 * geeft de textuele weergave van de fiche stapels die dan uitgeprint kunnen worden
+	 * 
+	 * @return de <code>String</code> representatie van de fiches (voor CUI)
+	 */
 	public String toonFiches() {
 		String representatieFiches = "";
 
@@ -643,8 +695,8 @@ public class Spel {
 		return representatieFiches.isBlank() ? Taal.getString("spelToonFichesAllStacksEmptyMsg") : representatieFiches;
 	}
 	/**
-	 * DR_BEURT_SPECIALE_TEGEL: 
-	 * als <code>Speler</code> genoeg kleurbonussen heeft krijgt automatisch <code>Edele</code>
+	 * DR_BEURT_SPECIALE_TEGEL: <br>
+	 * Als de <code>Speler</code> genoeg kleurbonussen heeft krijgt die automatisch de <code>Edele</code>
 	 */
 	public void krijgEdele() {
 		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
@@ -679,7 +731,15 @@ public class Spel {
 			}
 		}
 	}
+	/**
+	 * DR_SPEL_WINNAAR<br>
+	 * deze lijst stelt de Winnaars van het spel voor:<br>
+	 * de spelers die meer dan 15 prestige-punten hebben<br>
+	 * 
+	 * @return een <code>List</code> van <code>Spelers</code><br>
+	 * die voldoen aan Speler.getPrestigepunten() >= 15
 
+	 */
 	public List<Speler> bepaalWinnaar() {
 		List<Speler> potentieleWinnaars = new ArrayList<>();
 		List<Speler> winnaars = new ArrayList<>();
@@ -709,8 +769,9 @@ public class Spel {
 
 		return winnaars;
 	}
-
-	// [TEST] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
+	/**
+	 * [TEST-METHODE] zijn de n1/n2/n3 stapels goed opgevuld met O-kaarten?
+	 */
 	private void testOntwikkelingskaartStapels() {
 		System.out.println(Taal.getString("spelTestOntwikkelingskaartStapelsCardStacksMsg"));
 		System.out.println(n1);
@@ -718,8 +779,11 @@ public class Spel {
 		System.out.println(n3);
 		System.out.println("***************************************************************************");
 	}
-
-	// [TEST]
+	/**
+	 * [DEMO-METHODE]<br>
+	 * vergemakkelijkt het tonen van verdere spel verlopen:<br>
+	 * vooral het kopen van Ontwikkelingskaarten
+	 */
 	public void testGeeftVeelEdelsteenfichesAanSpelers() {
 		for (Kleur kleur : Kleur.values()) {
 			for (int i = 0; i < 100; i++)
@@ -727,8 +791,10 @@ public class Spel {
 		}
 
 	}
-
-	// [TEST]
+	/**
+	 * [DEMO-METHODE]<br>
+	 * simulatie van een spel-einde
+	 */
 	public void testMaaktWinnaarAan() {
 		Random random = new Random();
 
