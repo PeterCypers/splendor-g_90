@@ -50,6 +50,7 @@ public class StartUpGui extends Application {
 		Taal.setResource(r);
 
 		dc.voegSpelerToe("user1", 2002);
+		
 		dc.voegSpelerToe("user2", 2000);
 		dc.voegSpelerToe("user3", 2001);
 		dc.voegSpelerToe("user4", 1999);
