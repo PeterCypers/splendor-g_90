@@ -17,32 +17,37 @@ public class StartUpGui extends Application {
 	public void start(Stage stage) {
 		DomeinController dc = new DomeinController();
 
-		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
-		Scene scene = new Scene(taalKeuze);
+		// start normaal verloop
 
+//		TaalKeuzeScherm taalKeuze = new TaalKeuzeScherm(dc);
+//		Scene scene = new Scene(taalKeuze);
+//		stage.setMaximized(true);
+//		stage.setScene(scene);
+//		stage.setTitle("Choose language");
+//		stage.show();
+
+		// eind normaal verloop
+
+		// [TEST] SpeelSpelScherm(slaat taalscherm + voeg spelers toe scherm over)
+		String language = "EN";
+		String country = "UK";
+		Locale l = new Locale(language.toLowerCase(), country);
+		ResourceBundle r = ResourceBundle.getBundle("resources/resource", l);
+		Taal.setResource(r);
+		// zet spelers in comment om met minder spelers te starten - testing
+		dc.voegSpelerToe("user1", 2002);
+		dc.voegSpelerToe("user2", 2000);
+		dc.voegSpelerToe("user3", 2001);
+		dc.voegSpelerToe("user4", 1999);
+		SpeelSpelScherm speelSpelScherm = new SpeelSpelScherm(dc);
+		Scene scene = new Scene(speelSpelScherm);
 		stage.setMaximized(true);
 		stage.setScene(scene);
 		stage.setTitle("Choose language");
 		stage.show();
 
-//		// [TEST] SpeelSpelScherm
-//		String language = "EN";
-//		String country = "UK";
-//		Locale l = new Locale(language.toLowerCase(), country);
-//		ResourceBundle r = ResourceBundle.getBundle("resources/resource", l);
-//		Taal.setResource(r);
-//		dc.voegSpelerToe("user1", 2002);
-//		dc.voegSpelerToe("user2", 2000);
-////		dc.voegSpelerToe("user3", 2001);
-////		dc.voegSpelerToe("user4", 1999);
-//		SpeelSpelScherm speelSpelScherm = new SpeelSpelScherm(dc);
-//		Scene scene = new Scene(speelSpelScherm);
-//		stage.setMaximized(true);
-//		stage.setScene(scene);
-//		stage.setTitle(Taal.getString("game"));
-//		stage.show();
-
-		// [TEST] WinnaarScherm
+		// [TEST] WinnaarScherm(slaat taalscherm + voegspelers toe scherm +
+		// speelspelscherm over)
 //		 String language = "EN";
 //		 String country = "UK";
 //		 Locale l = new Locale(language.toLowerCase(), country);

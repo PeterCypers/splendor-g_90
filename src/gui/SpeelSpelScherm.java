@@ -56,11 +56,19 @@ public class SpeelSpelScherm extends BorderPane {
 		dc.startNieuwSpel();
 
 		// [TEST]
-		//	dc.testGeeftVeelEdelsteenfichesAanSpelers();
-		//	 dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
-		//		dc.testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten();
-		//				dc.testMaaktWinnaarAan();
-		dc.testMaaktEenWinnaarAan();
+
+		//(1): 100fiches voor elke speler
+//		dc.testGeeftVeelEdelsteenfichesAanSpelers();
+		
+		//(2): 2 O.K. elke kleur + 10fiches
+		dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
+		
+		//(3): speler aan beurt krijgt 2 O.K. van elke kleur, alle spelers krijgen 15 prestige
+//		dc.testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten();
+		
+		//(4): random[15-18] prestige-punten voor elke speler
+//		dc.testMaaktWinnaarAan();
+
 
 		buildGui();
 	}
