@@ -898,7 +898,7 @@ public class Spel {
 		spelerAanBeurt.voegEdeleToeAanHand(edele);
 
 		// verwijder de edele uit de lijst van spel
-		edelen.remove(edele);
+		edelen.removeIf(e -> e.equals(edele));
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package domein;
 
+import java.util.Objects;
+
 import resources.Taal;
 
 public class Edele implements SpelVoorwerp{
@@ -48,5 +50,23 @@ public class Edele implements SpelVoorwerp{
 		this.kosten = kosten;
 	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(edeleFoto);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Edele other = (Edele) obj;
+		return Objects.equals(edeleFoto, other.edeleFoto);
+	}
+	
+	
 	
 }

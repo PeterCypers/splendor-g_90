@@ -500,12 +500,13 @@ public class SpeelSpelScherm extends BorderPane {
 					developmentCards();
 
 					try {
-						int aantalTeVerkrijgenEdelen = dc.krijgEdeleGui().size();
+						List<SpelVoorwerpDTO> edelDTOs = dc.krijgEdeleGui();
+						int aantalTeVerkrijgenEdelen = edelDTOs.size();
 
 						if (aantalTeVerkrijgenEdelen > 1) {
 							kiesEdele();
 						} else if (aantalTeVerkrijgenEdelen == 1) {
-							dc.kiesEdele(dc.krijgEdeleGui().get(0));
+							dc.kiesEdele(edelDTOs.get(0));
 							// dc.krijgEdele(); werkt ook
 						}
 
