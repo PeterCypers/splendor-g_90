@@ -900,6 +900,7 @@ public class Spel {
 		edelen.removeIf(e -> e.equals(edele));
 	}
 
+	// TODO javadocs updaten
 	/**
 	 * DR_SPEL_WINNAAR<br>
 	 * deze lijst stelt de Winnaars van het spel voor:<br>
@@ -915,46 +916,43 @@ public class Spel {
 		List<Speler> potentieleWinnaars = new ArrayList<>();
 		List<Speler> winnaars = new ArrayList<>();
 
-		// Stap 1: Bepaal het hoogste aantal prestigepunten van de potentiële winnaars
-		int hoogstePrestigepunten = 0;
-		// extra conditie(1)
-		int laagsteOntwKaartenCount = Integer.MAX_VALUE;
+		boolean hasWinner = aangemeldeSpelers.stream().anyMatch(speler -> speler.getPrestigepunten() >= 15);
 
-		for (Speler speler : aangemeldeSpelers) {
-			int prestigepunten = speler.getPrestigepunten();
+		if (hasWinner) {
+			int hoogstePrestigepunten = 0;
+			int laagsteOntwKaartenCount = Integer.MAX_VALUE;
 
-			if (prestigepunten >= 15) {
-				eindeSpel = true;
-				potentieleWinnaars.add(speler);
-			}
+			for (Speler speler : aangemeldeSpelers) {
+				int prestigepunten = speler.getPrestigepunten();
 
-			if (prestigepunten > hoogstePrestigepunten) {
-				hoogstePrestigepunten = prestigepunten;
-			}
-			// extra conditie(2)
-			int aantalOKSpeler = speler.getOntwikkelingskaartenInHand().size();
-			if (aantalOKSpeler < laagsteOntwKaartenCount) {
-				laagsteOntwKaartenCount = aantalOKSpeler;
-			}
-		}
-		List<Speler> hoogstePrestige = new ArrayList<>();
-		for(Speler s : potentieleWinnaars) {
-			if(s.getPrestigepunten() == hoogstePrestigepunten) hoogstePrestige.add(s);
-		}
+				if (prestigepunten >= 15) {
+					eindeSpel = true;
+					potentieleWinnaars.add(speler);
 
-		// Itereer over de winnaars lijst en voeg de spelers die er aan voldoen
-		// extra conditie(3)
-		boolean meerdan1potentielewinnaar = hoogstePrestige.size() > 1;
-		if(meerdan1potentielewinnaar) {
-			for(Speler s2 : hoogstePrestige) {
-				if(s2.getOntwikkelingskaartenInHand().size() == laagsteOntwKaartenCount) {
-					winnaars.add(s2);
+					if (prestigepunten > hoogstePrestigepunten) {
+						hoogstePrestigepunten = prestigepunten;
+					}
+
+					if (speler.getPrestigepunten() == hoogstePrestigepunten) {
+						int aantalOKSpeler = speler.getOntwikkelingskaartenInHand().size();
+
+						if (aantalOKSpeler < laagsteOntwKaartenCount) {
+							laagsteOntwKaartenCount = aantalOKSpeler;
+						}
+					}
 				}
 			}
-		}else if(hoogstePrestige.size() > 0) {
-			winnaars.add(hoogstePrestige.get(0));
+
+			for (Speler speler : potentieleWinnaars) {
+				int aantalOKSpeler = speler.getOntwikkelingskaartenInHand().size();
+				if (speler.getPrestigepunten() == hoogstePrestigepunten && aantalOKSpeler == laagsteOntwKaartenCount) {
+					winnaars.add(speler);
+				}
+			}
+
 		}
 		return winnaars;
+
 	}
 
 	/**
