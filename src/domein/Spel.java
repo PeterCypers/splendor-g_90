@@ -851,18 +851,54 @@ public class Spel {
 			}
 
 			if (kanEdeleKopen) {
-				// voeg prestigepunten toe van edele aan speler zijn totaal
-				spelerAanBeurt.voegPuntenToe(edele.getPrestigepunten());
-
-				// voeg de edele toe als de speler het juist aantal ontwikkelingskaarten heeft
-				spelerAanBeurt.voegEdeleToeAanHand(edele);
-
-				// verwijder de edele uit de lijst van spel
-				edelen.remove(edele);
-
+				kiesEdele(edele);
 				break;
 			}
 		}
+	}
+
+	// TODO javadocs krijgEdeleGUI
+	public List<Edele> krijgEdeleGui() {
+		List<Edele> verkrijgbareEdelen = new ArrayList<>();
+		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
+		int[] aantalOntwikkelingskaartKleurBonus = new int[Kleur.values().length];
+
+		for (Ontwikkelingskaart ontwikkelingskaart : ontwikkelingskaartenInHand) {
+			Kleur kleurBonus = ontwikkelingskaart.getKleurBonus();
+			aantalOntwikkelingskaartKleurBonus[kleurBonus.ordinal()]++;
+		}
+
+		// controle of de speler de edele kan krijgen
+		for (Edele edele : edelen) {
+			boolean kanEdeleKopen = true;
+			int[] kosten = edele.getKosten();
+
+			for (int kleurIndex = 0; kleurIndex < kosten.length; kleurIndex++) {
+				if (kosten[kleurIndex] > aantalOntwikkelingskaartKleurBonus[kleurIndex]) {
+					kanEdeleKopen = false;
+					break;
+				}
+			}
+
+			if (kanEdeleKopen) {
+				verkrijgbareEdelen.add(edele);
+				break;
+			}
+		}
+
+		return verkrijgbareEdelen;
+	}
+
+	// TODO kiesEdeleGUI javadocs
+	public void kiesEdele(Edele edele) {
+		// voeg prestigepunten toe van edele aan speler zijn totaal
+		spelerAanBeurt.voegPuntenToe(edele.getPrestigepunten());
+
+		// voeg de edele toe als de speler het juist aantal ontwikkelingskaarten heeft
+		spelerAanBeurt.voegEdeleToeAanHand(edele);
+
+		// verwijder de edele uit de lijst van spel
+		edelen.remove(edele);
 	}
 
 	/**

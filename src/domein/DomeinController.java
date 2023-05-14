@@ -248,6 +248,22 @@ public class DomeinController {
 		spel.krijgEdele();
 	}
 
+	public List<SpelVoorwerpDTO> krijgEdeleGui() {
+		List<Edele> krijgbareEdelen = spel.krijgEdeleGui();
+		List<SpelVoorwerpDTO> dtos = new ArrayList<>();
+
+		for (Edele e : krijgbareEdelen) {
+			dtos.add(new SpelVoorwerpDTO(e.getPrestigepunten(), e.getEdeleFoto(), e.getKosten()));
+		}
+
+		return dtos;
+	}
+
+	public void kiesEdele(SpelVoorwerpDTO edeleDTO) {
+		Edele edele = new Edele(edeleDTO.prestigepunten(), edeleDTO.foto(), edeleDTO.kosten());
+		spel.kiesEdele(edele);
+	}
+
 	// [TEST] optie 6
 	public void testGeeftVeelEdelsteenfichesAanSpelers() {
 		spel.testGeeftVeelEdelsteenfichesAanSpelers();
