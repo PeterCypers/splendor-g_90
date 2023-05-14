@@ -66,7 +66,14 @@ public class DetailSpelers extends GridPane {
 		Button btnStartSpel = new Button(Taal.getString("playGame"));
 		Button btnKeerTerug = new Button(Taal.getString("goBack"));
 		Button btnClear1 = new Button("x");
+		btnClear1.setOnAction(event -> {
+			txfGebruikersnaam.setText("");
+		});
+
 		Button btnClear2 = new Button("x");
+		btnClear2.setOnAction(event -> {
+			txfGeboortejaar.setText("");
+		});
 
 		HBox buttons = new HBox(btnAdd, btnStartSpel);
 		buttons.setSpacing(10);
