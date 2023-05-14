@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -10,15 +11,18 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import resources.Taal;
 
-public class WinnaarScherm extends VBox {
+public class WinnaarScherm extends StackPane {
 	private final DomeinController dc;
 	private List<SpelerDTO> spelerDTOs;
 
@@ -31,10 +35,18 @@ public class WinnaarScherm extends VBox {
 	}
 
 	private void buildGui() {
+		// Load the GIF image
+		File vuurwerk = new File("src/resources/img/background_misc/vuurwerk.gif");
+		Image vuurwerkImg = new Image(vuurwerk.toURI().toString());
 
-		setSpacing(20);
-		setPadding(new Insets(40));
-		setAlignment(Pos.CENTER);
+		// Create an ImageView to display the GIF
+		ImageView imageView = new ImageView(vuurwerkImg);
+		imageView.setOpacity(0.3);
+
+		VBox vbox = new VBox();
+		vbox.setSpacing(20);
+		vbox.setPadding(new Insets(40));
+		vbox.setAlignment(Pos.CENTER);
 		// titel
 		Label lblTitel = new Label(String.format("%s", Taal.getString("victory")));
 		lblTitel.setFont(Font.font("Helvetica", FontWeight.BOLD, 75));
@@ -117,6 +129,7 @@ public class WinnaarScherm extends VBox {
 		gridWinnaars.getColumnConstraints().addAll(col1, col2, col3);
 
 		// toevoegen aan VBox
-		getChildren().addAll(lblTitel, gridWinnaars);
+		vbox.getChildren().addAll(lblTitel, gridWinnaars);
+		getChildren().addAll(imageView, vbox);
 	}
 }
