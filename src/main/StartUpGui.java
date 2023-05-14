@@ -24,7 +24,7 @@ public class StartUpGui extends Application {
 //		stage.setMaximized(true);
 //		stage.setScene(scene);
 //		stage.setTitle("Choose language");
-//		stage.show();
+//		stage.show(); 
 
 		// eind normaal verloop
 
