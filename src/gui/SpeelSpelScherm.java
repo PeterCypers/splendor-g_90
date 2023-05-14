@@ -500,8 +500,16 @@ public class SpeelSpelScherm extends BorderPane {
 					developmentCards();
 
 					try {
-						dc.krijgEdele();
-					} catch (RuntimeException e) {
+						int aantalTeVerkrijgenEdelen = dc.krijgEdeleGui().size();
+
+						if (aantalTeVerkrijgenEdelen > 1) {
+							kiesEdele();
+						} else if (aantalTeVerkrijgenEdelen == 1) {
+							dc.kiesEdele(dc.krijgEdeleGui().get(0));
+							// dc.krijgEdele(); werkt ook
+						}
+
+					} catch (Exception e) {
 						System.err
 								.print(Taal.getString("splendorApplicatieKoopOntwikkelingskaartGetNobleWentWrongMsg"));
 					}
@@ -528,6 +536,61 @@ public class SpeelSpelScherm extends BorderPane {
 		ontwikkelingskaartGridPane.setAlignment(Pos.TOP_CENTER);
 
 		spelbord.setCenter(ontwikkelingskaartGridPane);
+	}
+
+	private void kiesEdele() {
+		BooleanProperty popupCloseFlag = new SimpleBooleanProperty(false);
+
+		Text titel = new Text(Taal.getString("chooseNoble"));
+		titel.setFont(Font.font("Arial", FontWeight.BOLD, 28));
+		titel.setFill(Color.RED);
+		titel.setTextAlignment(TextAlignment.CENTER);
+
+		Text subtitel = new Text(String.format("%s%n%s %d.", Taal.getString("chooseNobleSubText"),
+				Taal.getString("chooseNobleSubText2"), Speler.getMaxEdelsteenfichesInVoorraad()));
+		subtitel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
+		subtitel.setFill(Color.YELLOW);
+		subtitel.setTextAlignment(TextAlignment.CENTER);
+
+		List<SpelVoorwerpDTO> krijgbareEdelen = dc.krijgEdeleGui();
+
+		HBox krijgbareEdeleHBox = new HBox();
+		StackPane.setAlignment(krijgbareEdeleHBox, Pos.CENTER);
+
+		for (SpelVoorwerpDTO edele : krijgbareEdelen) {
+			EdeleNode edeleNode = new EdeleNode(edele);
+
+			edeleNode.setOnMouseClicked(event -> {
+				dc.kiesEdele(edele);
+				popupCloseFlag.set(true);
+			});
+
+			krijgbareEdeleHBox.getChildren().add(edeleNode);
+		}
+
+		Stage popup = new Stage();
+		popup.initModality(Modality.APPLICATION_MODAL);
+		popup.initStyle(StageStyle.UNDECORATED);
+		popup.setTitle(Taal.getString("giveBackTitle"));
+
+		VBox kiesEdeleElementen = new VBox();
+		kiesEdeleElementen.setSpacing(10);
+		kiesEdeleElementen.setAlignment(Pos.CENTER);
+		kiesEdeleElementen.setStyle("-fx-background-color: #4a2610; ");
+		// -fx-background-radius: 20 20 20 20;
+
+		kiesEdeleElementen.getChildren().addAll(titel, subtitel, krijgbareEdeleHBox);
+
+		Scene popupScene = new Scene(kiesEdeleElementen, 512, 256);
+		popup.setScene(popupScene);
+
+		popupCloseFlag.addListener((observable, oldValue, newValue) -> {
+			if (newValue) {
+				popup.close();
+			}
+		});
+
+		popup.showAndWait();
 	}
 
 	private void errorAlert(Exception e) {
