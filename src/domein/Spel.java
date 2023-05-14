@@ -930,27 +930,30 @@ public class Spel {
 	 * vooral het kopen van Ontwikkelingskaarten
 	 */
 	public void testGeeftVeelEdelsteenfichesAanSpelers() {
-		for (Kleur kleur : Kleur.values()) {
-			for (int i = 0; i < 100; i++)
-				spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
+		for (Speler speler : aangemeldeSpelers) {
+			for (Kleur kleur : Kleur.values()) {
+				for (int i = 0; i < 100; i++)
+					speler.voegEdelsteenficheToeAanHand(kleur);
+			}
 		}
 	}
 
 	// [TEST] optie 7
 	public void testGeeftOntwikkelingskaartenAanSpelerAanBeurt() {
 		Ontwikkelingskaart ontwikkelingskaart = null;
-		for (Kleur kleur : Kleur.values()) {
-			for (int i = 1; i <= 10; i++) {
-				if (i <= 2) {
-					ontwikkelingskaart = new Ontwikkelingskaart(i, 0, kleur,
-							"src/resources/img/background_misc/splendor-icon.png", new int[] { 0, 0, 0, 0, 0 });
-					spelerAanBeurt.voegOntwikkelingskaartToeAanHand(ontwikkelingskaart);
+
+		for (Speler speler : aangemeldeSpelers) {
+			for (Kleur kleur : Kleur.values()) {
+				for (int i = 1; i <= 10; i++) {
+					if (i <= 2) {
+						ontwikkelingskaart = new Ontwikkelingskaart(i, 0, kleur,
+								"src/resources/img/background_misc/splendor-icon.png", new int[] { 0, 0, 0, 0, 0 });
+						speler.voegOntwikkelingskaartToeAanHand(ontwikkelingskaart);
+					}
+					speler.voegEdelsteenficheToeAanHand(kleur);
 				}
-				spelerAanBeurt.voegEdelsteenficheToeAanHand(kleur);
 			}
-
 		}
-
 	}
 
 	/**
@@ -975,6 +978,25 @@ public class Spel {
 		}
 		int index = rand.nextInt(4);
 		aangemeldeSpelers.get(index).voegPuntenToe(4);
+
+	}
+
+	// [TEST] Optie 9
+	public void testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten() {
+		Ontwikkelingskaart ontwikkelingskaart = null;
+
+		for (Speler speler : aangemeldeSpelers) {
+			speler.voegPuntenToe(15);
+			if (speler.isAanDeBeurt()) {
+				for (Kleur kleur : Kleur.values()) {
+					for (int i = 1; i <= 2; i++) {
+						ontwikkelingskaart = new Ontwikkelingskaart(i, 0, kleur,
+								"src/resources/img/background_misc/splendor-icon.png", new int[] { 0, 0, 0, 0, 0 });
+						speler.voegOntwikkelingskaartToeAanHand(ontwikkelingskaart);
+					}
+				}
+			}
+		}
 
 	}
 

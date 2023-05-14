@@ -264,6 +264,11 @@ public class DomeinController {
 
 	}
 
+	// [TEST] Optie 9
+	public void testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten() {
+		spel.testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten();
+	}
+
 	public List<SpelerDTO> bepaalWinnaar() {
 		List<Speler> winnaarsLijst = spel.bepaalWinnaar();
 		return spelerLijstenToDTO(winnaarsLijst);
