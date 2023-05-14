@@ -558,7 +558,7 @@ public class SpeelSpelScherm extends BorderPane {
 		HBox krijgbareEdeleHBox = new HBox();
 		StackPane.setAlignment(krijgbareEdeleHBox, Pos.CENTER);
 		krijgbareEdeleHBox.setAlignment(Pos.CENTER);
-		krijgbareEdeleHBox.setSpacing(10);
+		krijgbareEdeleHBox.setSpacing(20);
 
 		for (SpelVoorwerpDTO edele : krijgbareEdelen) {
 			EdeleNode edeleNode = new EdeleNode(edele);
