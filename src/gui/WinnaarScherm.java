@@ -23,14 +23,10 @@ public class WinnaarScherm extends VBox {
 	private List<SpelerDTO> spelerDTOs;
 
 	private GridPane gridWinnaars;
-	private final int WEIGHT = 22;
+	private final int WEIGHT = 26;
 
 	public WinnaarScherm(DomeinController dc) {
 		this.dc = dc;
-
-		// dc.startNieuwSpel();
-		// dc.testMaaktEenWinnaarAan();
-
 		buildGui();
 	}
 
@@ -41,21 +37,10 @@ public class WinnaarScherm extends VBox {
 		setAlignment(Pos.CENTER);
 		// titel
 		Label lblTitel = new Label(String.format("%s", Taal.getString("victory")));
-		lblTitel.setFont(Font.font("Helvetica", FontWeight.BOLD, 50));
+		lblTitel.setFont(Font.font("Helvetica", FontWeight.BOLD, 75));
 
 		// aangemelde speler DTOS ophalen
 		spelerDTOs = dc.getAangemeldeSpelers();
-
-		// evenveel
-
-		// lijst storteren
-		// Collections.sort(spelerDTOs, new Comparator<SpelerDTO>()
-		// {
-		// public int compare(SpelerDTO s1, SpelerDTO s2)
-		// {
-		// return s2.aantalPrestigepunten() - s1.aantalPrestigepunten();
-		// }
-		// });
 
 		Collections.sort(spelerDTOs, new Comparator<SpelerDTO>() {
 			public int compare(SpelerDTO s1, SpelerDTO s2) {
@@ -119,14 +104,14 @@ public class WinnaarScherm extends VBox {
 		ColumnConstraints col3 = new ColumnConstraints();
 
 		// Set the width of the columns
-		col1.setPercentWidth(1);
-		col2.setPercentWidth(1);
-		col3.setPercentWidth(1);
+		col1.setPercentWidth(2);
+		col2.setPercentWidth(2);
+		col3.setPercentWidth(2);
 
 		// Set the alignment of the second column to center
-		col1.setHalignment(HPos.RIGHT);
+		col1.setHalignment(HPos.CENTER);
 		col2.setHalignment(HPos.CENTER);
-		col3.setHalignment(HPos.LEFT);
+		col3.setHalignment(HPos.CENTER);
 
 		// Add the column constraints to the grid pane
 		gridWinnaars.getColumnConstraints().addAll(col1, col2, col3);
