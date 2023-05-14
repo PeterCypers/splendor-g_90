@@ -79,7 +79,7 @@ public class Speler {
 		return aantalPrestigepunten;
 	}
 
-	public boolean getAanDeBeurt() {
+	public boolean isAanDeBeurt() {
 		return aanDeBeurt;
 	}
 
@@ -231,7 +231,7 @@ public class Speler {
 				+ "%n",
 				Taal.getString("player"), gebruikersnaam, Taal.getString("age").toLowerCase(), leeftijdInJaar,
 				Taal.getString("prestigePoints"), aantalPrestigepunten,
-				getAanDeBeurt() ? Taal.getString("turnYes") : Taal.getString("turnNo"),
+				isAanDeBeurt() ? Taal.getString("turnYes") : Taal.getString("turnNo"),
 				getStartSpeler() ? Taal.getString("is") : Taal.getString("isNot"), Taal.getString("startingPlayer").toLowerCase(),
 				Taal.getString("developmentCards"), Taal.getString("inPossession").toLowerCase(),
 				ontwikkelingskaartenInBezit,

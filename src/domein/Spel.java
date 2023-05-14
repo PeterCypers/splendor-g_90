@@ -325,7 +325,7 @@ public class Spel {
 	public void volgendeSpeler() {
 		// potentieel om huidigespeler == aan de beurt te vervangen door nieuwe speler
 		// die ook == aan de beurt
-		if (spelerAanBeurt.getAanDeBeurt())
+		if (spelerAanBeurt.isAanDeBeurt())
 			spelerAanBeurt.setAanDeBeurt(false);
 
 		int indexHuidigeSpeler = aangemeldeSpelers.indexOf(spelerAanBeurt);
@@ -719,7 +719,7 @@ public class Spel {
 	 *         bestaan met aantalfiches >= 4, anders <code>false</code>
 	 * 
 	 */
-	public boolean bestaatStapelMeerDan4() {
+	public boolean stapelVierOfMeerFichesAanwezig() {
 		for (Integer aantalFiches : ficheStapels.values()) {
 			if (aantalFiches >= 4)
 				return true;
