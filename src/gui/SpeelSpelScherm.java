@@ -115,13 +115,16 @@ public class SpeelSpelScherm extends BorderPane {
 		if (dc.getRonde() != vorigeRonde) {
 			vorigeRonde = dc.getRonde();
 			List<SpelerDTO> winnaars = dc.bepaalWinnaar();
-
-			if (winnaars.size() > 0) {
-				WinnaarScherm winnaarsScherm = new WinnaarScherm(dc);
-				Stage stage = (Stage) this.getScene().getWindow();
-				Scene scene = new Scene(winnaarsScherm, stage.getWidth(), stage.getHeight());
-				stage.setTitle(Taal.getString("winner"));
-				stage.setScene(scene);
+			try {
+				if (winnaars.size() > 0) {
+					WinnaarScherm winnaarsScherm = new WinnaarScherm(dc);
+					Stage stage = (Stage) this.getScene().getWindow();
+					Scene scene = new Scene(winnaarsScherm, stage.getWidth(), stage.getHeight());
+					stage.setTitle(Taal.getString("winner"));
+					stage.setScene(scene);
+				}
+			} catch (Exception e) {
+				System.out.println("PROBLEEM BIJ BEPAAL WINNAAR");
 			}
 		}
 	}
