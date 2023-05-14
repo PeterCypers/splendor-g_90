@@ -837,6 +837,7 @@ public class Spel {
 			Kleur kleurBonus = ontwikkelingskaart.getKleurBonus();
 			aantalOntwikkelingskaartKleurBonus[kleurBonus.ordinal()]++;
 		}
+
 		// controle of de speler de edele kan krijgen
 		for (Edele edele : edelen) {
 			boolean kanEdeleKopen = true;
@@ -858,6 +859,7 @@ public class Spel {
 
 				// verwijder de edele uit de lijst van spel
 				edelen.remove(edele);
+
 				break;
 			}
 		}

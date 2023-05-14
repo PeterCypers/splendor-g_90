@@ -57,8 +57,8 @@ public class SpeelSpelScherm extends BorderPane {
 
 		// [TEST]
 //		dc.testGeeftVeelEdelsteenfichesAanSpelers();
-//		dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
-		dc.testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten();
+		dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
+//		dc.testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten();
 //		dc.testMaaktWinnaarAan();
 
 		buildGui();
@@ -502,6 +502,13 @@ public class SpeelSpelScherm extends BorderPane {
 					playerInfo();
 					ronde();
 					bepaalWinnaar();
+
+					try {
+						dc.krijgEdele();
+					} catch (RuntimeException e) {
+						System.err
+								.print(Taal.getString("splendorApplicatieKoopOntwikkelingskaartGetNobleWentWrongMsg"));
+					}
 
 					nobles();
 				}
