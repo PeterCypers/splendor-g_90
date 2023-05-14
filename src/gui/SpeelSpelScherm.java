@@ -498,10 +498,6 @@ public class SpeelSpelScherm extends BorderPane {
 				if (succesvol) {
 					gems();
 					developmentCards();
-					dc.volgendeSpeler();
-					playerInfo();
-					ronde();
-					bepaalWinnaar();
 
 					try {
 						dc.krijgEdele();
@@ -511,6 +507,11 @@ public class SpeelSpelScherm extends BorderPane {
 					}
 
 					nobles();
+
+					dc.volgendeSpeler();
+					playerInfo();
+					ronde();
+					bepaalWinnaar();
 				}
 
 			});
