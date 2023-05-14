@@ -502,6 +502,8 @@ public class SpeelSpelScherm extends BorderPane {
 					playerInfo();
 					ronde();
 					bepaalWinnaar();
+
+					nobles();
 				}
 
 			});
