@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import domein.Kleur;
-import domein.Ontwikkelingskaart;
+import dto.SpelVoorwerpDTO;
 import dto.SpelerDTO;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -94,10 +94,10 @@ public class SpelerNode extends StackPane {
 
 		int[] amounts = new int[5];
 
-		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = speler.ontwikkelingskaartenInHand();
+		List<SpelVoorwerpDTO> ontwikkelingskaartenInHand = speler.ontwikkelingskaartenInHand();
 
-		for (Ontwikkelingskaart ontwk : ontwikkelingskaartenInHand) {
-			amounts[ontwk.getKleurBonus().getKleur()]++;
+		for (SpelVoorwerpDTO ontwk : ontwikkelingskaartenInHand) {
+			amounts[ontwk.kleur().getKleur()]++;
 		}
 
 		// Load the costs and images for those costs of the noble

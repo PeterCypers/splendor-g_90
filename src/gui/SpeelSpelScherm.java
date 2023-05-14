@@ -55,8 +55,8 @@ public class SpeelSpelScherm extends BorderPane {
 
 		dc.startNieuwSpel();
 		// [TEST]
-		dc.testGeeftVeelEdelsteenfichesAanSpelers();
-//		dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
+//		dc.testGeeftVeelEdelsteenfichesAanSpelers();
+		dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
 //		dc.testMaaktWinnaarAan();
 
 		buildGui();
@@ -112,7 +112,7 @@ public class SpeelSpelScherm extends BorderPane {
 	private void bepaalWinnaar() {
 		if (dc.getRonde() != vorigeRonde) {
 			vorigeRonde = dc.getRonde();
-			List<Speler> winnaars = dc.bepaalWinnaar();
+			List<SpelerDTO> winnaars = dc.bepaalWinnaar();
 
 			if (winnaars.size() > 0) {
 				WinnaarScherm winnaarsScherm = new WinnaarScherm(dc);

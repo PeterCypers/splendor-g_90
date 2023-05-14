@@ -15,6 +15,7 @@ import domein.SoortKeuze;
 import domein.Spel;
 import domein.Speler;
 import dto.SpelVoorwerpDTO;
+import dto.SpelerDTO;
 import resources.Taal;
 
 public class SplendorApplicatie {
@@ -124,7 +125,7 @@ public class SplendorApplicatie {
 
 			// winnaar wordt hier bepaalt en getoont
 			if (dc.getRonde() != vorigeRonde) {
-				List<Speler> winnaars = dc.bepaalWinnaar();
+				List<SpelerDTO> winnaars = dc.bepaalWinnaar();
 
 				if (winnaars.size() > 0) {
 					System.out.println(winnaarAsciiArt(Taal.getResource().getLocale().getLanguage()));
@@ -132,8 +133,8 @@ public class SplendorApplicatie {
 					System.out.printf("%s:%n",
 							winnaars.size() == 1 ? Taal.getString("winnerSingle") : Taal.getString("winnerPlural"));
 
-					for (Speler speler : winnaars) {
-						System.out.printf("%s %s%n", Taal.getString("player"), speler.getGebruikersnaam());
+					for (SpelerDTO speler : winnaars) {
+						System.out.printf("%s %s%n", Taal.getString("player"), speler.gebruikersnaam());
 					}
 				}
 

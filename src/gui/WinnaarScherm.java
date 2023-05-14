@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import domein.DomeinController;
-import domein.Speler;
 import dto.SpelerDTO;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -80,8 +79,8 @@ public class WinnaarScherm extends VBox {
 		for (int i = 0; i < spelerDTOs.size(); i++) {
 			w[i] = new Text("");
 			gridWinnaars.add(w[i], 2, i);
-			for (Speler w2 : dc.bepaalWinnaar()) {
-				if (spelerDTOs.get(i).gebruikersnaam().equals(w2.getGebruikersnaam())) {
+			for (SpelerDTO w2 : dc.bepaalWinnaar()) {
+				if (spelerDTOs.get(i).gebruikersnaam().equals(w2.gebruikersnaam())) {
 					w[i].setText(String.format("!!! %s !!!", Taal.getString("winner").toUpperCase()));
 				}
 			}

@@ -263,15 +263,11 @@ public class DomeinController {
 		spel.testMaaktWinnaarAan();
 
 	}
-	// TODO return List<spelerDTO>
+
 	public List<SpelerDTO> bepaalWinnaar() {
 		List<Speler> winnaarsLijst = spel.bepaalWinnaar();
 		return spelerLijstenToDTO(winnaarsLijst);
 	}
-	//oude methode werking
-//	public List<Speler> bepaalWinnaar() {
-//        return spel.bepaalWinnaar();
-//    }
 
 	public void testMaaktEenWinnaarAan() {
 		spel.testMaaktEenWinnaarAan();
@@ -351,55 +347,46 @@ public class DomeinController {
 	public HashMap<Kleur, Integer> getFicheStapels() {
 		return spel.getFicheStapels();
 	}
-	//TODO nieuwe code
-	public List<SpelerDTO> getAangemeldeSpelers() { //getAandebeurt -> isAandebeurt in Speler
+
+	public List<SpelerDTO> getAangemeldeSpelers() { // getAandebeurt -> isAandebeurt in Speler
 		List<Speler> aangemeldeSpelers = spel.getAangemeldeSpelers();
 		return spelerLijstenToDTO(aangemeldeSpelers);
 	}
-	//TODO nieuwe code
+
 	private List<SpelerDTO> spelerLijstenToDTO(List<Speler> spelerLijst) {
 		List<SpelerDTO> dtos = new ArrayList<>();
-		
-		//lijst van edelen/o-kaarten per speler (in de lus initializeren op nieuwe lijst)
+
+		// lijst van edelen/o-kaarten per speler (in de lus initializeren op nieuwe
+		// lijst)
 		List<Edele> spelerEdelen;
 		List<Ontwikkelingskaart> spelerKaarten;
-		//lijst van geconverteerde spel-obj tot dto-obj (in lus initializeren op nieuwe lijst)
+		// lijst van geconverteerde spel-obj tot dto-obj (in lus initializeren op nieuwe
+		// lijst)
 		List<SpelVoorwerpDTO> edelenToDTO;
 		List<SpelVoorwerpDTO> ontwikkelingsKaartenToDTO;
 
 		for (Speler s : spelerLijst) {
 			spelerEdelen = s.getEdelenInHand();
 			spelerKaarten = s.getOntwikkelingskaartenInHand();
-			//per speler deze edele en ontw-k. dto's opvullen en de opgevulde SVDTOs mee geven met de
-			//rest van de spelerDTO constructor parameters om de SpelerDTO lijst dtos op te vullen
+			// per speler deze edele en ontw-k. dto's opvullen en de opgevulde SVDTOs mee
+			// geven met de
+			// rest van de spelerDTO constructor parameters om de SpelerDTO lijst dtos op te
+			// vullen
 			edelenToDTO = new ArrayList<>();
 			ontwikkelingsKaartenToDTO = new ArrayList<>();
-			
-			for(Edele e : spelerEdelen) {
+
+			for (Edele e : spelerEdelen) {
 				edelenToDTO.add(new SpelVoorwerpDTO(e.getPrestigepunten(), e.getEdeleFoto(), e.getKosten()));
 			}
-			for(Ontwikkelingskaart ok : spelerKaarten) {
+			for (Ontwikkelingskaart ok : spelerKaarten) {
 				ontwikkelingsKaartenToDTO.add(new SpelVoorwerpDTO(ok.getNiveau(), ok.getPrestigepunten(),
 						ok.getKleurBonus(), ok.getFotoOntwikkelingskaart(), ok.getKosten(), ok.toString()));
 			}
-			dtos.add(new SpelerDTO(s.getGebruikersnaam(), s.getGeboortejaar(), s.getPrestigepunten(),
-					s.isAanDeBeurt(), ontwikkelingsKaartenToDTO, edelenToDTO, s.getEdelsteenfichesInHand()));
+			dtos.add(new SpelerDTO(s.getGebruikersnaam(), s.getGeboortejaar(), s.getPrestigepunten(), s.isAanDeBeurt(),
+					ontwikkelingsKaartenToDTO, edelenToDTO, s.getEdelsteenfichesInHand()));
 		}
 		return dtos;
 	}
-	
-	//oude versie
-//	public List<SpelerDTO> getAangemeldeSpelers() {
-//		List<Speler> aangemeldeSpelers = spel.getAangemeldeSpelers();
-//		List<SpelerDTO> dtos = new ArrayList<>();
-//
-//		for (Speler s : aangemeldeSpelers) {
-//			dtos.add(new SpelerDTO(s.getGebruikersnaam(), s.getGeboortejaar(), s.getPrestigepunten(), s.getAanDeBeurt(),
-//					s.getOntwikkelingskaartenInHand(), s.getEdelenInHand(), s.getEdelsteenfichesInHand()));
-//		}
-//
-//		return dtos;
-//	}
 
 	/**
 	 * 
