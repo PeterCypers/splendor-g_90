@@ -132,4 +132,5 @@ public class WinnaarScherm extends StackPane {
 		vbox.getChildren().addAll(lblTitel, gridWinnaars);
 		getChildren().addAll(imageView, vbox);
 	}
+	// TEST
 }
