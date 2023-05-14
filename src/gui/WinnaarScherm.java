@@ -21,14 +21,15 @@ import resources.Taal;
 public class WinnaarScherm extends VBox {
 	private final DomeinController dc;
 	private List<SpelerDTO> spelerDTOs;
+
 	private GridPane gridWinnaars;
 	private final int WEIGHT = 22;
 
 	public WinnaarScherm(DomeinController dc) {
 		this.dc = dc;
-		dc.startNieuwSpel();
 
-//		dc.testMaaktEenWinnaarAan(); 
+		// dc.startNieuwSpel();
+		// dc.testMaaktEenWinnaarAan();
 
 		buildGui();
 	}
@@ -45,11 +46,29 @@ public class WinnaarScherm extends VBox {
 		// aangemelde speler DTOS ophalen
 		spelerDTOs = dc.getAangemeldeSpelers();
 
+		// evenveel
+
 		// lijst storteren
+		// Collections.sort(spelerDTOs, new Comparator<SpelerDTO>()
+		// {
+		// public int compare(SpelerDTO s1, SpelerDTO s2)
+		// {
+		// return s2.aantalPrestigepunten() - s1.aantalPrestigepunten();
+		// }
+		// });
+
 		Collections.sort(spelerDTOs, new Comparator<SpelerDTO>() {
-			@Override
 			public int compare(SpelerDTO s1, SpelerDTO s2) {
-				return s2.aantalPrestigepunten() - s1.aantalPrestigepunten();
+
+				if (dc.bepaalWinnaar().contains(s1)) {
+					return -1; // s1 should come first in the list
+				} else if (dc.bepaalWinnaar().contains(s2)) {
+					return 1; // s2 should come first in the list
+				} else {
+					// Neither s1 nor s2 is the winner, compare their aantalPrestigepunten
+					return s2.aantalPrestigepunten() - s1.aantalPrestigepunten();
+				}
+
 			}
 		});
 
