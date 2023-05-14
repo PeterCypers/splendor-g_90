@@ -937,16 +937,23 @@ public class Spel {
 				laagsteOntwKaartenCount = aantalOKSpeler;
 			}
 		}
+		List<Speler> hoogstePrestige = new ArrayList<>();
+		for(Speler s : potentieleWinnaars) {
+			if(s.getPrestigepunten() == hoogstePrestigepunten) hoogstePrestige.add(s);
+		}
 
 		// Itereer over de winnaars lijst en voeg de spelers die er aan voldoen
 		// extra conditie(3)
-		for (Speler speler : potentieleWinnaars) {
-			if (speler.getPrestigepunten() == hoogstePrestigepunten
-					&& speler.getOntwikkelingskaartenInHand().size() == laagsteOntwKaartenCount) {
-				winnaars.add(speler);
+		boolean meerdan1potentielewinnaar = hoogstePrestige.size() > 1;
+		if(meerdan1potentielewinnaar) {
+			for(Speler s2 : hoogstePrestige) {
+				if(s2.getOntwikkelingskaartenInHand().size() == laagsteOntwKaartenCount) {
+					winnaars.add(s2);
+				}
 			}
+		}else if(hoogstePrestige.size() > 0) {
+			winnaars.add(hoogstePrestige.get(0));
 		}
-
 		return winnaars;
 	}
 
