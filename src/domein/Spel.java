@@ -1015,10 +1015,10 @@ public class Spel {
 	public void testMaaktEenWinnaarAan() {
 		Random rand = new Random();
 		for (int i = 0; i < aangemeldeSpelers.size(); i++) {
-			int randomWaarde1_15 = rand.nextInt(14) + 1;
+			int randomWaarde1_15 = rand.nextInt(12) + 1;
 			aangemeldeSpelers.get(i).voegPuntenToe(randomWaarde1_15);
 		}
-		int index = rand.nextInt(4);
+		int index = rand.nextInt(aangemeldeSpelers.size());
 		aangemeldeSpelers.get(index).voegPuntenToe(4);
 
 	}

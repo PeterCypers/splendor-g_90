@@ -57,11 +57,7 @@ public class TaalKeuzeScherm extends StackPane {
 		// Add the backgroundRegion and the backgroundImageView to a StackPane
 		StackPane stackPane = new StackPane(backgroundRegion);
 
-
 		// knop NL
-		
-		
-		
 		Button btnNL = new Button("NL");
 		btnNL.setFont(Font.font("Helvetica", FontWeight.BOLD, 16));
 		btnNL.setPrefSize(100, 50);

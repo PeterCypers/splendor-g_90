@@ -56,10 +56,11 @@ public class SpeelSpelScherm extends BorderPane {
 		dc.startNieuwSpel();
 
 		// [TEST]
-//		dc.testGeeftVeelEdelsteenfichesAanSpelers();
-		dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
-//		dc.testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten();
-//		dc.testMaaktWinnaarAan();
+		//	dc.testGeeftVeelEdelsteenfichesAanSpelers();
+		//	 dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
+		//		dc.testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten();
+		//				dc.testMaaktWinnaarAan();
+		dc.testMaaktEenWinnaarAan();
 
 		buildGui();
 	}
@@ -412,11 +413,11 @@ public class SpeelSpelScherm extends BorderPane {
 
 		noblesBox.setSpacing(10);
 
-//		if (edelen.size() < 5) {
-//			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
-//		} else {
+		//		if (edelen.size() < 5) {
+		//			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
+		//		} else {
 		noblesBox.setPadding(new Insets(10));
-//		}
+		//		}
 
 		spelbord.setTop(noblesBox);
 		noblesBox.setAlignment(Pos.TOP_CENTER);
@@ -513,7 +514,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 					} catch (Exception e) {
 						System.err
-								.print(Taal.getString("splendorApplicatieKoopOntwikkelingskaartGetNobleWentWrongMsg"));
+						.print(Taal.getString("splendorApplicatieKoopOntwikkelingskaartGetNobleWentWrongMsg"));
 					}
 
 					nobles();
