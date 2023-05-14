@@ -87,8 +87,6 @@ public class SpeelSpelScherm extends BorderPane {
 
 		this.setBackground(backgroundRegion.getBackground());
 
-		// this.getChildren().add(stackPane);
-
 		/*--------------CREATE THE BORD--------------*/
 
 		// spelbord.setStyle("-fx-background-color: #363200;");
