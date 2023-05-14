@@ -582,7 +582,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 		kiesEdeleElementen.getChildren().addAll(titel, subtitel, krijgbareEdeleHBox);
 
-		Scene popupScene = new Scene(kiesEdeleElementen, 512, 256);
+		Scene popupScene = new Scene(kiesEdeleElementen, 512, 256 + 128);
 		popup.setScene(popupScene);
 
 		popupCloseFlag.addListener((observable, oldValue, newValue) -> {

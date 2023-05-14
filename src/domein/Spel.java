@@ -882,7 +882,6 @@ public class Spel {
 
 			if (kanEdeleKopen) {
 				verkrijgbareEdelen.add(edele);
-				break;
 			}
 		}
 
