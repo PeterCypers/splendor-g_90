@@ -557,6 +557,8 @@ public class SpeelSpelScherm extends BorderPane {
 
 		HBox krijgbareEdeleHBox = new HBox();
 		StackPane.setAlignment(krijgbareEdeleHBox, Pos.CENTER);
+		krijgbareEdeleHBox.setAlignment(Pos.CENTER);
+		krijgbareEdeleHBox.setSpacing(10);
 
 		for (SpelVoorwerpDTO edele : krijgbareEdelen) {
 			EdeleNode edeleNode = new EdeleNode(edele);
@@ -582,7 +584,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 		kiesEdeleElementen.getChildren().addAll(titel, subtitel, krijgbareEdeleHBox);
 
-		Scene popupScene = new Scene(kiesEdeleElementen, 512, 256 + 128);
+		Scene popupScene = new Scene(kiesEdeleElementen, 512, 256 + 32);
 		popup.setScene(popupScene);
 
 		popupCloseFlag.addListener((observable, oldValue, newValue) -> {
