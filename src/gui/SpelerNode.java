@@ -39,7 +39,7 @@ public class SpelerNode extends StackPane {
 		Rectangle playerInfoBackground = new Rectangle(PLAYER_BOX_WIDTH, PLAYER_BOX_HEIGHT);
 		playerInfoBackground.setArcWidth(PLAYER_BOX_ARC_WIDTH);
 		playerInfoBackground.setArcHeight(PLAYER_BOX_ARC_HEIGHT);
-		playerInfoBackground.setFill(Color.web("#545451"));
+		playerInfoBackground.setFill(Color.web("#546669"));
 		playerInfoBackground.setStrokeWidth(PLAYER_BOX_STROKE_WIDTH);
 		if (speler.aanDeBeurt()) {
 			playerInfoBackground.setStyle("-fx-stroke: #d13111;");
