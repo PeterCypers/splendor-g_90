@@ -56,19 +56,18 @@ public class SpeelSpelScherm extends BorderPane {
 		dc.startNieuwSpel();
 
 		// [TEST]
-
-		//(1): 100fiches voor elke speler
+		// (1): 100fiches voor elke speler
 //		dc.testGeeftVeelEdelsteenfichesAanSpelers();
-		
-		//(2): 2 O.K. elke kleur + 10fiches
-		dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
-		
-		//(3): speler aan beurt krijgt 2 O.K. van elke kleur, alle spelers krijgen 15 prestige
-//		dc.testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten();
-		
-		//(4): random[15-18] prestige-punten voor elke speler
-//		dc.testMaaktWinnaarAan();
 
+		// (2): 2 O.K. elke kleur + 10fiches
+//		dc.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
+
+		// (3): speler aan beurt krijgt 2 O.K. van elke kleur, alle spelers krijgen 15
+		// prestige
+//		dc.testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten();
+
+		// (4): random[15-18] prestige-punten voor elke speler
+//		dc.testMaaktWinnaarAan();
 
 		buildGui();
 	}
@@ -421,11 +420,11 @@ public class SpeelSpelScherm extends BorderPane {
 
 		noblesBox.setSpacing(10);
 
-		//		if (edelen.size() < 5) {
-		//			noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
-		//		} else {
+		// if (edelen.size() < 5) {
+		// noblesBox.setPadding(new Insets(10, 10, 10, 128 + 40));
+		// } else {
 		noblesBox.setPadding(new Insets(10));
-		//		}
+		// }
 
 		spelbord.setTop(noblesBox);
 		noblesBox.setAlignment(Pos.TOP_CENTER);
@@ -522,7 +521,7 @@ public class SpeelSpelScherm extends BorderPane {
 
 					} catch (Exception e) {
 						System.err
-						.print(Taal.getString("splendorApplicatieKoopOntwikkelingskaartGetNobleWentWrongMsg"));
+								.print(Taal.getString("splendorApplicatieKoopOntwikkelingskaartGetNobleWentWrongMsg"));
 					}
 
 					nobles();
