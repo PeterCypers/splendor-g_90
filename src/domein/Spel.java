@@ -91,11 +91,18 @@ public class Spel {
 		// [TEST]
 		// testOntwikkelingsKaartStapels();
 	}
-
+	/**
+	 * geeft de waarde van de huidige ronde
+	 * 
+	 * @return <code>int</code> voor de huidige <code>ronde</code>
+	 */
 	public int getRonde() {
 		return ronde;
 	}
-
+	
+	/**
+	 * verhoogt <code>ronde</code> met 1
+	 */
 	private void verhoogRonde() {
 		this.ronde += 1;
 	}
@@ -857,7 +864,13 @@ public class Spel {
 		}
 	}
 
-	// TODO javadocs krijgEdeleGUI
+	/**
+	 * DR_BEURT_SPECIALE_TEGEL: Als de speler over voldoende kleurbonussen beschikt<br>
+	 * dat gelijk is aan de <code>kosten</code> van 1 van de beschikbare <code>Edele</code><br>
+	 * kaarten krijgt kiest hij er exact 1 van
+	 * 
+	 * @return <code>List</code> van <code>Edelen</code> waaruit gekozen kan worden
+	 */
 	public List<Edele> krijgEdeleGui() {
 		List<Edele> verkrijgbareEdelen = new ArrayList<>();
 		List<Ontwikkelingskaart> ontwikkelingskaartenInHand = spelerAanBeurt.getOntwikkelingskaartenInHand();
@@ -888,7 +901,18 @@ public class Spel {
 		return verkrijgbareEdelen;
 	}
 
-	// TODO kiesEdeleGUI javadocs
+	/**
+	 * DR_BEURT_SPECIALE_TEGEL<br>
+	 * speler kiest exact 1 <code>Edele</code><br>
+	 * uit de verkrijgbare <code>Edelen</code><br>
+	 * zie methode <code>krijgEdeleGui()</code><br>
+	 * prestige punten van gekozen <code>Edele</code> wordt opgeteld bij <br>
+	 * de prestige punten van <code>spelerAanBeurt</code><br>
+	 * <code>Edele</code> wordt uit de lijst van <code>Edelen</code>in <code>Spel</code><br>
+	 * verwijdert
+	 * 
+	 * @param edele de gekozen <code>Edele</code>
+	 */
 	public void kiesEdele(Edele edele) {
 		// voeg prestigepunten toe van edele aan speler zijn totaal
 		spelerAanBeurt.voegPuntenToe(edele.getPrestigepunten());
@@ -900,7 +924,6 @@ public class Spel {
 		edelen.removeIf(e -> e.equals(edele));
 	}
 
-	// TODO javadocs updaten
 	/**
 	 * DR_SPEL_WINNAAR<br>
 	 * deze lijst stelt de Winnaars van het spel voor:<br>
@@ -980,8 +1003,11 @@ public class Spel {
 		}
 	}
 
-	// [TEST] optie 7
-	public void testGeeftOntwikkelingskaartenAanSpelerAanBeurt() {
+	/**[DEMO-METHODE]<br>
+	 * geeft van elke <code>Kleur</code> 2 <code>Ontwikkelingskaarten</code> aan alle <code>aangemeldeSpelers</code> <br>
+	 * en ook 10 edelsteenfiches
+	 */
+	public void testGeeftOntwikkelingskaartenAanAangemeldeSpelers() {
 		Ontwikkelingskaart ontwikkelingskaart = null;
 
 		for (Speler speler : aangemeldeSpelers) {
@@ -1000,7 +1026,9 @@ public class Spel {
 
 	/**
 	 * [DEMO-METHODE]<br>
-	 * simulatie van een spel-einde
+	 * simulatie van een spel-einde<br>
+	 * 	 * geeft een winnend aantal prestige punten aan alle <code>Spelers</code><br>
+	 * random in interval [16-18]
 	 */
 	public void testMaaktWinnaarAan() {
 		Random random = new Random();
@@ -1011,7 +1039,11 @@ public class Spel {
 		}
 	}
 
-	// [TEST] optie 8
+	/**[DEMO-METHODE]<br>
+	 * geeft een winnend aantal prestige punten aan alle <code>Spelers</code><br>
+	 * random in interval [16-18]
+	 * 
+	 */
 	public void testMaaktEenWinnaarAan() {
 		Random rand = new Random();
 		for (int i = 0; i < aangemeldeSpelers.size(); i++) {
@@ -1023,7 +1055,10 @@ public class Spel {
 
 	}
 
-	// [TEST] Optie 9
+	/**[DEMO-METHODE]<br>
+	 * geeft 15 prestige punten aan alle <code>aangemeldeSpelers</code><br>
+	 * <code>spelerAanBeurt</code> krijgt 2 ontwikkelingskaarten van elke <code>Kleur</code>
+	 */
 	public void testGeeftEvenVeelWinnendePrestigepuntenMaarVerschillendAantalOntwikkelinkgskaarten() {
 		Ontwikkelingskaart ontwikkelingskaart = null;
 

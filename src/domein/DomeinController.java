@@ -271,7 +271,7 @@ public class DomeinController {
 
 	// [TEST] optie 7
 	public void testGeeftOntwikkelingskaartenAanSpelerAanBeurt() {
-		spel.testGeeftOntwikkelingskaartenAanSpelerAanBeurt();
+		spel.testGeeftOntwikkelingskaartenAanAangemeldeSpelers();
 	}
 
 	// [TEST] optie 8
